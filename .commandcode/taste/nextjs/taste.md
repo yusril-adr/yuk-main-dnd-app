@@ -1,0 +1,7 @@
+# Next.js
+
+- Prefers `next start` (non-standalone) over `output: "standalone"` for Docker/production deployments — expects the Dockerfile to install production `node_modules` via `npm ci --omit=dev`, copy the full `.next` directory, and use `CMD ["npx", "next", "start"]` rather than running `node server.js` from a standalone build. Confidence: 0.8
+- Guards browser-only APIs (e.g., `document.cookie`) with `typeof document === "undefined"` checks for SSR safety in Next.js — server-side code must never assume DOM availability. Confidence: 0.8
+- Prefers a two-layer page structure in Next.js App Router: a thin server component (`page.tsx`) that handles server-only concerns (metadata, title, server-side data fetching) and delegates to a sibling Client Component (e.g., `page-client.tsx` or `page-content.tsx`) that contains all hooks (`useRouter`, `useLogin`, etc.), form logic, and interactivity. Confidence: 0.9
+- Prefers placing `"use client"` directives only at the boundary component (e.g., `page-client.tsx`) — child components automatically inherit the client context and do not need their own directive. Avoids redundant directives on components that are already imported by a client component. Confidence: 0.7
+- Composes navigation links with button styling via `<Button render={<Link href="..." />} nativeButton={false}>` rather than styling `<Link>` directly as a button or using `asChild`-style patterns. Confidence: 0.7

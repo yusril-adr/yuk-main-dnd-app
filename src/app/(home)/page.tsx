@@ -1,0 +1,15 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Requestor",
+};
+
+export default function Home() {
+  return (
+    <div className="w-full flex flex-col">
+      <div className="w-full max-w-7xl flex flex-col px-10 pb-10">
+        <p>Index Page</p>
+      </div>
+    </div>
+  );
+}
