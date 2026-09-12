@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-
-const protectedRoutes = ["/dashboard", "/users", "/requests", "/audit-logs"];
+import { protectedRoutes } from "@/generated/protected-routes";
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;

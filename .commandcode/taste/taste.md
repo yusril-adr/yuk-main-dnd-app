@@ -4,6 +4,9 @@
 - Values cross-project consistency — when an adjacent/sibling project already establishes a convention (e.g., README format, documentation style), prefers mirroring that convention rather than inventing a new one from scratch. Confidence: 0.6
 - Prefers eliminating unnecessary state and addressing root causes over suppressing lint warnings — when faced with a lint violation, chooses to restructure code to make the warning irrelevant (e.g., removing a redundant `mounted` hydration gate) rather than disabling the rule, even when the lint-suppression approach is idiomatic and widely accepted. Confidence: 0.6
 
+- Prefers build-time code generation (a Node script wired into the `dev`/`build` scripts, committing the generated file) over runtime filesystem detection for derived config lists — keeps generated artifacts in sync automatically at dev/build time. Confidence: 0.6
+- Prefers single explicit npm script commands (inlining a codegen step into `dev`/`build` with `&&`) over npm lifecycle hooks (`predev`/`prebuild`) — values explicitness and one-place clarity over implicit automatic hooks. Confidence: 0.7
+
 # Auth
 See [auth/taste.md](auth/taste.md)
 
