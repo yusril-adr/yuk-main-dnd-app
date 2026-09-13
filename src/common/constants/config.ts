@@ -1,6 +1,9 @@
 const CONFIG = {
   MAIN_API_BASE_URL: process.env.NEXT_PUBLIC_MAIN_API_BASE_URL,
 
+  IS_USING_THEME_TOGGLER:
+    process.env.NEXT_PUBLIC_NEXT_IS_USING_THEME_TOGGLER === "true",
+
   COOKIE: {
     ACCESS_TOKEN_KEY: "access_token",
   },

@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+
+import CONFIG from "@/common/constants/config";
 import { ThemeToggler } from "@/app/_components/theme-toggler";
 import { LoginForm } from "@/app/login/_components/form";
 import { useLogin } from "@/app/login/_hooks/use-login";
@@ -40,7 +42,7 @@ export default function LoginPageClient() {
     <div className="w-full flex justify-center items-center">
       <main className="flex w-full h-[calc(100vh-32px)] max-w-7xl px-10 relative">
         <div className="absolute right-0 top-0 pt-4">
-          <ThemeToggler />
+          {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler />}
         </div>
 
         <div className="hidden lg:flex lg:w-1/2 h-screen justify-center items-center">

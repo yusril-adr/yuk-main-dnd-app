@@ -2,6 +2,8 @@
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+
+import { ThemeEnum } from "@/common/enums/theme";
 import { ThemeProvider } from "@/app/_components/theme-provider";
 import { SidebarProvider } from "@/app/_components/ui/sidebar";
 import { Toaster } from "@/app/_components/ui/sonner";
@@ -15,7 +17,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <AuthProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme={ThemeEnum.LIGHT}
             enableSystem
             disableTransitionOnChange
           >

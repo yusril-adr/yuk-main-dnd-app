@@ -10,6 +10,7 @@ import { BrainCircuit } from "lucide-react";
 import { ThemeToggler } from "../theme-toggler";
 import type { TNavSidebar } from "../../_types/nav-sidebar";
 import { NavSidebar } from "./nav-sidebar";
+import CONFIG from "@/common/constants/config";
 import NAV_ROUTES from "@/common/constants/navigation-routes";
 import { useAuthContext } from "../../_hooks/use-auth-context";
 import { AvatarSidebar } from "./avatar-sidebar";
@@ -36,7 +37,7 @@ export function AppSidebar() {
                 <span className="font-heading text-2xl ">Requestor</span>
               </div>
 
-              <ThemeToggler />
+              {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler />}
             </div>
           </SidebarMenuItem>
         </SidebarMenu>
