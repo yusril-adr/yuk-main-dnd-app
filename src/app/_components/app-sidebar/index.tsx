@@ -6,7 +6,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "@/app/_components/ui/sidebar";
-import { BrainCircuit } from "lucide-react";
+import { Sword } from "lucide-react";
 import { ThemeToggler } from "../theme-toggler";
 import type { TNavSidebar } from "../../_types/nav-sidebar";
 import { NavSidebar } from "./nav-sidebar";
@@ -33,8 +33,8 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <div className="flex justify-between items-center pl-1.5">
               <div className="flex items-center">
-                <BrainCircuit className="mr-2" />
-                <span className="font-heading text-2xl ">Requestor</span>
+                <Sword className="mr-2" />
+                <span className="font-heading text-2xl ">YukMainDnD</span>
               </div>
 
               {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler />}

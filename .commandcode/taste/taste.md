@@ -7,6 +7,8 @@
 - Prefers build-time code generation (a Node script wired into the `dev`/`build` scripts, committing the generated file) over runtime filesystem detection for derived config lists — keeps generated artifacts in sync automatically at dev/build time. Confidence: 0.6
 - Prefers single explicit npm script commands (inlining a codegen step into `dev`/`build` with `&&`) over npm lifecycle hooks (`predev`/`prebuild`) — values explicitness and one-place clarity over implicit automatic hooks. Confidence: 0.7
 
+- Comfortable using dummy/placeholder data for prototyping when real data isn't available yet (e.g., hardcoded XP/GP stats), rather than blocking on backend data. Confidence: 0.5
+
 # Auth
 See [auth/taste.md](auth/taste.md)
 

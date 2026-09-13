@@ -7,7 +7,7 @@ export function proxy(request: NextRequest) {
   const hasToken = request.cookies.get("access_token")?.value;
 
   if (pathname === "/login" && hasToken) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   if (protectedRoutes.some((r) => pathname.startsWith(r)) && !hasToken) {
