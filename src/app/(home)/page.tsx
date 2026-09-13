@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Requestor",
+  title: "YukMainDnD",
 };
 
 export default function Home() {

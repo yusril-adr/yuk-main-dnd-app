@@ -12,12 +12,9 @@ import { parseAsString, useQueryState } from "nuqs";
 
 export default function LoginPageClient() {
   const router = useRouter();
-  const [fromQuery] = useQueryState(
-    "from",
-    parseAsString.withDefault("/dashboard"),
-  );
+  const [fromQuery] = useQueryState("from", parseAsString.withDefault("/"));
 
-  // useRef avoids a stale closure: useQueryState defaults to "/dashboard"
+  // useRef avoids a stale closure: useQueryState defaults to "/"
   // during SSR and updates asynchronously on the client. The mutation's
   // onSuccess callback captures the initial value at render time, so we
   // sync the latest query into a ref and read it at redirect time instead.

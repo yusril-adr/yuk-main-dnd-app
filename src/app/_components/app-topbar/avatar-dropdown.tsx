@@ -1,7 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronDown, Coins, Medal, LogOut, User } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Coins,
+  Medal,
+  LogOut,
+  User,
+} from "lucide-react";
 
 import { Button } from "@/app/_components/ui/button";
 import {
@@ -53,10 +60,9 @@ export function AvatarDropdown() {
               />
               <AvatarFallback>{getInitials(auth.name)}</AvatarFallback>
             </Avatar>
-            <span className="hidden text-sm font-medium sm:inline">
-              {auth.name}
-            </span>
-            <ChevronDown data-icon="inline-end" />
+            <span className="text-sm font-medium sm:inline">{auth.name}</span>
+            <ChevronUp className="lg:hidden" data-icon="inline-end" />
+            <ChevronDown className="hidden lg:flex" data-icon="inline-end" />
           </Button>
         }
       />
