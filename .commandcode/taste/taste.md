@@ -8,6 +8,7 @@
 - Prefers single explicit npm script commands (inlining a codegen step into `dev`/`build` with `&&`) over npm lifecycle hooks (`predev`/`prebuild`) — values explicitness and one-place clarity over implicit automatic hooks. Confidence: 0.7
 
 - Comfortable using dummy/placeholder data for prototyping when real data isn't available yet (e.g., hardcoded XP/GP stats), rather than blocking on backend data. Confidence: 0.5
+- When a suggested fix doesn't take effect (e.g., "the UI won't change"), prefers the agent to actively search and verify the real codebase — grep for token/variable definitions, read the actual files — to find the root cause rather than restating the explanation or guessing. Confidence: 0.6
 
 # Auth
 See [auth/taste.md](auth/taste.md)

@@ -8,7 +8,7 @@ import {
 } from "@/app/_components/ui/sidebar";
 import { Sword } from "lucide-react";
 import { ThemeToggler } from "@/app/_components/theme-toggler";
-import type { TNavSidebar } from "@/app/(authenticated)/_types/nav-sidebar";
+import type { TNavSidebar } from "@/app/(authenticated)/dashboard/_types/nav-sidebar";
 import { NavSidebar } from "./nav-sidebar";
 import CONFIG from "@/common/constants/config";
 import NAV_ROUTES from "@/app/(authenticated)/dashboard/_constants/navigation-routes";
