@@ -1,4 +1,5 @@
-import { EllipsisVertical, LogOut } from "lucide-react";
+import Link from "next/link";
+import { Coins, EllipsisVertical, LogOut, Medal, User } from "lucide-react";
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -10,6 +11,8 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/app/_components/ui/dropdown-menu";
 import {
@@ -20,6 +23,11 @@ import {
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { logout } from "@/utils/logout";
+
+const DUMMY_STATS = {
+  xp: 0,
+  gp: 0,
+};
 
 export function AvatarSidebar() {
   const { auth, authQuery } = useAuthContext();
@@ -79,6 +87,25 @@ export function AvatarSidebar() {
             sideOffset={4}
           >
             <DropdownMenuGroup>
+              <DropdownMenuLabel>Stats</DropdownMenuLabel>
+              <DropdownMenuItem disabled className="items-center">
+                <Medal />
+                {DUMMY_STATS.xp} XP
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled className="items-center">
+                <Coins />
+                {DUMMY_STATS.gp} GP
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Menu</DropdownMenuLabel>
+              <DropdownMenuItem render={<Link href="/profile" />}>
+                <User />
+                Profile
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
                 <LogOut />
                 Log out

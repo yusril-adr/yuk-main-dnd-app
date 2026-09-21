@@ -14,6 +14,7 @@ import CONFIG from "@/common/constants/config";
 import NAV_ROUTES from "@/app/(authenticated)/dashboard/_constants/navigation-routes";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { AvatarSidebar } from "./avatar-sidebar";
+import Link from "next/link";
 
 export function AppSidebar() {
   const { auth } = useAuthContext();
@@ -40,10 +41,10 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <div className="flex justify-between items-center pl-1.5">
-              <div className="flex items-center">
+              <Link href="/" className="flex items-center">
                 <Sword className="mr-2" />
                 <span className="font-heading text-2xl ">YukMainDnD</span>
-              </div>
+              </Link>
 
               {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler />}
             </div>
