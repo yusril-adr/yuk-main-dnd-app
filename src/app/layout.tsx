@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Red_Hat_Display, Eczar, Lato } from "next/font/google";
+import { Alegreya_Sans, DM_Mono, Eczar } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/utils/cn";
 import { Providers } from "./providers";
@@ -9,13 +9,14 @@ const eczarHeading = Eczar({
   variable: "--font-heading",
 });
 
-const lato = Lato({
+const alegreyaSans = Alegreya_Sans({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-sans",
 });
 
-const readHeadDisplayMono = Red_Hat_Display({
+const dmMono = DM_Mono({
+  weight: "400",
   variable: "--font-mono",
   subsets: ["latin"],
 });
@@ -36,8 +37,8 @@ export default function RootLayout({
       className={cn(
         "h-full",
         "antialiased",
-        readHeadDisplayMono.variable,
-        lato.variable,
+        dmMono.variable,
+        alegreyaSans.variable,
         eczarHeading.variable,
       )}
       suppressHydrationWarning

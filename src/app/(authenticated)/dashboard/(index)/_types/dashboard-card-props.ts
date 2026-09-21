@@ -1,6 +1,6 @@
-import type { useGetAuditLogPagination } from "@/app/(authenticated)/dashboard/audit-logs/_hooks/use-get-audit-log-pagination";
-import type { useGetRequestPagination } from "@/app/(authenticated)/dashboard/requests/_hooks/use-get-request-pagination";
-import type { useGetUserPagination } from "@/app/(authenticated)/dashboard/users/_hooks/use-get-user-pagination";
+import type { useGetAuditLogPagination } from "@/app/(authenticated)/dashboard/requestor/audit-logs/_hooks/use-get-audit-log-pagination";
+import type { useGetRequestPagination } from "@/app/(authenticated)/dashboard/requestor/requests/_hooks/use-get-request-pagination";
+import type { useGetUserPagination } from "@/app/(authenticated)/dashboard/requestor/users/_hooks/use-get-user-pagination";
 
 export type TTotalRequestCardProps = {
   query: ReturnType<typeof useGetRequestPagination>;

@@ -4,6 +4,7 @@ import type { LucideIcon } from "lucide-react";
 export type TNavSidebar = {
   title: string;
   icon: LucideIcon;
-  path: string;
+  path?: string;
   authorizedRoles?: RoleKeyEnum[];
+  children?: TNavSidebar[];
 };

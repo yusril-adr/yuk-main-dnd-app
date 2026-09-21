@@ -1,0 +1,213 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+
+import { Card, CardContent, CardFooter } from "@/app/_components/ui/card";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/app/_components/ui/field";
+import { Input } from "@/app/_components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/app/_components/ui/input-group";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/app/_components/ui/combobox";
+import { Button } from "@/app/_components/ui/button";
+import { Spinner } from "@/app/_components/ui/spinner";
+
+import { UserCreateFormSchema, type TUserCreateFormSchema } from "./scheme";
+import { RoleKeyEnum } from "@/common/enums/role-key";
+import type { TMainApiErrorResponse } from "@/api/main/types/response";
+import type { TUserCreatePayload } from "@/api/main/users/types/user-create-payload";
+import type { TUserCreateFormProps } from "@/app/(authenticated)/dashboard/requestor/users/create/_types/user-create-form-props";
+import MainAPIValidationError from "@/api/main/errors/validation-error";
+import { applyValidationErrors } from "@/utils/validation-helper";
+
+export default function UserCreateForm({
+  onSubmitPayload,
+  mutationError,
+  isPending,
+  isPaused,
+}: TUserCreateFormProps) {
+  const [isShowPassword, setIsShowPassword] = useState(false);
+
+  const { control, handleSubmit, setError } = useForm<TUserCreateFormSchema>({
+    resolver: zodResolver(UserCreateFormSchema),
+    defaultValues: {
+      role: RoleKeyEnum.VIEWER,
+    },
+  });
+
+  useEffect(() => {
+    if (mutationError instanceof MainAPIValidationError) {
+      applyValidationErrors(
+        setError,
+        mutationError.errors as TMainApiErrorResponse<TUserCreatePayload>[],
+      );
+    }
+  }, [mutationError, setError]);
+
+  const onSubmit: SubmitHandler<TUserCreateFormSchema> = (data) => {
+    const payload: TUserCreatePayload = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      role: data.role,
+    };
+
+    onSubmitPayload(payload);
+  };
+
+  const isFormDisabled = useMemo(
+    () => isPending || isPaused,
+    [isPending, isPaused],
+  );
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Card>
+        <CardContent>
+          <FieldGroup className="grid md:grid-cols-2">
+            <Controller
+              name="name"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="name">Name</FieldLabel>
+                  <Input id="name" placeholder="Input name" {...field} />
+
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="email"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Input email"
+                    {...field}
+                  />
+
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="password"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <InputGroup>
+                    <InputGroupInput
+                      id="password"
+                      type={isShowPassword ? "text" : "password"}
+                      placeholder="Enter password"
+                      autoComplete="off"
+                      {...field}
+                    />
+                    <InputGroupAddon align="inline-end">
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        type="button"
+                        onClick={() => setIsShowPassword(!isShowPassword)}
+                      >
+                        {isShowPassword ? <EyeOffIcon /> : <EyeIcon />}
+                      </Button>
+                    </InputGroupAddon>
+                  </InputGroup>
+
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="role"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="role">Role</FieldLabel>
+                  <Combobox
+                    id="role"
+                    items={Object.values(RoleKeyEnum)}
+                    onValueChange={field.onChange}
+                    {...field}
+                  >
+                    <ComboboxInput placeholder="Select role" showClear />
+                    <ComboboxContent>
+                      <ComboboxEmpty>No items found.</ComboboxEmpty>
+                      <ComboboxList>
+                        {(item) => (
+                          <ComboboxItem key={item} value={item}>
+                            {item}
+                          </ComboboxItem>
+                        )}
+                      </ComboboxList>
+                    </ComboboxContent>
+                  </Combobox>
+
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+        </CardContent>
+
+        <CardFooter className="border-t-1 pt-4">
+          <FieldGroup>
+            <Field orientation="horizontal">
+              <Button
+                className="ms-auto"
+                variant="outline"
+                type="reset"
+                render={<Link href={"/users"} />}
+                disabled={isFormDisabled}
+                nativeButton={false}
+              >
+                Cancel
+                {isFormDisabled && <Spinner />}
+              </Button>
+
+              <Button type="submit" disabled={isFormDisabled}>
+                Save
+                {isFormDisabled && <Spinner />}
+              </Button>
+            </Field>
+          </FieldGroup>
+        </CardFooter>
+      </Card>
+    </form>
+  );
+}

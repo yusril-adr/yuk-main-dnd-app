@@ -18,13 +18,21 @@ import { AvatarSidebar } from "./avatar-sidebar";
 export function AppSidebar() {
   const { auth } = useAuthContext();
 
-  const navItems: TNavSidebar[] = NAV_ROUTES.filter((nav) => {
-    if (!nav.authorizedRoles || nav.authorizedRoles?.length === 0) {
-      return true;
-    }
+  const filterNavItems = (items: TNavSidebar[]): TNavSidebar[] =>
+    items.flatMap((item) => {
+      if (item.children) {
+        const children = filterNavItems(item.children);
+        return children.length > 0 ? [{ ...item, children }] : [];
+      }
 
-    return auth?.role && nav.authorizedRoles?.includes(auth.role);
-  });
+      const isAuthorized =
+        !item.authorizedRoles?.length ||
+        (auth?.role != null && item.authorizedRoles.includes(auth.role));
+
+      return isAuthorized ? [item] : [];
+    });
+
+  const navItems: TNavSidebar[] = filterNavItems(NAV_ROUTES);
 
   return (
     <Sidebar variant="inset">
