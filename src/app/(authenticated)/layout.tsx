@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
-import AppSidebarLayout from "@/app/_components/layout/app-sidebar-layout";
 import GlobalLoader from "@/app/_components/global-loader";
 
 export default function AuthenticatedLayout({
@@ -24,5 +23,5 @@ export default function AuthenticatedLayout({
 
   if (!auth) return <GlobalLoader />;
 
-  return <AppSidebarLayout>{children}</AppSidebarLayout>;
+  return children;
 }

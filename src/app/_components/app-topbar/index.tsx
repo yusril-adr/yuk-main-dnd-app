@@ -17,6 +17,7 @@ import {
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 
 import { AvatarDropdown } from "./avatar-dropdown";
+import { DashboardButton } from "./dashboard-button";
 import { GuestActions } from "./guest-actions";
 import { TopBarNav } from "./top-bar-nav";
 
@@ -43,7 +44,15 @@ export function AppTopBar({ hasAccessToken }: { hasAccessToken: boolean }) {
 
         <div className="hidden lg:flex items-center gap-2">
           {showLoading && <Skeleton className="h-9 w-24 rounded-md" />}
-          {!showLoading && (auth ? <AvatarDropdown /> : <GuestActions />)}
+          {!showLoading &&
+            (auth ? (
+              <>
+                <DashboardButton />
+                <AvatarDropdown />
+              </>
+            ) : (
+              <GuestActions />
+            ))}
         </div>
 
         <Sheet>
@@ -70,7 +79,15 @@ export function AppTopBar({ hasAccessToken }: { hasAccessToken: boolean }) {
 
             <SheetFooter>
               {showLoading && <Skeleton className="h-9 w-full rounded-md" />}
-              {!showLoading && (auth ? <AvatarDropdown /> : <GuestActions />)}
+              {!showLoading &&
+                (auth ? (
+                  <>
+                    <DashboardButton />
+                    <AvatarDropdown />
+                  </>
+                ) : (
+                  <GuestActions />
+                ))}
             </SheetFooter>
           </SheetContent>
         </Sheet>
