@@ -31,7 +31,7 @@ export default function RequestDetailPageClient() {
 
   useEffect(() => {
     if (isError && error && error instanceof MainAPINotFoundError) {
-      router.push("/requests");
+      router.push("/dashboard/requestor/requests");
     }
   }, [isError, error, router]);
 
@@ -39,7 +39,7 @@ export default function RequestDetailPageClient() {
     () => [
       {
         name: "Requests",
-        link: "/requests",
+        link: "/dashboard/requestor/requests",
       },
       {
         name: data?.data?.data?.title ?? "Detail",
@@ -103,7 +103,7 @@ export default function RequestDetailPageClient() {
         <AppBreadcrumb items={breadcrumbItems} />
 
         <div className="flex items-center mt-4 mb-6 gap-x-2">
-          <Link href={"/requests"}>
+          <Link href={"/dashboard/requestor/requests"}>
             <ArrowLeft />
           </Link>
           <h1 className="font-heading text-2xl">Detail Requests</h1>

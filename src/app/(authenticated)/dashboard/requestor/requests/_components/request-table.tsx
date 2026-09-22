@@ -116,7 +116,9 @@ export default function RequestTable({
         return (
           <Button
             variant="link"
-            render={<Link href={`/requests/${rowOriginal.id}`} />}
+            render={
+              <Link href={`/dashboard/requestor/requests/${rowOriginal.id}`} />
+            }
             nativeButton={false}
           >
             {rowOriginal.title}
@@ -196,14 +198,22 @@ export default function RequestTable({
             <DropdownMenuContent>
               <DropdownMenuGroup>
                 <DropdownMenuItem
-                  render={<Link href={`/requests/${rowOriginal.id}`} />}
+                  render={
+                    <Link
+                      href={`/dashboard/requestor/requests/${rowOriginal.id}`}
+                    />
+                  }
                 >
                   <Eye />
                   View
                 </DropdownMenuItem>
                 {allowedActionRoles.includes(currentRole) && (
                   <DropdownMenuItem
-                    render={<Link href={`/requests/${rowOriginal.id}/edit`} />}
+                    render={
+                      <Link
+                        href={`/dashboard/requestor/requests/${rowOriginal.id}/edit`}
+                      />
+                    }
                   >
                     <Pencil />
                     Edit

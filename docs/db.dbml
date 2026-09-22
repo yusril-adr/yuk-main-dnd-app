@@ -232,11 +232,11 @@ Table point_transactions {
 
 /*
  * ============================================================
- * REWARDS
+ * GOODS
  * ============================================================
  */
 
-Table rewards {
+Table goods {
   id uuid [pk, default: `gen_random_uuid()`]
 
   created_by uuid
@@ -261,11 +261,11 @@ Table rewards {
   }
 }
 
-Table user_rewards {
+Table user_goods {
   id uuid [pk, default: `gen_random_uuid()`]
 
   user_id uuid [not null]
-  reward_id uuid [not null]
+  good_id uuid [not null]
 
   quantity integer [not null, default: 1]
   points_spent integer [not null]
@@ -281,7 +281,7 @@ Table user_rewards {
 
   Indexes {
     (user_id, created_at)
-    (reward_id)
+    (good_id)
     (status)
   }
 }
@@ -312,7 +312,7 @@ Ref: stories.id < story_members.story_id
 
 Ref: users.id < point_transactions.user_id
 
-Ref: users.id < rewards.created_by
+Ref: users.id < goods.created_by
 
-Ref: rewards.id < user_rewards.reward_id
-Ref: users.id < user_rewards.user_id
+Ref: goods.id < user_goods.good_id
+Ref: users.id < user_goods.user_id

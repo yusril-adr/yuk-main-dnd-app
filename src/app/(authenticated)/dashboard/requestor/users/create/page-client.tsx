@@ -17,14 +17,14 @@ export default function UserCreatePageClient() {
     isPaused: createUserIsPaused,
   } = useCreateUser({
     onSuccess: () => {
-      router.push("/users");
+      router.push("/dashboard/requestor/users");
     },
   });
 
   const breadcrumbItems = [
     {
       name: "Users",
-      link: "/users",
+      link: "/dashboard/requestor/users",
     },
     {
       name: "Create",
@@ -37,7 +37,7 @@ export default function UserCreatePageClient() {
         <AppBreadcrumb items={breadcrumbItems} />
 
         <div className="flex items-center mt-4 mb-6 gap-x-2">
-          <Link href={"/users"}>
+          <Link href={"/dashboard/requestor/users"}>
             <ArrowLeft />
           </Link>
           <h1 className="font-heading text-2xl">Create User</h1>

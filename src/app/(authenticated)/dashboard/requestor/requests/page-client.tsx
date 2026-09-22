@@ -194,7 +194,7 @@ export default function RequestsPageClient() {
             <h1 className="font-heading text-2xl">Requests</h1>
 
             <Button
-              render={<Link href="/requests/create" />}
+              render={<Link href="/dashboard/requestor/requests/create" />}
               nativeButton={false}
             >
               <Plus /> Add Request

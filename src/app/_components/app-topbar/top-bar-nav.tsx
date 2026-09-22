@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarDays, Kayak, Swords, Trophy } from "lucide-react";
+import { Anvil, CalendarDays, Kayak, Swords } from "lucide-react";
 
 import { cn } from "@/utils/cn";
 import { Button } from "@/app/_components/ui/button";
@@ -11,7 +11,7 @@ const NAV_ITEMS = [
   { title: "Guildmates", href: "/guildmates", icon: Kayak },
   { title: "Stories", href: "/stories", icon: Swords },
   { title: "Events", href: "/events", icon: CalendarDays },
-  { title: "Rewards", href: "/rewards", icon: Trophy },
+  { title: "Goods", href: "/goods", icon: Anvil },
 ];
 
 export function TopBarNav({ className }: { className?: string }) {

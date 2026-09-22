@@ -22,11 +22,11 @@ export default function UserEditPageClient() {
     isPaused: updateUserIsPaused,
   } = useUpdateUserById({
     onSuccess: () => {
-      router.push("/users");
+      router.push("/dashboard/requestor/users");
     },
     onError: (error) => {
       if (error instanceof MainAPINotFoundError) {
-        router.push("/users");
+        router.push("/dashboard/requestor/users");
       }
     },
   });
@@ -37,14 +37,14 @@ export default function UserEditPageClient() {
       getDataQuery.error &&
       getDataQuery.error instanceof MainAPINotFoundError
     ) {
-      router.push("/users");
+      router.push("/dashboard/requestor/users");
     }
   }, [getDataQuery.error, getDataQuery.isError, router]);
 
   const breadcrumbItems = [
     {
       name: "Users",
-      link: "/users",
+      link: "/dashboard/requestor/users",
     },
     ...(!getDataQuery.isLoading
       ? [
@@ -65,7 +65,7 @@ export default function UserEditPageClient() {
         <AppBreadcrumb items={breadcrumbItems} />
 
         <div className="flex items-center mt-4 mb-6 gap-x-2">
-          <Link href={"/users"}>
+          <Link href={"/dashboard/requestor/users"}>
             <ArrowLeft />
           </Link>
           <h1 className="font-heading text-2xl">Edit User</h1>

@@ -24,6 +24,9 @@ const CONFIG = {
       AUDIT_LOG: {
         ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "audit-log"],
       },
+      PERMISSION: {
+        ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "permission"],
+      },
     },
   },
 };

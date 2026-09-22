@@ -1,32 +1,24 @@
 "use client";
-
 import { useCallback, useMemo } from "react";
-import { Plus } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
-import UserTable from "@/app/(authenticated)/dashboard/requestor/users/_components/user-table";
-import { Button } from "@/app/_components/ui/button";
+import PermissionTable from "@/app/(authenticated)/dashboard/master/iam/permissions/_components/permission-table";
 import { useFilter } from "@/app/_hooks/use-filter";
-import { useGetUserPagination } from "@/app/(authenticated)/dashboard/requestor/users/_hooks/use-get-user-pagination";
-import { useDeleteUserById } from "@/app/(authenticated)/dashboard/requestor/users/_hooks/use-delete-user-by-id";
-import { useUpdateUserById } from "@/app/(authenticated)/dashboard/requestor/users/_hooks/use-update-user-by-id";
+import { useGetPermissionPagination } from "@/app/(authenticated)/dashboard/master/iam/permissions/_hooks/use-get-permission-pagination";
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
-import type { TUserTableFilterValues } from "@/app/(authenticated)/dashboard/requestor/users/_types/user-table-props";
-import type { TUserPaginationPayload } from "@/api/requestor/users/types/user-pagination-payload";
-import type { TUserSortBy } from "@/api/requestor/users/consts/user-sort-by";
-import { UserStatusEnum } from "@/api/requestor/users/enums/user-status";
+import type { TPermissionTableFilterValues } from "@/app/(authenticated)/dashboard/master/iam/permissions/_types/permission-table-props";
+import type { TPermissionPaginationPayload } from "@/api/main/modules/permissions/types/permission-pagination-payload";
+import type { TPermissionSortBy } from "@/api/main/modules/permissions/consts/permission-sort-by";
+import { PermissionModuleEnum } from "@/api/main/modules/permissions/enums/permission-module";
+import { PermissionActionEnum } from "@/api/main/modules/permissions/enums/permission-action";
 import { OrderKeyEnum } from "@/common/enums/order-key";
-import { RoleKeyEnum } from "@/common/enums/role-key";
-import MainAPINotFoundError from "@/api/requestor/errors/not-found-error";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 
-export default function UsersPageClient() {
+export default function PermissionsPageClient() {
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
     pageSize: parseAsInteger.withDefault(10),
@@ -34,66 +26,55 @@ export default function UsersPageClient() {
     sortBy: createSortByParser(
       [
         "id",
-        "name",
-        "email",
-        "role",
-        "status",
+        "module",
+        "action",
+        "key",
         "created_at",
         "updated_at",
       ] as const,
-      "Users",
+      "Permissions",
     ),
     order: parseAsStringEnum<OrderKeyEnum>(Object.values(OrderKeyEnum)),
-    status: parseAsStringEnum<UserStatusEnum>(Object.values(UserStatusEnum)),
-    role: parseAsStringEnum<RoleKeyEnum>(Object.values(RoleKeyEnum)),
+    module: parseAsStringEnum<PermissionModuleEnum>(
+      Object.values(PermissionModuleEnum),
+    ),
+    action: parseAsStringEnum<PermissionActionEnum>(
+      Object.values(PermissionActionEnum),
+    ),
   });
-  const router = useRouter();
 
-  const { control, handleSubmit, reset } = useForm<TUserTableFilterValues>({
+  const { control, handleSubmit, reset } = useForm<TPermissionTableFilterValues>({
     defaultValues: {
-      status: (queryStates.status as UserStatusEnum) || null,
-      role: (queryStates.role as RoleKeyEnum) || null,
+      module: (queryStates.module as PermissionModuleEnum) || null,
+      action: (queryStates.action as PermissionActionEnum) || null,
     },
   });
 
   const { onFilterReset, onFilterSubmit, columnFilters } =
-    useFilter<TUserTableFilterValues>(
-      ["status", "role"],
+    useFilter<TPermissionTableFilterValues>(
+      ["module", "action"],
       queryStates,
       setQueryStates,
       reset,
     );
 
-  const queryStatesIntoPayload: TUserPaginationPayload = useMemo(
+  const queryStatesIntoPayload: TPermissionPaginationPayload = useMemo(
     () => ({
       page: queryStates.page,
       per_page: queryStates.pageSize,
       search: queryStates.search,
+      // nuqs parsers return null when unset, but API expects undefined — coalesce
       sort_by: queryStates.sortBy ?? undefined,
       order: queryStates.order ?? undefined,
-      status: queryStates.status ?? undefined,
-      role: queryStates.role ?? undefined,
+      module: queryStates.module ?? undefined,
+      action: queryStates.action ?? undefined,
     }),
     [queryStates],
   );
 
-  const { data: responseData, isLoading } = useGetUserPagination(
+  const { data: responseData, isLoading } = useGetPermissionPagination(
     queryStatesIntoPayload,
   );
-  const { mutate: deleteUserMutate } = useDeleteUserById({
-    onError: (error) => {
-      if (error instanceof MainAPINotFoundError) {
-        router.push("/dashboard/requestor/users");
-      }
-    },
-  });
-  const { mutate: updateUserMutate } = useUpdateUserById({
-    onError: (error) => {
-      if (error instanceof MainAPINotFoundError) {
-        router.push("/dashboard/requestor/users");
-      }
-    },
-  });
 
   const onSearchChange = useCallback(
     (value: string) => {
@@ -116,7 +97,7 @@ export default function UsersPageClient() {
     (key: string) => {
       if (queryStates.sortBy === key) {
         let desiredOrder: OrderKeyEnum | null = null;
-        let desiredKey: TUserSortBy | null = key as TUserSortBy;
+        let desiredKey: TPermissionSortBy | null = key as TPermissionSortBy;
 
         switch (queryStates.order) {
           case OrderKeyEnum.ASC:
@@ -137,7 +118,7 @@ export default function UsersPageClient() {
         });
       } else {
         setQueryStates({
-          sortBy: key as TUserSortBy,
+          sortBy: key as TPermissionSortBy,
           order: OrderKeyEnum.ASC,
           page: 1,
         });
@@ -162,7 +143,7 @@ export default function UsersPageClient() {
 
   const breadcrumbItems = [
     {
-      name: "Users",
+      name: "Permissions",
     },
   ];
 
@@ -173,17 +154,11 @@ export default function UsersPageClient() {
           <AppBreadcrumb items={breadcrumbItems} />
 
           <div className="flex justify-between items-center mt-4 mb-6">
-            <h1 className="font-heading text-2xl">Users</h1>
-
-            <Button
-              render={<Link href="/dashboard/requestor/users/create" />}
-              nativeButton={false}
-            >
-              <Plus /> Add User
-            </Button>
+            <h1 className="font-heading text-2xl">Permissions</h1>
           </div>
         </div>
-        <UserTable
+
+        <PermissionTable
           data={responseData?.data?.data?.items ?? []}
           isLoading={isLoading}
           pageCount={responseData?.data?.data?.meta?.total_page || 1}
@@ -200,17 +175,6 @@ export default function UsersPageClient() {
               onFilterSubmit: handleSubmit(onFilterSubmit),
               onFilterReset,
             },
-            onDeleteUser: deleteUserMutate,
-            onSuspendUser: (id) =>
-              updateUserMutate({
-                id,
-                payload: { status: UserStatusEnum.SUSPENDED },
-              }),
-            onReactivateUser: (id) =>
-              updateUserMutate({
-                id,
-                payload: { status: UserStatusEnum.ACTIVE },
-              }),
           }}
         />
       </div>

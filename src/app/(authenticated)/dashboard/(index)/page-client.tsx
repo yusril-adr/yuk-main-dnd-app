@@ -2,34 +2,7 @@
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 
-import TotalAuditLogCard from "@/app/(authenticated)/dashboard/(index)/_components/total-audit-log-card";
-import TotalRequestCard from "@/app/(authenticated)/dashboard/(index)/_components/total-request-card";
-import TotalUserCard from "@/app/(authenticated)/dashboard/(index)/_components/total-user-card";
-import RecentlyRequestCard from "@/app/(authenticated)/dashboard/(index)/_components/recently-request-card";
-import RecentlyAuditLogCard from "@/app/(authenticated)/dashboard/(index)/_components/recently-audit-log-card";
-import { useGetAuditLogPagination } from "@/app/(authenticated)/dashboard/(index)/_hooks/use-get-audit-log-pagination";
-import { useGetRequestPagination } from "@/app/(authenticated)/dashboard/(index)/_hooks/use-get-request-pagination";
-import { useGetUserPagination } from "@/app/(authenticated)/dashboard/(index)/_hooks/use-get-user-pagination";
-import { OrderKeyEnum } from "@/common/enums/order-key";
-
 export default function DashboardPageClient() {
-  const requestQuery = useGetRequestPagination({
-    page: 1,
-    per_page: 3,
-    sort_by: "updated_at",
-    order: OrderKeyEnum.DESC,
-  });
-  const userQuery = useGetUserPagination({
-    sort_by: "updated_at",
-    order: OrderKeyEnum.DESC,
-  });
-  const auditLogQuery = useGetAuditLogPagination({
-    page: 1,
-    per_page: 3,
-    sort_by: "updated_at",
-    order: OrderKeyEnum.DESC,
-  });
-
   const breadcrumbItems = [
     {
       name: "Dashboard",
@@ -44,22 +17,6 @@ export default function DashboardPageClient() {
         </div>
 
         <h1 className="font-heading text-2xl">Dashboard</h1>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-          <TotalUserCard query={userQuery} />
-
-          <TotalRequestCard query={requestQuery} />
-
-          <div className="col-span-2 md:col-span-1">
-            <TotalAuditLogCard query={auditLogQuery} />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <RecentlyRequestCard query={requestQuery} />
-
-          <RecentlyAuditLogCard query={auditLogQuery} />
-        </div>
       </div>
     </div>
   );

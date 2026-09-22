@@ -4,6 +4,6 @@ export enum PermissionModuleEnum {
   PERMISSIONS = "permissions",
   STORIES = "stories",
   EVENTS = "events",
-  REWARDS = "rewards",
+  GOODS = "goods",
   POINTS = "points",
 }

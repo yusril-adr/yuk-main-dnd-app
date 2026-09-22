@@ -125,7 +125,7 @@ export default function UserTable({
         return (
           <Button
             variant="link"
-            render={<Link href={`/users/${user.id}`} />}
+            render={<Link href={`/dashboard/requestor/users/${user.id}`} />}
             nativeButton={false}
           >
             {user.name}
@@ -191,14 +191,22 @@ export default function UserTable({
             />
             <DropdownMenuContent>
               <DropdownMenuGroup>
-                <DropdownMenuItem render={<Link href={`/users/${user.id}`} />}>
+                <DropdownMenuItem
+                  render={
+                    <Link href={`/dashboard/requestor/users/${user.id}`} />
+                  }
+                >
                   <Eye />
                   View
                 </DropdownMenuItem>
 
                 {allowedActionRoles.includes(currentRole) && (
                   <DropdownMenuItem
-                    render={<Link href={`/users/${user.id}/edit`} />}
+                    render={
+                      <Link
+                        href={`/dashboard/requestor/users/${user.id}/edit`}
+                      />
+                    }
                   >
                     <Pencil />
                     Edit

@@ -12,10 +12,7 @@ export enum PermissionEnum {
   ROLES_DELETE = "roles:delete",
 
   // Permissions
-  PERMISSIONS_CREATE = "permissions:create",
   PERMISSIONS_READ = "permissions:read",
-  PERMISSIONS_UPDATE = "permissions:update",
-  PERMISSIONS_DELETE = "permissions:delete",
 
   // Stories
   STORIES_CREATE = "stories:create",
@@ -29,11 +26,11 @@ export enum PermissionEnum {
   EVENTS_UPDATE = "events:update",
   EVENTS_DELETE = "events:delete",
 
-  // Rewards
-  REWARDS_CREATE = "rewards:create",
-  REWARDS_READ = "rewards:read",
-  REWARDS_UPDATE = "rewards:update",
-  REWARDS_DELETE = "rewards:delete",
+  // Goods
+  GOODS_CREATE = "goods:create",
+  GOODS_READ = "goods:read",
+  GOODS_UPDATE = "goods:update",
+  GOODS_DELETE = "goods:delete",
 
   // Points
   POINTS_CREATE = "points:create",

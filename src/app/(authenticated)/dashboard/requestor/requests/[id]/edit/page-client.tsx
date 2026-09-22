@@ -22,11 +22,11 @@ export default function RequestEditPageClient() {
     isPaused: updateRequestIsPaused,
   } = useUpdateRequestById({
     onSuccess: () => {
-      router.push("/requests");
+      router.push("/dashboard/requestor/requests");
     },
     onError: (error) => {
       if (error instanceof MainAPINotFoundError) {
-        router.push("/requests");
+        router.push("/dashboard/requestor/requests");
       }
     },
   });
@@ -37,14 +37,14 @@ export default function RequestEditPageClient() {
       getDataQuery.error &&
       getDataQuery.error instanceof MainAPINotFoundError
     ) {
-      router.push("/requests");
+      router.push("/dashboard/requestor/requests");
     }
   }, [getDataQuery.error, getDataQuery.isError, router]);
 
   const breadcrumbItems = [
     {
       name: "Requests",
-      link: "/requests",
+      link: "/dashboard/requestor/requests",
     },
     ...(!getDataQuery.isLoading
       ? [
@@ -65,7 +65,7 @@ export default function RequestEditPageClient() {
         <AppBreadcrumb items={breadcrumbItems} />
 
         <div className="flex items-center mt-4 mb-6 gap-x-2">
-          <Link href={"/requests"}>
+          <Link href={"/dashboard/requestor/requests"}>
             <ArrowLeft />
           </Link>
           <h1 className="font-heading text-2xl">Edit Request</h1>

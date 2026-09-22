@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
-import RequestCreateForm from "@/app/(authenticated)/requests/create/_components/request-create-form";
-import { useCreateRequest } from "@/app/(authenticated)/requests/_hooks/use-create-request";
+import RequestCreateForm from "@/app/(authenticated)/dashboard/requestor/requests/create/_components/request-create-form";
+import { useCreateRequest } from "@/app/(authenticated)/dashboard/requestor/requests/_hooks/use-create-request";
 
 export default function RequestCreatePageClient() {
   const router = useRouter();
@@ -17,14 +17,14 @@ export default function RequestCreatePageClient() {
     isPaused: createRequestIsPaused,
   } = useCreateRequest({
     onSuccess: () => {
-      router.push("/requests");
+      router.push("/dashboard/requestor/requests");
     },
   });
 
   const breadcrumbItems = [
     {
       name: "Requests",
-      link: "/requests",
+      link: "/dashboard/requestor/requests",
     },
     {
       name: "Create",
@@ -37,7 +37,7 @@ export default function RequestCreatePageClient() {
         <AppBreadcrumb items={breadcrumbItems} />
 
         <div className="flex items-center mt-4 mb-6 gap-x-2">
-          <Link href={"/requests"}>
+          <Link href={"/dashboard/requestor/requests"}>
             <ArrowLeft />
           </Link>
           <h1 className="font-heading text-2xl">Create Request</h1>

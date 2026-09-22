@@ -1,15 +1,18 @@
 import type { TNavSidebar } from "@/app/(authenticated)/dashboard/_types/nav-sidebar";
 import {
+  Anvil,
   BrainCircuit,
   CalendarDays,
+  ClockFading,
   Coins,
   FileClock,
   Gauge,
+  HandCoins,
+  Medal,
   ShieldKeyhole,
   ShieldUser,
   Shredder,
   Swords,
-  Trophy,
   Users,
   UserShield,
 } from "lucide-react";
@@ -37,19 +40,35 @@ const NAV_ROUTES: TNavSidebar[] = [
         path: "/dashboard/events",
       },
       {
-        title: "Rewards",
-        icon: Trophy,
-        path: "/dashboard/rewards",
+        title: "Goods",
+        icon: Anvil,
+        path: "/dashboard/goods",
       },
       {
-        title: "Gold Pieces",
-        icon: Coins,
-        path: "/dashboard/gold-pieces",
+        title: "Point Logs",
+        icon: ClockFading,
+        children: [
+          {
+            title: "Experience Points",
+            icon: Medal,
+            path: "/dashboard/logs/experience-points",
+          },
+          {
+            title: "Gold Pieces",
+            icon: Coins,
+            path: "/dashboard/logs/gold-pieces",
+          },
+        ],
       },
       {
         title: "Requestor",
         icon: BrainCircuit,
         children: [
+          {
+            title: "Dashboard",
+            icon: Gauge,
+            path: "/dashboard/requestor",
+          },
           {
             title: "Users",
             icon: Users,
@@ -106,14 +125,25 @@ const NAV_ROUTES: TNavSidebar[] = [
         path: "/dashboard/master/events",
       },
       {
-        title: "Rewards",
-        icon: Trophy,
-        path: "/dashboard/master/rewards",
+        title: "Goods",
+        icon: Anvil,
+        path: "/dashboard/master/goods",
       },
       {
-        title: "Gold Pieces",
-        icon: Coins,
-        path: "/dashboard/master/gold-pieces",
+        title: "Transactions",
+        icon: HandCoins,
+        children: [
+          {
+            title: "Experience Points",
+            icon: Medal,
+            path: "/dashboard/master/transactions/experience-points",
+          },
+          {
+            title: "Gold Pieces",
+            icon: Coins,
+            path: "/dashboard/master/transactions/gold-pieces",
+          },
+        ],
       },
     ],
   },
