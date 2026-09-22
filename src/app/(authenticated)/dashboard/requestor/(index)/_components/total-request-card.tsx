@@ -1,6 +1,6 @@
 import { Card, CardContent, CardTitle } from "@/app/_components/ui/card";
 import { Skeleton } from "@/app/_components/ui/skeleton";
-import type { TTotalRequestCardProps } from "@/app/(authenticated)/dashboard/(index)/_types/dashboard-card-props";
+import type { TTotalRequestCardProps } from "@/app/(authenticated)/dashboard/requestor/(index)/_types/dashboard-card-props";
 
 export default function TotalRequestCard({ query }: TTotalRequestCardProps) {
   return (

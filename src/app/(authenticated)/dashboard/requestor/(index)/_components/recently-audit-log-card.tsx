@@ -14,7 +14,7 @@ import {
 } from "@/app/_components/ui/table";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 
-import type { TRecentlyAuditLogCardProps } from "@/app/(authenticated)/dashboard/(index)/_types/dashboard-card-props";
+import type { TRecentlyAuditLogCardProps } from "@/app/(authenticated)/dashboard/requestor/(index)/_types/dashboard-card-props";
 
 export default function RecentlyAuditLogCard({
   query,

@@ -30,7 +30,7 @@ import {
 import { RequestPriorityEnum } from "@/api/requestor/requests/enums/request-priority";
 import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response";
 import type { TRequestCreatePayload } from "@/api/requestor/requests/types/request-create-payload";
-import type { TRequestCreateFormProps } from "@/app/(authenticated)/requests/create/_types/request-create-form-props";
+import type { TRequestCreateFormProps } from "@/app/(authenticated)/dashboard/requestor/requests/create/_types/request-create-form-props";
 import MainAPIValidationError from "@/api/requestor/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 

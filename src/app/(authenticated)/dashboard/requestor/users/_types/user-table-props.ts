@@ -2,7 +2,7 @@ import type { ColumnFiltersState } from "@tanstack/react-table";
 
 import type { TTableActionHandler } from "@/app/_types/table-action-handler";
 import type { TTableQuery } from "@/app/_types/table-query";
-import type { TUserTableCol } from "@/app/(authenticated)/users/_types/user-table-col";
+import type { TUserTableCol } from "@/app/(authenticated)/dashboard/requestor/users/_types/user-table-col";
 
 export type TUserTableFilterValues = {
   status: string | null;

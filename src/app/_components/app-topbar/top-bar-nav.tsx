@@ -2,24 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Anvil, CalendarDays, Kayak, Swords } from "lucide-react";
 
 import { cn } from "@/utils/cn";
 import { Button } from "@/app/_components/ui/button";
-
-const NAV_ITEMS = [
-  { title: "Guildmates", href: "/guildmates", icon: Kayak },
-  { title: "Stories", href: "/stories", icon: Swords },
-  { title: "Events", href: "/events", icon: CalendarDays },
-  { title: "Goods", href: "/goods", icon: Anvil },
-];
+import NAV_ROUTES from "@/app/_constants/navigation-routes";
 
 export function TopBarNav({ className }: { className?: string }) {
   const pathname = usePathname();
+  const navItems = NAV_ROUTES;
 
   return (
     <>
-      {NAV_ITEMS.map((item) => {
+      {navItems.map((item) => {
         const isActive =
           pathname === item.href || pathname.startsWith(`${item.href}/`);
 
