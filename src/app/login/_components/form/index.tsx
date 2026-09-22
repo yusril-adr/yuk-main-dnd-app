@@ -21,15 +21,12 @@ import {
 import { Field, FieldError, FieldLabel } from "@/app/_components/ui/field";
 import { Spinner } from "@/app/_components/ui/spinner";
 
-import type { TMainApiErrorResponse } from "@/api/main/types/response";
-import type { TLoginPayload } from "@/api/main/auth/login/types/login-payload";
+import type { TMainApiErrorResponse } from "@/api/requestor/types/response";
+import type { TLoginPayload } from "@/api/requestor/auth/login/types/login-payload";
 import type { TLoginFormProps } from "@/app/login/_types/login-form-props";
-import {
-  LoginFormSchema,
-  type TLoginFormSchema,
-} from "./scheme";
+import { LoginFormSchema, type TLoginFormSchema } from "./scheme";
 import { applyValidationErrors } from "@/utils/validation-helper";
-import MainAPIValidationError from "@/api/main/errors/validation-error";
+import MainAPIValidationError from "@/api/requestor/errors/validation-error";
 
 export function LoginForm({
   onSubmitPayload,

@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { toast } from "sonner";
-import { deleteRequestById } from "@/api/main/requests/[id]";
+import { deleteRequestById } from "@/api/requestor/requests/[id]";
 import CONFIG from "@/common/constants/config";
 
 export function useDeleteRequestById(

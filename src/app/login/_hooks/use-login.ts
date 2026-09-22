@@ -5,11 +5,11 @@ import {
 } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { toast } from "sonner";
-import { login } from "@/api/main/auth/login";
-import { authMe } from "@/api/main/auth/me";
-import type { TLoginPayload } from "@/api/main/auth/login/types/login-payload";
-import type { TLoginResponse } from "@/api/main/auth/login/types/login-response";
-import type { TMainApiResponse } from "@/api/main/types/response";
+import { login } from "@/api/requestor/auth/login";
+import { authMe } from "@/api/requestor/auth/me";
+import type { TLoginPayload } from "@/api/requestor/auth/login/types/login-payload";
+import type { TLoginResponse } from "@/api/requestor/auth/login/types/login-response";
+import type { TMainApiResponse } from "@/api/requestor/types/response";
 import AccessToken from "@/libs/cookies/access-token";
 import CONFIG from "@/common/constants/config";
 

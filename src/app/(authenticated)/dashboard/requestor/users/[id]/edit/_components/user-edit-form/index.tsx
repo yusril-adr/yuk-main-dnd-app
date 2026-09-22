@@ -32,10 +32,10 @@ import { Spinner } from "@/app/_components/ui/spinner";
 
 import { UserEditFormSchema, type TUserEditFormSchema } from "./scheme";
 import { RoleKeyEnum } from "@/common/enums/role-key";
-import type { TMainApiErrorResponse } from "@/api/main/types/response";
-import type { TUserUpdatePayload } from "@/api/main/users/[id]/types/user-update-payload";
-import { UserStatusEnum } from "@/api/main/users/enums/user-status";
-import MainAPIValidationError from "@/api/main/errors/validation-error";
+import type { TMainApiErrorResponse } from "@/api/requestor/types/response";
+import type { TUserUpdatePayload } from "@/api/requestor/users/[id]/types/user-update-payload";
+import { UserStatusEnum } from "@/api/requestor/users/enums/user-status";
+import MainAPIValidationError from "@/api/requestor/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import type { TUserEditFormProps } from "@/app/(authenticated)/dashboard/requestor/users/[id]/edit/_types/user-edit-form-props";
 

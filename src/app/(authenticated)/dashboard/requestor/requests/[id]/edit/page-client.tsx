@@ -9,7 +9,7 @@ import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import RequestEditForm from "@/app/(authenticated)/dashboard/requestor/requests/[id]/edit/_components/request-edit-form";
 import { useGetRequestById } from "@/app/(authenticated)/dashboard/requestor/requests/_hooks/use-get-request-by-id";
 import { useUpdateRequestById } from "@/app/(authenticated)/dashboard/requestor/requests/_hooks/use-update-request-by-id";
-import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import MainAPINotFoundError from "@/api/requestor/errors/not-found-error";
 
 export default function RequestEditPageClient() {
   const params = useParams();

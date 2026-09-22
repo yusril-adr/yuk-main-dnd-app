@@ -1,7 +1,7 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
-import type { TUserMeResponse } from "@/api/main/auth/me/types/user-me-response";
-import type { TMainApiResponse } from "@/api/main/types/response";
+import type { TUserMeResponse } from "@/api/requestor/auth/me/types/user-me-response";
+import type { TMainApiResponse } from "@/api/requestor/types/response";
 
 export type TAuthProviderState = {
   auth: TUserMeResponse | null;

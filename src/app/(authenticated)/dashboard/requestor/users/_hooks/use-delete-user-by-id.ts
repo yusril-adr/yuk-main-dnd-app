@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { toast } from "sonner";
-import { deleteUserById } from "@/api/main/users/[id]";
+import { deleteUserById } from "@/api/requestor/users/[id]";
 import CONFIG from "@/common/constants/config";
 
 export function useDeleteUserById(

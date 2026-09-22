@@ -10,10 +10,10 @@ import { useGetAuditLogPagination } from "@/app/(authenticated)/dashboard/reques
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import type { TAuditLogTableFilterValues } from "@/app/(authenticated)/dashboard/requestor/audit-logs/_types/audit-log-table-props";
-import type { TAuditLogPaginationPayload } from "@/api/main/audit-logs/types/audit-log-pagination-payload";
-import type { TAuditLogSortBy } from "@/api/main/audit-logs/consts/audit-log-sort-by";
-import { AuditLogActionEnum } from "@/api/main/audit-logs/enums/audit-log-action";
-import { AuditLogEntityEnum } from "@/api/main/audit-logs/enums/audit-log-entity";
+import type { TAuditLogPaginationPayload } from "@/api/requestor/audit-logs/types/audit-log-pagination-payload";
+import type { TAuditLogSortBy } from "@/api/requestor/audit-logs/consts/audit-log-sort-by";
+import { AuditLogActionEnum } from "@/api/requestor/audit-logs/enums/audit-log-action";
+import { AuditLogEntityEnum } from "@/api/requestor/audit-logs/enums/audit-log-entity";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;

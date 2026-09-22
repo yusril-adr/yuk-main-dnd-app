@@ -5,8 +5,8 @@ import {
 } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { toast } from "sonner";
-import { createUser } from "@/api/main/users";
-import type { TUserCreatePayload } from "@/api/main/users/types/user-create-payload";
+import { createUser } from "@/api/requestor/users";
+import type { TUserCreatePayload } from "@/api/requestor/users/types/user-create-payload";
 import CONFIG from "@/common/constants/config";
 
 export function useCreateUser(

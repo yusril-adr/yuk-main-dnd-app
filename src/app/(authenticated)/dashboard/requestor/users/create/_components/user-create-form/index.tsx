@@ -32,10 +32,10 @@ import { Spinner } from "@/app/_components/ui/spinner";
 
 import { UserCreateFormSchema, type TUserCreateFormSchema } from "./scheme";
 import { RoleKeyEnum } from "@/common/enums/role-key";
-import type { TMainApiErrorResponse } from "@/api/main/types/response";
-import type { TUserCreatePayload } from "@/api/main/users/types/user-create-payload";
+import type { TMainApiErrorResponse } from "@/api/requestor/types/response";
+import type { TUserCreatePayload } from "@/api/requestor/users/types/user-create-payload";
 import type { TUserCreateFormProps } from "@/app/(authenticated)/dashboard/requestor/users/create/_types/user-create-form-props";
-import MainAPIValidationError from "@/api/main/errors/validation-error";
+import MainAPIValidationError from "@/api/requestor/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 
 export default function UserCreateForm({

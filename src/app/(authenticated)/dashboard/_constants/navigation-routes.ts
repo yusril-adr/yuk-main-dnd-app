@@ -2,6 +2,7 @@ import type { TNavSidebar } from "@/app/(authenticated)/dashboard/_types/nav-sid
 import {
   BrainCircuit,
   CalendarDays,
+  Coins,
   FileClock,
   Gauge,
   ShieldKeyhole,
@@ -39,6 +40,11 @@ const NAV_ROUTES: TNavSidebar[] = [
         title: "Rewards",
         icon: Trophy,
         path: "/dashboard/rewards",
+      },
+      {
+        title: "Gold Pieces",
+        icon: Coins,
+        path: "/dashboard/gold-pieces",
       },
       {
         title: "Requestor",
@@ -103,6 +109,11 @@ const NAV_ROUTES: TNavSidebar[] = [
         title: "Rewards",
         icon: Trophy,
         path: "/dashboard/master/rewards",
+      },
+      {
+        title: "Gold Pieces",
+        icon: Coins,
+        path: "/dashboard/master/gold-pieces",
       },
     ],
   },

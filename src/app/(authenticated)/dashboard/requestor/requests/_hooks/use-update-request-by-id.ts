@@ -5,8 +5,8 @@ import {
 } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { toast } from "sonner";
-import { updateRequestById } from "@/api/main/requests/[id]";
-import type { TRequestUpdatePayload } from "@/api/main/requests/[id]/types/request-update-payload";
+import { updateRequestById } from "@/api/requestor/requests/[id]";
+import type { TRequestUpdatePayload } from "@/api/requestor/requests/[id]/types/request-update-payload";
 import CONFIG from "@/common/constants/config";
 
 export function useUpdateRequestById(

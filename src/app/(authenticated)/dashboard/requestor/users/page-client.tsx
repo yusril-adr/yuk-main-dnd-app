@@ -17,12 +17,12 @@ import { useUpdateUserById } from "@/app/(authenticated)/dashboard/requestor/use
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import type { TUserTableFilterValues } from "@/app/(authenticated)/dashboard/requestor/users/_types/user-table-props";
-import type { TUserPaginationPayload } from "@/api/main/users/types/user-pagination-payload";
-import type { TUserSortBy } from "@/api/main/users/consts/user-sort-by";
-import { UserStatusEnum } from "@/api/main/users/enums/user-status";
+import type { TUserPaginationPayload } from "@/api/requestor/users/types/user-pagination-payload";
+import type { TUserSortBy } from "@/api/requestor/users/consts/user-sort-by";
+import { UserStatusEnum } from "@/api/requestor/users/enums/user-status";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import { RoleKeyEnum } from "@/common/enums/role-key";
-import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import MainAPINotFoundError from "@/api/requestor/errors/not-found-error";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 

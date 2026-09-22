@@ -27,11 +27,11 @@ import {
   type TRequestCreateFormSchema,
 } from "./scheme";
 
-import { RequestPriorityEnum } from "@/api/main/requests/enums/request-priority";
-import type { TMainApiErrorResponse } from "@/api/main/types/response";
-import type { TRequestCreatePayload } from "@/api/main/requests/types/request-create-payload";
+import { RequestPriorityEnum } from "@/api/requestor/requests/enums/request-priority";
+import type { TMainApiErrorResponse } from "@/api/requestor/types/response";
+import type { TRequestCreatePayload } from "@/api/requestor/requests/types/request-create-payload";
 import type { TRequestCreateFormProps } from "@/app/(authenticated)/requests/create/_types/request-create-form-props";
-import MainAPIValidationError from "@/api/main/errors/validation-error";
+import MainAPIValidationError from "@/api/requestor/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 
 export default function RequestCreateForm({

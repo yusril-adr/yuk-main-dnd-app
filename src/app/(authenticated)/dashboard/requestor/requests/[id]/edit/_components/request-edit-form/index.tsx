@@ -24,11 +24,11 @@ import { Button } from "@/app/_components/ui/button";
 import { Spinner } from "@/app/_components/ui/spinner";
 
 import { RequestEditFormSchema, type TRequestEditFormSchema } from "./scheme";
-import type { TMainApiErrorResponse } from "@/api/main/types/response";
-import type { TRequestUpdatePayload } from "@/api/main/requests/[id]/types/request-update-payload";
-import { RequestStatusEnum } from "@/api/main/requests/enums/request-status";
-import { RequestPriorityEnum } from "@/api/main/requests/enums/request-priority";
-import MainAPIValidationError from "@/api/main/errors/validation-error";
+import type { TMainApiErrorResponse } from "@/api/requestor/types/response";
+import type { TRequestUpdatePayload } from "@/api/requestor/requests/[id]/types/request-update-payload";
+import { RequestStatusEnum } from "@/api/requestor/requests/enums/request-status";
+import { RequestPriorityEnum } from "@/api/requestor/requests/enums/request-priority";
+import MainAPIValidationError from "@/api/requestor/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import type { TRequestEditFormProps } from "@/app/(authenticated)/dashboard/requestor/requests/[id]/edit/_types/request-edit-form-props";
 

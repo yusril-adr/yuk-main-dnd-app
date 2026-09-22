@@ -20,7 +20,7 @@ import dayjs from "@/libs/dayjs";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useIsMobile } from "@/app/_hooks/use-mobile";
 
-import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import MainAPINotFoundError from "@/api/requestor/errors/not-found-error";
 
 export default function RequestDetailPageClient() {
   const { id } = useParams();

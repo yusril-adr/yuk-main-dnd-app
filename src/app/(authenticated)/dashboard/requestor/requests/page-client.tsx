@@ -16,14 +16,14 @@ import { useDeleteRequestById } from "@/app/(authenticated)/dashboard/requestor/
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import type { TRequestTableFilterValues } from "@/app/(authenticated)/dashboard/requestor/requests/_types/request-table-props";
-import type { TRequestPaginationPayload } from "@/api/main/requests/types/request-pagination-payload";
-import type { TRequestSortBy } from "@/api/main/requests/consts/request-sort-by";
-import { RequestStatusEnum } from "@/api/main/requests/enums/request-status";
-import { RequestPriorityEnum } from "@/api/main/requests/enums/request-priority";
-import type { TMainApiErrorResponse } from "@/api/main/types/response";
+import type { TRequestPaginationPayload } from "@/api/requestor/requests/types/request-pagination-payload";
+import type { TRequestSortBy } from "@/api/requestor/requests/consts/request-sort-by";
+import { RequestStatusEnum } from "@/api/requestor/requests/enums/request-status";
+import { RequestPriorityEnum } from "@/api/requestor/requests/enums/request-priority";
+import type { TMainApiErrorResponse } from "@/api/requestor/types/response";
 import { OrderKeyEnum } from "@/common/enums/order-key";
-import MainAPINotFoundError from "@/api/main/errors/not-found-error";
-import MainAPIValidationError from "@/api/main/errors/validation-error";
+import MainAPINotFoundError from "@/api/requestor/errors/not-found-error";
+import MainAPIValidationError from "@/api/requestor/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;

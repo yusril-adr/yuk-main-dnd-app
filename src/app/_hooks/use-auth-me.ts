@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { authMe } from "@/api/main/auth/me";
+import { authMe } from "@/api/requestor/auth/me";
 import CONFIG from "@/common/constants/config";
 
 export function useAuthMe(options?: { enabled?: boolean }) {

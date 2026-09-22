@@ -22,8 +22,8 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "YukMainDND",
-  description: "YukMainDND App",
+  title: "YukMainDnD",
+  description: "YukMainDnD App",
 };
 
 export default function RootLayout({

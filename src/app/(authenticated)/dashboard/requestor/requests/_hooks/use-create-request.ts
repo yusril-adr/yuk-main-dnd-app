@@ -5,8 +5,8 @@ import {
 } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { toast } from "sonner";
-import { createRequest } from "@/api/main/requests";
-import type { TRequestCreatePayload } from "@/api/main/requests/types/request-create-payload";
+import { createRequest } from "@/api/requestor/requests";
+import type { TRequestCreatePayload } from "@/api/requestor/requests/types/request-create-payload";
 import CONFIG from "@/common/constants/config";
 
 export function useCreateRequest(

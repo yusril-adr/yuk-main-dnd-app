@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getRequestPagination } from "@/api/main/requests";
+import { getRequestPagination } from "@/api/requestor/requests";
 import CONFIG from "@/common/constants/config";
-import type { TRequestPaginationPayload } from "@/api/main/requests/types/request-pagination-payload";
+import type { TRequestPaginationPayload } from "@/api/requestor/requests/types/request-pagination-payload";
 
 export function useGetRequestPagination(
   payload: TRequestPaginationPayload,

@@ -9,7 +9,7 @@ import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import UserEditForm from "@/app/(authenticated)/dashboard/requestor/users/[id]/edit/_components/user-edit-form";
 import { useGetUserById } from "@/app/(authenticated)/dashboard/requestor/users/_hooks/use-get-user-by-id";
 import { useUpdateUserById } from "@/app/(authenticated)/dashboard/requestor/users/_hooks/use-update-user-by-id";
-import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import MainAPINotFoundError from "@/api/requestor/errors/not-found-error";
 
 export default function UserEditPageClient() {
   const params = useParams();

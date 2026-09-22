@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getRequestById } from "@/api/main/requests/[id]";
+import { getRequestById } from "@/api/requestor/requests/[id]";
 import CONFIG from "@/common/constants/config";
 
 export function useGetRequestById(id: string, options?: { enabled?: boolean }) {
