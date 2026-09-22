@@ -2,7 +2,7 @@ import axios from "axios";
 import CONFIG from "@/common/constants/config";
 import AccessToken from "@/libs/cookies/access-token";
 import { toast } from "sonner";
-import type { TMainApiResponse } from "../types/response";
+import type { TRequestorApiResponse } from "../types/response";
 import MainAPINotFoundError from "../errors/not-found-error";
 import MainAPIValidationError from "../errors/validation-error";
 import { logout } from "@/utils/logout";
@@ -26,13 +26,13 @@ mainAxios.interceptors.response.use(
       const statusCode = error.response?.status;
 
       const defaultErrorResponse = error.response
-        ?.data as TMainApiResponse<null>;
+        ?.data as TRequestorApiResponse<null>;
 
       toast.dismiss();
       switch (statusCode) {
         case 400: {
           const validationErrorResponse = error.response
-            ?.data as TMainApiResponse<null>;
+            ?.data as TRequestorApiResponse<null>;
 
           if (Array.isArray(validationErrorResponse.message)) {
             throw new MainAPIValidationError(validationErrorResponse.message);

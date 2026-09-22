@@ -32,7 +32,7 @@ import { Spinner } from "@/app/_components/ui/spinner";
 
 import { UserCreateFormSchema, type TUserCreateFormSchema } from "./scheme";
 import { RoleKeyEnum } from "@/common/enums/role-key";
-import type { TMainApiErrorResponse } from "@/api/requestor/types/response";
+import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response";
 import type { TUserCreatePayload } from "@/api/requestor/users/types/user-create-payload";
 import type { TUserCreateFormProps } from "@/app/(authenticated)/dashboard/requestor/users/create/_types/user-create-form-props";
 import MainAPIValidationError from "@/api/requestor/errors/validation-error";
@@ -57,7 +57,7 @@ export default function UserCreateForm({
     if (mutationError instanceof MainAPIValidationError) {
       applyValidationErrors(
         setError,
-        mutationError.errors as TMainApiErrorResponse<TUserCreatePayload>[],
+        mutationError.errors as TRequestorApiErrorResponse<TUserCreatePayload>[],
       );
     }
   }, [mutationError, setError]);

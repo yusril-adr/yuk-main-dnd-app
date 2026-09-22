@@ -9,14 +9,14 @@ import { login } from "@/api/requestor/auth/login";
 import { authMe } from "@/api/requestor/auth/me";
 import type { TLoginPayload } from "@/api/requestor/auth/login/types/login-payload";
 import type { TLoginResponse } from "@/api/requestor/auth/login/types/login-response";
-import type { TMainApiResponse } from "@/api/requestor/types/response";
+import type { TRequestorApiResponse } from "@/api/requestor/types/response";
 import AccessToken from "@/libs/cookies/access-token";
 import CONFIG from "@/common/constants/config";
 
 export function useLogin(
   options?: Omit<
     UseMutationOptions<
-      AxiosResponse<TMainApiResponse<TLoginResponse>>,
+      AxiosResponse<TRequestorApiResponse<TLoginResponse>>,
       Error,
       TLoginPayload
     >,

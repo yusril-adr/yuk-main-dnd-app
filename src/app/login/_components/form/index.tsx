@@ -21,7 +21,7 @@ import {
 import { Field, FieldError, FieldLabel } from "@/app/_components/ui/field";
 import { Spinner } from "@/app/_components/ui/spinner";
 
-import type { TMainApiErrorResponse } from "@/api/requestor/types/response";
+import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response";
 import type { TLoginPayload } from "@/api/requestor/auth/login/types/login-payload";
 import type { TLoginFormProps } from "@/app/login/_types/login-form-props";
 import { LoginFormSchema, type TLoginFormSchema } from "./scheme";
@@ -45,7 +45,7 @@ export function LoginForm({
     if (mutationError instanceof MainAPIValidationError) {
       applyValidationErrors(
         setError,
-        mutationError.errors as TMainApiErrorResponse<null>[],
+        mutationError.errors as TRequestorApiErrorResponse<null>[],
       );
     }
   }, [mutationError, setError]);

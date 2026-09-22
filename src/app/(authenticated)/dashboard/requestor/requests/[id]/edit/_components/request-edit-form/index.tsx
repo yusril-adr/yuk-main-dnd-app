@@ -24,7 +24,7 @@ import { Button } from "@/app/_components/ui/button";
 import { Spinner } from "@/app/_components/ui/spinner";
 
 import { RequestEditFormSchema, type TRequestEditFormSchema } from "./scheme";
-import type { TMainApiErrorResponse } from "@/api/requestor/types/response";
+import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response";
 import type { TRequestUpdatePayload } from "@/api/requestor/requests/[id]/types/request-update-payload";
 import { RequestStatusEnum } from "@/api/requestor/requests/enums/request-status";
 import { RequestPriorityEnum } from "@/api/requestor/requests/enums/request-priority";
@@ -91,7 +91,7 @@ export default function RequestEditForm({
   useEffect(() => {
     if (mutationError instanceof MainAPIValidationError) {
       const mappedErrors = (
-        mutationError.errors as TMainApiErrorResponse<TRequestUpdatePayload>[]
+        mutationError.errors as TRequestorApiErrorResponse<TRequestUpdatePayload>[]
       ).map((error) => {
         return {
           property:

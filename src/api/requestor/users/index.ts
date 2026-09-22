@@ -1,6 +1,6 @@
 import { type AxiosResponse } from "axios";
 import MAIN_API_PATH from "@/api/requestor/_const/path";
-import type { TMainApiPaginationResponse } from "@/api/requestor/types/response";
+import type { TRequestorApiPaginationResponse } from "@/api/requestor/types/response";
 import { mainAxios } from "@/api/requestor/_libs/axios";
 import type { TUserResponse } from "./types/user-response";
 import type { TUserPaginationPayload } from "./types/user-pagination-payload";
@@ -13,10 +13,11 @@ export const createUser = async (payload: TUserCreatePayload) => {
 };
 
 export const getUserPagination = async (payload: TUserPaginationPayload) => {
-  const response: AxiosResponse<TMainApiPaginationResponse<TUserResponse>> =
-    await mainAxios.get(MAIN_API_PATH.USER.DEFAULT, {
-      params: payload,
-    });
+  const response: AxiosResponse<
+    TRequestorApiPaginationResponse<TUserResponse>
+  > = await mainAxios.get(MAIN_API_PATH.USER.DEFAULT, {
+    params: payload,
+  });
 
   return response;
 };

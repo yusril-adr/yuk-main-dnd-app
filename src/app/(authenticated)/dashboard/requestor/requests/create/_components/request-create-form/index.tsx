@@ -28,7 +28,7 @@ import {
 } from "./scheme";
 
 import { RequestPriorityEnum } from "@/api/requestor/requests/enums/request-priority";
-import type { TMainApiErrorResponse } from "@/api/requestor/types/response";
+import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response";
 import type { TRequestCreatePayload } from "@/api/requestor/requests/types/request-create-payload";
 import type { TRequestCreateFormProps } from "@/app/(authenticated)/requests/create/_types/request-create-form-props";
 import MainAPIValidationError from "@/api/requestor/errors/validation-error";
@@ -77,7 +77,7 @@ export default function RequestCreateForm({
   useEffect(() => {
     if (mutationError instanceof MainAPIValidationError) {
       const mappedErrors = (
-        mutationError.errors as TMainApiErrorResponse<null>[]
+        mutationError.errors as TRequestorApiErrorResponse<null>[]
       ).map((error) => {
         return {
           property:

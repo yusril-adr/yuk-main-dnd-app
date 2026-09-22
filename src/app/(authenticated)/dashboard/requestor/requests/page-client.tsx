@@ -20,7 +20,7 @@ import type { TRequestPaginationPayload } from "@/api/requestor/requests/types/r
 import type { TRequestSortBy } from "@/api/requestor/requests/consts/request-sort-by";
 import { RequestStatusEnum } from "@/api/requestor/requests/enums/request-status";
 import { RequestPriorityEnum } from "@/api/requestor/requests/enums/request-priority";
-import type { TMainApiErrorResponse } from "@/api/requestor/types/response";
+import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import MainAPINotFoundError from "@/api/requestor/errors/not-found-error";
 import MainAPIValidationError from "@/api/requestor/errors/validation-error";
@@ -97,7 +97,7 @@ export default function RequestsPageClient() {
       if (error instanceof MainAPIValidationError) {
         return applyValidationErrors(
           setError,
-          error.errors as TMainApiErrorResponse<null>[],
+          error.errors as TRequestorApiErrorResponse<null>[],
         );
       }
 

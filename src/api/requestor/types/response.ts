@@ -1,31 +1,31 @@
-export type TMainApiBaseResponse = {
+export type TRequestorApiBaseResponse = {
   status_code: number;
   error?: string;
 };
 
-export type TMainApiResponse<
+export type TRequestorApiResponse<
   T,
-  E = TMainApiErrorResponse<unknown>,
-> = TMainApiBaseResponse & {
+  E = TRequestorApiErrorResponse<unknown>,
+> = TRequestorApiBaseResponse & {
   status_code: number;
   data: T;
   error?: string;
   message: E[] | string;
 };
 
-export type TMainApiErrorResponse<T = unknown> = {
+export type TRequestorApiErrorResponse<T = unknown> = {
   property: keyof T | string;
   messages: string[];
 };
 
-export type TMainApiPaginationResponse<T> = TMainApiBaseResponse & {
+export type TRequestorApiPaginationResponse<T> = TRequestorApiBaseResponse & {
   data: {
     items: T[];
-    meta: TMainApiPaginationMetaResponse;
+    meta: TRequestorApiPaginationMetaResponse;
   };
 };
 
-export type TMainApiPaginationMetaResponse = {
+export type TRequestorApiPaginationMetaResponse = {
   total_all_data: number;
   total_view: number;
   max_view: number;

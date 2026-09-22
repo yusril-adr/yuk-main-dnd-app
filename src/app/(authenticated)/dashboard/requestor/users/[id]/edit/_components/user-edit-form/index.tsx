@@ -32,7 +32,7 @@ import { Spinner } from "@/app/_components/ui/spinner";
 
 import { UserEditFormSchema, type TUserEditFormSchema } from "./scheme";
 import { RoleKeyEnum } from "@/common/enums/role-key";
-import type { TMainApiErrorResponse } from "@/api/requestor/types/response";
+import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response";
 import type { TUserUpdatePayload } from "@/api/requestor/users/[id]/types/user-update-payload";
 import { UserStatusEnum } from "@/api/requestor/users/enums/user-status";
 import MainAPIValidationError from "@/api/requestor/errors/validation-error";
@@ -71,7 +71,7 @@ export default function UserEditForm({
     if (mutationError instanceof MainAPIValidationError) {
       applyValidationErrors(
         setError,
-        mutationError.errors as TMainApiErrorResponse<TUserUpdatePayload>[],
+        mutationError.errors as TRequestorApiErrorResponse<TUserUpdatePayload>[],
       );
     }
   }, [mutationError, setError]);
