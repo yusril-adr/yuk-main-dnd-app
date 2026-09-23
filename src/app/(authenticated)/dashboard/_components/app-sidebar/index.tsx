@@ -29,7 +29,7 @@ export function AppSidebar() {
       const isAuthorized =
         !item.authorizedRoles?.length ||
         (auth?.selected_role != null &&
-          item.authorizedRoles.includes(auth.selected_role));
+          item.authorizedRoles.includes(auth.selected_role.key));
 
       return isAuthorized ? [item] : [];
     });

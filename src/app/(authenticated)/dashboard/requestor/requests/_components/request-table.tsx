@@ -183,7 +183,7 @@ export default function RequestTable({
       id: "actions",
       header: "Action",
       cell: ({ row }) => {
-        const currentRole = auth?.selected_role ?? RoleKeyEnum.VIEWER;
+        const currentRole = auth?.selected_role?.key ?? RoleKeyEnum.VIEWER;
         const rowOriginal = row.original;
 
         return (

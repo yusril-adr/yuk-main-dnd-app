@@ -119,7 +119,11 @@ export function SwitchRoleForm({
                   disabled={isFormDisabled}
                 >
                   <SelectTrigger id="role" className="w-full">
-                    <SelectValue placeholder="Select a role" />
+                    <SelectValue placeholder="Select a role">
+                      {(value: string | null) =>
+                        roles.find((role) => role.key === value)?.name ??
+                        "Select a role"}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
