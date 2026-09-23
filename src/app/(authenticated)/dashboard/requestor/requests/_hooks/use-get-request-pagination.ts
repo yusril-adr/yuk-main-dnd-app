@@ -5,7 +5,7 @@ import type { TRequestPaginationPayload } from "@/api/requestor/requests/types/r
 
 export function useGetRequestPagination(payload: TRequestPaginationPayload) {
   return useQuery({
-    queryKey: [CONFIG.QUERY_KEY.MAIN_API.REQUEST.ALL(), payload],
+    queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.REQUEST.ALL(), payload],
     queryFn: () => getRequestPagination(payload),
   });
 }

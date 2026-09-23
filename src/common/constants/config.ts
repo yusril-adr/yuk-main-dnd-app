@@ -1,5 +1,6 @@
 const CONFIG = {
   MAIN_API_BASE_URL: process.env.NEXT_PUBLIC_MAIN_API_BASE_URL,
+  REQUESTOR_API_BASE_URL: process.env.NEXT_PUBLIC_REQUESTOR_API_BASE_URL,
 
   IS_USING_THEME_TOGGLER:
     process.env.NEXT_PUBLIC_NEXT_IS_USING_THEME_TOGGLER === "true",
@@ -9,23 +10,23 @@ const CONFIG = {
   },
 
   QUERY_KEY: {
-    MAIN_API: {
+    REQUESTOR_API: {
       ALL: () => ["main"],
       AUTH: {
-        ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "auth"],
-        ME: () => [...CONFIG.QUERY_KEY.MAIN_API.AUTH.ALL(), "me"],
+        ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "auth"],
+        ME: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.AUTH.ALL(), "me"],
       },
       USER: {
-        ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "user"],
+        ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "user"],
       },
       REQUEST: {
-        ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "request"],
+        ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "request"],
       },
       AUDIT_LOG: {
-        ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "audit-log"],
+        ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "audit-log"],
       },
       PERMISSION: {
-        ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "permission"],
+        ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "permission"],
       },
     },
   },

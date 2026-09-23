@@ -8,7 +8,7 @@ export function useGetAuditLogPagination(
   options?: { enabled?: boolean },
 ) {
   return useQuery({
-    queryKey: [CONFIG.QUERY_KEY.MAIN_API.AUDIT_LOG.ALL(), payload],
+    queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.AUDIT_LOG.ALL(), payload],
     queryFn: () => getAuditLogPagination(payload),
     enabled: options?.enabled,
   });

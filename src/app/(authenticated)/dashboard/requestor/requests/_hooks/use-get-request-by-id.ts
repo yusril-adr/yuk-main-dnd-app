@@ -4,7 +4,7 @@ import CONFIG from "@/common/constants/config";
 
 export function useGetRequestById(id: string, options?: { enabled?: boolean }) {
   return useQuery({
-    queryKey: [CONFIG.QUERY_KEY.MAIN_API.REQUEST.ALL(), id],
+    queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.REQUEST.ALL(), id],
     queryFn: () => getRequestById(id),
     enabled: options?.enabled ?? !!id,
   });

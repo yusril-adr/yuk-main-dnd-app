@@ -8,7 +8,7 @@ export function useGetUserPagination(
   options?: { enabled?: boolean },
 ) {
   return useQuery({
-    queryKey: [CONFIG.QUERY_KEY.MAIN_API.USER.ALL(), payload],
+    queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.USER.ALL(), payload],
     queryFn: () => getUserPagination(payload),
     enabled: options?.enabled,
   });

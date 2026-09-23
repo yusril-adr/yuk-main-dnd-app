@@ -5,7 +5,7 @@ import type { TUserPaginationPayload } from "@/api/requestor/users/types/user-pa
 
 export function useGetUserPagination(payload: TUserPaginationPayload) {
   return useQuery({
-    queryKey: [CONFIG.QUERY_KEY.MAIN_API.USER.ALL(), payload],
+    queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.USER.ALL(), payload],
     queryFn: () => getUserPagination(payload),
   });
 }

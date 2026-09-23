@@ -4,9 +4,12 @@ import { globalQueryClient } from "@/libs/react-query/global-query-client";
 
 export function logout() {
   AccessToken.remove();
-  globalQueryClient.setQueryData([CONFIG.QUERY_KEY.MAIN_API.AUTH.ME()], null);
+  globalQueryClient.setQueryData(
+    [CONFIG.QUERY_KEY.REQUESTOR_API.AUTH.ME()],
+    null,
+  );
   globalQueryClient.removeQueries({
-    queryKey: [CONFIG.QUERY_KEY.MAIN_API.AUTH.ALL()],
+    queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.AUTH.ALL()],
   });
 
   const currentUrl = new URL(window.location.href);

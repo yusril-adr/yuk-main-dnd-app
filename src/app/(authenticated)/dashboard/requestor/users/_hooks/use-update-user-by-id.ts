@@ -32,7 +32,7 @@ export function useUpdateUserById(
       toast.dismiss();
       toast.success("User updated");
       queryClient.invalidateQueries({
-        queryKey: [CONFIG.QUERY_KEY.MAIN_API.USER.ALL()],
+        queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.USER.ALL()],
       });
       options?.onSuccess?.(...args);
     },

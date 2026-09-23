@@ -38,7 +38,7 @@ export function useLogin(
       toast.dismiss();
       toast.success("Login Success");
       queryClient.fetchQuery({
-        queryKey: CONFIG.QUERY_KEY.MAIN_API.AUTH.ME(),
+        queryKey: CONFIG.QUERY_KEY.REQUESTOR_API.AUTH.ME(),
         queryFn: authMe,
       });
       options?.onSuccess?.(data, ...args);

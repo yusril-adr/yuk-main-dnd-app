@@ -28,7 +28,7 @@ export function useCreateUser(
       toast.dismiss();
       toast.success("User created");
       queryClient.invalidateQueries({
-        queryKey: [CONFIG.QUERY_KEY.MAIN_API.USER.ALL()],
+        queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.USER.ALL()],
       });
       options?.onSuccess?.(...args);
     },

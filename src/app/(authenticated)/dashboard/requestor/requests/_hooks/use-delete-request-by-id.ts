@@ -27,7 +27,7 @@ export function useDeleteRequestById(
       toast.dismiss();
       toast.success("Request deleted");
       queryClient.invalidateQueries({
-        queryKey: [CONFIG.QUERY_KEY.MAIN_API.REQUEST.ALL()],
+        queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.REQUEST.ALL()],
       });
       options?.onSuccess?.(...args);
     },

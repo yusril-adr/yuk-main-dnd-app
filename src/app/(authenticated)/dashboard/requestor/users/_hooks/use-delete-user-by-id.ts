@@ -27,7 +27,7 @@ export function useDeleteUserById(
       toast.dismiss();
       toast.success("User deleted");
       queryClient.invalidateQueries({
-        queryKey: [CONFIG.QUERY_KEY.MAIN_API.USER.ALL()],
+        queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.USER.ALL()],
       });
       options?.onSuccess?.(...args);
     },
