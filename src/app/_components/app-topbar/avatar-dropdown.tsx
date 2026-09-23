@@ -9,6 +9,8 @@ import {
   User,
   BookOpen,
   ChessKnight,
+  UserRoundKey,
+  ShieldCogCorner,
 } from "lucide-react";
 
 import type { TUserMeResponse } from "@/api/main/modules/auth/me/types/user-me-response";
@@ -29,6 +31,7 @@ import {
 } from "@/app/_components/ui/avatar";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { logout } from "@/utils/logout";
+import { makeDefaultAvatarUrl } from "@/utils/avatar-helper";
 
 function getInitials(name: string) {
   return name
@@ -38,10 +41,6 @@ function getInitials(name: string) {
     .slice(0, 2)
     .join("")
     .toUpperCase();
-}
-
-function getDefaultAvatarUrl(auth: TUserMeResponse) {
-  return `https://ui-avatars.com/api/?background=random&name=${encodeURIComponent(auth.display_name)}`;
 }
 
 export function AvatarDropdown() {
@@ -56,7 +55,9 @@ export function AvatarDropdown() {
           <Button variant="ghost">
             <Avatar data-icon="inline-start">
               <AvatarImage
-                src={auth.avatar_url ?? getDefaultAvatarUrl(auth)}
+                src={
+                  auth?.avatar?.url ?? makeDefaultAvatarUrl(auth.display_name)
+                }
                 alt={auth.display_name}
               />
               <AvatarFallback>{getInitials(auth.display_name)}</AvatarFallback>
@@ -85,12 +86,21 @@ export function AvatarDropdown() {
             <Coins />
             {auth.points} GP
           </DropdownMenuItem>
+
+          <DropdownMenuItem disabled className="items-center">
+            <ShieldCogCorner />
+            {auth.selected_role?.name ?? "Not set"}
+          </DropdownMenuItem>
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup>
           <DropdownMenuLabel>Menu</DropdownMenuLabel>
+          <DropdownMenuItem render={<Link href="/switch-role" />}>
+            <UserRoundKey />
+            Switch Role
+          </DropdownMenuItem>
           <DropdownMenuItem render={<Link href="/profile" />}>
             <User />
             Profile

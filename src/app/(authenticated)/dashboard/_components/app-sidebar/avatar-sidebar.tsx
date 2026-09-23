@@ -5,7 +5,9 @@ import {
   Coins,
   EllipsisVertical,
   LogOut,
+  ShieldCogCorner,
   User,
+  UserRoundKey,
 } from "lucide-react";
 import {
   SidebarMenu,
@@ -30,6 +32,7 @@ import {
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { logout } from "@/utils/logout";
+import { makeDefaultAvatarUrl } from "@/utils/avatar-helper";
 
 export function AvatarSidebar() {
   const { auth, authQuery } = useAuthContext();
@@ -52,7 +55,10 @@ export function AvatarSidebar() {
               {!isLoading && (
                 <Avatar className="h-8 w-8 rounded-lg grayscale">
                   <AvatarImage
-                    src={`https://ui-avatars.com/api/?background=random&name=${encodeURIComponent(auth?.display_name || "-")}`}
+                    src={
+                      auth?.avatar?.url ??
+                      makeDefaultAvatarUrl(auth?.display_name)
+                    }
                     alt={auth?.display_name || "-"}
                   />
                   <AvatarFallback className="rounded-lg">NA</AvatarFallback>
@@ -102,12 +108,20 @@ export function AvatarSidebar() {
                 <Coins />
                 {auth?.points} GP
               </DropdownMenuItem>
+              <DropdownMenuItem disabled className="items-center">
+                <ShieldCogCorner />
+                {auth?.selected_role?.name ?? "Not set"}
+              </DropdownMenuItem>
             </DropdownMenuGroup>
 
             <DropdownMenuSeparator />
 
             <DropdownMenuGroup>
               <DropdownMenuLabel>Menu</DropdownMenuLabel>
+              <DropdownMenuItem render={<Link href="/switch-role" />}>
+                <UserRoundKey />
+                Switch Role
+              </DropdownMenuItem>
               <DropdownMenuItem render={<Link href="/profile" />}>
                 <User />
                 Profile

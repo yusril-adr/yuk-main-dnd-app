@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import GlobalLoader from "@/app/_components/global-loader";
 
@@ -10,6 +10,7 @@ export default function AuthenticatedLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   const { auth, authQuery } = useAuthContext();
   const router = useRouter();
 
@@ -17,7 +18,16 @@ export default function AuthenticatedLayout({
     if (!authQuery?.isLoading && !auth) {
       router.push("/login");
     }
-  }, [authQuery?.isLoading, auth, router]);
+
+    if (
+      !authQuery?.isLoading &&
+      !auth?.selected_role &&
+      pathname !== "/switch-role"
+    ) {
+      const from = encodeURIComponent(pathname);
+      router.push(`/switch-role?from=${from}`);
+    }
+  }, [authQuery?.isLoading, auth, router, pathname]);
 
   if (authQuery?.isLoading) return <GlobalLoader />;
 

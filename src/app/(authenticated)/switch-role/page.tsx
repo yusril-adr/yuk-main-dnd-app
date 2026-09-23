@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import LoginPageClient from "./page-client";
+import SwitchRolePageClient from "./page-client";
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "Switch Role",
 };
 
-export default function LoginPage() {
+export default function SwitchRolePage() {
   return (
     <Suspense fallback={null}>
-      <LoginPageClient />
+      <SwitchRolePageClient />
     </Suspense>
   );
 }

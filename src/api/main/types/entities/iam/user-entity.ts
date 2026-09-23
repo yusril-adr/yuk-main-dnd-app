@@ -5,7 +5,9 @@ export type TUserEntity = TBaseEntity & {
   username?: string;
   email: string;
   display_name: string;
-  avatar_url?: string;
+  avatar?: {
+    url: string;
+  };
   bio?: string;
   player_exp: number;
   player_level: number;
