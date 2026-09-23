@@ -22,8 +22,8 @@ import { RequestStatusEnum } from "@/api/requestor/requests/enums/request-status
 import { RequestPriorityEnum } from "@/api/requestor/requests/enums/request-priority";
 import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response";
 import { OrderKeyEnum } from "@/common/enums/order-key";
-import MainAPINotFoundError from "@/api/requestor/errors/not-found-error";
-import MainAPIValidationError from "@/api/requestor/errors/validation-error";
+import RequestorAPINotFoundError from "@/api/requestor/errors/not-found-error";
+import RequestorAPIValidationError from "@/api/requestor/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
@@ -94,21 +94,21 @@ export default function RequestsPageClient() {
   } = useGetRequestPagination(queryStatesIntoPayload);
   const { mutate: deleteRequestMutate } = useDeleteRequestById({
     onError: (error) => {
-      if (error instanceof MainAPIValidationError) {
+      if (error instanceof RequestorAPIValidationError) {
         return applyValidationErrors(
           setError,
           error.errors as TRequestorApiErrorResponse<null>[],
         );
       }
 
-      if (error instanceof MainAPINotFoundError) {
+      if (error instanceof RequestorAPINotFoundError) {
         router.push("/requests");
       }
     },
   });
 
   useEffect(() => {
-    if (isError && error && error instanceof MainAPINotFoundError) {
+    if (isError && error && error instanceof RequestorAPINotFoundError) {
       router.push("/requests");
     }
   }, [isError, error, router]);

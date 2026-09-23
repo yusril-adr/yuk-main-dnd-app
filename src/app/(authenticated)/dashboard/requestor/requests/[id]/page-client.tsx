@@ -20,7 +20,7 @@ import dayjs from "@/libs/dayjs";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useIsMobile } from "@/app/_hooks/use-mobile";
 
-import MainAPINotFoundError from "@/api/requestor/errors/not-found-error";
+import RequestorAPINotFoundError from "@/api/requestor/errors/not-found-error";
 
 export default function RequestDetailPageClient() {
   const { id } = useParams();
@@ -30,7 +30,7 @@ export default function RequestDetailPageClient() {
   const { data, isLoading, isError, error } = useGetRequestById(id as string);
 
   useEffect(() => {
-    if (isError && error && error instanceof MainAPINotFoundError) {
+    if (isError && error && error instanceof RequestorAPINotFoundError) {
       router.push("/dashboard/requestor/requests");
     }
   }, [isError, error, router]);

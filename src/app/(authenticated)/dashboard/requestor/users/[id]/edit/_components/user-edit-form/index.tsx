@@ -35,7 +35,7 @@ import { RoleKeyEnum } from "@/common/enums/role-key";
 import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response";
 import type { TUserUpdatePayload } from "@/api/requestor/users/[id]/types/user-update-payload";
 import { UserStatusEnum } from "@/api/requestor/users/enums/user-status";
-import MainAPIValidationError from "@/api/requestor/errors/validation-error";
+import RequestorAPIValidationError from "@/api/requestor/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import type { TUserEditFormProps } from "@/app/(authenticated)/dashboard/requestor/users/[id]/edit/_types/user-edit-form-props";
 
@@ -68,7 +68,7 @@ export default function UserEditForm({
   });
 
   useEffect(() => {
-    if (mutationError instanceof MainAPIValidationError) {
+    if (mutationError instanceof RequestorAPIValidationError) {
       applyValidationErrors(
         setError,
         mutationError.errors as TRequestorApiErrorResponse<TUserUpdatePayload>[],

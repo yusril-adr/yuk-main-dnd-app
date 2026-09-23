@@ -9,7 +9,7 @@ import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import RequestEditForm from "@/app/(authenticated)/dashboard/requestor/requests/[id]/edit/_components/request-edit-form";
 import { useGetRequestById } from "@/app/(authenticated)/dashboard/requestor/requests/_hooks/use-get-request-by-id";
 import { useUpdateRequestById } from "@/app/(authenticated)/dashboard/requestor/requests/_hooks/use-update-request-by-id";
-import MainAPINotFoundError from "@/api/requestor/errors/not-found-error";
+import RequestorAPINotFoundError from "@/api/requestor/errors/not-found-error";
 
 export default function RequestEditPageClient() {
   const params = useParams();
@@ -25,7 +25,7 @@ export default function RequestEditPageClient() {
       router.push("/dashboard/requestor/requests");
     },
     onError: (error) => {
-      if (error instanceof MainAPINotFoundError) {
+      if (error instanceof RequestorAPINotFoundError) {
         router.push("/dashboard/requestor/requests");
       }
     },
@@ -35,7 +35,7 @@ export default function RequestEditPageClient() {
     if (
       getDataQuery.isError &&
       getDataQuery.error &&
-      getDataQuery.error instanceof MainAPINotFoundError
+      getDataQuery.error instanceof RequestorAPINotFoundError
     ) {
       router.push("/dashboard/requestor/requests");
     }

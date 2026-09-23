@@ -9,7 +9,7 @@ import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import UserEditForm from "@/app/(authenticated)/dashboard/requestor/users/[id]/edit/_components/user-edit-form";
 import { useGetUserById } from "@/app/(authenticated)/dashboard/requestor/users/_hooks/use-get-user-by-id";
 import { useUpdateUserById } from "@/app/(authenticated)/dashboard/requestor/users/_hooks/use-update-user-by-id";
-import MainAPINotFoundError from "@/api/requestor/errors/not-found-error";
+import RequestorAPINotFoundError from "@/api/requestor/errors/not-found-error";
 
 export default function UserEditPageClient() {
   const params = useParams();
@@ -25,7 +25,7 @@ export default function UserEditPageClient() {
       router.push("/dashboard/requestor/users");
     },
     onError: (error) => {
-      if (error instanceof MainAPINotFoundError) {
+      if (error instanceof RequestorAPINotFoundError) {
         router.push("/dashboard/requestor/users");
       }
     },
@@ -35,7 +35,7 @@ export default function UserEditPageClient() {
     if (
       getDataQuery.isError &&
       getDataQuery.error &&
-      getDataQuery.error instanceof MainAPINotFoundError
+      getDataQuery.error instanceof RequestorAPINotFoundError
     ) {
       router.push("/dashboard/requestor/users");
     }

@@ -17,7 +17,7 @@ import { Badge } from "@/app/_components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import dayjs from "@/libs/dayjs";
 import { Skeleton } from "@/app/_components/ui/skeleton";
-import MainAPINotFoundError from "@/api/requestor/errors/not-found-error";
+import RequestorAPINotFoundError from "@/api/requestor/errors/not-found-error";
 import { useIsMobile } from "@/app/_hooks/use-mobile";
 
 export default function UserDetailPageClient() {
@@ -29,7 +29,7 @@ export default function UserDetailPageClient() {
 
   useEffect(() => {
     if (isError && error) {
-      if (error instanceof MainAPINotFoundError) {
+      if (error instanceof RequestorAPINotFoundError) {
         router.push("/dashboard/requestor/users");
       }
     }

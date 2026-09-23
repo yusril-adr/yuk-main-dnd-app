@@ -22,7 +22,7 @@ import type { TUserSortBy } from "@/api/requestor/users/consts/user-sort-by";
 import { UserStatusEnum } from "@/api/requestor/users/enums/user-status";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import { RoleKeyEnum } from "@/common/enums/role-key";
-import MainAPINotFoundError from "@/api/requestor/errors/not-found-error";
+import RequestorAPINotFoundError from "@/api/requestor/errors/not-found-error";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 
@@ -82,14 +82,14 @@ export default function UsersPageClient() {
   );
   const { mutate: deleteUserMutate } = useDeleteUserById({
     onError: (error) => {
-      if (error instanceof MainAPINotFoundError) {
+      if (error instanceof RequestorAPINotFoundError) {
         router.push("/dashboard/requestor/users");
       }
     },
   });
   const { mutate: updateUserMutate } = useUpdateUserById({
     onError: (error) => {
-      if (error instanceof MainAPINotFoundError) {
+      if (error instanceof RequestorAPINotFoundError) {
         router.push("/dashboard/requestor/users");
       }
     },

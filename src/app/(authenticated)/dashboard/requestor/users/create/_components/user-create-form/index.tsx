@@ -35,7 +35,7 @@ import { RoleKeyEnum } from "@/common/enums/role-key";
 import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response";
 import type { TUserCreatePayload } from "@/api/requestor/users/types/user-create-payload";
 import type { TUserCreateFormProps } from "@/app/(authenticated)/dashboard/requestor/users/create/_types/user-create-form-props";
-import MainAPIValidationError from "@/api/requestor/errors/validation-error";
+import RequestorAPIValidationError from "@/api/requestor/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 
 export default function UserCreateForm({
@@ -54,7 +54,7 @@ export default function UserCreateForm({
   });
 
   useEffect(() => {
-    if (mutationError instanceof MainAPIValidationError) {
+    if (mutationError instanceof RequestorAPIValidationError) {
       applyValidationErrors(
         setError,
         mutationError.errors as TRequestorApiErrorResponse<TUserCreatePayload>[],

@@ -26,7 +26,7 @@ import type { TLoginPayload } from "@/api/requestor/auth/login/types/login-paylo
 import type { TLoginFormProps } from "@/app/login/_types/login-form-props";
 import { LoginFormSchema, type TLoginFormSchema } from "./scheme";
 import { applyValidationErrors } from "@/utils/validation-helper";
-import MainAPIValidationError from "@/api/requestor/errors/validation-error";
+import RequestorAPIValidationError from "@/api/requestor/errors/validation-error";
 
 export function LoginForm({
   onSubmitPayload,
@@ -42,7 +42,7 @@ export function LoginForm({
   });
 
   useEffect(() => {
-    if (mutationError instanceof MainAPIValidationError) {
+    if (mutationError instanceof RequestorAPIValidationError) {
       applyValidationErrors(
         setError,
         mutationError.errors as TRequestorApiErrorResponse<null>[],

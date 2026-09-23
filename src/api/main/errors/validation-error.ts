@@ -1,6 +1,6 @@
 import ApiError from "@/common/errors/api-error";
 
-export class RequestorAPIValidationError<T = unknown> extends ApiError {
+export class MainAPIValidationError<T = unknown> extends ApiError {
   constructor(
     public errors: {
       property: keyof T | string;
@@ -8,8 +8,8 @@ export class RequestorAPIValidationError<T = unknown> extends ApiError {
     }[],
   ) {
     super("Validation error");
-    this.name = "RequestorAPIValidationError";
+    this.name = "MainAPIValidationError";
   }
 }
 
-export default RequestorAPIValidationError;
+export default MainAPIValidationError;

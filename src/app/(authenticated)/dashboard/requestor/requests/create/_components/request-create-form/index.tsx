@@ -31,7 +31,7 @@ import { RequestPriorityEnum } from "@/api/requestor/requests/enums/request-prio
 import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response";
 import type { TRequestCreatePayload } from "@/api/requestor/requests/types/request-create-payload";
 import type { TRequestCreateFormProps } from "@/app/(authenticated)/dashboard/requestor/requests/create/_types/request-create-form-props";
-import MainAPIValidationError from "@/api/requestor/errors/validation-error";
+import RequestorAPIValidationError from "@/api/requestor/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 
 export default function RequestCreateForm({
@@ -75,7 +75,7 @@ export default function RequestCreateForm({
   );
 
   useEffect(() => {
-    if (mutationError instanceof MainAPIValidationError) {
+    if (mutationError instanceof RequestorAPIValidationError) {
       const mappedErrors = (
         mutationError.errors as TRequestorApiErrorResponse<null>[]
       ).map((error) => {

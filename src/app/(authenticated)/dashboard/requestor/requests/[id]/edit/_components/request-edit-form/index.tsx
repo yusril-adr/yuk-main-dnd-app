@@ -28,7 +28,7 @@ import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response"
 import type { TRequestUpdatePayload } from "@/api/requestor/requests/[id]/types/request-update-payload";
 import { RequestStatusEnum } from "@/api/requestor/requests/enums/request-status";
 import { RequestPriorityEnum } from "@/api/requestor/requests/enums/request-priority";
-import MainAPIValidationError from "@/api/requestor/errors/validation-error";
+import RequestorAPIValidationError from "@/api/requestor/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import type { TRequestEditFormProps } from "@/app/(authenticated)/dashboard/requestor/requests/[id]/edit/_types/request-edit-form-props";
 
@@ -89,7 +89,7 @@ export default function RequestEditForm({
   );
 
   useEffect(() => {
-    if (mutationError instanceof MainAPIValidationError) {
+    if (mutationError instanceof RequestorAPIValidationError) {
       const mappedErrors = (
         mutationError.errors as TRequestorApiErrorResponse<TRequestUpdatePayload>[]
       ).map((error) => {
