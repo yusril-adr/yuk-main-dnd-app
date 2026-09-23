@@ -31,11 +31,6 @@ import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { logout } from "@/utils/logout";
 
-const DUMMY_STATS = {
-  xp: 0,
-  gp: 0,
-};
-
 export function AvatarSidebar() {
   const { auth, authQuery } = useAuthContext();
   const { isMobile } = useSidebar();
@@ -97,15 +92,15 @@ export function AvatarSidebar() {
               <DropdownMenuLabel>Stats</DropdownMenuLabel>
               <DropdownMenuItem disabled className="items-center">
                 <BookOpen />
-                {DUMMY_STATS.xp} XP - DM
+                {auth?.dm_exp} XP - DM
               </DropdownMenuItem>
               <DropdownMenuItem disabled className="items-center">
                 <ChessKnight />
-                {DUMMY_STATS.xp} XP - Player
+                {auth?.player_exp} XP - Player
               </DropdownMenuItem>
               <DropdownMenuItem disabled className="items-center">
                 <Coins />
-                {DUMMY_STATS.gp} GP
+                {auth?.points} GP
               </DropdownMenuItem>
             </DropdownMenuGroup>
 
