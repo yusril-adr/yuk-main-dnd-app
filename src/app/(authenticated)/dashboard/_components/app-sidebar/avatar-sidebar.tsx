@@ -57,8 +57,8 @@ export function AvatarSidebar() {
               {!isLoading && (
                 <Avatar className="h-8 w-8 rounded-lg grayscale">
                   <AvatarImage
-                    src={`https://ui-avatars.com/api/?background=random&name=${auth?.name || "-"}`}
-                    alt={auth?.name || "-"}
+                    src={`https://ui-avatars.com/api/?background=random&name=${encodeURIComponent(auth?.display_name || "-")}`}
+                    alt={auth?.display_name || "-"}
                   />
                   <AvatarFallback className="rounded-lg">NA</AvatarFallback>
                 </Avatar>
@@ -75,7 +75,7 @@ export function AvatarSidebar() {
                 {!isLoading && (
                   <>
                     <span className="truncate font-heading font-medium">
-                      {auth?.name || "-"}
+                      {auth?.display_name || "-"}
                     </span>
                     <span className="truncate text-xs text-muted-foreground">
                       {auth?.email || "-"}

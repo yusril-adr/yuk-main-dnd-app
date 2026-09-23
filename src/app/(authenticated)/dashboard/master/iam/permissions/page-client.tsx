@@ -10,10 +10,10 @@ import { useGetPermissionPagination } from "@/app/(authenticated)/dashboard/mast
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import type { TPermissionTableFilterValues } from "@/app/(authenticated)/dashboard/master/iam/permissions/_types/permission-table-props";
-import type { TPermissionPaginationPayload } from "@/api/main/modules/permissions/types/permission-pagination-payload";
-import type { TPermissionSortBy } from "@/api/main/modules/permissions/consts/permission-sort-by";
-import { PermissionModuleEnum } from "@/api/main/modules/permissions/enums/permission-module";
-import { PermissionActionEnum } from "@/api/main/modules/permissions/enums/permission-action";
+import type { TPermissionPaginationPayload } from "@/api/main/modules/master/iam/permissions/types/permission-pagination-payload";
+import type { TPermissionSortBy } from "@/api/main/modules/master/iam/permissions/consts/permission-sort-by";
+import { PermissionModuleEnum } from "@/api/main/modules/master/iam/permissions/enums/permission-module";
+import { PermissionActionEnum } from "@/api/main/modules/master/iam/permissions/enums/permission-action";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;

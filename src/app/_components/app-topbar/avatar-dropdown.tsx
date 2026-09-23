@@ -11,7 +11,7 @@ import {
   ChessKnight,
 } from "lucide-react";
 
-import { TUserMeResponse } from "@/api/main/modules/auth/me/types/user-me-response";
+import type { TUserMeResponse } from "@/api/main/modules/auth/me/types/user-me-response";
 import { Button } from "@/app/_components/ui/button";
 import {
   DropdownMenu,

@@ -28,7 +28,8 @@ export function AppSidebar() {
 
       const isAuthorized =
         !item.authorizedRoles?.length ||
-        (auth?.role != null && item.authorizedRoles.includes(auth.role));
+        (auth?.selected_role != null &&
+          item.authorizedRoles.includes(auth.selected_role));
 
       return isAuthorized ? [item] : [];
     });

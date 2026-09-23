@@ -177,7 +177,7 @@ export default function UserTable({
       id: "actions",
       header: "Action",
       cell: ({ row }) => {
-        const currentRole = auth?.role || RoleKeyEnum.VIEWER;
+        const currentRole = auth?.selected_role ?? RoleKeyEnum.VIEWER;
         const user = row.original;
 
         return (

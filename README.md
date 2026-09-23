@@ -106,6 +106,7 @@ The `@/` alias resolves to `src/` (configured in `tsconfig.json`).
 ```bash
 docker build \
   --build-arg NEXT_PUBLIC_MAIN_API_BASE_URL=https://api.example.com \
+  --build-arg NEXT_PUBLIC_REQUESTOR_API_BASE_URL=https://requestor-api.example.com \
   -t requestor-next .
 docker run --rm -p 3000:3000 requestor-next
 ```

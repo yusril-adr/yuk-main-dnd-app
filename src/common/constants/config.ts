@@ -13,16 +13,19 @@ const CONFIG = {
     MAIN_API: {
       ALL: () => ["main"],
       AUTH: {
-        ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "auth"],
-        ME: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.AUTH.ALL(), "me"],
+        ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "auth"],
+        ME: () => [...CONFIG.QUERY_KEY.MAIN_API.AUTH.ALL(), "me"],
+      },
+      MASTER: {
+        IAM: {
+          PERMISSION: {
+            ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "permission"],
+          },
+        },
       },
     },
     REQUESTOR_API: {
       ALL: () => ["requestor"],
-      AUTH: {
-        ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "auth"],
-        ME: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.AUTH.ALL(), "me"],
-      },
       USER: {
         ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "user"],
       },
@@ -31,9 +34,6 @@ const CONFIG = {
       },
       AUDIT_LOG: {
         ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "audit-log"],
-      },
-      PERMISSION: {
-        ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "permission"],
       },
     },
   },

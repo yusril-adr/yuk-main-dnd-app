@@ -32,8 +32,8 @@ import {
   DataTable,
   DataTableSortableColHeader,
 } from "@/app/_components/data-table";
-import { PermissionModuleEnum } from "@/api/main/modules/permissions/enums/permission-module";
-import { PermissionActionEnum } from "@/api/main/modules/permissions/enums/permission-action";
+import { PermissionModuleEnum } from "@/api/main/modules/master/iam/permissions/enums/permission-module";
+import { PermissionActionEnum } from "@/api/main/modules/master/iam/permissions/enums/permission-action";
 import dayjs from "@/libs/dayjs";
 
 export default function PermissionTable({
