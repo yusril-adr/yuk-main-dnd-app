@@ -32,3 +32,10 @@ export type TMainApiPaginationMetaResponse = {
   current_page: number;
   total_page: number;
 };
+
+export type TMainApiListResponse<T> = TMainApiBaseResponse & {
+  data: {
+    items: T[];
+    total: number;
+  };
+};

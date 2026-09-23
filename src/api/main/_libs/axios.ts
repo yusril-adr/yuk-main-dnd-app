@@ -7,11 +7,11 @@ import MainAPINotFoundError from "../errors/not-found-error";
 import MainAPIValidationError from "../errors/validation-error";
 import { logout } from "@/utils/logout";
 
-export const requestorAxios = axios.create({
-  baseURL: CONFIG.REQUESTOR_API_BASE_URL,
+export const mainAxios = axios.create({
+  baseURL: CONFIG.MAIN_API_BASE_URL,
 });
 
-requestorAxios.interceptors.request.use((config) => {
+mainAxios.interceptors.request.use((config) => {
   const token = AccessToken.get();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -19,7 +19,7 @@ requestorAxios.interceptors.request.use((config) => {
   return config;
 });
 
-requestorAxios.interceptors.response.use(
+mainAxios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.isAxiosError) {

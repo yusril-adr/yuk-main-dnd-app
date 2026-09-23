@@ -21,12 +21,12 @@ import {
 import { Field, FieldError, FieldLabel } from "@/app/_components/ui/field";
 import { Spinner } from "@/app/_components/ui/spinner";
 
-import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response";
-import type { TLoginPayload } from "@/api/requestor/auth/login/types/login-payload";
+import type { TMainApiErrorResponse } from "@/api/main/types/response";
+import type { TLoginPayload } from "@/api/main/modules/auth/login/types/login-payload";
 import type { TLoginFormProps } from "@/app/login/_types/login-form-props";
 import { LoginFormSchema, type TLoginFormSchema } from "./scheme";
 import { applyValidationErrors } from "@/utils/validation-helper";
-import RequestorAPIValidationError from "@/api/requestor/errors/validation-error";
+import MainAPIValidationError from "@/api/main/errors/validation-error";
 
 export function LoginForm({
   onSubmitPayload,
@@ -38,21 +38,21 @@ export function LoginForm({
 
   const { control, handleSubmit, setError } = useForm<TLoginFormSchema>({
     resolver: zodResolver(LoginFormSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { identifier: "", password: "" },
   });
 
   useEffect(() => {
-    if (mutationError instanceof RequestorAPIValidationError) {
+    if (mutationError instanceof MainAPIValidationError) {
       applyValidationErrors(
         setError,
-        mutationError.errors as TRequestorApiErrorResponse<null>[],
+        mutationError.errors as TMainApiErrorResponse<null>[],
       );
     }
   }, [mutationError, setError]);
 
   const onSubmit: SubmitHandler<TLoginFormSchema> = (data) => {
     const payload: TLoginPayload = {
-      email: data.email,
+      identifier: data.identifier,
       password: data.password,
     };
     onSubmitPayload(payload);
@@ -72,22 +72,22 @@ export function LoginForm({
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your username or email below to login to your account
           </CardDescription>
         </CardHeader>
 
         <CardContent>
           <div className="flex flex-col gap-6">
             <Controller
-              name="email"
+              name="identifier"
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid gap-2" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <FieldLabel htmlFor="identifier">Username/Email</FieldLabel>
                   <Input
-                    id="email"
-                    type="email"
-                    placeholder="m@example.com"
+                    id="identifier"
+                    type="identifier"
+                    placeholder="user@example.com"
                     {...field}
                   />
 

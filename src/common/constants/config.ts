@@ -10,8 +10,15 @@ const CONFIG = {
   },
 
   QUERY_KEY: {
-    REQUESTOR_API: {
+    MAIN_API: {
       ALL: () => ["main"],
+      AUTH: {
+        ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "auth"],
+        ME: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.AUTH.ALL(), "me"],
+      },
+    },
+    REQUESTOR_API: {
+      ALL: () => ["requestor"],
       AUTH: {
         ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "auth"],
         ME: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.AUTH.ALL(), "me"],
