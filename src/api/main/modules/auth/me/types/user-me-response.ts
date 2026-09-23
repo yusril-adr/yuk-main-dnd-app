@@ -1,6 +1,6 @@
 import { TUserEntity } from "@/api/main/types/entities/iam/user-entity";
 
 export type TUserMeResponse = TUserEntity & {
-  selectedRole: string | null;
+  selected_role: string | null;
   permissions: string[];
 };

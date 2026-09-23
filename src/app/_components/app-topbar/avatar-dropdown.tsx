@@ -56,7 +56,7 @@ export function AvatarDropdown() {
           <Button variant="ghost">
             <Avatar data-icon="inline-start">
               <AvatarImage
-                src={auth.avatarUrl ?? getDefaultAvatarUrl(auth)}
+                src={auth.avatar_url ?? getDefaultAvatarUrl(auth)}
                 alt={auth.display_name}
               />
               <AvatarFallback>{getInitials(auth.display_name)}</AvatarFallback>
@@ -75,11 +75,11 @@ export function AvatarDropdown() {
           <DropdownMenuLabel>Stats</DropdownMenuLabel>
           <DropdownMenuItem disabled className="items-center">
             <BookOpen />
-            {auth.dmExp} XP - DM
+            {auth.dm_exp} XP - DM
           </DropdownMenuItem>
           <DropdownMenuItem disabled className="items-center">
             <ChessKnight />
-            {auth.playerExp} XP - Player
+            {auth.player_exp} XP - Player
           </DropdownMenuItem>
           <DropdownMenuItem disabled className="items-center">
             <Coins />

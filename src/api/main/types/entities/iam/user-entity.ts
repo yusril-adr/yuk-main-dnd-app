@@ -1,18 +1,16 @@
+import { TBaseEntity } from "./base-entity";
 import { TRoleEntity } from "./role-entity";
 
-export type TUserEntity = {
-  id: string;
+export type TUserEntity = TBaseEntity & {
   username?: string;
   email: string;
   display_name: string;
-  avatarUrl?: string;
+  avatar_url?: string;
   bio?: string;
-  playerExp: number;
-  playerLevel: number;
-  dmExp: number;
-  dmLevel: number;
+  player_exp: number;
+  player_level: number;
+  dm_exp: number;
+  dm_level: number;
   points: number;
   roles?: TRoleEntity[];
-  createdAt: string;
-  updatedAt: string;
 };
