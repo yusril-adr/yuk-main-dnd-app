@@ -1,6 +1,5 @@
 import type { TNavSidebar } from "@/app/(authenticated)/dashboard/_types/nav-sidebar";
 import {
-  Anvil,
   BrainCircuit,
   CalendarDays,
   ClockFading,
@@ -9,6 +8,7 @@ import {
   Gauge,
   HandCoins,
   Medal,
+  Scale,
   ShieldKeyhole,
   ShieldUser,
   Shredder,
@@ -41,7 +41,7 @@ const NAV_ROUTES: TNavSidebar[] = [
       },
       {
         title: "Goods",
-        icon: Anvil,
+        icon: Scale,
         path: "/dashboard/goods",
       },
       {
@@ -126,7 +126,7 @@ const NAV_ROUTES: TNavSidebar[] = [
       },
       {
         title: "Goods",
-        icon: Anvil,
+        icon: Scale,
         path: "/dashboard/master/goods",
       },
       {

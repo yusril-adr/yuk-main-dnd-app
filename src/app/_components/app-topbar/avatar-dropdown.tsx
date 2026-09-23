@@ -8,6 +8,8 @@ import {
   Medal,
   LogOut,
   User,
+  BookOpen,
+  ChessKnight,
 } from "lucide-react";
 
 import { Button } from "@/app/_components/ui/button";
@@ -71,8 +73,12 @@ export function AvatarDropdown() {
         <DropdownMenuGroup>
           <DropdownMenuLabel>Stats</DropdownMenuLabel>
           <DropdownMenuItem disabled className="items-center">
-            <Medal />
-            {DUMMY_STATS.xp} XP
+            <BookOpen />
+            {DUMMY_STATS.xp} XP - DM
+          </DropdownMenuItem>
+          <DropdownMenuItem disabled className="items-center">
+            <ChessKnight />
+            {DUMMY_STATS.xp} XP - Player
           </DropdownMenuItem>
           <DropdownMenuItem disabled className="items-center">
             <Coins />

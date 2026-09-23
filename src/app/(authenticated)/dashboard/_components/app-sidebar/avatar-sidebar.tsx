@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { Coins, EllipsisVertical, LogOut, Medal, User } from "lucide-react";
+import {
+  BookOpen,
+  ChessKnight,
+  Coins,
+  EllipsisVertical,
+  LogOut,
+  User,
+} from "lucide-react";
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -89,8 +96,12 @@ export function AvatarSidebar() {
             <DropdownMenuGroup>
               <DropdownMenuLabel>Stats</DropdownMenuLabel>
               <DropdownMenuItem disabled className="items-center">
-                <Medal />
-                {DUMMY_STATS.xp} XP
+                <BookOpen />
+                {DUMMY_STATS.xp} XP - DM
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled className="items-center">
+                <ChessKnight />
+                {DUMMY_STATS.xp} XP - Player
               </DropdownMenuItem>
               <DropdownMenuItem disabled className="items-center">
                 <Coins />
