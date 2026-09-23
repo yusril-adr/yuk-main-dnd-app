@@ -32,13 +32,13 @@ export function useLogin(
       toast.loading("Logging in...");
       options?.onMutate?.(...args);
     },
-    onSuccess: (data, ...args) => {
+    onSuccess: async (data, ...args) => {
       const responseData = data.data.data;
       AccessToken.set(responseData.access_token);
 
       toast.dismiss();
       toast.success("Login Success");
-      queryClient.fetchQuery({
+      await queryClient.fetchQuery({
         queryKey: CONFIG.QUERY_KEY.MAIN_API.AUTH.ME(),
         queryFn: authMe,
       });
