@@ -15,7 +15,7 @@ export const createRole = async (payload: TRoleCreatePayload) => {
   return response;
 };
 
-export const getPermissionPagination = async (
+export const getRolePagination = async (
   payload: TRolePaginationPayload,
 ): Promise<AxiosResponse<TMainApiPaginationResponse<TRoleResponse>>> => {
   const response = await mainAxios.get(MAIN_API_PATH.MASTER.IAM.ROLE.DEFAULT, {
