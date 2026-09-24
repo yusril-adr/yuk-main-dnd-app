@@ -2,9 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { parseAsString, useQueryState } from "nuqs";
 
 import CONFIG from "@/common/constants/config";
+import { authMe } from "@/api/main/modules/auth/me";
 import { ThemeToggler } from "@/app/_components/theme-toggler";
 import GlobalLoader from "@/app/_components/global-loader";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
@@ -13,6 +15,7 @@ import { useSwitchRole } from "@/app/(authenticated)/switch-role/_hooks/use-swit
 
 export default function SwitchRolePageClient() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [fromQuery] = useQueryState(
     "from",
     parseAsString.withDefault("/dashboard"),
@@ -30,7 +33,11 @@ export default function SwitchRolePageClient() {
     isPending: switchRoleIsPending,
     isPaused: switchRoleIsPaused,
   } = useSwitchRole({
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.fetchQuery({
+        queryKey: CONFIG.QUERY_KEY.MAIN_API.AUTH.ME(),
+        queryFn: authMe,
+      });
       router.replace(fromQueryRef.current);
     },
   });

@@ -3,17 +3,23 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
+import CONFIG from "@/common/constants/config";
 import RoleCreateForm from "./_components/role-create-form";
 import { useCreateRole } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-create-role";
 import { useGetAllPermissions } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-all-permissions";
 
 export default function RoleCreatePageClient() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const permissionsQuery = useGetAllPermissions();
   const createRoleMutation = useCreateRole({
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.IAM.ROLE.ALL()],
+      });
       router.push("/dashboard/master/iam/roles");
     },
   });

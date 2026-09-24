@@ -4,16 +4,19 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import RequestEditForm from "@/app/(authenticated)/dashboard/requestor/requests/[id]/edit/_components/request-edit-form";
 import { useGetRequestById } from "@/app/(authenticated)/dashboard/requestor/requests/_hooks/use-get-request-by-id";
 import { useUpdateRequestById } from "@/app/(authenticated)/dashboard/requestor/requests/_hooks/use-update-request-by-id";
 import RequestorAPINotFoundError from "@/api/requestor/errors/not-found-error";
+import CONFIG from "@/common/constants/config";
 
 export default function RequestEditPageClient() {
   const params = useParams();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const getDataQuery = useGetRequestById(params.id as string);
   const {
     mutate: updateRequestMutate,
@@ -22,6 +25,9 @@ export default function RequestEditPageClient() {
     isPaused: updateRequestIsPaused,
   } = useUpdateRequestById({
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.REQUEST.ALL()],
+      });
       router.push("/dashboard/requestor/requests");
     },
     onError: (error) => {

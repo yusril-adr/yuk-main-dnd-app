@@ -1,13 +1,8 @@
-import {
-  useMutation,
-  useQueryClient,
-  type UseMutationOptions,
-} from "@tanstack/react-query";
+import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { toast } from "sonner";
 import { createUser } from "@/api/requestor/users";
 import type { TUserCreatePayload } from "@/api/requestor/users/types/user-create-payload";
-import CONFIG from "@/common/constants/config";
 
 export function useCreateUser(
   options?: Omit<
@@ -15,8 +10,6 @@ export function useCreateUser(
     "mutationFn"
   >,
 ) {
-  const queryClient = useQueryClient();
-
   return useMutation({
     ...options,
     mutationFn: createUser,
@@ -27,9 +20,6 @@ export function useCreateUser(
     onSuccess: (...args) => {
       toast.dismiss();
       toast.success("User created");
-      queryClient.invalidateQueries({
-        queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.USER.ALL()],
-      });
       options?.onSuccess?.(...args);
     },
   });

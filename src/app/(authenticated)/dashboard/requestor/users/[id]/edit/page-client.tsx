@@ -4,16 +4,19 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import UserEditForm from "@/app/(authenticated)/dashboard/requestor/users/[id]/edit/_components/user-edit-form";
 import { useGetUserById } from "@/app/(authenticated)/dashboard/requestor/users/_hooks/use-get-user-by-id";
 import { useUpdateUserById } from "@/app/(authenticated)/dashboard/requestor/users/_hooks/use-update-user-by-id";
 import RequestorAPINotFoundError from "@/api/requestor/errors/not-found-error";
+import CONFIG from "@/common/constants/config";
 
 export default function UserEditPageClient() {
   const params = useParams();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const getDataQuery = useGetUserById(params.id as string);
   const {
     mutate: updateUserMutate,
@@ -22,6 +25,9 @@ export default function UserEditPageClient() {
     isPaused: updateUserIsPaused,
   } = useUpdateUserById({
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.USER.ALL()],
+      });
       router.push("/dashboard/requestor/users");
     },
     onError: (error) => {

@@ -3,13 +3,16 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import UserCreateForm from "@/app/(authenticated)/dashboard/requestor/users/create/_components/user-create-form";
 import { useCreateUser } from "@/app/(authenticated)/dashboard/requestor/users/_hooks/use-create-user";
+import CONFIG from "@/common/constants/config";
 
 export default function UserCreatePageClient() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const {
     mutate: createUserMutate,
     error: createUserError,
@@ -17,6 +20,9 @@ export default function UserCreatePageClient() {
     isPaused: createUserIsPaused,
   } = useCreateUser({
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.USER.ALL()],
+      });
       router.push("/dashboard/requestor/users");
     },
   });

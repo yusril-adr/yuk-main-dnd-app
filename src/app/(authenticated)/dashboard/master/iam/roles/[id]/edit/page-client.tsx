@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import RoleEditForm from "./_components/role-edit-form";
@@ -11,15 +12,20 @@ import { useGetAllPermissions } from "@/app/(authenticated)/dashboard/master/iam
 import { useGetRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-role-by-id";
 import { useUpdateRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-update-role-by-id";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import CONFIG from "@/common/constants/config";
 
 export default function RoleEditPageClient() {
   const { id } = useParams();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const roleId = id as string;
   const roleQuery = useGetRoleById(roleId);
   const permissionsQuery = useGetAllPermissions();
   const updateRoleMutation = useUpdateRoleById({
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.IAM.ROLE.ALL()],
+      });
       router.push(`/dashboard/master/iam/roles/${roleId}`);
     },
     onError: (error) => {

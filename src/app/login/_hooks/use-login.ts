@@ -1,18 +1,12 @@
-import {
-  useMutation,
-  useQueryClient,
-  type UseMutationOptions,
-} from "@tanstack/react-query";
+import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { toast } from "sonner";
 
 import { login } from "@/api/main/modules/auth/login";
-import { authMe } from "@/api/main/modules/auth/me";
 import type { TLoginPayload } from "@/api/main/modules/auth/login/types/login-payload";
 import type { TLoginResponse } from "@/api/main/modules/auth/login/types/login-response";
 import type { TMainApiResponse } from "@/api/main/types/response";
 import AccessToken from "@/libs/cookies/access-token";
-import CONFIG from "@/common/constants/config";
 
 export function useLogin(
   options?: Omit<
@@ -24,8 +18,6 @@ export function useLogin(
     "mutationFn"
   >,
 ) {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: login,
     onMutate: (...args) => {
@@ -38,11 +30,7 @@ export function useLogin(
 
       toast.dismiss();
       toast.success("Login Success");
-      await queryClient.fetchQuery({
-        queryKey: CONFIG.QUERY_KEY.MAIN_API.AUTH.ME(),
-        queryFn: authMe,
-      });
-      options?.onSuccess?.(data, ...args);
+      await options?.onSuccess?.(data, ...args);
     },
     onError: (...args) => {
       options?.onError?.(...args);

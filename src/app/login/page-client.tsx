@@ -3,8 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { useQueryClient } from "@tanstack/react-query";
 
 import CONFIG from "@/common/constants/config";
+import { authMe } from "@/api/main/modules/auth/me";
 import { ThemeToggler } from "@/app/_components/theme-toggler";
 import { LoginForm } from "@/app/login/_components/form";
 import { useLogin } from "@/app/login/_hooks/use-login";
@@ -12,6 +14,7 @@ import { parseAsString, useQueryState } from "nuqs";
 
 export default function LoginPageClient() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [fromQuery] = useQueryState("from", parseAsString.withDefault("/"));
 
   // useRef avoids a stale closure: useQueryState defaults to "/"
@@ -30,7 +33,11 @@ export default function LoginPageClient() {
     isPending: loginIsPending,
     isPaused: loginIsPaused,
   } = useLogin({
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.fetchQuery({
+        queryKey: CONFIG.QUERY_KEY.MAIN_API.AUTH.ME(),
+        queryFn: authMe,
+      });
       router.replace(fromQueryRef.current);
     },
   });
