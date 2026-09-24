@@ -1,8 +1,11 @@
 "use client";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
+import { useAuthContext } from "@/app/_hooks/use-auth-context";
 
 export default function DashboardPageClient() {
+  const { auth } = useAuthContext();
+
   const breadcrumbItems = [
     {
       name: "Dashboard",
@@ -15,8 +18,8 @@ export default function DashboardPageClient() {
         <div className="mb-2">
           <AppBreadcrumb items={breadcrumbItems} />
         </div>
-
         <h1 className="font-heading text-2xl">Dashboard</h1>
+        <h2>Hi, {auth?.display_name ?? "-"}</h2>
       </div>
     </div>
   );

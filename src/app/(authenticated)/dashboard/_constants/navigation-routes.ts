@@ -16,19 +16,21 @@ import {
   Users,
   UserShield,
 } from "lucide-react";
+import { PermissionEnum } from "@/common/enums/permission";
 import { RoleKeyEnum } from "@/common/enums/role-key";
 import { NavSidebarVariantEnum } from "@/app/(authenticated)/dashboard/_enums/nav-sidebar-variant";
 
 const NAV_ROUTES: TNavSidebar[] = [
   {
+    title: "Dashboard",
+    icon: Gauge,
+    path: "/dashboard",
+  },
+  {
     title: "Board",
     variant: NavSidebarVariantEnum.LABEL,
+    authorizedPermissions: [PermissionEnum.PLAYER_BOARD_VIEW],
     children: [
-      {
-        title: "Dashboard",
-        icon: Gauge,
-        path: "/dashboard",
-      },
       {
         title: "Stories",
         icon: Swords,
@@ -83,7 +85,6 @@ const NAV_ROUTES: TNavSidebar[] = [
             title: "Audit Logs",
             icon: FileClock,
             path: "/dashboard/requestor/audit-logs",
-            authorizedRoles: [RoleKeyEnum.ADMIN, RoleKeyEnum.OPERATOR],
           },
         ],
       },
@@ -101,16 +102,19 @@ const NAV_ROUTES: TNavSidebar[] = [
             title: "Users",
             icon: Users,
             path: "/dashboard/master/iam/users",
+            authorizedPermissions: [PermissionEnum.USERS_VIEW],
           },
           {
             title: "Roles",
             icon: UserShield,
             path: "/dashboard/master/iam/roles",
+            authorizedPermissions: [PermissionEnum.ROLES_VIEW],
           },
           {
             title: "Permissions",
             icon: ShieldKeyhole,
             path: "/dashboard/master/iam/permissions",
+            authorizedPermissions: [PermissionEnum.PERMISSIONS_VIEW],
           },
         ],
       },
@@ -118,16 +122,19 @@ const NAV_ROUTES: TNavSidebar[] = [
         title: "Stories",
         icon: Swords,
         path: "/dashboard/master/stories",
+        authorizedPermissions: [PermissionEnum.STORIES_VIEW],
       },
       {
         title: "Events",
         icon: CalendarDays,
         path: "/dashboard/master/events",
+        authorizedPermissions: [PermissionEnum.EVENTS_VIEW],
       },
       {
         title: "Goods",
         icon: Scale,
         path: "/dashboard/master/goods",
+        authorizedPermissions: [PermissionEnum.GOODS_VIEW],
       },
       {
         title: "Transactions",
@@ -137,11 +144,13 @@ const NAV_ROUTES: TNavSidebar[] = [
             title: "Experience Points",
             icon: Medal,
             path: "/dashboard/master/transactions/experience-points",
+            authorizedPermissions: [PermissionEnum.POINTS_VIEW],
           },
           {
             title: "Gold Pieces",
             icon: Coins,
             path: "/dashboard/master/transactions/gold-pieces",
+            authorizedPermissions: [PermissionEnum.POINTS_VIEW],
           },
         ],
       },

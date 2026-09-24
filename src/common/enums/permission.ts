@@ -1,4 +1,7 @@
 export enum PermissionEnum {
+  // Player Board
+  PLAYER_BOARD_VIEW = "player_board:view",
+
   // Users
   USERS_CREATE = "users:create",
   USERS_VIEW = "users:view",

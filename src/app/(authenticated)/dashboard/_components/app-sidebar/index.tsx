@@ -19,19 +19,31 @@ import Link from "next/link";
 export function AppSidebar() {
   const { auth } = useAuthContext();
 
+  const isAuthorized = (item: TNavSidebar) => {
+    const isAuthorizedByRole =
+      !item.authorizedRoles?.length ||
+      (auth?.selected_role != null &&
+        item.authorizedRoles.includes(auth.selected_role.key));
+
+    const isAuthorizedByPermission =
+      !item.authorizedPermissions?.length ||
+      item.authorizedPermissions.some((permission) =>
+        auth?.permissions.includes(permission),
+      );
+
+    return isAuthorizedByRole && isAuthorizedByPermission;
+  };
+
   const filterNavItems = (items: TNavSidebar[]): TNavSidebar[] =>
     items.flatMap((item) => {
+      if (!isAuthorized(item)) return [];
+
       if (item.children) {
         const children = filterNavItems(item.children);
         return children.length > 0 ? [{ ...item, children }] : [];
       }
 
-      const isAuthorized =
-        !item.authorizedRoles?.length ||
-        (auth?.selected_role != null &&
-          item.authorizedRoles.includes(auth.selected_role.key));
-
-      return isAuthorized ? [item] : [];
+      return [item];
     });
 
   const navItems: TNavSidebar[] = filterNavItems(NAV_ROUTES);
