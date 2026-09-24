@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
 import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
@@ -24,6 +25,7 @@ import type { TRequestorApiErrorResponse } from "@/api/requestor/types/response"
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import RequestorAPINotFoundError from "@/api/requestor/errors/not-found-error";
 import RequestorAPIValidationError from "@/api/requestor/errors/validation-error";
+import CONFIG from "@/common/constants/config";
 import { applyValidationErrors } from "@/utils/validation-helper";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
@@ -55,6 +57,7 @@ export default function RequestsPageClient() {
     ),
   });
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { control, handleSubmit, reset, setError } =
     useForm<TRequestTableFilterValues>({
@@ -104,6 +107,11 @@ export default function RequestsPageClient() {
       if (error instanceof RequestorAPINotFoundError) {
         router.push("/requests");
       }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.REQUEST.ALL()],
+      });
     },
   });
 

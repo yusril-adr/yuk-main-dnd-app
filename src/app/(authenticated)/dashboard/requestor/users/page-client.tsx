@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
 import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
@@ -22,6 +23,7 @@ import type { TUserSortBy } from "@/api/requestor/users/consts/user-sort-by";
 import { UserStatusEnum } from "@/api/requestor/users/enums/user-status";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import { RoleKeyEnum } from "@/common/enums/role-key";
+import CONFIG from "@/common/constants/config";
 import RequestorAPINotFoundError from "@/api/requestor/errors/not-found-error";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
@@ -48,6 +50,7 @@ export default function UsersPageClient() {
     role: parseAsStringEnum<RoleKeyEnum>(Object.values(RoleKeyEnum)),
   });
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { control, handleSubmit, reset } = useForm<TUserTableFilterValues>({
     defaultValues: {
@@ -85,6 +88,11 @@ export default function UsersPageClient() {
       if (error instanceof RequestorAPINotFoundError) {
         router.push("/dashboard/requestor/users");
       }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.REQUESTOR_API.USER.ALL()],
+      });
     },
   });
   const { mutate: updateUserMutate } = useUpdateUserById({

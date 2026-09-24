@@ -19,6 +19,8 @@ import type { TRolePaginationPayload } from "@/api/main/modules/master/iam/roles
 import RoleTable from "@/app/(authenticated)/dashboard/master/iam/roles/_components/role-table";
 import { useGetRolePagination } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-role-pagination";
 import { useDeleteRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-delete-role-by-id";
+import CONFIG from "@/common/constants/config";
+import { useQueryClient } from "@tanstack/react-query";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 type TRoleTableSortBy =
@@ -31,6 +33,7 @@ type TRoleTableSortBy =
 export default function RolesPageClient() {
   const router = useRouter();
   const { auth } = useAuthContext();
+  const queryClient = useQueryClient();
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
     pageSize: parseAsInteger.withDefault(10),
@@ -64,6 +67,11 @@ export default function RolesPageClient() {
       if (mutationError instanceof MainAPINotFoundError) {
         router.push("/dashboard/master/iam/roles");
       }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.IAM.ROLE.ALL()],
+      });
     },
   });
 
@@ -138,7 +146,9 @@ export default function RolesPageClient() {
     [setQueryStates],
   );
 
-  const canCreateRoles = auth?.permissions.includes(PermissionEnum.ROLES_CREATE);
+  const canCreateRoles = auth?.permissions.includes(
+    PermissionEnum.ROLES_CREATE,
+  );
 
   return (
     <div className="w-full flex justify-center min-w-0">

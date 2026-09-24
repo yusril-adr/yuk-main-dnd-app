@@ -1,13 +1,8 @@
-import {
-  useMutation,
-  useQueryClient,
-  type UseMutationOptions,
-} from "@tanstack/react-query";
+import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { toast } from "sonner";
 
 import { deleteRoleById } from "@/api/main/modules/master/iam/roles/[id]";
-import CONFIG from "@/common/constants/config";
 
 export function useDeleteRoleById(
   options?: Omit<
@@ -15,8 +10,6 @@ export function useDeleteRoleById(
     "mutationFn"
   >,
 ) {
-  const queryClient = useQueryClient();
-
   return useMutation({
     ...options,
     mutationFn: deleteRoleById,
@@ -27,9 +20,6 @@ export function useDeleteRoleById(
     onSuccess: (...args) => {
       toast.dismiss();
       toast.success("Role deleted");
-      queryClient.invalidateQueries({
-        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.IAM.ROLE.ALL()],
-      });
       options?.onSuccess?.(...args);
     },
   });
