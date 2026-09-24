@@ -6,15 +6,10 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/app/_components/ui/collapsible";
-import type { TPermissionEntity } from "@/api/main/types/entities/iam/permission-entity";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { ChevronDown } from "lucide-react";
 import { toSentenceCase, toTitleCase } from "@/utils/format-text";
-
-type TRoleGroupedPermissionListProps = {
-  module: string;
-  permissions: TPermissionEntity[];
-};
+import { TRoleGroupedPermissionListProps } from "../_types/role-grouped-permission-list-props";
 
 export default function RoleGroupedPermissionList({
   module,

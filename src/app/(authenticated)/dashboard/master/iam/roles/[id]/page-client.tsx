@@ -36,6 +36,9 @@ export default function RoleDetailPageClient() {
     PermissionEnum.ROLES_UPDATE,
   );
   const permissionsByModule = groupPermissionsByModule(role?.permissions);
+  const sortedPermissionsByModule = Object.entries(
+    permissionsByModule ?? {},
+  ).sort(([aModule], [bModule]) => aModule.localeCompare(bModule));
 
   const renderValue = (value: string | undefined) => {
     if (roleQuery.isLoading) {
@@ -145,15 +148,13 @@ export default function RoleDetailPageClient() {
               )}
               {!roleQuery.isLoading && (
                 <div className="flex flex-col gap-2">
-                  {Object.entries(permissionsByModule ?? {}).map(
-                    ([module, permissions]) => (
-                      <RoleGroupedPermissionList
-                        key={module}
-                        module={module}
-                        permissions={permissions}
-                      />
-                    ),
-                  )}
+                  {sortedPermissionsByModule.map(([module, permissions]) => (
+                    <RoleGroupedPermissionList
+                      key={module}
+                      module={module}
+                      permissions={permissions}
+                    />
+                  ))}
                 </div>
               )}
             </div>
