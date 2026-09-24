@@ -9,26 +9,18 @@ import {
 import type { TPermissionEntity } from "@/api/main/types/entities/iam/permission-entity";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { ChevronDown } from "lucide-react";
+import { toSentenceCase, toTitleCase } from "@/utils/format-text";
 
-type TRolePermissionModuleProps = {
+type TRoleGroupedPermissionListProps = {
   module: string;
   permissions: TPermissionEntity[];
 };
 
-const toSentenceCase = (value: string) =>
-  value
-    .replace(/[-_]+/g, " ")
-    .toLowerCase()
-    .replace(/^\w/, (character) => character.toUpperCase());
-
-export default function RolePermissionModule({
+export default function RoleGroupedPermissionList({
   module,
   permissions,
-}: TRolePermissionModuleProps) {
+}: TRoleGroupedPermissionListProps) {
   const [moduleParent] = useAutoAnimate<HTMLDivElement>();
-  const moduleTitle = module
-    .replace(/[-_]+/g, " ")
-    .replace(/\b\w/g, (character) => character.toUpperCase());
 
   return (
     <Collapsible
@@ -37,7 +29,7 @@ export default function RolePermissionModule({
       ref={moduleParent}
     >
       <CollapsibleTrigger className="flex w-full items-center justify-between px-4 py-3 font-medium">
-        <span>{moduleTitle}</span>
+        <span>{toTitleCase(module)}</span>
         <ChevronDown className="size-4 transition-transform group-data-open/collapsible:rotate-180" />
       </CollapsibleTrigger>
       <CollapsibleContent className="border-t px-4 py-3">

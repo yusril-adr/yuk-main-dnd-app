@@ -21,7 +21,7 @@ import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import dayjs from "@/libs/dayjs";
 
-import RolePermissionModule from "./_components/role-permission-module";
+import RoleGroupedPermissionList from "./_components/role-grouped-permission-list";
 import { useGetRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-role-by-id";
 import { groupPermissionsByModule } from "../_utils/group-permissions-by-module";
 
@@ -32,7 +32,9 @@ export default function RoleDetailPageClient() {
   const roleId = id as string;
   const roleQuery = useGetRoleById(roleId);
   const role = roleQuery.data?.data?.data;
-  const canUpdateRoles = auth?.permissions.includes(PermissionEnum.ROLES_UPDATE);
+  const canUpdateRoles = auth?.permissions.includes(
+    PermissionEnum.ROLES_UPDATE,
+  );
   const permissionsByModule = groupPermissionsByModule(role?.permissions);
 
   const renderValue = (value: string | undefined) => {
@@ -145,7 +147,7 @@ export default function RoleDetailPageClient() {
                 <div className="flex flex-col gap-2">
                   {Object.entries(permissionsByModule ?? {}).map(
                     ([module, permissions]) => (
-                      <RolePermissionModule
+                      <RoleGroupedPermissionList
                         key={module}
                         module={module}
                         permissions={permissions}
