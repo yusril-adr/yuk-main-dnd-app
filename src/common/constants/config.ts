@@ -18,6 +18,12 @@ const CONFIG = {
       },
       MASTER: {
         IAM: {
+          USER: {
+            ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "user"],
+          },
+          ROLE: {
+            ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "role"],
+          },
           PERMISSION: {
             ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "permission"],
           },
