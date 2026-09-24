@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
-import RoleForm from "@/app/(authenticated)/dashboard/master/iam/roles/_components/role-form";
+import RoleEditForm from "./_components/role-edit-form";
 import { useGetAllPermissions } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-all-permissions";
 import { useGetRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-role-by-id";
 import { useUpdateRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-update-role-by-id";
@@ -29,18 +29,6 @@ export default function RoleEditPageClient() {
     },
   });
   const role = roleQuery.data?.data?.data;
-  const initialValues = useMemo(
-    () =>
-      role
-        ? {
-            name: role.name,
-            description: role.description ?? "",
-            permissionIds: role.permissions?.map((permission) => permission.id) ?? [],
-          }
-        : undefined,
-    [role],
-  );
-
   useEffect(() => {
     if (roleQuery.isError && roleQuery.error instanceof MainAPINotFoundError) {
       router.push("/dashboard/master/iam/roles");
@@ -72,8 +60,10 @@ export default function RoleEditPageClient() {
           <h1 className="font-heading text-2xl">Edit Role</h1>
         </div>
 
-        <RoleForm
-          initialValues={initialValues}
+        <RoleEditForm
+          name={role?.name}
+          description={role?.description}
+          permissionIds={role?.permissions?.map((permission) => permission.id)}
           permissions={permissionsQuery.data?.data?.data?.items ?? []}
           isLoading={roleQuery.isLoading}
           isPermissionsLoading={permissionsQuery.isLoading}

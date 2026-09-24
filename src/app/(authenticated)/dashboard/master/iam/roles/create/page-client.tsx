@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
-import RoleForm from "@/app/(authenticated)/dashboard/master/iam/roles/_components/role-form";
+import RoleCreateForm from "./_components/role-create-form";
 import { useCreateRole } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-create-role";
 import { useGetAllPermissions } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-all-permissions";
 
@@ -35,9 +35,8 @@ export default function RoleCreatePageClient() {
           <h1 className="font-heading text-2xl">Create Role</h1>
         </div>
 
-        <RoleForm
+        <RoleCreateForm
           permissions={permissionsQuery.data?.data?.data?.items ?? []}
-          isLoading={false}
           isPermissionsLoading={permissionsQuery.isLoading}
           onSubmitPayload={createRoleMutation.mutate}
           mutationError={createRoleMutation.error}

@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useMemo } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import Link from "next/link";
@@ -31,13 +29,15 @@ import type { TPermissionResponse } from "@/api/main/modules/master/iam/permissi
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import {
-  RoleFormSchema,
-  type TRoleFormSchema,
+  RoleEditFormSchema,
+  type TRoleEditFormSchema,
 } from "./scheme";
-import type { TRoleFormProps } from "@/app/(authenticated)/dashboard/master/iam/roles/_types/role-form-props";
+import type { TRoleEditFormProps } from "../../_types/role-edit-form-props";
 
-export default function RoleForm({
-  initialValues,
+export default function RoleEditForm({
+  name,
+  description,
+  permissionIds,
   permissions,
   isLoading,
   isPermissionsLoading,
@@ -45,18 +45,18 @@ export default function RoleForm({
   mutationError,
   isPending,
   isPaused,
-}: TRoleFormProps) {
+}: TRoleEditFormProps) {
   const values = useMemo(
     () => ({
-      name: initialValues?.name ?? "",
-      description: initialValues?.description ?? "",
-      permissionIds: initialValues?.permissionIds ?? [],
+      name: name ?? "",
+      description: description ?? "",
+      permissionIds: permissionIds ?? [],
     }),
-    [initialValues],
+    [description, name, permissionIds],
   );
 
-  const { control, handleSubmit, setError } = useForm<TRoleFormSchema>({
-    resolver: zodResolver(RoleFormSchema),
+  const { control, handleSubmit, setError } = useForm<TRoleEditFormSchema>({
+    resolver: zodResolver(RoleEditFormSchema),
     values,
   });
 
@@ -75,7 +75,7 @@ export default function RoleForm({
     }
   }, [mutationError, setError]);
 
-  const onSubmit: SubmitHandler<TRoleFormSchema> = (data) => {
+  const onSubmit: SubmitHandler<TRoleEditFormSchema> = (data) => {
     onSubmitPayload({
       name: data.name,
       description: data.description,
@@ -83,10 +83,8 @@ export default function RoleForm({
     });
   };
 
-  const isFormDisabled = useMemo(
-    () => isPending || isPaused || isLoading || isPermissionsLoading,
-    [isLoading, isPaused, isPending, isPermissionsLoading],
-  );
+  const isFormDisabled =
+    isPending || isPaused || isLoading || isPermissionsLoading;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
