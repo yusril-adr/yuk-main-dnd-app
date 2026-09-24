@@ -12,20 +12,9 @@ import {
 } from "@/app/_components/ui/field";
 import { Input } from "@/app/_components/ui/input";
 import { Textarea } from "@/app/_components/ui/textarea";
-import {
-  Combobox,
-  ComboboxChips,
-  ComboboxChip,
-  ComboboxChipsInput,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxItem,
-  ComboboxList,
-} from "@/app/_components/ui/combobox";
 import { Button } from "@/app/_components/ui/button";
 import { Spinner } from "@/app/_components/ui/spinner";
 
-import type { TPermissionResponse } from "@/api/main/modules/master/iam/permissions/types/permission-response";
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import {
@@ -33,6 +22,7 @@ import {
   type TRoleCreateFormSchema,
 } from "./scheme";
 import type { TRoleCreateFormProps } from "../../_types/role-create-form-props";
+import RoleCreatePermissionChecboxInput from "../role-create-permission-checbox-input";
 
 export default function RoleCreateForm({
   permissions,
@@ -124,51 +114,15 @@ export default function RoleCreateForm({
               name="permissionIds"
               control={control}
               render={({ field, fieldState }) => {
-                const selectedPermissions = permissions.filter((permission) =>
-                  field.value.includes(permission.id),
-                );
-
                 return (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="permissions">Permissions</FieldLabel>
-                    <Combobox<TPermissionResponse, true>
-                      id="permissions"
-                      multiple
-                      items={permissions}
-                      value={selectedPermissions}
+                    <FieldLabel>Permissions</FieldLabel>
+                    <RoleCreatePermissionChecboxInput
+                      permissions={permissions}
+                      value={field.value}
+                      onChange={field.onChange}
                       disabled={isFormDisabled}
-                      itemToStringLabel={(permission) => permission.key}
-                      itemToStringValue={(permission) => permission.id}
-                      isItemEqualToValue={(item, value) => item.id === value.id}
-                      onValueChange={(value) => {
-                        field.onChange(value.map((permission) => permission.id));
-                      }}
-                    >
-                      <ComboboxChips>
-                        {selectedPermissions.map((permission) => (
-                          <ComboboxChip key={permission.id}>
-                            {permission.key}
-                          </ComboboxChip>
-                        ))}
-                        <ComboboxChipsInput placeholder="Select permissions" />
-                      </ComboboxChips>
-                      <ComboboxContent>
-                        <ComboboxEmpty>No permissions found.</ComboboxEmpty>
-                        <ComboboxList>
-                          {(permission) => (
-                            <ComboboxItem
-                              key={permission.id}
-                              value={permission}
-                            >
-                              <span>{permission.key}</span>
-                              <span className="text-muted-foreground">
-                                {permission.module} / {permission.action}
-                              </span>
-                            </ComboboxItem>
-                          )}
-                        </ComboboxList>
-                      </ComboboxContent>
-                    </Combobox>
+                    />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}

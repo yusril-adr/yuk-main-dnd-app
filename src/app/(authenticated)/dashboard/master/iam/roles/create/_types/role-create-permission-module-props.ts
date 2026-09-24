@@ -1,8 +1,9 @@
 import type { TPermissionResponse } from "@/api/main/modules/master/iam/permissions/types/permission-response";
 
-export type TRoleEditPermissionChecboxInputsProps = {
+export type TRoleCreatePermissionModuleProps = {
+  module: string;
   permissions: TPermissionResponse[];
-  value: string[];
-  onChange: (permissionIds: string[]) => void;
+  selectedPermissionIds: string[];
+  onPermissionChange: (permissionIds: string[]) => void;
   disabled: boolean;
 };

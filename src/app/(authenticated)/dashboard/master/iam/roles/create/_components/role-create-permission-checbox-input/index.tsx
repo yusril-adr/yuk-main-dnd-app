@@ -1,15 +1,15 @@
 "use client";
 
 import { groupPermissionsByModule } from "@/app/(authenticated)/dashboard/master/iam/roles/_utils/group-permissions-by-module";
-import RoleEditPermissionModule from "./role-edit-permission-module";
-import { TRoleEditPermissionChecboxInputProps } from "../../_types/role-edit-permission-checbox-input-props";
+import type { TRoleCreatePermissionChecboxInputsProps } from "../../_types/role-create-permission-checbox-inputs-props";
+import RoleCreatePermissionModule from "./role-create-permission-module";
 
-export default function RoleEditPermissionChecboxInput({
+export default function RoleCreatePermissionChecboxInput({
   permissions,
   value,
   onChange,
   disabled,
-}: TRoleEditPermissionChecboxInputProps) {
+}: TRoleCreatePermissionChecboxInputsProps) {
   const permissionsByModule = groupPermissionsByModule(permissions);
   const sortedPermissionsByModule = Object.entries(permissionsByModule).sort(
     ([aModule], [bModule]) => aModule.localeCompare(bModule),
@@ -18,7 +18,7 @@ export default function RoleEditPermissionChecboxInput({
   return (
     <div className="flex flex-col gap-2">
       {sortedPermissionsByModule.map(([module, modulePermissions]) => (
-        <RoleEditPermissionModule
+        <RoleCreatePermissionModule
           key={module}
           module={module}
           permissions={modulePermissions}

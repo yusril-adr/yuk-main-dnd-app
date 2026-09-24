@@ -19,7 +19,7 @@ import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { RoleEditFormSchema, type TRoleEditFormSchema } from "./scheme";
 import type { TRoleEditFormProps } from "../../_types/role-edit-form-props";
-import RoleEditPermissionChecboxInputs from "../role-edit-permission-checbox-input";
+import RoleEditPermissionChecboxInput from "../role-edit-permission-checbox-input";
 
 export default function RoleEditForm({
   name,
@@ -123,7 +123,7 @@ export default function RoleEditForm({
                 return (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel>Permissions</FieldLabel>
-                    <RoleEditPermissionChecboxInputs
+                    <RoleEditPermissionChecboxInput
                       permissions={permissions}
                       value={field.value}
                       onChange={field.onChange}
