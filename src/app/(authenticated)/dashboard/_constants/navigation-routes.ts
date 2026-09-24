@@ -17,7 +17,6 @@ import {
   UserShield,
 } from "lucide-react";
 import { PermissionEnum } from "@/common/enums/permission";
-import { RoleKeyEnum } from "@/common/enums/role-key";
 import { NavSidebarVariantEnum } from "@/app/(authenticated)/dashboard/_enums/nav-sidebar-variant";
 
 const NAV_ROUTES: TNavSidebar[] = [
