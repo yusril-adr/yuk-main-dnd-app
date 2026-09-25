@@ -55,7 +55,7 @@ export function AvatarDropdown() {
             <Avatar data-icon="inline-start">
               <AvatarImage
                 src={
-                  auth?.avatar?.url ?? makeDefaultAvatarUrl(auth.display_name)
+                  auth?.avatar_url ?? makeDefaultAvatarUrl(auth.display_name)
                 }
                 alt={auth.display_name}
               />

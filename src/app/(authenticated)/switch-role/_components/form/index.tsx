@@ -94,9 +94,7 @@ export function SwitchRoleForm({
           <div className="flex w-full justify-center items-center">
             <Avatar className="h-24 w-24 rounded-full">
               <AvatarImage
-                src={
-                  user.avatar?.url ?? makeDefaultAvatarUrl(user.display_name)
-                }
+                src={user.avatar_url ?? makeDefaultAvatarUrl(user.display_name)}
                 alt={user.display_name}
               />
               <AvatarFallback>{getInitials(user.display_name)}</AvatarFallback>
@@ -122,7 +120,8 @@ export function SwitchRoleForm({
                     <SelectValue placeholder="Select a role">
                       {(value: string | null) =>
                         roles.find((role) => role.key === value)?.name ??
-                        "Select a role"}
+                        "Select a role"
+                      }
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>

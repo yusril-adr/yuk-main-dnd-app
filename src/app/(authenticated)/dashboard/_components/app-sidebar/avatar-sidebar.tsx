@@ -53,10 +53,10 @@ export function AvatarSidebar() {
               {isLoading && <Skeleton className="h-8 w-8 rounded-full" />}
 
               {!isLoading && (
-                <Avatar className="h-8 w-8 rounded-lg grayscale">
+                <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage
                     src={
-                      auth?.avatar?.url ??
+                      auth?.avatar_url ??
                       makeDefaultAvatarUrl(auth?.display_name)
                     }
                     alt={auth?.display_name || "-"}
