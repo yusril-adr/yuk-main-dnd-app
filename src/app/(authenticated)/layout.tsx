@@ -20,6 +20,7 @@ export default function AuthenticatedLayout({
     }
 
     if (
+      auth &&
       !authQuery?.isLoading &&
       !auth?.selected_role &&
       pathname !== "/switch-role"
