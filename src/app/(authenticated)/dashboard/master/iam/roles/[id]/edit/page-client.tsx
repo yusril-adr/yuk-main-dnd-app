@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
@@ -37,7 +37,7 @@ export default function RoleEditPageClient() {
   const role = roleQuery.data?.data?.data;
   useEffect(() => {
     if (roleQuery.isError && roleQuery.error instanceof MainAPINotFoundError) {
-      router.push("/dashboard/master/iam/roles");
+      notFound();
     }
   }, [roleQuery.error, roleQuery.isError, router]);
 
