@@ -30,9 +30,7 @@ export default function AuthenticatedLayout({
     }
   }, [authQuery?.isLoading, auth, router, pathname]);
 
-  if (authQuery?.isLoading) return <GlobalLoader />;
-
-  if (!auth) return <GlobalLoader />;
+  if (authQuery?.isLoading || !auth) return <GlobalLoader />;
 
   return children;
 }
