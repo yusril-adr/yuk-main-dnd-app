@@ -12,3 +12,4 @@
 - Prefers TypeScript enums named with a `Enum` suffix (e.g., `PermissionEnum`, `RoleKeyEnum`, `AuditLogActionEnum`) rather than a bare name like `Permission`. Confidence: 0.8
 - Prefers lowercase string enum values (e.g., `"admin"`, `"create"`, `"events:read"`) rather than UPPER_CASE or PascalCase values. Confidence: 0.7
 - Prefers `react-if` (`<If condition>` / `<Then>` / `<Else>`) for conditional rendering in React components over ternaries. Confidence: 0.8
+- Expects skeleton/loading-state components to mirror the exact layout of the actual component they replace (same CardHeader/CardContent/CardFooter structure, same grid, same flex containers, same spacing) — skeleton mismatch that causes layout shift on load is a bug to fix. Confidence: 0.8
