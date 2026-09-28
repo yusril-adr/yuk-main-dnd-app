@@ -15,7 +15,7 @@ export default function DashboardPageClient() {
 
   return (
     <div className="w-full flex justify-center min-w-0 h-full">
-      <div className="w-full max-w-7xl flex flex-col px-10 pb-10 gap-2">
+      <main className="w-full max-w-7xl flex flex-col px-10 pb-10 gap-2">
         <div className="mb-2">
           <AppBreadcrumb items={breadcrumbItems} />
         </div>
@@ -29,7 +29,7 @@ export default function DashboardPageClient() {
             </h2>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

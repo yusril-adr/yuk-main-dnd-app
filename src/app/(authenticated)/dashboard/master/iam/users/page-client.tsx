@@ -2,10 +2,12 @@
 
 import { useCallback, useMemo } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Search } from "lucide-react";
+import Link from "next/link";
 import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
+import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { Button } from "@/app/_components/ui/button";
 import { ButtonGroup } from "@/app/_components/ui/button-group";
 import {
@@ -24,6 +26,7 @@ import {
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { OrderKeyEnum } from "@/common/enums/order-key";
+import { PermissionEnum } from "@/common/enums/permission";
 import { generatePages } from "@/utils/table-helper";
 import type { TUserPaginationPayload } from "@/api/main/modules/master/iam/users/types/user-pagination-payload";
 
@@ -43,6 +46,11 @@ const PAGE_SIZE_OPTIONS = [
 ];
 
 export default function UsersPageClient() {
+  const { auth } = useAuthContext();
+  const canCreateUsers = auth?.permissions.includes(
+    PermissionEnum.USERS_CREATE,
+  );
+
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
     pageSize: parseAsInteger.withDefault(12),
@@ -137,11 +145,19 @@ export default function UsersPageClient() {
 
   return (
     <div className="w-full flex justify-center min-w-0">
-      <div className="w-full max-w-7xl flex flex-col px-10 pb-10">
+      <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
         <AppBreadcrumb items={[{ name: "Users" }]} />
 
         <div className="flex justify-between items-center mt-4 mb-6">
           <h1 className="font-heading text-2xl">Users</h1>
+          {canCreateUsers && (
+            <Button
+              render={<Link href="/dashboard/master/iam/users/create" />}
+              nativeButton={false}
+            >
+              <Plus /> Add User
+            </Button>
+          )}
         </div>
 
         <InputGroup className="mb-6">
@@ -227,7 +243,7 @@ export default function UsersPageClient() {
             </Select>
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }

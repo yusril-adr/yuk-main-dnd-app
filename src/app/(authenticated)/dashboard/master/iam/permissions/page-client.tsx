@@ -24,14 +24,7 @@ export default function PermissionsPageClient() {
     pageSize: parseAsInteger.withDefault(10),
     search: parseAsString.withDefault(""),
     sortBy: createSortByParser(
-      [
-        "id",
-        "module",
-        "action",
-        "key",
-        "created_at",
-        "updated_at",
-      ] as const,
+      ["id", "module", "action", "key", "created_at", "updated_at"] as const,
       "Permissions",
     ),
     order: parseAsStringEnum<OrderKeyEnum>(Object.values(OrderKeyEnum)),
@@ -43,12 +36,13 @@ export default function PermissionsPageClient() {
     ),
   });
 
-  const { control, handleSubmit, reset } = useForm<TPermissionTableFilterValues>({
-    defaultValues: {
-      module: (queryStates.module as PermissionModuleEnum) || null,
-      action: (queryStates.action as PermissionActionEnum) || null,
-    },
-  });
+  const { control, handleSubmit, reset } =
+    useForm<TPermissionTableFilterValues>({
+      defaultValues: {
+        module: (queryStates.module as PermissionModuleEnum) || null,
+        action: (queryStates.action as PermissionActionEnum) || null,
+      },
+    });
 
   const { onFilterReset, onFilterSubmit, columnFilters } =
     useFilter<TPermissionTableFilterValues>(
@@ -149,7 +143,7 @@ export default function PermissionsPageClient() {
 
   return (
     <div className="w-full flex justify-center min-w-0">
-      <div className="w-full max-w-7xl flex flex-col px-10 pb-10">
+      <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
         <div className="flex flex-col">
           <AppBreadcrumb items={breadcrumbItems} />
 
@@ -177,7 +171,7 @@ export default function PermissionsPageClient() {
             },
           }}
         />
-      </div>
+      </main>
     </div>
   );
 }

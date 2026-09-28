@@ -152,7 +152,7 @@ export default function RolesPageClient() {
 
   return (
     <div className="w-full flex justify-center min-w-0">
-      <div className="w-full max-w-7xl flex flex-col px-10 pb-10">
+      <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
         <AppBreadcrumb items={[{ name: "Roles" }]} />
 
         <div className="flex justify-between items-center mt-4 mb-6">
@@ -181,7 +181,7 @@ export default function RolesPageClient() {
             onDeleteRole: deleteRoleMutate,
           }}
         />
-      </div>
+      </main>
     </div>
   );
 }

@@ -99,7 +99,7 @@ export default function RequestDetailPageClient() {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="w-full max-w-7xl flex flex-col px-10 pb-10">
+      <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
         <AppBreadcrumb items={breadcrumbItems} />
 
         <div className="flex items-center mt-4 mb-6 gap-x-2">
@@ -245,7 +245,7 @@ export default function RequestDetailPageClient() {
             </Table>
           </CardContent>
         </Card>
-      </div>
+      </main>
     </div>
   );
 }

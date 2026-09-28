@@ -43,7 +43,7 @@ export default function RoleEditPageClient() {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="w-full max-w-7xl flex flex-col px-10 pb-10">
+      <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
         <AppBreadcrumb
           items={[
             { name: "Roles", link: "/dashboard/master/iam/roles" },
@@ -80,7 +80,7 @@ export default function RoleEditPageClient() {
           isPending={updateRoleMutation.isPending}
           isPaused={updateRoleMutation.isPaused}
         />
-      </div>
+      </main>
     </div>
   );
 }
