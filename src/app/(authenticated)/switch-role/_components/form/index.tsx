@@ -40,17 +40,7 @@ import type { TSwitchRoleFormProps } from "@/app/(authenticated)/switch-role/_ty
 import { SwitchFormSchema, type TSwitchFormSchema } from "./scheme";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import MainAPIValidationError from "@/api/main/errors/validation-error";
-import { makeDefaultAvatarUrl } from "@/utils/avatar-helper";
-
-function getInitials(name: string) {
-  return name
-    .trim()
-    .split(/\s+/)
-    .map((part) => part[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
+import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 
 export function SwitchRoleForm({
   user,

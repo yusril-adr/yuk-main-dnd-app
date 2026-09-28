@@ -30,17 +30,7 @@ import {
 } from "@/app/_components/ui/avatar";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { logout } from "@/utils/logout";
-import { makeDefaultAvatarUrl } from "@/utils/avatar-helper";
-
-function getInitials(name: string) {
-  return name
-    .trim()
-    .split(/\s+/)
-    .map((part) => part[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
+import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 
 export function AvatarDropdown() {
   const { auth } = useAuthContext();

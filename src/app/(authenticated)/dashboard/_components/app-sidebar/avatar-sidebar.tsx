@@ -32,7 +32,7 @@ import {
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { logout } from "@/utils/logout";
-import { makeDefaultAvatarUrl } from "@/utils/avatar-helper";
+import { makeDefaultAvatarUrl } from "@/utils/user-helper";
 
 export function AvatarSidebar() {
   const { auth, authQuery } = useAuthContext();
