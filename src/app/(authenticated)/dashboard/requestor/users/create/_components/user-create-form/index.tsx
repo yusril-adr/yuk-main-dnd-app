@@ -5,6 +5,7 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { Else, If, Then } from "react-if";
 
 import { Card, CardContent, CardFooter } from "@/app/_components/ui/card";
 import {
@@ -139,7 +140,10 @@ export default function UserCreateForm({
                         type="button"
                         onClick={() => setIsShowPassword(!isShowPassword)}
                       >
-                        {isShowPassword ? <EyeOffIcon /> : <EyeIcon />}
+                        <If condition={isShowPassword}>
+                          <Then><EyeOffIcon /></Then>
+                          <Else><EyeIcon /></Else>
+                        </If>
                       </Button>
                     </InputGroupAddon>
                   </InputGroup>

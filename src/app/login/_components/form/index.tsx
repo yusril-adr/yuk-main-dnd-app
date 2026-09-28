@@ -2,6 +2,7 @@ import { EyeOffIcon, EyeIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Else, If, Then } from "react-if";
 
 import {
   Card,
@@ -118,7 +119,10 @@ export function LoginForm({
                         type="button"
                         onClick={() => setIsShowPassword(!isShowPassword)}
                       >
-                        {isShowPassword ? <EyeOffIcon /> : <EyeIcon />}
+                        <If condition={isShowPassword}>
+                          <Then><EyeOffIcon /></Then>
+                          <Else><EyeIcon /></Else>
+                        </If>
                       </button>
                     </InputGroupAddon>
                   </InputGroup>
@@ -133,8 +137,11 @@ export function LoginForm({
         </CardContent>
 
         <CardFooter className="flex-col gap-2">
-          <Button type="submit" className="w-full" disabled={isFormDisabled}>
-            {isFormDisabled ? <Spinner /> : "Login"}
+            <Button type="submit" className="w-full" disabled={isFormDisabled}>
+            <If condition={isFormDisabled}>
+              <Then><Spinner /></Then>
+              <Else>Login</Else>
+            </If>
           </Button>
         </CardFooter>
       </Card>

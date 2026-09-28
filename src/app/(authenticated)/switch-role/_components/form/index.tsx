@@ -3,6 +3,7 @@
 import { useEffect, useMemo } from "react";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Else, If, Then } from "react-if";
 
 import {
   Avatar,
@@ -141,7 +142,10 @@ export function SwitchRoleForm({
 
         <CardFooter>
           <Button type="submit" className="w-full" disabled={isFormDisabled}>
-            {isPending || isPaused ? <Spinner /> : "Switch role"}
+            <If condition={isPending || isPaused}>
+              <Then><Spinner /></Then>
+              <Else>Switch role</Else>
+            </If>
           </Button>
         </CardFooter>
       </Card>
