@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
+import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { Button } from "@/app/_components/ui/button";
@@ -13,22 +14,16 @@ import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import { PermissionEnum } from "@/common/enums/permission";
+import CONFIG from "@/common/constants/config";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import type { TRolePaginationPayload } from "@/api/main/modules/master/iam/roles/types/role-pagination-payload";
 
 import RoleTable from "@/app/(authenticated)/dashboard/master/iam/roles/_components/role-table";
+import type { TRoleTableSortBy } from "@/app/(authenticated)/dashboard/master/iam/roles/_types/role-table-sort-by";
 import { useGetRolePagination } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-role-pagination";
 import { useDeleteRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-delete-role-by-id";
-import CONFIG from "@/common/constants/config";
-import { useQueryClient } from "@tanstack/react-query";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
-type TRoleTableSortBy =
-  | "id"
-  | "name"
-  | "description"
-  | "created_at"
-  | "updated_at";
 
 export default function RolesPageClient() {
   const router = useRouter();

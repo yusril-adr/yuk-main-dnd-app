@@ -4,17 +4,18 @@ import { useForm } from "react-hook-form";
 import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
-import PermissionTable from "@/app/(authenticated)/dashboard/master/iam/permissions/_components/permission-table";
 import { useFilter } from "@/app/_hooks/use-filter";
-import { useGetPermissionPagination } from "@/app/(authenticated)/dashboard/master/iam/permissions/_hooks/use-get-permission-pagination";
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
-import type { TPermissionTableFilterValues } from "@/app/(authenticated)/dashboard/master/iam/permissions/_types/permission-table-props";
-import type { TPermissionPaginationPayload } from "@/api/main/modules/master/iam/permissions/types/permission-pagination-payload";
-import type { TPermissionSortBy } from "@/api/main/modules/master/iam/permissions/consts/permission-sort-by";
+import { OrderKeyEnum } from "@/common/enums/order-key";
 import { PermissionModuleEnum } from "@/api/main/modules/master/iam/permissions/enums/permission-module";
 import { PermissionActionEnum } from "@/api/main/modules/master/iam/permissions/enums/permission-action";
-import { OrderKeyEnum } from "@/common/enums/order-key";
+import type { TPermissionPaginationPayload } from "@/api/main/modules/master/iam/permissions/types/permission-pagination-payload";
+
+import PermissionTable from "@/app/(authenticated)/dashboard/master/iam/permissions/_components/permission-table";
+import { useGetPermissionPagination } from "@/app/(authenticated)/dashboard/master/iam/permissions/_hooks/use-get-permission-pagination";
+import type { TPermissionTableFilterValues } from "@/app/(authenticated)/dashboard/master/iam/permissions/_types/permission-table-props";
+import type { TPermissionTableSortBy } from "@/app/(authenticated)/dashboard/master/iam/permissions/_types/permission-table-sort-by";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 
@@ -91,7 +92,8 @@ export default function PermissionsPageClient() {
     (key: string) => {
       if (queryStates.sortBy === key) {
         let desiredOrder: OrderKeyEnum | null = null;
-        let desiredKey: TPermissionSortBy | null = key as TPermissionSortBy;
+        let desiredKey: TPermissionTableSortBy | null =
+          key as TPermissionTableSortBy;
 
         switch (queryStates.order) {
           case OrderKeyEnum.ASC:
@@ -112,7 +114,7 @@ export default function PermissionsPageClient() {
         });
       } else {
         setQueryStates({
-          sortBy: key as TPermissionSortBy,
+          sortBy: key as TPermissionTableSortBy,
           order: OrderKeyEnum.ASC,
           page: 1,
         });

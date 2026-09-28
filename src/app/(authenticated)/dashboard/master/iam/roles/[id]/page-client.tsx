@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Pencil, Trash } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, notFound } from "next/navigation";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { Button } from "@/app/_components/ui/button";
@@ -75,7 +75,7 @@ export default function RoleDetailPageClient() {
 
   useEffect(() => {
     if (roleQuery.isError && roleQuery.error instanceof MainAPINotFoundError) {
-      router.push("/dashboard/master/iam/roles");
+      notFound();
     }
   }, [roleQuery.error, roleQuery.isError, router]);
 
