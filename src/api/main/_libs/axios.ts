@@ -48,7 +48,6 @@ mainAxios.interceptors.response.use(
           break;
         }
         case 404: {
-          toast.error(defaultErrorResponse.message as string);
           throw new MainAPINotFoundError(
             defaultErrorResponse.message as string,
           );
