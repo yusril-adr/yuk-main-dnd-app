@@ -2,4 +2,5 @@ import type { TUserResponse } from "@/api/main/modules/master/iam/users/types/us
 
 export type TUserCardProps = {
   user: TUserResponse;
+  onDelete?: (id: string) => void;
 };

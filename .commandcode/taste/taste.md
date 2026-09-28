@@ -18,6 +18,7 @@
 - Organizes API clients under `src/api/{namespace}/` (e.g., `requestor`, `main`) with a consistent per-resource module pattern (path constants, types, fetch functions); new modules should mirror an existing module's structure and return shape (e.g., `main/permissions` mirrors `requestor`) rather than inventing a new layout. Confidence: 0.6
 - Nests API feature modules under `src/api/{namespace}/modules/{feature}/` (e.g., `src/api/main/modules/permissions/index.ts`) rather than directly under the namespace folder. Confidence: 0.6
 - Prefers filter, sort_by/order, and pagination (page/per_page) to be genuinely implemented in API modules — including on dummy/stub data — rather than accepting the params but ignoring them (e.g., asked to "also handle sort by and pagination", then "sort by and filter", on the permissions module whose dummy stub previously ignored them). Confidence: 0.7
+- When in plan mode and a scope change arises, expects the plan document to be updated/rewritten first before proceeding with implementation — won't skip straight to coding. Confidence: 0.7
 - Keeps the axios-based API envelope (e.g., `AxiosResponse<TRequestorApiPaginationResponse<T>>`) as a stable contract/abstraction layer deliberately, even when the actual transport is Supabase RPC — so downstream hooks/tables reading `response.data.data.items`/`meta` never change and migrating to a real REST API later only swaps the function body (dummy → RPC → REST). Confidence: 0.8
 
 # Auth

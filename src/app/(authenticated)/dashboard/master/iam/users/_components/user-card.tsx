@@ -1,6 +1,7 @@
 "use client";
 
-import { Ellipsis, EllipsisVertical, Eye, Pencil } from "lucide-react";
+import { useCallback, useState } from "react";
+import { EllipsisVertical, Eye, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -25,19 +26,41 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/app/_components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/app/_components/ui/alert-dialog";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { PermissionEnum } from "@/common/enums/permission";
 import { getInitials } from "@/utils/user-helper";
 
 import type { TUserCardProps } from "@/app/(authenticated)/dashboard/master/iam/users/_types/user-card-props";
 
-export default function UserCard({ user }: TUserCardProps) {
+export default function UserCard({ user, onDelete }: TUserCardProps) {
   const { auth } = useAuthContext();
   const canUpdateUsers = auth?.permissions.includes(
     PermissionEnum.USERS_UPDATE,
   );
+  const canDeleteUsers = auth?.permissions.includes(
+    PermissionEnum.USERS_DELETE,
+  );
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+
+  const onDeleteConfirm = useCallback(() => {
+    if (confirmDeleteId && onDelete) {
+      onDelete(confirmDeleteId);
+    }
+    setConfirmDeleteId(null);
+  }, [confirmDeleteId, onDelete]);
 
   return (
+    <>
     <Card>
       <CardHeader className="relative">
         <div className="absolute right-0 top-0">
@@ -69,6 +92,15 @@ export default function UserCard({ user }: TUserCardProps) {
                   >
                     <Pencil />
                     Edit
+                  </DropdownMenuItem>
+                )}
+                {canDeleteUsers && onDelete && (
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onClick={() => setConfirmDeleteId(user.id)}
+                  >
+                    <Trash />
+                    Delete
                   </DropdownMenuItem>
                 )}
               </DropdownMenuGroup>
@@ -131,5 +163,31 @@ export default function UserCard({ user }: TUserCardProps) {
         )}
       </CardFooter>
     </Card>
+
+    <AlertDialog
+      open={confirmDeleteId !== null}
+      onOpenChange={(open) => {
+        if (!open) {
+          setConfirmDeleteId(null);
+        }
+      }}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete user?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. The user will be permanently removed
+            from the system.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction variant="destructive" onClick={onDeleteConfirm}>
+            Delete
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+    </>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 
@@ -29,6 +30,8 @@ import type { TUserPaginationPayload } from "@/api/main/modules/master/iam/users
 import UserCard from "@/app/(authenticated)/dashboard/master/iam/users/_components/user-card";
 import UserCardSkeleton from "@/app/(authenticated)/dashboard/master/iam/users/_components/user-card-skeleton";
 import { useGetUserPagination } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-pagination";
+import { useDeleteUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-delete-user-by-id";
+import CONFIG from "@/common/constants/config";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 
@@ -69,9 +72,17 @@ export default function UsersPageClient() {
     [queryStates],
   );
 
+  const queryClient = useQueryClient();
   const { data: responseData, isLoading } = useGetUserPagination(
     queryStatesIntoPayload,
   );
+  const { mutate: deleteUserMutate } = useDeleteUserById({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.IAM.USER.ALL()],
+      });
+    },
+  });
 
   const items = responseData?.data?.data?.items ?? [];
   const meta = responseData?.data?.data?.meta;
@@ -151,7 +162,9 @@ export default function UsersPageClient() {
             ))}
 
           {!isLoading &&
-            items.map((user) => <UserCard key={user.id} user={user} />)}
+            items.map((user) => (
+              <UserCard key={user.id} user={user} onDelete={deleteUserMutate} />
+            ))}
         </div>
 
         {!isLoading && (
