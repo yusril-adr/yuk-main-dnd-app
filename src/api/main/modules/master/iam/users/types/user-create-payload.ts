@@ -3,7 +3,7 @@ export type TUserCreatePayload = {
   email: string;
   password: string;
   display_name: string;
-  avatar_url?: string;
+  avatar_file_id?: string;
   bio?: string;
   role_ids?: string[];
 };

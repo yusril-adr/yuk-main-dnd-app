@@ -1,4 +1,4 @@
-import { TBaseEntity } from "./base-entity";
+import { TBaseEntity } from "../base-entity";
 
 export type TPermissionEntity = TBaseEntity & {
   module: string;

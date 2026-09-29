@@ -1,4 +1,4 @@
-import { TBaseEntity } from "./base-entity";
+import { TBaseEntity } from "../base-entity";
 import { TPermissionEntity } from "./permission-entity";
 import { RoleKeyEnum } from "@/common/enums/role-key";
 

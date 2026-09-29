@@ -4,6 +4,9 @@ const MAIN_API_PATH = {
     ME: "/api/v1/auth/me",
     SWITCH_ROLE: "/api/v1/auth/switch-role",
   },
+  FILE: {
+    UPLOAD: "/api/v1/files/upload",
+  },
   MASTER: {
     IAM: {
       USER: {

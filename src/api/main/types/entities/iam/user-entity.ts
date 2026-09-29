@@ -1,4 +1,4 @@
-import { TBaseEntity } from "./base-entity";
+import { TBaseEntity } from "../base-entity";
 import { TRoleEntity } from "./role-entity";
 
 export type TUserEntity = TBaseEntity & {
