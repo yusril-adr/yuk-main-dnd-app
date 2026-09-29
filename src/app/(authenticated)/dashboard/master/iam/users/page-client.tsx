@@ -15,6 +15,14 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/app/_components/ui/input-group";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/app/_components/ui/combobox";
 import { Field, FieldGroup, FieldLabel } from "@/app/_components/ui/field";
 import {
   Popover,
@@ -41,10 +49,11 @@ import UserCardSkeleton from "@/app/(authenticated)/dashboard/master/iam/users/_
 import type { TUserCardListSortBy } from "@/app/(authenticated)/dashboard/master/iam/users/_types/user-card-list-sort-by";
 import { useGetUserPagination } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-pagination";
 import { useDeleteUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-delete-user-by-id";
-import { useGetAllRoles } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-all-roles";
+import { useGetRolePagination } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-role-pagination";
 import CONFIG from "@/common/constants/config";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
+let debounceRoleSearchTimeoutId: NodeJS.Timeout | number | null = null;
 
 const PAGE_SIZE_OPTIONS = [
   { label: "6 / page", value: 6 },
@@ -114,10 +123,12 @@ export default function UsersPageClient() {
     },
   });
 
-  const { data: rolesData } = useGetAllRoles();
-  const roleOptions = (rolesData?.data?.data?.items ?? []).map((role) => ({
-    label: role.name,
+  const [roleSearch, setRoleSearch] = useState("");
+
+  const { data: rolesData } = useGetRolePagination(roleSearch || undefined);
+  const roleItems = (rolesData?.data?.data?.items ?? []).map((role) => ({
     value: role.id,
+    label: role.name,
   }));
 
   const items = responseData?.data?.data?.items ?? [];
@@ -194,8 +205,18 @@ export default function UsersPageClient() {
     setFilterSortBy(null);
     setFilterOrder(null);
     setFilterRoleId("");
+    setRoleSearch("");
     setQueryStates({ sortBy: null, order: null, roleId: null, page: 1 });
-  }, [setQueryStates]);
+  }, [setFilterRoleId, setQueryStates]);
+
+  const onRoleSearchChange = useCallback((value: string) => {
+    if (debounceRoleSearchTimeoutId) {
+      clearTimeout(debounceRoleSearchTimeoutId);
+    }
+    debounceRoleSearchTimeoutId = setTimeout(() => {
+      setRoleSearch(value);
+    }, 300);
+  }, []);
 
   return (
     <div className="w-full flex justify-center min-w-0">
@@ -277,24 +298,33 @@ export default function UsersPageClient() {
                 <FieldGroup>
                   <Field className="grid gap-2">
                     <FieldLabel>Roles</FieldLabel>
-                    <Select
-                      items={roleOptions}
-                      value={filterRoleId || undefined}
-                      onValueChange={(val) => setFilterRoleId(val || "")}
+                    <Combobox
+                      items={roleItems}
+                      value={
+                        filterRoleId
+                          ? roleItems.find((r) => r.value === filterRoleId) ??
+                            null
+                          : null
+                      }
+                      onValueChange={(value) => {
+                        setFilterRoleId(value?.value ?? "");
+                      }}
+                      onInputValueChange={(inputValue) =>
+                        onRoleSearchChange(inputValue)
+                      }
                     >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {roleOptions.map((item) => (
-                            <SelectItem key={item.value} value={item.value}>
+                      <ComboboxInput placeholder="Search role" showClear />
+                      <ComboboxContent>
+                        <ComboboxEmpty>No roles found.</ComboboxEmpty>
+                        <ComboboxList>
+                          {(item: { value: string; label: string }) => (
+                            <ComboboxItem key={item.value} value={item}>
                               {item.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                            </ComboboxItem>
+                          )}
+                        </ComboboxList>
+                      </ComboboxContent>
+                    </Combobox>
                   </Field>
                 </FieldGroup>
 

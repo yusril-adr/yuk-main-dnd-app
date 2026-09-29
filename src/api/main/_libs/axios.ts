@@ -9,6 +9,10 @@ import { logout } from "@/utils/logout";
 
 export const mainAxios = axios.create({
   baseURL: CONFIG.MAIN_API_BASE_URL,
+  // Removes the '[]' and repeats the key instead
+  paramsSerializer: {
+    indexes: null,
+  },
 });
 
 mainAxios.interceptors.request.use((config) => {
