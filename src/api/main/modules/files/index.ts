@@ -9,10 +9,7 @@ import { TFileResponse } from "./types/file-response";
 export const uploadFile = async (
   payload: TFileUploadPayload,
 ): Promise<AxiosResponse<TMainApiResponse<TFileResponse>>> => {
-  const response = await mainAxios.post(
-    MAIN_API_PATH.MASTER.IAM.USER.DEFAULT,
-    payload,
-  );
+  const response = await mainAxios.postForm(MAIN_API_PATH.FILE.UPLOAD, payload);
 
   return response;
 };
