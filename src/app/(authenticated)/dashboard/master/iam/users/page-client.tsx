@@ -2,84 +2,25 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight, Funnel, Plus, Search } from "lucide-react";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import { parseAsArrayOf, parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { Button } from "@/app/_components/ui/button";
-import { ButtonGroup } from "@/app/_components/ui/button-group";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/app/_components/ui/input-group";
-import {
-  Combobox,
-  ComboboxChip,
-  ComboboxChips,
-  ComboboxChipsInput,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxItem,
-  ComboboxList,
-} from "@/app/_components/ui/combobox";
-import { Field, FieldGroup, FieldLabel } from "@/app/_components/ui/field";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/app/_components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/_components/ui/select";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import { PermissionEnum } from "@/common/enums/permission";
-import { generatePages } from "@/utils/table-helper";
 import type { TUserPaginationPayload } from "@/api/main/modules/master/iam/users/types/user-pagination-payload";
 
-import UserCard from "@/app/(authenticated)/dashboard/master/iam/users/_components/user-card";
-import UserCardSkeleton from "@/app/(authenticated)/dashboard/master/iam/users/_components/user-card-skeleton";
+import UserCardList from "@/app/(authenticated)/dashboard/master/iam/users/_components/user-card-list";
 import type { TUserCardListSortBy } from "@/app/(authenticated)/dashboard/master/iam/users/_types/user-card-list-sort-by";
 import { useGetUserPagination } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-pagination";
 import { useDeleteUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-delete-user-by-id";
 import { useGetRolePagination } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-role-pagination";
 import CONFIG from "@/common/constants/config";
-
-let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
-let debounceRoleSearchTimeoutId: NodeJS.Timeout | number | null = null;
-
-const PAGE_SIZE_OPTIONS = [
-  { label: "6 / page", value: 6 },
-  { label: "12 / page", value: 12 },
-  { label: "24 / page", value: 24 },
-  { label: "48 / page", value: 48 },
-];
-
-const SORT_BY_OPTIONS = [
-  { label: "Display Name", value: "display_name" },
-  { label: "Username", value: "username" },
-  { label: "Email", value: "email" },
-  { label: "DM Level", value: "dm_level" },
-  { label: "Player Level", value: "player_level" },
-  { label: "DM XP", value: "dm_exp" },
-  { label: "Player XP", value: "player_exp" },
-  { label: "Created At", value: "created_at" },
-  { label: "Updated At", value: "updated_at" },
-];
-
-const SORT_ORDER_OPTIONS = [
-  { label: "Ascending", value: OrderKeyEnum.ASC },
-  { label: "Descending", value: OrderKeyEnum.DESC },
-];
 
 export default function UsersPageClient() {
   const { auth } = useAuthContext();
@@ -148,87 +89,49 @@ export default function UsersPageClient() {
   const pageCount = meta?.total_page || 1;
   const rowCount = meta?.total_all_data || 0;
 
-  const pages = useMemo(
-    () =>
-      generatePages({
-        currentPage: queryStates.page,
-        totalPages: pageCount,
-      }),
-    [queryStates.page, pageCount],
-  );
-
-  const dataStartIndex = (queryStates.page - 1) * queryStates.pageSize;
-  const indexStart = rowCount === 0 ? 0 : dataStartIndex + 1;
-  const indexEnd = Math.min(dataStartIndex + items.length, rowCount);
-  const isFirstPage = queryStates.page === 1;
-  const isLastPage = queryStates.page === pageCount;
-
-  const onSearchChange = useCallback(
-    (value: string) => {
-      if (value && value.length < 3) {
-        return;
-      }
-
-      if (debounceSearchTimeoutId) {
-        clearTimeout(debounceSearchTimeoutId);
-      }
-
-      debounceSearchTimeoutId = setTimeout(() => {
-        setQueryStates({ search: value, page: 1 });
-      }, 300);
-    },
-    [setQueryStates],
-  );
-
-  const handlePageChange = useCallback(
+  const onPageChange = useCallback(
     (page: number) => {
       setQueryStates({ page });
     },
     [setQueryStates],
   );
 
-  const handlePageSizeChange = useCallback(
+  const onPageSizeChange = useCallback(
     (pageSize: number) => {
       setQueryStates({ pageSize, page: 1 });
     },
     [setQueryStates],
   );
 
-  const [filterSortBy, setFilterSortBy] = useState<TUserCardListSortBy | null>(
-    queryStates.sortBy ?? null,
-  );
-  const [filterOrder, setFilterOrder] = useState<OrderKeyEnum | null>(
-    queryStates.order ?? null,
-  );
-  const [filterRoleIds, setFilterRoleIds] = useState<string[]>(
-    queryStates.roleIds ?? [],
+  const onSearchChange = useCallback(
+    (value: string) => {
+      setQueryStates({ search: value, page: 1 });
+    },
+    [setQueryStates],
   );
 
-  const onFilterApply = useCallback(() => {
-    setQueryStates({
-      sortBy: filterSortBy,
-      order: filterOrder,
-      roleIds: filterRoleIds.length > 0 ? filterRoleIds : null,
-      page: 1,
-    });
-  }, [filterSortBy, filterOrder, filterRoleIds, setQueryStates]);
+  const onFilterApply = useCallback(
+    (filters: {
+      sortBy: TUserCardListSortBy | null;
+      order: OrderKeyEnum | null;
+      roleIds: string[];
+    }) => {
+      setQueryStates({
+        sortBy: filters.sortBy,
+        order: filters.order,
+        roleIds: filters.roleIds.length > 0 ? filters.roleIds : null,
+        page: 1,
+      });
+    },
+    [setQueryStates],
+  );
 
-  const onFilterClear = useCallback(() => {
-    setFilterSortBy(null);
-    setFilterOrder(null);
-    setFilterRoleIds([]);
-    setRoleSearch("");
-    setQueryStates({ sortBy: null, order: null, roleIds: null, page: 1 });
-  }, [setFilterRoleIds, setQueryStates]);
-
-  const onRoleSearchChange = useCallback((value: string) => {
-    if (debounceRoleSearchTimeoutId) {
-      clearTimeout(debounceRoleSearchTimeoutId);
-    }
-    debounceRoleSearchTimeoutId = setTimeout(() => {
-      setRoleSearch(value);
-    }, 300);
-  }, []);
+  const onDeleteUser = useCallback(
+    (id: string) => {
+      deleteUserMutate(id);
+    },
+    [deleteUserMutate],
+  );
 
   return (
     <div className="w-full flex justify-center min-w-0">
@@ -247,211 +150,29 @@ export default function UsersPageClient() {
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-2 mb-6">
-          <Popover>
-            <PopoverTrigger render={<Button variant="outline" />}>
-              <Funnel />
-              Filter
-            </PopoverTrigger>
-            <PopoverContent align="start">
-              <div className="flex flex-col gap-4 md:gap-2">
-                <FieldGroup className="flex flex-col md:flex-row gap-4 md:gap-2">
-                  <Field className="grid gap-2">
-                    <FieldLabel>Sort By</FieldLabel>
-                    <Select
-                      items={SORT_BY_OPTIONS}
-                      value={filterSortBy ?? undefined}
-                      onValueChange={(val) => setFilterSortBy(val || null)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select field" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {SORT_BY_OPTIONS.map((item) => (
-                            <SelectItem
-                              key={item.value}
-                              value={item.value}
-                            >
-                              {item.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </Field>
-
-                  <Field className="grid gap-2">
-                    <FieldLabel>Sort Order</FieldLabel>
-                    <Select
-                      items={SORT_ORDER_OPTIONS}
-                      value={filterOrder ?? undefined}
-                      onValueChange={(val) => setFilterOrder(val || null)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select order" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {SORT_ORDER_OPTIONS.map((item) => (
-                            <SelectItem
-                              key={item.value}
-                              value={item.value}
-                            >
-                              {item.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </Field>
-                </FieldGroup>
-
-                <FieldGroup>
-                  <Field className="grid gap-2">
-                    <FieldLabel>Roles</FieldLabel>
-                    <Combobox
-                      multiple
-                      items={roleItems}
-                      value={filterRoleIds.map(
-                        (id) =>
-                          roleItems.find((r) => r.value === id) ?? {
-                            value: id,
-                            label: id,
-                          },
-                      )}
-                      onValueChange={(value) => {
-                        setFilterRoleIds(value.map((v) => v.value));
-                      }}
-                      onInputValueChange={(inputValue) =>
-                        onRoleSearchChange(inputValue)
-                      }
-                    >
-                      <ComboboxChips>
-                        {filterRoleIds.map((id) => {
-                          const role = roleItems.find((r) => r.value === id);
-                          return (
-                            <ComboboxChip key={id}>
-                              {role?.label ?? id}
-                            </ComboboxChip>
-                          );
-                        })}
-                        <ComboboxChipsInput placeholder="Search roles" />
-                      </ComboboxChips>
-                      <ComboboxContent>
-                        <ComboboxEmpty>No roles found.</ComboboxEmpty>
-                        <ComboboxList>
-                          {(item: { value: string; label: string }) => (
-                            <ComboboxItem key={item.value} value={item}>
-                              {item.label}
-                            </ComboboxItem>
-                          )}
-                        </ComboboxList>
-                      </ComboboxContent>
-                    </Combobox>
-                  </Field>
-                </FieldGroup>
-
-                <FieldGroup className="mt-2">
-                  <Field orientation="horizontal">
-                    <Button
-                      className="ms-auto"
-                      variant="outline"
-                      onClick={onFilterClear}
-                    >
-                      Clear
-                    </Button>
-                    <Button onClick={onFilterApply}>Apply</Button>
-                  </Field>
-                </FieldGroup>
-              </div>
-            </PopoverContent>
-          </Popover>
-
-          <InputGroup>
-            <InputGroupInput
-              placeholder="Type minimum 3 characters to search ..."
-              onChange={(event) => onSearchChange(event.target.value)}
-              defaultValue={queryStates.search}
-            />
-            <InputGroupAddon>
-              <Search />
-            </InputGroupAddon>
-          </InputGroup>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {isLoading &&
-            Array.from({ length: queryStates.pageSize }).map((_, idx) => (
-              <UserCardSkeleton key={idx} />
-            ))}
-
-          {!isLoading &&
-            items.map((user) => (
-              <UserCard key={user.id} user={user} onDelete={deleteUserMutate} />
-            ))}
-        </div>
-
-        {!isLoading && (
-          <div className="flex flex-col md:flex-row justify-end items-center gap-2 mt-6">
-            <span>
-              {indexStart} - {indexEnd} of {rowCount} items
-            </span>
-
-            <ButtonGroup>
-              <Button
-                variant="ghost"
-                size="icon"
-                disabled={isFirstPage}
-                onClick={() => handlePageChange(queryStates.page - 1)}
-              >
-                <ChevronLeft />
-              </Button>
-
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  variant="ghost"
-                  size="icon"
-                  disabled={page === queryStates.page}
-                  onClick={() => handlePageChange(page)}
-                >
-                  {page}
-                </Button>
-              ))}
-
-              <Button
-                variant="ghost"
-                size="icon"
-                disabled={isLastPage}
-                onClick={() => handlePageChange(queryStates.page + 1)}
-              >
-                <ChevronRight />
-              </Button>
-            </ButtonGroup>
-
-            <Select
-              items={PAGE_SIZE_OPTIONS}
-              value={Number(queryStates.pageSize)}
-              onValueChange={(val) =>
-                handlePageSizeChange(val || queryStates.pageSize)
-              }
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {PAGE_SIZE_OPTIONS.map((item) => (
-                    <SelectItem key={item.value} value={item.value.toString()}>
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-        )}
+        <UserCardList
+          data={items}
+          isLoading={isLoading}
+          pageCount={pageCount}
+          rowCount={rowCount}
+          queryTable={{
+            page: queryStates.page,
+            pageSize: queryStates.pageSize,
+            search: queryStates.search,
+            sortBy: queryStates.sortBy,
+            order: queryStates.order,
+            roleIds: queryStates.roleIds,
+          }}
+          roleItems={roleItems}
+          onRoleSearchChange={setRoleSearch}
+          onActionHandler={{
+            onPageChange,
+            onPageSizeChange,
+            onSearchChange,
+            onFilterApply,
+            onDeleteUser,
+          }}
+        />
       </main>
     </div>
   );
