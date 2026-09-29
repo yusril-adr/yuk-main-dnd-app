@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight, Plus, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Funnel, Plus, Search } from "lucide-react";
 import Link from "next/link";
 import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 
@@ -15,6 +15,12 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/app/_components/ui/input-group";
+import { Field, FieldGroup, FieldLabel } from "@/app/_components/ui/field";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/app/_components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -32,8 +38,10 @@ import type { TUserPaginationPayload } from "@/api/main/modules/master/iam/users
 
 import UserCard from "@/app/(authenticated)/dashboard/master/iam/users/_components/user-card";
 import UserCardSkeleton from "@/app/(authenticated)/dashboard/master/iam/users/_components/user-card-skeleton";
+import type { TUserCardListSortBy } from "@/app/(authenticated)/dashboard/master/iam/users/_types/user-card-list-sort-by";
 import { useGetUserPagination } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-pagination";
 import { useDeleteUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-delete-user-by-id";
+import { useGetAllRoles } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-all-roles";
 import CONFIG from "@/common/constants/config";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
@@ -43,6 +51,19 @@ const PAGE_SIZE_OPTIONS = [
   { label: "12 / page", value: 12 },
   { label: "24 / page", value: 24 },
   { label: "48 / page", value: 48 },
+];
+
+const SORT_BY_OPTIONS = [
+  { label: "Display Name", value: "display_name" },
+  { label: "Username", value: "username" },
+  { label: "Email", value: "email" },
+  { label: "Created At", value: "created_at" },
+  { label: "Updated At", value: "updated_at" },
+];
+
+const SORT_ORDER_OPTIONS = [
+  { label: "Ascending", value: OrderKeyEnum.ASC },
+  { label: "Descending", value: OrderKeyEnum.DESC },
 ];
 
 export default function UsersPageClient() {
@@ -57,7 +78,6 @@ export default function UsersPageClient() {
     search: parseAsString.withDefault(""),
     sortBy: createSortByParser(
       [
-        "id",
         "display_name",
         "username",
         "email",
@@ -67,6 +87,7 @@ export default function UsersPageClient() {
       "Users",
     ),
     order: parseAsStringEnum<OrderKeyEnum>(Object.values(OrderKeyEnum)),
+    roleId: parseAsString.withDefault(""),
   });
 
   const queryStatesIntoPayload: TUserPaginationPayload = useMemo(
@@ -76,6 +97,7 @@ export default function UsersPageClient() {
       search: queryStates.search,
       sort_by: queryStates.sortBy ?? undefined,
       order: queryStates.order ?? undefined,
+      role_ids: queryStates.roleId ? [queryStates.roleId] : undefined,
     }),
     [queryStates],
   );
@@ -91,6 +113,12 @@ export default function UsersPageClient() {
       });
     },
   });
+
+  const { data: rolesData } = useGetAllRoles();
+  const roleOptions = (rolesData?.data?.data?.items ?? []).map((role) => ({
+    label: role.name,
+    value: role.id,
+  }));
 
   const items = responseData?.data?.data?.items ?? [];
   const meta = responseData?.data?.data?.meta;
@@ -143,6 +171,32 @@ export default function UsersPageClient() {
     [setQueryStates],
   );
 
+  const [filterSortBy, setFilterSortBy] = useState<TUserCardListSortBy | null>(
+    queryStates.sortBy ?? null,
+  );
+  const [filterOrder, setFilterOrder] = useState<OrderKeyEnum | null>(
+    queryStates.order ?? null,
+  );
+  const [filterRoleId, setFilterRoleId] = useState<string>(
+    queryStates.roleId ?? "",
+  );
+
+  const onFilterApply = useCallback(() => {
+    setQueryStates({
+      sortBy: filterSortBy,
+      order: filterOrder,
+      roleId: filterRoleId || null,
+      page: 1,
+    });
+  }, [filterSortBy, filterOrder, filterRoleId, setQueryStates]);
+
+  const onFilterClear = useCallback(() => {
+    setFilterSortBy(null);
+    setFilterOrder(null);
+    setFilterRoleId("");
+    setQueryStates({ sortBy: null, order: null, roleId: null, page: 1 });
+  }, [setQueryStates]);
+
   return (
     <div className="w-full flex justify-center min-w-0">
       <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
@@ -160,16 +214,117 @@ export default function UsersPageClient() {
           )}
         </div>
 
-        <InputGroup className="mb-6">
-          <InputGroupInput
-            placeholder="Type minimum 3 characters to search ..."
-            onChange={(event) => onSearchChange(event.target.value)}
-            defaultValue={queryStates.search}
-          />
-          <InputGroupAddon>
-            <Search />
-          </InputGroupAddon>
-        </InputGroup>
+        <div className="flex items-center justify-between gap-2 mb-6">
+          <Popover>
+            <PopoverTrigger render={<Button variant="outline" />}>
+              <Funnel />
+              Filter
+            </PopoverTrigger>
+            <PopoverContent align="start">
+              <div className="flex flex-col gap-4 md:gap-2">
+                <FieldGroup className="flex flex-col md:flex-row gap-4 md:gap-2">
+                  <Field className="grid gap-2">
+                    <FieldLabel>Sort By</FieldLabel>
+                    <Select
+                      items={SORT_BY_OPTIONS}
+                      value={filterSortBy ?? undefined}
+                      onValueChange={(val) => setFilterSortBy(val || null)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select field" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {SORT_BY_OPTIONS.map((item) => (
+                            <SelectItem
+                              key={item.value}
+                              value={item.value}
+                            >
+                              {item.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </Field>
+
+                  <Field className="grid gap-2">
+                    <FieldLabel>Sort Order</FieldLabel>
+                    <Select
+                      items={SORT_ORDER_OPTIONS}
+                      value={filterOrder ?? undefined}
+                      onValueChange={(val) => setFilterOrder(val || null)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select order" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {SORT_ORDER_OPTIONS.map((item) => (
+                            <SelectItem
+                              key={item.value}
+                              value={item.value}
+                            >
+                              {item.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </Field>
+                </FieldGroup>
+
+                <FieldGroup>
+                  <Field className="grid gap-2">
+                    <FieldLabel>Roles</FieldLabel>
+                    <Select
+                      items={roleOptions}
+                      value={filterRoleId || undefined}
+                      onValueChange={(val) => setFilterRoleId(val || "")}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select role" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {roleOptions.map((item) => (
+                            <SelectItem key={item.value} value={item.value}>
+                              {item.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </Field>
+                </FieldGroup>
+
+                <FieldGroup className="mt-2">
+                  <Field orientation="horizontal">
+                    <Button
+                      className="ms-auto"
+                      variant="outline"
+                      onClick={onFilterClear}
+                    >
+                      Clear
+                    </Button>
+                    <Button onClick={onFilterApply}>Apply</Button>
+                  </Field>
+                </FieldGroup>
+              </div>
+            </PopoverContent>
+          </Popover>
+
+          <InputGroup>
+            <InputGroupInput
+              placeholder="Type minimum 3 characters to search ..."
+              onChange={(event) => onSearchChange(event.target.value)}
+              defaultValue={queryStates.search}
+            />
+            <InputGroupAddon>
+              <Search />
+            </InputGroupAddon>
+          </InputGroup>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {isLoading &&
