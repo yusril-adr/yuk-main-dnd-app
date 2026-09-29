@@ -6,7 +6,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { parseAsString, useQueryState } from "nuqs";
 
 import CONFIG from "@/common/constants/config";
-import { authMe } from "@/api/main/modules/auth/me";
 import { ThemeToggler } from "@/app/_components/theme-toggler";
 import GlobalLoader from "@/app/_components/global-loader";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
@@ -34,9 +33,8 @@ export default function SwitchRolePageClient() {
     isPaused: switchRoleIsPaused,
   } = useSwitchRole({
     onSuccess: async () => {
-      await queryClient.fetchQuery({
+      await queryClient.refetchQueries({
         queryKey: CONFIG.QUERY_KEY.MAIN_API.AUTH.ME(),
-        queryFn: authMe,
       });
       router.replace(fromQueryRef.current);
     },
