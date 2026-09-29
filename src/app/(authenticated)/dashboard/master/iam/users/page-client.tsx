@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, Funnel, Plus, Search } from "lucide-react";
 import Link from "next/link";
-import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
+import { parseAsArrayOf, parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
@@ -17,9 +17,11 @@ import {
 } from "@/app/_components/ui/input-group";
 import {
   Combobox,
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxChipsInput,
   ComboboxContent,
   ComboboxEmpty,
-  ComboboxInput,
   ComboboxItem,
   ComboboxList,
 } from "@/app/_components/ui/combobox";
@@ -66,6 +68,10 @@ const SORT_BY_OPTIONS = [
   { label: "Display Name", value: "display_name" },
   { label: "Username", value: "username" },
   { label: "Email", value: "email" },
+  { label: "DM Level", value: "dm_level" },
+  { label: "Player Level", value: "player_level" },
+  { label: "DM XP", value: "dm_exp" },
+  { label: "Player XP", value: "player_exp" },
   { label: "Created At", value: "created_at" },
   { label: "Updated At", value: "updated_at" },
 ];
@@ -90,13 +96,19 @@ export default function UsersPageClient() {
         "display_name",
         "username",
         "email",
+        "dm_level",
+        "player_level",
+        "dm_exp",
+        "player_exp",
         "created_at",
         "updated_at",
       ] as const,
       "Users",
+    ).withDefault("updated_at"),
+    order: parseAsStringEnum<OrderKeyEnum>(Object.values(OrderKeyEnum)).withDefault(
+      OrderKeyEnum.DESC,
     ),
-    order: parseAsStringEnum<OrderKeyEnum>(Object.values(OrderKeyEnum)),
-    roleId: parseAsString.withDefault(""),
+    roleIds: parseAsArrayOf(parseAsString).withDefault([]),
   });
 
   const queryStatesIntoPayload: TUserPaginationPayload = useMemo(
@@ -106,7 +118,7 @@ export default function UsersPageClient() {
       search: queryStates.search,
       sort_by: queryStates.sortBy ?? undefined,
       order: queryStates.order ?? undefined,
-      role_ids: queryStates.roleId ? [queryStates.roleId] : undefined,
+      role_ids: queryStates.roleIds.length > 0 ? queryStates.roleIds : undefined,
     }),
     [queryStates],
   );
@@ -188,26 +200,26 @@ export default function UsersPageClient() {
   const [filterOrder, setFilterOrder] = useState<OrderKeyEnum | null>(
     queryStates.order ?? null,
   );
-  const [filterRoleId, setFilterRoleId] = useState<string>(
-    queryStates.roleId ?? "",
+  const [filterRoleIds, setFilterRoleIds] = useState<string[]>(
+    queryStates.roleIds ?? [],
   );
 
   const onFilterApply = useCallback(() => {
     setQueryStates({
       sortBy: filterSortBy,
       order: filterOrder,
-      roleId: filterRoleId || null,
+      roleIds: filterRoleIds.length > 0 ? filterRoleIds : null,
       page: 1,
     });
-  }, [filterSortBy, filterOrder, filterRoleId, setQueryStates]);
+  }, [filterSortBy, filterOrder, filterRoleIds, setQueryStates]);
 
   const onFilterClear = useCallback(() => {
     setFilterSortBy(null);
     setFilterOrder(null);
-    setFilterRoleId("");
+    setFilterRoleIds([]);
     setRoleSearch("");
-    setQueryStates({ sortBy: null, order: null, roleId: null, page: 1 });
-  }, [setFilterRoleId, setQueryStates]);
+    setQueryStates({ sortBy: null, order: null, roleIds: null, page: 1 });
+  }, [setFilterRoleIds, setQueryStates]);
 
   const onRoleSearchChange = useCallback((value: string) => {
     if (debounceRoleSearchTimeoutId) {
@@ -299,21 +311,33 @@ export default function UsersPageClient() {
                   <Field className="grid gap-2">
                     <FieldLabel>Roles</FieldLabel>
                     <Combobox
+                      multiple
                       items={roleItems}
-                      value={
-                        filterRoleId
-                          ? roleItems.find((r) => r.value === filterRoleId) ??
-                            null
-                          : null
-                      }
+                      value={filterRoleIds.map(
+                        (id) =>
+                          roleItems.find((r) => r.value === id) ?? {
+                            value: id,
+                            label: id,
+                          },
+                      )}
                       onValueChange={(value) => {
-                        setFilterRoleId(value?.value ?? "");
+                        setFilterRoleIds(value.map((v) => v.value));
                       }}
                       onInputValueChange={(inputValue) =>
                         onRoleSearchChange(inputValue)
                       }
                     >
-                      <ComboboxInput placeholder="Search role" showClear />
+                      <ComboboxChips>
+                        {filterRoleIds.map((id) => {
+                          const role = roleItems.find((r) => r.value === id);
+                          return (
+                            <ComboboxChip key={id}>
+                              {role?.label ?? id}
+                            </ComboboxChip>
+                          );
+                        })}
+                        <ComboboxChipsInput placeholder="Search roles" />
+                      </ComboboxChips>
                       <ComboboxContent>
                         <ComboboxEmpty>No roles found.</ComboboxEmpty>
                         <ComboboxList>
