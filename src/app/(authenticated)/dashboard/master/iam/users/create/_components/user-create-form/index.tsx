@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import Link from "next/link";
-import { Upload, X } from "lucide-react";
+import { EyeOffIcon, EyeIcon, Upload, X } from "lucide-react";
+import { Else, If, Then } from "react-if";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Card, CardContent, CardFooter } from "@/app/_components/ui/card";
@@ -22,6 +23,11 @@ import {
   FieldLabel,
 } from "@/app/_components/ui/field";
 import { Input } from "@/app/_components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/app/_components/ui/input-group";
 import { Textarea } from "@/app/_components/ui/textarea";
 import { Button } from "@/app/_components/ui/button";
 import { Spinner } from "@/app/_components/ui/spinner";
@@ -66,6 +72,7 @@ export default function UserCreateForm({
     });
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isShowPassword, setIsShowPassword] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Revoke object URL on unmount
@@ -240,13 +247,32 @@ export default function UserCreateForm({
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Input password"
-                    disabled={isFormDisabled}
-                    {...field}
-                  />
+                  <InputGroup>
+                    <InputGroupInput
+                      id="password"
+                      type={isShowPassword ? "text" : "password"}
+                      placeholder="Input password"
+                      disabled={isFormDisabled}
+                      autoComplete="off"
+                      {...field}
+                    />
+                    <InputGroupAddon align="inline-end">
+                      <button
+                        className="btn btn-ghost btn-square btn-sm"
+                        type="button"
+                        onClick={() => setIsShowPassword(!isShowPassword)}
+                      >
+                        <If condition={isShowPassword}>
+                          <Then>
+                            <EyeOffIcon />
+                          </Then>
+                          <Else>
+                            <EyeIcon />
+                          </Else>
+                        </If>
+                      </button>
+                    </InputGroupAddon>
+                  </InputGroup>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
