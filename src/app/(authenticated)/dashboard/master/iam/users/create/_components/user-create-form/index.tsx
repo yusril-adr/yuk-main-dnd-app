@@ -1,7 +1,15 @@
+"use client";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import Link from "next/link";
-import { EyeOffIcon, EyeIcon, Upload, X } from "lucide-react";
+import {
+  EyeOffIcon,
+  EyeIcon,
+  Upload,
+  RotateCcwClock,
+  UserRound,
+} from "lucide-react";
 import { Else, If, Then } from "react-if";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -39,10 +47,7 @@ import {
 
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
-import {
-  UserCreateFormSchema,
-  type TUserCreateFormSchema,
-} from "./scheme";
+import { UserCreateFormSchema, type TUserCreateFormSchema } from "./scheme";
 import type { TUserCreateFormProps } from "../../_types/user-create-form-props";
 
 export default function UserCreateForm({
@@ -123,7 +128,7 @@ export default function UserCreateForm({
     [onUploadAvatar, previewUrl],
   );
 
-  const handleRemoveAvatar = useCallback(() => {
+  const handleResetAvatar = useCallback(() => {
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(null);
     setValue("avatarFileId", "");
@@ -155,36 +160,45 @@ export default function UserCreateForm({
               render={({ fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Avatar</FieldLabel>
-                  <div className="flex items-center gap-4">
-                    <Avatar className="size-16">
+                  <div className="flex flex-col items-center gap-4">
+                    <Avatar className="size-24">
                       <AvatarImage src={previewUrl ?? undefined} />
                       <AvatarFallback>
-                        <Upload className="size-6 text-muted-foreground" />
+                        <UserRound className="size-6 text-muted-foreground" />
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col gap-2">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          disabled={isFormDisabled || isUploadingAvatar}
-                          onClick={() => fileInputRef.current?.click()}
-                        >
-                          {isUploadingAvatar && <Spinner />}
-                          Choose file
-                        </Button>
+                      <div className="flex flex-col items-center gap-2">
                         {previewUrl && (
                           <Button
                             type="button"
-                            variant="ghost"
-                            size="icon-sm"
+                            variant="default"
+                            className="w-24"
                             disabled={isFormDisabled || isUploadingAvatar}
-                            onClick={handleRemoveAvatar}
+                            onClick={handleResetAvatar}
                           >
-                            <X />
+                            <RotateCcwClock data-icon="inline-start" />
+                            Reset file
                           </Button>
                         )}
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="w-24"
+                          disabled={isFormDisabled || isUploadingAvatar}
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          <If condition={isUploadingAvatar}>
+                            <Then>
+                              <Spinner data-icon="inline-start" />
+                            </Then>
+                            <Else>
+                              <Upload data-icon="inline-start" />
+                            </Else>
+                          </If>
+                          Choose file
+                        </Button>
                       </div>
                       <input
                         ref={fileInputRef}

@@ -3,7 +3,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import Link from "next/link";
-import { EyeOffIcon, EyeIcon, Upload, RotateCcwClock } from "lucide-react";
+import {
+  EyeOffIcon,
+  EyeIcon,
+  Upload,
+  RotateCcwClock,
+  UserRound,
+} from "lucide-react";
 import { Else, If, Then } from "react-if";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -167,7 +173,7 @@ export default function UserEditForm({
                     <Avatar className="size-24">
                       <AvatarImage src={previewUrl ?? avatarUrl ?? undefined} />
                       <AvatarFallback>
-                        <Upload className="size-6 text-muted-foreground" />
+                        <UserRound className="size-6 text-muted-foreground" />
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col gap-2">
@@ -192,11 +198,15 @@ export default function UserEditForm({
                           disabled={isFormDisabled || isUploadingAvatar}
                           onClick={() => fileInputRef.current?.click()}
                         >
-                          <Upload data-icon="inline-start" />
+                          <If condition={isUploadingAvatar}>
+                            <Then>
+                              <Spinner data-icon="inline-start" />
+                            </Then>
+                            <Else>
+                              <Upload data-icon="inline-start" />
+                            </Else>
+                          </If>
                           Choose file
-                          {isUploadingAvatar && (
-                            <Spinner data-icon="inline-end" />
-                          )}
                         </Button>
                       </div>
                       <input
