@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, Pencil, Trash } from "lucide-react";
+import { useParams, useRouter, notFound } from "next/navigation";
+import { ArrowLeft, Dot, Pencil, Trash } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Else, If, Then } from "react-if";
 
@@ -32,6 +32,8 @@ import {
 import { PermissionEnum } from "@/common/enums/permission";
 import CONFIG from "@/common/constants/config";
 import { getInitials } from "@/utils/user-helper";
+import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import dayjs from "@/libs/dayjs";
 
 import { useGetUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-by-id";
 import { useDeleteUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-delete-user-by-id";
@@ -69,10 +71,16 @@ function StatBlock({
 }
 
 export default function UserDetailPageClient() {
-  const { id } = useParams<{ id: string }>();
-  const router = useRouter();
   const { auth } = useAuthContext();
+  const { id } = useParams();
+  const router = useRouter();
+  const userId = id as string;
   const queryClient = useQueryClient();
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  const userQuery = useGetUserById(userId);
+  const user = userQuery.data?.data?.data;
 
   const canUpdateUsers = auth?.permissions.includes(
     PermissionEnum.USERS_UPDATE,
@@ -81,107 +89,98 @@ export default function UserDetailPageClient() {
     PermissionEnum.USERS_DELETE,
   );
 
-  const { data, isLoading, isError } = useGetUserById(id);
-  const user = data?.data?.data;
-
-  const [confirmDelete, setConfirmDelete] = useState(false);
-
-  const { mutate: deleteUserMutate, isPending: isDeleting } = useDeleteUserById(
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.IAM.USER.ALL()],
-        });
+  const deleteUserMutation = useDeleteUserById({
+    onError: (mutationError) => {
+      if (mutationError instanceof MainAPINotFoundError) {
         router.push("/dashboard/master/iam/users");
-      },
+      }
     },
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.IAM.USER.ALL()],
+      });
+      router.push("/dashboard/master/iam/users");
+    },
+  });
+
+  const renderValue = (value: string | number | undefined) => {
+    if (userQuery.isLoading) {
+      return <Skeleton className="h-6 w-full" />;
+    }
+
+    return value ?? "-";
+  };
 
   useEffect(() => {
-    if (isError) {
-      router.replace("/dashboard/master/iam/users");
+    if (userQuery.isError && userQuery.error instanceof MainAPINotFoundError) {
+      notFound();
     }
-  }, [isError, router]);
+  }, [userQuery.error, userQuery.isError, router]);
 
-  const onDeleteConfirm = useCallback(() => {
-    deleteUserMutate(id);
-  }, [deleteUserMutate, id]);
+  const breadcrumbItems = useMemo(
+    () => [
+      { name: "Users", link: "/dashboard/master/iam/users" },
+      { name: user?.display_name ?? "Detail" },
+    ],
+    [user?.display_name],
+  );
+
+  const onDeleteHandler = () => {
+    deleteUserMutation.mutate(userId);
+    setIsDeleteDialogOpen(false);
+  };
 
   return (
     <div className="w-full flex justify-center">
       <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
-        <AppBreadcrumb
-          items={[
-            { name: "Users", link: "/dashboard/master/iam/users" },
-            {
-              name: (
-                <If condition={isLoading}>
-                  <Then>...</Then>
-                  <Else>{user?.display_name ?? "Detail"}</Else>
-                </If>
-              ) as unknown as string,
-            },
-          ]}
-        />
+        <AppBreadcrumb items={breadcrumbItems} />
 
-        <div className="flex items-center justify-between mt-4 mb-6">
-          <div className="flex items-center gap-x-2">
-            <Link href="/dashboard/master/iam/users">
-              <ArrowLeft />
-            </Link>
-            <h1 className="font-heading text-2xl">
-              <If condition={isLoading}>
+        <div className="flex items-center mt-4 mb-6 gap-x-2">
+          <Link href="/dashboard/master/iam/users">
+            <ArrowLeft />
+          </Link>
+          <h1 className="font-heading text-2xl">User Detail</h1>
+          {user && (canUpdateUsers || canDeleteUsers) && (
+            <div className="ms-auto flex gap-2">
+              <If condition={!!canUpdateUsers}>
                 <Then>
-                  <Skeleton className="h-8 w-48" />
+                  <Button
+                    variant="outline"
+                    render={
+                      <Link
+                        href={`/dashboard/master/iam/users/${userId}/edit`}
+                      />
+                    }
+                    nativeButton={false}
+                  >
+                    <Pencil /> Edit
+                  </Button>
                 </Then>
-                <Else>User Detail</Else>
               </If>
-            </h1>
-          </div>
-
-          <If condition={!isLoading && !!user}>
-            <Then>
-              <div className="flex items-center gap-2">
-                <If condition={!!canUpdateUsers}>
-                  <Then>
-                    <Button
-                      variant="outline"
-                      render={
-                        <Link
-                          href={`/dashboard/master/iam/users/${user?.id}/edit`}
-                        />
-                      }
-                      nativeButton={false}
-                    >
-                      <Pencil /> Edit
-                    </Button>
-                  </Then>
-                </If>
-                <If condition={!!canDeleteUsers}>
-                  <Then>
-                    <Button
-                      variant="destructive"
-                      onClick={() => setConfirmDelete(true)}
-                    >
-                      <Trash /> Delete
-                    </Button>
-                  </Then>
-                </If>
-              </div>
-            </Then>
-          </If>
+              <If condition={!!canDeleteUsers}>
+                <Then>
+                  <Button
+                    variant="destructive"
+                    onClick={() => setIsDeleteDialogOpen(true)}
+                  >
+                    <Trash /> Delete
+                  </Button>
+                </Then>
+              </If>
+            </div>
+          )}
         </div>
 
         <div className="flex justify-center">
           <Card className="w-full max-w-lg border-2 border-primary/15 bg-card">
-            <CardContent className="flex flex-col items-center gap-6 pt-8 pb-8">
+            <CardContent className="flex flex-col items-center gap-6">
               {/* Guild stamp ornament */}
               <div className="text-muted-foreground/40 text-xs tracking-[0.3em] uppercase select-none">
                 &#9830; Guild Record &#9830;
               </div>
 
               {/* Avatar */}
-              <If condition={isLoading}>
+              <If condition={userQuery.isLoading}>
                 <Then>
                   <Skeleton className="h-28 w-28 rounded-full" />
                 </Then>
@@ -203,7 +202,7 @@ export default function UserDetailPageClient() {
 
               {/* Name & username */}
               <div className="text-center">
-                <If condition={isLoading}>
+                <If condition={userQuery.isLoading}>
                   <Then>
                     <Skeleton className="h-7 w-48 mx-auto mb-2" />
                     <Skeleton className="h-4 w-28 mx-auto" />
@@ -224,7 +223,9 @@ export default function UserDetailPageClient() {
 
               {/* Roles */}
               <If
-                condition={!isLoading && !!user?.roles && user.roles.length > 0}
+                condition={
+                  !userQuery.isLoading && !!user?.roles && user.roles.length > 0
+                }
               >
                 <Then>
                   <div className="flex flex-wrap justify-center gap-1.5">
@@ -240,7 +241,7 @@ export default function UserDetailPageClient() {
               <Separator />
 
               {/* Stats row */}
-              <If condition={isLoading}>
+              <If condition={userQuery.isLoading}>
                 <Then>
                   <div className="grid grid-cols-3 gap-6 w-full">
                     {Array.from({ length: 3 }).map((_, i) => (
@@ -270,7 +271,7 @@ export default function UserDetailPageClient() {
 
               {/* Detail fields */}
               <div className="w-full">
-                <If condition={isLoading}>
+                <If condition={userQuery.isLoading}>
                   <Then>
                     <div className="space-y-3">
                       {Array.from({ length: 5 }).map((_, i) => (
@@ -282,7 +283,7 @@ export default function UserDetailPageClient() {
                     </div>
                   </Then>
                   <Else>
-                    <DetailRow label="Email" value={user?.email} />
+                    <DetailRow label="Email" value={renderValue(user?.email)} />
                     <DetailRow
                       label="Bio"
                       value={
@@ -298,47 +299,31 @@ export default function UserDetailPageClient() {
                     />
                     <DetailRow
                       label="Player EXP"
-                      value={user?.player_exp?.toLocaleString()}
+                      value={renderValue(user?.player_exp)}
                     />
                     <DetailRow
                       label="DM EXP"
-                      value={user?.dm_exp?.toLocaleString()}
+                      value={renderValue(user?.dm_exp)}
                     />
                     <Separator className="my-2" />
                     <DetailRow
                       label="Enrolled"
                       value={
-                        <If condition={!!user?.created_at}>
-                          <Then>
-                            {new Date(user!.created_at).toLocaleDateString(
-                              undefined,
-                              {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              },
-                            )}
-                          </Then>
-                          <Else>-</Else>
-                        </If>
+                        userQuery.isLoading ? (
+                          <Skeleton className="h-6 w-full" />
+                        ) : (
+                          dayjs(user?.created_at).format("YYYY-MM-DD HH:mm:ss")
+                        )
                       }
                     />
                     <DetailRow
                       label="Last Updated"
                       value={
-                        <If condition={!!user?.updated_at}>
-                          <Then>
-                            {new Date(user!.updated_at).toLocaleDateString(
-                              undefined,
-                              {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              },
-                            )}
-                          </Then>
-                          <Else>-</Else>
-                        </If>
+                        userQuery.isLoading ? (
+                          <Skeleton className="h-6 w-full" />
+                        ) : (
+                          dayjs(user?.updated_at).format("YYYY-MM-DD HH:mm:ss")
+                        )
                       }
                     />
                   </Else>
@@ -346,8 +331,10 @@ export default function UserDetailPageClient() {
               </div>
 
               {/* Bottom ornament */}
-              <div className="text-muted-foreground/30 text-xs tracking-[0.3em] select-none">
-                &#8226; &#8226; &#8226;
+              <div className="flex items-center text-muted-foreground/30 text-xs tracking-[0.3em] select-none">
+                <Dot />
+                <Dot />
+                <Dot />
               </div>
             </CardContent>
           </Card>
@@ -355,10 +342,8 @@ export default function UserDetailPageClient() {
       </main>
 
       <AlertDialog
-        open={confirmDelete}
-        onOpenChange={(open) => {
-          if (!open) setConfirmDelete(false);
-        }}
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -369,11 +354,11 @@ export default function UserDetailPageClient() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
-              onClick={onDeleteConfirm}
-              disabled={isDeleting}
+              disabled={deleteUserMutation.isPending}
+              onClick={onDeleteHandler}
             >
               Delete
             </AlertDialogAction>
