@@ -26,6 +26,7 @@ import {
 } from "@/app/_components/ui/combobox";
 import {
   Field,
+  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -176,46 +177,53 @@ export default function UserEditForm({
                         <UserRound className="size-6 text-muted-foreground" />
                       </AvatarFallback>
                     </Avatar>
-                    <div className="flex flex-col gap-2">
-                      <div className="flex flex-col items-center gap-2">
-                        {(previewUrl || avatarUrl) && (
+                    <div className="flex items-center gap-4">
+                      <div className="flex flex-col gap-2">
+                        <div className="flex flex-col items-center gap-2">
+                          {(previewUrl || avatarUrl) && (
+                            <Button
+                              type="button"
+                              variant="default"
+                              className="w-24"
+                              disabled={isFormDisabled || isUploadingAvatar}
+                              onClick={handleResetAvatar}
+                            >
+                              <RotateCcwClock data-icon="inline-start" />
+                              Reset file
+                            </Button>
+                          )}
+
                           <Button
                             type="button"
-                            variant="default"
+                            variant="outline"
                             className="w-24"
                             disabled={isFormDisabled || isUploadingAvatar}
-                            onClick={handleResetAvatar}
+                            onClick={() => fileInputRef.current?.click()}
                           >
-                            <RotateCcwClock data-icon="inline-start" />
-                            Reset file
+                            <If condition={isUploadingAvatar}>
+                              <Then>
+                                <Spinner data-icon="inline-start" />
+                              </Then>
+                              <Else>
+                                <Upload data-icon="inline-start" />
+                              </Else>
+                            </If>
+                            Choose file
                           </Button>
-                        )}
-
-                        <Button
-                          type="button"
-                          variant="outline"
-                          className="w-24"
-                          disabled={isFormDisabled || isUploadingAvatar}
-                          onClick={() => fileInputRef.current?.click()}
-                        >
-                          <If condition={isUploadingAvatar}>
-                            <Then>
-                              <Spinner data-icon="inline-start" />
-                            </Then>
-                            <Else>
-                              <Upload data-icon="inline-start" />
-                            </Else>
-                          </If>
-                          Choose file
-                        </Button>
+                        </div>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={handleFileChange}
+                        />
                       </div>
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleFileChange}
-                      />
+                      <FieldDescription className="flex-1">
+                        Your profile image should have a 1:1 ratio
+                        <br />
+                        and be no larger than 1MB.
+                      </FieldDescription>
                     </div>
                   </div>
                   {fieldState.invalid && (
