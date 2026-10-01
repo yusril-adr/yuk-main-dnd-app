@@ -170,29 +170,16 @@ export default function UserEditForm({
               render={({ fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Avatar</FieldLabel>
-                  <div className="flex flex-col items-center gap-4">
+                  <div className="flex flex-col sm:flex-row items-center gap-4">
                     <Avatar className="size-24">
                       <AvatarImage src={previewUrl ?? avatarUrl ?? undefined} />
                       <AvatarFallback>
                         <UserRound className="size-6 text-muted-foreground" />
                       </AvatarFallback>
                     </Avatar>
-                    <div className="flex items-center gap-4">
+                    <div className="flex gap-4">
                       <div className="flex flex-col gap-2">
                         <div className="flex flex-col items-center gap-2">
-                          {(previewUrl || avatarUrl) && (
-                            <Button
-                              type="button"
-                              variant="default"
-                              className="w-24"
-                              disabled={isFormDisabled || isUploadingAvatar}
-                              onClick={handleResetAvatar}
-                            >
-                              <RotateCcwClock data-icon="inline-start" />
-                              Reset file
-                            </Button>
-                          )}
-
                           <Button
                             type="button"
                             variant="outline"
@@ -210,6 +197,19 @@ export default function UserEditForm({
                             </If>
                             Choose file
                           </Button>
+
+                          {(previewUrl || avatarUrl) && (
+                            <Button
+                              type="button"
+                              variant="default"
+                              className="w-24"
+                              disabled={isFormDisabled || isUploadingAvatar}
+                              onClick={handleResetAvatar}
+                            >
+                              <RotateCcwClock data-icon="inline-start" />
+                              Reset file
+                            </Button>
+                          )}
                         </div>
                         <input
                           ref={fileInputRef}
