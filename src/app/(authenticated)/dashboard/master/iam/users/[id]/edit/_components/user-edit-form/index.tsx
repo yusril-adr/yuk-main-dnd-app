@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import Link from "next/link";
-import { EyeOffIcon, EyeIcon, Upload, X } from "lucide-react";
+import { EyeOffIcon, EyeIcon, Upload, RotateCcwClock } from "lucide-react";
 import { Else, If, Then } from "react-if";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -41,10 +41,7 @@ import {
 
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
-import {
-  UserEditFormSchema,
-  type TUserEditFormSchema,
-} from "./scheme";
+import { UserEditFormSchema, type TUserEditFormSchema } from "./scheme";
 import type { TUserEditFormProps } from "../../_types/user-edit-form-props";
 
 export default function UserEditForm({
@@ -134,7 +131,7 @@ export default function UserEditForm({
     [onUploadAvatar, previewUrl],
   );
 
-  const handleRemoveAvatar = useCallback(() => {
+  const handleResetAvatar = useCallback(() => {
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(null);
     setValue("avatarFileId", "");
@@ -166,38 +163,41 @@ export default function UserEditForm({
               render={({ fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Avatar</FieldLabel>
-                  <div className="flex items-center gap-4">
-                    <Avatar className="size-16">
-                      <AvatarImage
-                        src={previewUrl ?? avatarUrl ?? undefined}
-                      />
+                  <div className="flex flex-col items-center gap-4">
+                    <Avatar className="size-24">
+                      <AvatarImage src={previewUrl ?? avatarUrl ?? undefined} />
                       <AvatarFallback>
                         <Upload className="size-6 text-muted-foreground" />
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col gap-2">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          disabled={isFormDisabled || isUploadingAvatar}
-                          onClick={() => fileInputRef.current?.click()}
-                        >
-                          {isUploadingAvatar && <Spinner />}
-                          Choose file
-                        </Button>
+                      <div className="flex flex-col items-center gap-2">
                         {(previewUrl || avatarUrl) && (
                           <Button
                             type="button"
-                            variant="ghost"
-                            size="icon-sm"
+                            variant="default"
+                            className="w-24"
                             disabled={isFormDisabled || isUploadingAvatar}
-                            onClick={handleRemoveAvatar}
+                            onClick={handleResetAvatar}
                           >
-                            <X />
+                            <RotateCcwClock data-icon="inline-start" />
+                            Reset file
                           </Button>
                         )}
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="w-24"
+                          disabled={isFormDisabled || isUploadingAvatar}
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          <Upload data-icon="inline-start" />
+                          Choose file
+                          {isUploadingAvatar && (
+                            <Spinner data-icon="inline-end" />
+                          )}
+                        </Button>
                       </div>
                       <input
                         ref={fileInputRef}
