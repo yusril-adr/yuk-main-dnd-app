@@ -1,14 +1,15 @@
 import * as z from "zod";
 
-export const UserCreateFormSchema = z.object({
+export const UserEditFormSchema = z.object({
   email: z
     .string("Email is required")
     .min(1, "Email is required")
     .email("Invalid email"),
   password: z
-    .string("Password is required")
-    .min(1, "Password is required")
-    .min(8, "Password must be at least 8 characters"),
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .optional()
+    .or(z.literal("")),
   username: z.string().optional(),
   displayName: z
     .string("Display name is required")
@@ -18,4 +19,4 @@ export const UserCreateFormSchema = z.object({
   roleIds: z.array(z.string()).min(1, "At least one role is required"),
 });
 
-export type TUserCreateFormSchema = z.infer<typeof UserCreateFormSchema>;
+export type TUserEditFormSchema = z.infer<typeof UserEditFormSchema>;
