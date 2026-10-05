@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import Link from "next/link";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Card, CardContent, CardFooter } from "@/app/_components/ui/card";
@@ -20,8 +19,6 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "@/app/_components/ui/combobox";
-import { Button } from "@/app/_components/ui/button";
-import { Spinner } from "@/app/_components/ui/spinner";
 
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
@@ -31,6 +28,7 @@ import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
+import StoryFormActions from "@/app/(authenticated)/dashboard/master/stories/_components/story-form-actions";
 import {
   StoryCreateFormSchema,
   type TStoryCreateFormSchema,
@@ -52,7 +50,6 @@ export default function StoryCreateForm({
         bannerFileId: "",
         title: "",
         description: "",
-        status: StoryStatusEnum.DRAFT,
         gameSystem: "",
         maxMembers: "",
         startAt: "",
@@ -106,11 +103,17 @@ export default function StoryCreateForm({
     }
   }, [mutationError, setError]);
 
-  const onSubmit: SubmitHandler<TStoryCreateFormSchema> = (data) => {
+  const [submittingStatus, setSubmittingStatus] =
+    useState<StoryStatusEnum | null>(null);
+
+  const submitPayload = (
+    data: TStoryCreateFormSchema,
+    status: StoryStatusEnum,
+  ) => {
     onSubmitPayload({
       title: data.title,
       description: data.description || undefined,
-      status: data.status,
+      status,
       type: data.type,
       game_system: data.gameSystem || undefined,
       max_members: data.maxMembers ? Number(data.maxMembers) : undefined,
@@ -122,10 +125,19 @@ export default function StoryCreateForm({
     });
   };
 
+  // Each footer button validates the form, then submits it with its own status
+  const onSubmitWithStatus = (status: StoryStatusEnum) => {
+    handleSubmit((data) => {
+      setSubmittingStatus(status);
+      submitPayload(data, status);
+    })();
+  };
+
   const isFormDisabled = isPending || isPaused;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    // No submit-type button any more; Enter must not submit
+    <form onSubmit={(event) => event.preventDefault()}>
       <Card>
         <CardContent>
           <FieldGroup>
@@ -176,38 +188,6 @@ export default function StoryCreateForm({
                     disabled={isFormDisabled}
                     {...field}
                   />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-
-            <Controller
-              name="status"
-              control={control}
-              render={({ field, fieldState }) => (
-                <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="status">Status</FieldLabel>
-                  <Combobox
-                    id="status"
-                    items={Object.values(StoryStatusEnum)}
-                    onValueChange={field.onChange}
-                    disabled={isFormDisabled}
-                    {...field}
-                  >
-                    <ComboboxInput placeholder="Select status" />
-                    <ComboboxContent>
-                      <ComboboxEmpty>No items found.</ComboboxEmpty>
-                      <ComboboxList>
-                        {(item) => (
-                          <ComboboxItem key={item} value={item}>
-                            {item}
-                          </ComboboxItem>
-                        )}
-                      </ComboboxList>
-                    </ComboboxContent>
-                  </Combobox>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -361,29 +341,13 @@ export default function StoryCreateForm({
         </CardContent>
 
         <CardFooter className="border-t-1 pt-4">
-          <FieldGroup>
-            <Field orientation="horizontal">
-              <Button
-                className="ms-auto"
-                variant="outline"
-                type="reset"
-                render={<Link href="/dashboard/master/stories" />}
-                disabled={isFormDisabled || isUploadingBanner}
-                nativeButton={false}
-              >
-                Cancel
-                {(isFormDisabled || isUploadingBanner) && <Spinner />}
-              </Button>
-
-              <Button
-                type="submit"
-                disabled={isFormDisabled || isUploadingBanner}
-              >
-                Save
-                {(isFormDisabled || isUploadingBanner) && <Spinner />}
-              </Button>
-            </Field>
-          </FieldGroup>
+          <StoryFormActions
+            cancelHref="/dashboard/master/stories"
+            disabled={isFormDisabled || isUploadingBanner}
+            isPending={isPending}
+            submittingStatus={submittingStatus}
+            onSubmitWithStatus={onSubmitWithStatus}
+          />
         </CardFooter>
       </Card>
     </form>

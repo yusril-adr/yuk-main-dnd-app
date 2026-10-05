@@ -1,6 +1,5 @@
 import * as z from "zod";
 
-import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
 
@@ -13,7 +12,6 @@ export const StoryCreateFormSchema = z.object({
     .max(150, "Title must be at most 150 characters")
     .regex(/[A-Za-z0-9]/, "Title must contain at least one letter or number"),
   description: z.string().optional(),
-  status: z.enum(StoryStatusEnum, "Status is required"),
   type: z.enum(StoryTypeEnum, "Type is required"),
   gameSystem: z
     .string()
