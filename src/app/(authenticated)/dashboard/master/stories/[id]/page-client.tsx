@@ -2,13 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Archive, Pencil, Trash } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useParams, useRouter, notFound } from "next/navigation";
 import { If, Then, Else } from "react-if";
 import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
-import { Button } from "@/app/_components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,6 +33,7 @@ import StoryDetailQuestCard from "@/app/(authenticated)/dashboard/master/stories
 import StoryDetailAdventureCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-adventure-card";
 import StoryDetailChronicleCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-chronicle-card";
 import StoryDetailSkeleton from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-skeleton";
+import StoryDetailActions from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-actions";
 
 export default function StoryDetailPageClient() {
   const { auth } = useAuthContext();
@@ -116,39 +116,19 @@ export default function StoryDetailPageClient() {
             <ArrowLeft />
           </Link>
           <h1 className="font-heading text-2xl">Story Detail</h1>
-          {story && (canUpdateStories || canDeleteStories) && (
-            <div className="ms-auto flex gap-2">
-              {canUpdateStories && (
-                <Button
-                  render={
-                    <Link href={`/dashboard/master/stories/${storyId}/edit`} />
-                  }
-                  nativeButton={false}
-                >
-                  <Pencil /> Edit
-                </Button>
-              )}
-              <If condition={canArchiveStory}>
-                <Then>
-                  <Button
-                    variant="outline"
-                    disabled={archiveStoryMutation.isPending}
-                    onClick={() => setIsArchiveDialogOpen(true)}
-                  >
-                    <Archive /> Archive
-                  </Button>
-                </Then>
-              </If>
-              {canDeleteStories && (
-                <Button
-                  variant="destructive"
-                  onClick={() => setIsDeleteDialogOpen(true)}
-                >
-                  <Trash /> Delete
-                </Button>
-              )}
-            </div>
-          )}
+          <If condition={!!story && (!!canUpdateStories || !!canDeleteStories)}>
+            <Then>
+              <StoryDetailActions
+                storyId={storyId}
+                canEdit={!!canUpdateStories}
+                canArchive={canArchiveStory}
+                canDelete={!!canDeleteStories}
+                isArchivePending={archiveStoryMutation.isPending}
+                onArchiveClick={() => setIsArchiveDialogOpen(true)}
+                onDeleteClick={() => setIsDeleteDialogOpen(true)}
+              />
+            </Then>
+          </If>
         </div>
 
         <If condition={storyQuery.isLoading}>
