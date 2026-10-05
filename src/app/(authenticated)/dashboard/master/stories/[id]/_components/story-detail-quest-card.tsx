@@ -1,6 +1,8 @@
 import { Scroll } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
+import RichTextContent from "@/app/_components/rich-text-content";
+
 import StoryDetailSectionCard from "./story-detail-section-card";
 import type { TStoryDetailCardProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-card-props";
 
@@ -16,9 +18,10 @@ export default function StoryDetailQuestCard({
     >
       <If condition={!!story.description}>
         <Then>
-          <p className="whitespace-pre-line break-words text-base leading-relaxed">
-            {story.description}
-          </p>
+          <RichTextContent
+            value={story.description as string}
+            className="text-base"
+          />
         </Then>
         <Else>
           <p className="italic text-muted-foreground">

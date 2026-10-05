@@ -29,6 +29,8 @@ import { toCamelCase, toTitleCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
 import StoryFormActions from "@/app/(authenticated)/dashboard/master/stories/_components/story-form-actions";
+import RichTextEditor from "@/app/_components/rich-text-editor";
+import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 import {
   StoryCreateFormSchema,
   type TStoryCreateFormSchema,
@@ -181,12 +183,17 @@ export default function StoryCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="description">Description</FieldLabel>
-                  <Textarea
+                  <FieldLabel id="description-label">Description</FieldLabel>
+                  <RichTextEditor
                     id="description"
-                    placeholder="Input story description"
+                    ariaLabelledBy="description-label"
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    placeholder="Describe the quest: the hook, the setting, what players should expect..."
+                    maxLength={STORY_DESCRIPTION_MAX_LENGTH}
                     disabled={isFormDisabled}
-                    {...field}
+                    isInvalid={fieldState.invalid}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

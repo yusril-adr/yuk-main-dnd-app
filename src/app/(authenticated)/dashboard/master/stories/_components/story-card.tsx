@@ -32,6 +32,7 @@ import {
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { PermissionEnum } from "@/common/enums/permission";
 import { toTitleCase } from "@/utils/format-text";
+import { getRichTextPlainText } from "@/utils/rich-text";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
 
@@ -169,7 +170,8 @@ export default function StoryCard({
           {/* min-h-15 = 3 lines of text-sm, keeps cards in the same row equal height */}
           <p className="line-clamp-3 min-h-15 text-muted-foreground">
             <If condition={!!story.description}>
-              <Then>{story.description}</Then>
+              {/* Plain text from rich text HTML (or an old plain-text value) */}
+              <Then>{getRichTextPlainText(story.description)}</Then>
               <Else>No description.</Else>
             </If>
           </p>

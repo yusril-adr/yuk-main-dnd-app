@@ -26,9 +26,12 @@ import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-typ
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase, toTitleCase } from "@/utils/format-text";
+import { toRichTextHtml } from "@/utils/rich-text";
 import dayjs from "@/libs/dayjs";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
 import StoryFormActions from "@/app/(authenticated)/dashboard/master/stories/_components/story-form-actions";
+import RichTextEditor from "@/app/_components/rich-text-editor";
+import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 import { StoryEditFormSchema, type TStoryEditFormSchema } from "./scheme";
 import type { TStoryEditFormProps } from "../../_types/story-edit-form-props";
 
@@ -47,7 +50,8 @@ export default function StoryEditForm({
       bannerFileId: "",
       isBannerRemoved: false,
       title: story?.title ?? "",
-      description: story?.description ?? "",
+      // Old plain-text descriptions become paragraphs / line breaks for the editor
+      description: toRichTextHtml(story?.description),
       type: story?.type as StoryTypeEnum,
       gameSystem: story?.game_system ?? "",
       maxMembers: story?.max_members ? String(story.max_members) : "",
@@ -207,12 +211,17 @@ export default function StoryEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="description">Description</FieldLabel>
-                  <Textarea
+                  <FieldLabel id="description-label">Description</FieldLabel>
+                  <RichTextEditor
                     id="description"
-                    placeholder="Input story description"
+                    ariaLabelledBy="description-label"
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    placeholder="Describe the quest: the hook, the setting, what players should expect..."
+                    maxLength={STORY_DESCRIPTION_MAX_LENGTH}
                     disabled={isFormDisabled}
-                    {...field}
+                    isInvalid={fieldState.invalid}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

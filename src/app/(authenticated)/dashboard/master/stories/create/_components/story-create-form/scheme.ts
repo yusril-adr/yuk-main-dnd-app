@@ -2,6 +2,8 @@ import * as z from "zod";
 
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
+import { getRichTextPlainText } from "@/utils/rich-text";
+import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 
 export const StoryCreateFormSchema = z.object({
   // Uploaded banner file id ("" = no banner)
@@ -11,7 +13,15 @@ export const StoryCreateFormSchema = z.object({
     .min(1, "Title is required")
     .max(150, "Title must be at most 150 characters")
     .regex(/[A-Za-z0-9]/, "Title must contain at least one letter or number"),
-  description: z.string().optional(),
+  // Rich text HTML ("" = empty); the limit applies to the visible text
+  description: z
+    .string()
+    .refine(
+      (value) =>
+        getRichTextPlainText(value).length <= STORY_DESCRIPTION_MAX_LENGTH,
+      `Description must be at most ${STORY_DESCRIPTION_MAX_LENGTH} characters`,
+    )
+    .optional(),
   type: z.enum(StoryTypeEnum, "Type is required"),
   gameSystem: z
     .string()
