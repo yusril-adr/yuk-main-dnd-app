@@ -61,7 +61,7 @@ export default function StoryCard({ story, onDelete }: TStoryCardProps) {
           some breathing room around the banner and the footer. */}
       <Card className="gap-2 pt-0">
         <div className="relative">
-          <StoryCardBanner />
+          <StoryCardBanner bannerUrl={story.banner_url} title={story.title} />
 
           <DropdownMenu>
             <DropdownMenuTrigger

@@ -19,5 +19,6 @@ export type TStoryEntity = TBaseEntity & {
   start_at: string | null;
   location_type: StoryLocationTypeEnum;
   location_detail: string;
+  banner_url: string | null;
   created_by?: TStoryCreatorEntity;
 };
