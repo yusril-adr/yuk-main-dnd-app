@@ -25,7 +25,7 @@ import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-s
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
 import { applyValidationErrors } from "@/utils/validation-helper";
-import { toCamelCase } from "@/utils/format-text";
+import { toCamelCase, toTitleCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
 import StoryFormActions from "@/app/(authenticated)/dashboard/master/stories/_components/story-form-actions";
@@ -233,6 +233,11 @@ export default function StoryEditForm({
                     onValueChange={field.onChange}
                     disabled={isFormDisabled}
                     {...field}
+                    // Always controlled: field.value is undefined until the story loads
+                    // (and on create until picked); null = no selection for Base UI
+                    value={field.value ?? null}
+                    // Same labels as the detail page (e.g. "oneshot" -> "Oneshot")
+                    itemToStringLabel={(item) => toTitleCase(item)}
                   >
                     <ComboboxInput placeholder="Select type" />
                     <ComboboxContent>
@@ -240,7 +245,7 @@ export default function StoryEditForm({
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {item}
+                            {toTitleCase(item)}
                           </ComboboxItem>
                         )}
                       </ComboboxList>
@@ -325,6 +330,11 @@ export default function StoryEditForm({
                     onValueChange={field.onChange}
                     disabled={isFormDisabled}
                     {...field}
+                    // Always controlled: field.value is undefined until the story loads
+                    // (and on create until picked); null = no selection for Base UI
+                    value={field.value ?? null}
+                    // Same labels as the detail page (e.g. "oneshot" -> "Oneshot")
+                    itemToStringLabel={(item) => toTitleCase(item)}
                   >
                     <ComboboxInput placeholder="Select location type" />
                     <ComboboxContent>
@@ -332,7 +342,7 @@ export default function StoryEditForm({
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {item}
+                            {toTitleCase(item)}
                           </ComboboxItem>
                         )}
                       </ComboboxList>

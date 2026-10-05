@@ -33,6 +33,7 @@ import {
 } from "@/app/_components/ui/select";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import { generatePages } from "@/utils/table-helper";
+import { toTitleCase } from "@/utils/format-text";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
@@ -259,6 +260,8 @@ export default function StoryCardList({
                     id="status"
                     items={Object.values(StoryStatusEnum)}
                     value={filterStatus}
+                    // Show "Published" / "Oneshot" / "Online"; the filter value stays lowercase
+                    itemToStringLabel={(item) => toTitleCase(item)}
                     onValueChange={(value) => setFilterStatus(value || null)}
                   >
                     <ComboboxInput placeholder="Select status" showClear />
@@ -267,7 +270,7 @@ export default function StoryCardList({
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {item}
+                            {toTitleCase(item)}
                           </ComboboxItem>
                         )}
                       </ComboboxList>
@@ -281,6 +284,8 @@ export default function StoryCardList({
                     id="type"
                     items={Object.values(StoryTypeEnum)}
                     value={filterType}
+                    // Show "Published" / "Oneshot" / "Online"; the filter value stays lowercase
+                    itemToStringLabel={(item) => toTitleCase(item)}
                     onValueChange={(value) => setFilterType(value || null)}
                   >
                     <ComboboxInput placeholder="Select type" showClear />
@@ -289,7 +294,7 @@ export default function StoryCardList({
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {item}
+                            {toTitleCase(item)}
                           </ComboboxItem>
                         )}
                       </ComboboxList>
@@ -303,6 +308,8 @@ export default function StoryCardList({
                     id="location-type"
                     items={Object.values(StoryLocationTypeEnum)}
                     value={filterLocationType}
+                    // Show "Published" / "Oneshot" / "Online"; the filter value stays lowercase
+                    itemToStringLabel={(item) => toTitleCase(item)}
                     onValueChange={(value) => setFilterLocationType(value || null)}
                   >
                     <ComboboxInput placeholder="Select location" showClear />
@@ -311,7 +318,7 @@ export default function StoryCardList({
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {item}
+                            {toTitleCase(item)}
                           </ComboboxItem>
                         )}
                       </ComboboxList>
