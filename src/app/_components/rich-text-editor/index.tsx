@@ -2,13 +2,19 @@ import { useEffect, useMemo } from "react";
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import type { Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { CharacterCount, Placeholder } from "@tiptap/extensions";
+import { Placeholder } from "@tiptap/extensions";
 import { Else, If, Then } from "react-if";
 
 import { Skeleton } from "@/app/_components/ui/skeleton";
-import { RICH_TEXT_CONTENT_CLASS_NAME } from "@/app/_constants/rich-text";
+import {
+  RICH_TEXT_CONTENT_CLASS_NAME,
+  RICH_TEXT_EDITOR_SELECTED_IMAGE_CLASS_NAME,
+} from "@/app/_constants/rich-text";
 import type { TRichTextEditorProps } from "@/app/_types/rich-text-editor-props";
+import { RichTextCharacterCount } from "@/libs/tiptap/rich-text-character-count";
+import { RichTextImage } from "@/libs/tiptap/rich-text-image";
 import { cn } from "@/utils/cn";
+import { removeHtmlImages } from "@/utils/rich-text";
 
 import RichTextToolbar from "./rich-text-toolbar";
 
@@ -35,7 +41,9 @@ export default function RichTextEditor({
         link: { openOnClick: false, autolink: true, defaultProtocol: "https" },
       }),
       Placeholder.configure({ placeholder }),
-      CharacterCount.configure({ limit: maxLength }),
+      RichTextImage,
+      // Images count as 0 characters (same as countRichTextCharacters)
+      RichTextCharacterCount.configure({ limit: maxLength }),
     ],
     [placeholder, maxLength],
   );
@@ -57,10 +65,19 @@ export default function RichTextEditor({
         "aria-invalid": String(isInvalid),
         class: cn(
           RICH_TEXT_CONTENT_CLASS_NAME,
+          RICH_TEXT_EDITOR_SELECTED_IMAGE_CLASS_NAME,
           PLACEHOLDER_CLASS_NAME,
           "min-h-32 px-3 py-2 text-base outline-none md:text-sm",
         ),
       },
+      // Images only come from the Image button: strip <img> from pasted and
+      // dropped HTML (runs for both paste and drop)
+      transformPastedHTML: (html) => removeHtmlImages(html),
+      // Dropping files (e.g. an image from the desktop) would make the browser
+      // open the file and leave the form; ignore them. Moving content inside
+      // the editor still works
+      handleDrop: (_view, event, _slice, moved) =>
+        !moved && !!event.dataTransfer?.files.length,
     },
     // An empty document is "<p></p>"; store "" so optional / required checks work
     onUpdate: ({ editor: currentEditor }) => {
