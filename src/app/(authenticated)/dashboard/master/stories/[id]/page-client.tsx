@@ -34,6 +34,7 @@ import StoryDetailAdventureCard from "@/app/(authenticated)/dashboard/master/sto
 import StoryDetailChronicleCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-chronicle-card";
 import StoryDetailSkeleton from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-skeleton";
 import StoryDetailActions from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-actions";
+import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
 
 export default function StoryDetailPageClient() {
   const { auth } = useAuthContext();
@@ -45,10 +46,14 @@ export default function StoryDetailPageClient() {
   const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false);
   const storyQuery = useGetStoryById(storyId);
   const story = storyQuery.data?.data?.data;
-  const canUpdateStories = auth?.permissions.includes(
+  const canUpdateStory = canManageStory(
+    auth,
+    story,
     PermissionEnum.STORIES_UPDATE,
   );
-  const canDeleteStories = auth?.permissions.includes(
+  const canDeleteStory = canManageStory(
+    auth,
+    story,
     PermissionEnum.STORIES_DELETE,
   );
   const deleteStoryMutation = useDeleteStoryById({
@@ -77,7 +82,7 @@ export default function StoryDetailPageClient() {
   });
 
   const canArchiveStory =
-    !!canUpdateStories && story?.status !== StoryStatusEnum.ARCHIVED;
+    canUpdateStory && story?.status !== StoryStatusEnum.ARCHIVED;
 
   useEffect(() => {
     if (
@@ -116,13 +121,13 @@ export default function StoryDetailPageClient() {
             <ArrowLeft />
           </Link>
           <h1 className="font-heading text-2xl">Story Detail</h1>
-          <If condition={!!story && (!!canUpdateStories || !!canDeleteStories)}>
+          <If condition={!!story && (canUpdateStory || canDeleteStory)}>
             <Then>
               <StoryDetailActions
                 storyId={storyId}
-                canEdit={!!canUpdateStories}
+                canEdit={canUpdateStory}
                 canArchive={canArchiveStory}
-                canDelete={!!canDeleteStories}
+                canDelete={canDeleteStory}
                 isArchivePending={archiveStoryMutation.isPending}
                 onArchiveClick={() => setIsArchiveDialogOpen(true)}
                 onDeleteClick={() => setIsDeleteDialogOpen(true)}

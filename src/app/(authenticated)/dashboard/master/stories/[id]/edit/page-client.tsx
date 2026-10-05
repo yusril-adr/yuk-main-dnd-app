@@ -4,6 +4,7 @@ import { useCallback, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { notFound, useParams, useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
@@ -13,6 +14,9 @@ import { useUpdateStoryById } from "@/app/(authenticated)/dashboard/master/stori
 import { useBannerUploadFile } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-banner-upload-file";
 import type { TStoryBannerUploadHandler } from "@/app/(authenticated)/dashboard/master/stories/_types/story-banner-upload-handler";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { PermissionEnum } from "@/common/enums/permission";
+import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
 import CONFIG from "@/common/constants/config";
 
 export default function StoryEditPageClient() {
@@ -47,6 +51,13 @@ export default function StoryEditPageClient() {
     [uploadBannerMutate],
   );
   const story = storyQuery.data?.data?.data;
+  const { auth } = useAuthContext();
+  // Only decide once both the story and the user's data are loaded
+  const isEditForbidden =
+    !!story &&
+    !!auth &&
+    !canManageStory(auth, story, PermissionEnum.STORIES_UPDATE);
+
   useEffect(() => {
     if (
       storyQuery.isError &&
@@ -55,6 +66,13 @@ export default function StoryEditPageClient() {
       notFound();
     }
   }, [storyQuery.error, storyQuery.isError, router]);
+
+  useEffect(() => {
+    if (isEditForbidden) {
+      toast.error("You don't have permission to edit this story");
+      router.replace(`/dashboard/master/stories/${storyId}`);
+    }
+  }, [isEditForbidden, router, storyId]);
 
   return (
     <div className="w-full flex justify-center">
@@ -83,7 +101,7 @@ export default function StoryEditPageClient() {
 
         <StoryEditForm
           story={story}
-          isLoading={storyQuery.isLoading}
+          isLoading={storyQuery.isLoading || isEditForbidden}
           onSubmitPayload={(payload) =>
             updateStoryMutation.mutate({ id: storyId, payload })
           }

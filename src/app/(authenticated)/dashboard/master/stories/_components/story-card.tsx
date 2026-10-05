@@ -33,6 +33,7 @@ import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { PermissionEnum } from "@/common/enums/permission";
 import { toTitleCase } from "@/utils/format-text";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
+import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
 
 import StoryCardBanner from "./story-card-banner";
 import StoryStatusBadge from "./story-status-badge";
@@ -44,17 +45,19 @@ export default function StoryCard({
   onDelete,
 }: TStoryCardProps) {
   const { auth } = useAuthContext();
-  const canUpdateStories = auth?.permissions.includes(
+  const canUpdateStory = canManageStory(
+    auth,
+    story,
     PermissionEnum.STORIES_UPDATE,
   );
-  const canDeleteStories = auth?.permissions.includes(
+  const canDeleteStory = canManageStory(
+    auth,
+    story,
     PermissionEnum.STORIES_DELETE,
   );
-  // Same rule as the detail page: stories:update and not already archived
+  // Same rule as the detail page: allowed to update and not already archived
   const canArchiveStory =
-    !!canUpdateStories &&
-    story.status !== StoryStatusEnum.ARCHIVED &&
-    !!onArchive;
+    canUpdateStory && story.status !== StoryStatusEnum.ARCHIVED && !!onArchive;
   const [confirmArchiveId, setConfirmArchiveId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
@@ -113,7 +116,7 @@ export default function StoryCard({
                   <Eye />
                   View
                 </DropdownMenuItem>
-                {canUpdateStories && (
+                {canUpdateStory && (
                   <DropdownMenuItem
                     render={
                       <Link
@@ -135,7 +138,7 @@ export default function StoryCard({
                     </DropdownMenuItem>
                   </Then>
                 </If>
-                {canDeleteStories && onDelete && (
+                {canDeleteStory && onDelete && (
                   <DropdownMenuItem
                     variant="destructive"
                     onClick={() => setConfirmDeleteId(story.id)}
