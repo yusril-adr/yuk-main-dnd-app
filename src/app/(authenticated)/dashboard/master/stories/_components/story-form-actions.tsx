@@ -23,7 +23,12 @@ export default function StoryFormActions({
 
   return (
     <FieldGroup>
-      <Field orientation="horizontal" className="flex-wrap">
+      {/* Phones: status on its own line, then full-width stacked buttons.
+          sm+: one row, status left, buttons right */}
+      <Field
+        orientation="horizontal"
+        className="flex-col items-stretch sm:flex-row sm:items-center"
+      >
         <If condition={!!currentStatus}>
           <Then>
             <span className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -33,49 +38,53 @@ export default function StoryFormActions({
           </Then>
         </If>
 
-        <Button
-          className="ms-auto"
-          variant="outline"
-          type="button"
-          render={<Link href={cancelHref} />}
-          disabled={disabled}
-          nativeButton={false}
-        >
-          Cancel
-        </Button>
+        <div className="flex flex-col gap-3 sm:ms-auto sm:flex-row">
+          <Button
+            className="w-full sm:w-auto"
+            variant="outline"
+            type="button"
+            render={<Link href={cancelHref} />}
+            disabled={disabled}
+            nativeButton={false}
+          >
+            Cancel
+          </Button>
 
-        <Button
-          type="button"
-          variant="secondary"
-          disabled={disabled}
-          onClick={() => onSubmitWithStatus(StoryStatusEnum.DRAFT)}
-        >
-          <If condition={isSubmitting(StoryStatusEnum.DRAFT)}>
-            <Then>
-              <Spinner data-icon="inline-start" />
-            </Then>
-            <Else>
-              <FilePen data-icon="inline-start" />
-            </Else>
-          </If>
-          Save as Draft
-        </Button>
+          <Button
+            className="w-full sm:w-auto"
+            type="button"
+            variant="secondary"
+            disabled={disabled}
+            onClick={() => onSubmitWithStatus(StoryStatusEnum.DRAFT)}
+          >
+            <If condition={isSubmitting(StoryStatusEnum.DRAFT)}>
+              <Then>
+                <Spinner data-icon="inline-start" />
+              </Then>
+              <Else>
+                <FilePen data-icon="inline-start" />
+              </Else>
+            </If>
+            Save as Draft
+          </Button>
 
-        <Button
-          type="button"
-          disabled={disabled}
-          onClick={() => onSubmitWithStatus(StoryStatusEnum.PUBLISHED)}
-        >
-          <If condition={isSubmitting(StoryStatusEnum.PUBLISHED)}>
-            <Then>
-              <Spinner data-icon="inline-start" />
-            </Then>
-            <Else>
-              <Send data-icon="inline-start" />
-            </Else>
-          </If>
-          Publish
-        </Button>
+          <Button
+            className="w-full sm:w-auto"
+            type="button"
+            disabled={disabled}
+            onClick={() => onSubmitWithStatus(StoryStatusEnum.PUBLISHED)}
+          >
+            <If condition={isSubmitting(StoryStatusEnum.PUBLISHED)}>
+              <Then>
+                <Spinner data-icon="inline-start" />
+              </Then>
+              <Else>
+                <Send data-icon="inline-start" />
+              </Else>
+            </If>
+            Publish
+          </Button>
+        </div>
       </Field>
     </FieldGroup>
   );
