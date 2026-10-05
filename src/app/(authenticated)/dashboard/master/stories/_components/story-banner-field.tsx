@@ -48,20 +48,21 @@ export default function StoryBannerField({
   return (
     <Field data-invalid={!!error}>
       <FieldLabel>Banner</FieldLabel>
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="aspect-video w-full sm:w-72 overflow-hidden rounded-lg border bg-muted">
+      <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+        <div className="w-full sm:w-72 overflow-hidden rounded-lg border bg-muted">
           <If condition={!!previewUrl}>
             <Then>
-              {/* Plain <img> like the story card banner (blob: or public storage URL) */}
+              {/* Plain <img> like the story card banner (blob: or public storage URL).
+                  Natural aspect ratio; tall images are capped and letterboxed. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={previewUrl ?? undefined}
                 alt="Story banner preview"
-                className="size-full object-cover"
+                className="block h-auto max-h-64 w-full object-contain"
               />
             </Then>
             <Else>
-              <div className="flex size-full items-center justify-center">
+              <div className="flex aspect-video w-full items-center justify-center">
                 <ImageIcon className="size-8 text-muted-foreground" />
               </div>
             </Else>
@@ -108,7 +109,8 @@ export default function StoryBannerField({
             onChange={handleFileChange}
           />
           <FieldDescription>
-            16:9 image (JPG, PNG, or WebP), max 2 MB.
+            JPG, PNG, or WebP image, max 2 MB. Shown at its original aspect
+            ratio.
           </FieldDescription>
         </div>
       </div>

@@ -15,13 +15,13 @@ export default function StoryCardSkeleton() {
         <Skeleton className="h-5 w-40" />
       </CardHeader>
 
-      <CardContent className="space-y-2">
+      <CardContent className="space-y-2 pb-2">
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-2/3" />
       </CardContent>
 
-      <CardFooter className="mt-2 border-t pt-3">
+      <CardFooter className="mt-auto border-t pt-3">
         <div className="flex flex-wrap gap-1.5">
           <Skeleton className="h-5 w-16 rounded-md" />
           <Skeleton className="h-5 w-16 rounded-md" />

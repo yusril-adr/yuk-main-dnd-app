@@ -57,8 +57,10 @@ export default function StoryCard({ story, onDelete }: TStoryCardProps) {
   return (
     <>
       {/* pt-0: the banner sits flush with the top edge of the card.
-          gap-2 keeps the title close to the description; pt-2 / mt-2 restore
-          some breathing room around the banner and the footer. */}
+          gap-2 keeps the title close to the description. Cards in a grid row
+          stretch to the tallest one (banners have natural heights), so the
+          footer is pinned to the bottom with mt-auto; pb-2 on the content
+          keeps a minimum gap above it. */}
       <Card className="gap-2 pt-0">
         <div className="relative">
           <StoryCardBanner bannerUrl={story.banner_url} title={story.title} />
@@ -125,7 +127,7 @@ export default function StoryCard({ story, onDelete }: TStoryCardProps) {
           </CardTitle>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="pb-2">
           {/* min-h-15 = 3 lines of text-sm, keeps cards in the same row equal height */}
           <p className="line-clamp-3 min-h-15 text-muted-foreground">
             <If condition={!!story.description}>
@@ -135,7 +137,7 @@ export default function StoryCard({ story, onDelete }: TStoryCardProps) {
           </p>
         </CardContent>
 
-        <CardFooter className="mt-2 border-t pt-3">
+        <CardFooter className="mt-auto border-t pt-3">
           <div className="flex flex-wrap gap-1.5">
             <StoryStatusBadge status={story.status} />
             <Badge variant="outline">{toTitleCase(story.type)}</Badge>

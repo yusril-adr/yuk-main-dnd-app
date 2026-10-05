@@ -11,27 +11,23 @@ export default function StoryDetailHero({ story }: TStoryDetailCardProps) {
   const TypeIcon = STORY_TYPE_ICON[story.type];
 
   return (
-    <Card className="relative gap-0 overflow-hidden py-0">
-      {/* Height capped so wide screens don't get a ~680px 16:9 banner */}
+    <Card className="gap-0 overflow-hidden py-0">
+      {/* Natural aspect ratio; very tall images capped at 28rem and letterboxed.
+          No banner: a short gradient strip instead of 16:9. */}
       <StoryCardBanner
         bannerUrl={story.banner_url}
         title={story.title}
-        className="aspect-auto h-60 sm:h-72 lg:h-80"
+        imageClassName="max-h-[28rem]"
+        placeholderClassName="aspect-auto h-40 sm:h-48"
       />
 
-      {/* Fade the banner into the card so the text stays readable on any image */}
-      <div className="absolute inset-0 bg-gradient-to-t from-card via-card/60 to-transparent" />
-
-      <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-6">
-        <h2 className="font-heading text-2xl font-medium leading-tight break-words line-clamp-2 sm:text-3xl">
+      <div className="flex flex-col gap-2 border-t p-6">
+        <h2 className="font-heading text-2xl font-medium leading-tight break-words sm:text-3xl">
           {story.title}
         </h2>
         <div className="flex flex-wrap items-center gap-2">
           <StoryStatusBadge status={story.status} />
-          <Badge
-            variant="outline"
-            className="gap-1 bg-background/60 backdrop-blur [&>svg]:size-3"
-          >
+          <Badge variant="outline" className="gap-1 [&>svg]:size-3">
             <TypeIcon />
             {toTitleCase(story.type)}
           </Badge>

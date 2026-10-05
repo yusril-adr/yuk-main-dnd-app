@@ -8,26 +8,31 @@ import type { TStoryCardBannerProps } from "@/app/(authenticated)/dashboard/mast
 export default function StoryCardBanner({
   bannerUrl,
   title,
-  className,
+  imageClassName,
+  placeholderClassName,
 }: TStoryCardBannerProps) {
   return (
     <If condition={!!bannerUrl}>
       <Then>
         {/* Plain <img> like the user avatars (Base UI AvatarImage): the banner is a
-            public storage URL, so no next/image remotePatterns host config is needed. */}
+            public storage URL, so no next/image remotePatterns host config is needed.
+            Natural aspect ratio (no crop); very tall images are capped and letterboxed. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={bannerUrl ?? undefined}
           alt={title}
-          className={cn("aspect-video w-full object-cover", className)}
+          className={cn(
+            "block h-auto max-h-96 w-full bg-muted/40 object-contain",
+            imageClassName,
+          )}
         />
       </Then>
       <Else>
-        {/* Placeholder for stories without a banner */}
+        {/* Placeholder for stories without a banner: fixed 16:9 by default */}
         <div
           className={cn(
             "flex aspect-video w-full items-center justify-center bg-gradient-to-br from-primary/20 via-secondary/30 to-accent/20",
-            className,
+            placeholderClassName,
           )}
         >
           <Swords className="size-10 text-primary/40" />
