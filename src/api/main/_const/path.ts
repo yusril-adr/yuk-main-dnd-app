@@ -22,6 +22,10 @@ const MAIN_API_PATH = {
         FULL: "/api/v1/master/iam/permissions/full",
       },
     },
+    STORY: {
+      DEFAULT: "/api/v1/master/stories",
+      DETAIL: (id: string) => `/api/v1/master/stories/${id}`,
+    },
   },
 };
 

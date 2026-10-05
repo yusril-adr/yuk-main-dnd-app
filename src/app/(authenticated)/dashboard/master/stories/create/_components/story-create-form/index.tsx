@@ -1,0 +1,331 @@
+import { useEffect } from "react";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Card, CardContent, CardFooter } from "@/app/_components/ui/card";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/app/_components/ui/field";
+import { Input } from "@/app/_components/ui/input";
+import { Textarea } from "@/app/_components/ui/textarea";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/app/_components/ui/combobox";
+import { Button } from "@/app/_components/ui/button";
+import { Spinner } from "@/app/_components/ui/spinner";
+
+import MainAPIValidationError from "@/api/main/errors/validation-error";
+import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
+import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
+import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
+import { applyValidationErrors } from "@/utils/validation-helper";
+import { toCamelCase } from "@/utils/format-text";
+import dayjs from "@/libs/dayjs";
+import {
+  StoryCreateFormSchema,
+  type TStoryCreateFormSchema,
+} from "./scheme";
+import type { TStoryCreateFormProps } from "../../_types/story-create-form-props";
+
+export default function StoryCreateForm({
+  onSubmitPayload,
+  mutationError,
+  isPending,
+  isPaused,
+}: TStoryCreateFormProps) {
+  const { control, handleSubmit, setError } = useForm<TStoryCreateFormSchema>({
+    resolver: zodResolver(StoryCreateFormSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      status: StoryStatusEnum.DRAFT,
+      gameSystem: "",
+      maxMembers: "",
+      startAt: "",
+      locationDetail: "",
+    },
+  });
+
+  useEffect(() => {
+    if (mutationError instanceof MainAPIValidationError) {
+      const mappedErrors = mutationError.errors.map((error) => ({
+        property: toCamelCase(String(error.property)),
+        messages: error.messages,
+      }));
+
+      applyValidationErrors(setError, mappedErrors);
+    }
+  }, [mutationError, setError]);
+
+  const onSubmit: SubmitHandler<TStoryCreateFormSchema> = (data) => {
+    onSubmitPayload({
+      title: data.title,
+      description: data.description || undefined,
+      status: data.status,
+      type: data.type,
+      game_system: data.gameSystem || undefined,
+      max_members: data.maxMembers ? Number(data.maxMembers) : undefined,
+      // datetime-local is the browser's local time; send it as ISO (UTC)
+      start_at: data.startAt ? dayjs(data.startAt).toISOString() : undefined,
+      location_type: data.locationType,
+      location_detail: data.locationDetail,
+    });
+  };
+
+  const isFormDisabled = isPending || isPaused;
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Card>
+        <CardContent>
+          <FieldGroup>
+            <Controller
+              name="title"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="title">Title</FieldLabel>
+                  <Input
+                    id="title"
+                    placeholder="Input story title"
+                    disabled={isFormDisabled}
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="description"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="description">Description</FieldLabel>
+                  <Textarea
+                    id="description"
+                    placeholder="Input story description"
+                    disabled={isFormDisabled}
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="status"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="status">Status</FieldLabel>
+                  <Combobox
+                    id="status"
+                    items={Object.values(StoryStatusEnum)}
+                    onValueChange={field.onChange}
+                    disabled={isFormDisabled}
+                    {...field}
+                  >
+                    <ComboboxInput placeholder="Select status" />
+                    <ComboboxContent>
+                      <ComboboxEmpty>No items found.</ComboboxEmpty>
+                      <ComboboxList>
+                        {(item) => (
+                          <ComboboxItem key={item} value={item}>
+                            {item}
+                          </ComboboxItem>
+                        )}
+                      </ComboboxList>
+                    </ComboboxContent>
+                  </Combobox>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="type"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="type">Type</FieldLabel>
+                  <Combobox
+                    id="type"
+                    items={Object.values(StoryTypeEnum)}
+                    onValueChange={field.onChange}
+                    disabled={isFormDisabled}
+                    {...field}
+                  >
+                    <ComboboxInput placeholder="Select type" />
+                    <ComboboxContent>
+                      <ComboboxEmpty>No items found.</ComboboxEmpty>
+                      <ComboboxList>
+                        {(item) => (
+                          <ComboboxItem key={item} value={item}>
+                            {item}
+                          </ComboboxItem>
+                        )}
+                      </ComboboxList>
+                    </ComboboxContent>
+                  </Combobox>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="gameSystem"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="gameSystem">Game System</FieldLabel>
+                  <Input
+                    id="gameSystem"
+                    placeholder="e.g. DnD 5e 2014"
+                    disabled={isFormDisabled}
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="maxMembers"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="maxMembers">Max Members</FieldLabel>
+                  <Input
+                    id="maxMembers"
+                    type="number"
+                    min={1}
+                    placeholder="Input max members"
+                    disabled={isFormDisabled}
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="startAt"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="startAt">Start At</FieldLabel>
+                  <Input
+                    id="startAt"
+                    type="datetime-local"
+                    placeholder="Select start date and time"
+                    disabled={isFormDisabled}
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="locationType"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="locationType">Location Type</FieldLabel>
+                  <Combobox
+                    id="locationType"
+                    items={Object.values(StoryLocationTypeEnum)}
+                    onValueChange={field.onChange}
+                    disabled={isFormDisabled}
+                    {...field}
+                  >
+                    <ComboboxInput placeholder="Select location type" />
+                    <ComboboxContent>
+                      <ComboboxEmpty>No items found.</ComboboxEmpty>
+                      <ComboboxList>
+                        {(item) => (
+                          <ComboboxItem key={item} value={item}>
+                            {item}
+                          </ComboboxItem>
+                        )}
+                      </ComboboxList>
+                    </ComboboxContent>
+                  </Combobox>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="locationDetail"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="locationDetail">Location Detail</FieldLabel>
+                  <Textarea
+                    id="locationDetail"
+                    placeholder="e.g. Discord link or venue address"
+                    disabled={isFormDisabled}
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+        </CardContent>
+
+        <CardFooter className="border-t-1 pt-4">
+          <FieldGroup>
+            <Field orientation="horizontal">
+              <Button
+                className="ms-auto"
+                variant="outline"
+                type="reset"
+                render={<Link href="/dashboard/master/stories" />}
+                disabled={isFormDisabled}
+                nativeButton={false}
+              >
+                Cancel
+                {isFormDisabled && <Spinner />}
+              </Button>
+
+              <Button type="submit" disabled={isFormDisabled}>
+                Save
+                {isFormDisabled && <Spinner />}
+              </Button>
+            </Field>
+          </FieldGroup>
+        </CardFooter>
+      </Card>
+    </form>
+  );
+}
