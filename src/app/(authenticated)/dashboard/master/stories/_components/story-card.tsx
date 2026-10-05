@@ -72,7 +72,9 @@ export default function StoryCard({ story, onDelete }: TStoryCardProps) {
                   size="icon-sm"
                   variant="ghost"
                   aria-label="Story actions"
-                  className="absolute top-2 right-2 bg-background/80 backdrop-blur hover:bg-background aria-expanded:bg-background"
+                  // Plain ghost like the other ⋯ buttons; the drop shadow keeps the
+                  // icon visible on light or busy banner images
+                  className="absolute top-2 right-2 [&_svg]:drop-shadow-sm"
                 >
                   <EllipsisVertical />
                 </Button>
