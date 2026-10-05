@@ -3,4 +3,5 @@ import { TRoleSortBy } from "@/api/main/modules/master/iam/roles/consts/role-sor
 
 export type TRolePaginationPayload = TMainApiPaginationPayload & {
   sort_by?: TRoleSortBy;
+  is_show_in_public?: boolean;
 };
