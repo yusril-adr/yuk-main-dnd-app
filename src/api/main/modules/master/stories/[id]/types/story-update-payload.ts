@@ -5,7 +5,8 @@ type TStoryClearableField =
   | "description"
   | "game_system"
   | "max_members"
-  | "start_at";
+  | "start_at"
+  | "banner_file_id";
 
 export type TStoryUpdatePayload = Partial<
   Omit<TStoryCreatePayload, TStoryClearableField>

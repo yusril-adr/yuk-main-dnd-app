@@ -5,6 +5,10 @@ import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-typ
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
 
 export const StoryEditFormSchema = z.object({
+  // Newly uploaded banner file id ("" = unchanged or removed)
+  bannerFileId: z.string(),
+  // The existing banner was removed: sent as banner_file_id: null
+  isBannerRemoved: z.boolean(),
   title: z
     .string("Title is required")
     .min(1, "Title is required")

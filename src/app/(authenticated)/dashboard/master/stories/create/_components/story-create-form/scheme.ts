@@ -5,6 +5,8 @@ import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-typ
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
 
 export const StoryCreateFormSchema = z.object({
+  // Uploaded banner file id ("" = no banner)
+  bannerFileId: z.string(),
   title: z
     .string("Title is required")
     .min(1, "Title is required")

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { notFound, useParams, useRouter } from "next/navigation";
@@ -10,6 +10,8 @@ import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import StoryEditForm from "./_components/story-edit-form";
 import { useGetStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-by-id";
 import { useUpdateStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-update-story-by-id";
+import { useBannerUploadFile } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-banner-upload-file";
+import type { TStoryBannerUploadHandler } from "@/app/(authenticated)/dashboard/master/stories/_types/story-banner-upload-handler";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import CONFIG from "@/common/constants/config";
 
@@ -32,6 +34,18 @@ export default function StoryEditPageClient() {
       }
     },
   });
+  const { mutate: uploadBannerMutate, isPending: isUploadingBanner } =
+    useBannerUploadFile();
+
+  const onUploadBanner: TStoryBannerUploadHandler = useCallback(
+    (file, { onSuccess, onError }) => {
+      uploadBannerMutate(
+        { file },
+        { onSuccess: (response) => onSuccess(response.data.data.id), onError },
+      );
+    },
+    [uploadBannerMutate],
+  );
   const story = storyQuery.data?.data?.data;
   useEffect(() => {
     if (
@@ -76,6 +90,8 @@ export default function StoryEditPageClient() {
           mutationError={updateStoryMutation.error}
           isPending={updateStoryMutation.isPending}
           isPaused={updateStoryMutation.isPaused}
+          onUploadBanner={onUploadBanner}
+          isUploadingBanner={isUploadingBanner}
         />
       </main>
     </div>

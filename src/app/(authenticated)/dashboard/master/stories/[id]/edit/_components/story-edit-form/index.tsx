@@ -1,5 +1,10 @@
-import { useEffect, useMemo } from "react";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Controller,
+  useForm,
+  useWatch,
+  type SubmitHandler,
+} from "react-hook-form";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -30,6 +35,7 @@ import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/s
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
+import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
 import { StoryEditFormSchema, type TStoryEditFormSchema } from "./scheme";
 import type { TStoryEditFormProps } from "../../_types/story-edit-form-props";
 
@@ -40,9 +46,13 @@ export default function StoryEditForm({
   mutationError,
   isPending,
   isPaused,
+  onUploadBanner,
+  isUploadingBanner,
 }: TStoryEditFormProps) {
   const values = useMemo(
     () => ({
+      bannerFileId: "",
+      isBannerRemoved: false,
       title: story?.title ?? "",
       description: story?.description ?? "",
       status: story?.status ?? StoryStatusEnum.DRAFT,
@@ -59,10 +69,53 @@ export default function StoryEditForm({
     [story],
   );
 
-  const { control, handleSubmit, setError } = useForm<TStoryEditFormSchema>({
-    resolver: zodResolver(StoryEditFormSchema),
-    values,
-  });
+  const { control, handleSubmit, setError, setValue, clearErrors } =
+    useForm<TStoryEditFormSchema>({
+      resolver: zodResolver(StoryEditFormSchema),
+      values,
+    });
+
+  const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(
+    null,
+  );
+  const isBannerRemoved = useWatch({ control, name: "isBannerRemoved" });
+  // New local preview, else the existing banner unless it was removed
+  const bannerSrc =
+    bannerPreviewUrl ?? (isBannerRemoved ? null : (story?.banner_url ?? null));
+
+  // Revoke the previous local preview when it changes, and on unmount
+  useEffect(() => {
+    return () => {
+      if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl);
+    };
+  }, [bannerPreviewUrl]);
+
+  const onBannerSelect = useCallback(
+    (file: File) => {
+      clearErrors("bannerFileId");
+      setValue("bannerFileId", "");
+      setValue("isBannerRemoved", false);
+      setBannerPreviewUrl(URL.createObjectURL(file));
+      onUploadBanner(file, {
+        onSuccess: (fileId) => setValue("bannerFileId", fileId),
+        // A failed upload falls back to the existing banner
+        onError: () => setBannerPreviewUrl(null),
+      });
+    },
+    [clearErrors, setValue, onUploadBanner],
+  );
+
+  const onBannerFileError = useCallback(
+    (message: string) => setError("bannerFileId", { message }),
+    [setError],
+  );
+
+  const onBannerRemove = useCallback(() => {
+    clearErrors("bannerFileId");
+    setValue("bannerFileId", "");
+    setValue("isBannerRemoved", true);
+    setBannerPreviewUrl(null);
+  }, [clearErrors, setValue]);
 
   useEffect(() => {
     if (mutationError instanceof MainAPIValidationError) {
@@ -76,6 +129,14 @@ export default function StoryEditForm({
   }, [mutationError, setError]);
 
   const onSubmit: SubmitHandler<TStoryEditFormSchema> = (data) => {
+    // undefined = untouched (left out of the JSON), null = remove, string = new banner
+    let bannerFileId: string | null | undefined;
+    if (data.bannerFileId) {
+      bannerFileId = data.bannerFileId;
+    } else if (data.isBannerRemoved) {
+      bannerFileId = null;
+    }
+
     onSubmitPayload({
       title: data.title,
       // Emptied optional fields are sent as null so the API clears them
@@ -88,6 +149,7 @@ export default function StoryEditForm({
       start_at: data.startAt ? dayjs(data.startAt).toISOString() : null,
       location_type: data.locationType,
       location_detail: data.locationDetail,
+      banner_file_id: bannerFileId,
     });
   };
 
@@ -98,6 +160,22 @@ export default function StoryEditForm({
       <Card>
         <CardContent>
           <FieldGroup>
+            <Controller
+              name="bannerFileId"
+              control={control}
+              render={({ fieldState }) => (
+                <StoryBannerField
+                  previewUrl={bannerSrc}
+                  isUploading={isUploadingBanner}
+                  disabled={isFormDisabled}
+                  error={fieldState.error}
+                  onFileSelect={onBannerSelect}
+                  onFileError={onBannerFileError}
+                  onRemove={onBannerRemove}
+                />
+              )}
+            />
+
             <Controller
               name="title"
               control={control}
@@ -321,16 +399,19 @@ export default function StoryEditForm({
                 variant="outline"
                 type="reset"
                 render={<Link href="/dashboard/master/stories" />}
-                disabled={isFormDisabled}
+                disabled={isFormDisabled || isUploadingBanner}
                 nativeButton={false}
               >
                 Cancel
-                {isFormDisabled && <Spinner />}
+                {(isFormDisabled || isUploadingBanner) && <Spinner />}
               </Button>
 
-              <Button type="submit" disabled={isFormDisabled}>
+              <Button
+                type="submit"
+                disabled={isFormDisabled || isUploadingBanner}
+              >
                 Save
-                {isFormDisabled && <Spinner />}
+                {(isFormDisabled || isUploadingBanner) && <Spinner />}
               </Button>
             </Field>
           </FieldGroup>

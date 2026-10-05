@@ -3,12 +3,15 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import CONFIG from "@/common/constants/config";
 import StoryCreateForm from "./_components/story-create-form";
 import { useCreateStory } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-create-story";
+import { useBannerUploadFile } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-banner-upload-file";
+import type { TStoryBannerUploadHandler } from "@/app/(authenticated)/dashboard/master/stories/_types/story-banner-upload-handler";
 
 export default function StoryCreatePageClient() {
   const router = useRouter();
@@ -21,6 +24,19 @@ export default function StoryCreatePageClient() {
       router.push("/dashboard/master/stories");
     },
   });
+
+  const { mutate: uploadBannerMutate, isPending: isUploadingBanner } =
+    useBannerUploadFile();
+
+  const onUploadBanner: TStoryBannerUploadHandler = useCallback(
+    (file, { onSuccess, onError }) => {
+      uploadBannerMutate(
+        { file },
+        { onSuccess: (response) => onSuccess(response.data.data.id), onError },
+      );
+    },
+    [uploadBannerMutate],
+  );
 
   return (
     <div className="w-full flex justify-center">
@@ -44,6 +60,8 @@ export default function StoryCreatePageClient() {
           mutationError={createStoryMutation.error}
           isPending={createStoryMutation.isPending}
           isPaused={createStoryMutation.isPaused}
+          onUploadBanner={onUploadBanner}
+          isUploadingBanner={isUploadingBanner}
         />
       </main>
     </div>

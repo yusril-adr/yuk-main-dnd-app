@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,6 +30,7 @@ import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/s
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
+import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
 import {
   StoryCreateFormSchema,
   type TStoryCreateFormSchema,
@@ -41,19 +42,58 @@ export default function StoryCreateForm({
   mutationError,
   isPending,
   isPaused,
+  onUploadBanner,
+  isUploadingBanner,
 }: TStoryCreateFormProps) {
-  const { control, handleSubmit, setError } = useForm<TStoryCreateFormSchema>({
-    resolver: zodResolver(StoryCreateFormSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      status: StoryStatusEnum.DRAFT,
-      gameSystem: "",
-      maxMembers: "",
-      startAt: "",
-      locationDetail: "",
+  const { control, handleSubmit, setError, setValue, clearErrors } =
+    useForm<TStoryCreateFormSchema>({
+      resolver: zodResolver(StoryCreateFormSchema),
+      defaultValues: {
+        bannerFileId: "",
+        title: "",
+        description: "",
+        status: StoryStatusEnum.DRAFT,
+        gameSystem: "",
+        maxMembers: "",
+        startAt: "",
+        locationDetail: "",
+      },
+    });
+
+  const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(
+    null,
+  );
+
+  // Revoke the previous local preview when it changes, and on unmount
+  useEffect(() => {
+    return () => {
+      if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl);
+    };
+  }, [bannerPreviewUrl]);
+
+  const onBannerSelect = useCallback(
+    (file: File) => {
+      clearErrors("bannerFileId");
+      setValue("bannerFileId", "");
+      setBannerPreviewUrl(URL.createObjectURL(file));
+      onUploadBanner(file, {
+        onSuccess: (fileId) => setValue("bannerFileId", fileId),
+        onError: () => setBannerPreviewUrl(null),
+      });
     },
-  });
+    [clearErrors, setValue, onUploadBanner],
+  );
+
+  const onBannerFileError = useCallback(
+    (message: string) => setError("bannerFileId", { message }),
+    [setError],
+  );
+
+  const onBannerRemove = useCallback(() => {
+    clearErrors("bannerFileId");
+    setValue("bannerFileId", "");
+    setBannerPreviewUrl(null);
+  }, [clearErrors, setValue]);
 
   useEffect(() => {
     if (mutationError instanceof MainAPIValidationError) {
@@ -78,6 +118,7 @@ export default function StoryCreateForm({
       start_at: data.startAt ? dayjs(data.startAt).toISOString() : undefined,
       location_type: data.locationType,
       location_detail: data.locationDetail,
+      banner_file_id: data.bannerFileId || undefined,
     });
   };
 
@@ -88,6 +129,22 @@ export default function StoryCreateForm({
       <Card>
         <CardContent>
           <FieldGroup>
+            <Controller
+              name="bannerFileId"
+              control={control}
+              render={({ fieldState }) => (
+                <StoryBannerField
+                  previewUrl={bannerPreviewUrl}
+                  isUploading={isUploadingBanner}
+                  disabled={isFormDisabled}
+                  error={fieldState.error}
+                  onFileSelect={onBannerSelect}
+                  onFileError={onBannerFileError}
+                  onRemove={onBannerRemove}
+                />
+              )}
+            />
+
             <Controller
               name="title"
               control={control}
@@ -311,16 +368,19 @@ export default function StoryCreateForm({
                 variant="outline"
                 type="reset"
                 render={<Link href="/dashboard/master/stories" />}
-                disabled={isFormDisabled}
+                disabled={isFormDisabled || isUploadingBanner}
                 nativeButton={false}
               >
                 Cancel
-                {isFormDisabled && <Spinner />}
+                {(isFormDisabled || isUploadingBanner) && <Spinner />}
               </Button>
 
-              <Button type="submit" disabled={isFormDisabled}>
+              <Button
+                type="submit"
+                disabled={isFormDisabled || isUploadingBanner}
+              >
                 Save
-                {isFormDisabled && <Spinner />}
+                {(isFormDisabled || isUploadingBanner) && <Spinner />}
               </Button>
             </Field>
           </FieldGroup>

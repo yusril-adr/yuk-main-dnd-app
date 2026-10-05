@@ -13,4 +13,5 @@ export type TStoryCreatePayload = {
   start_at?: string;
   location_type: StoryLocationTypeEnum;
   location_detail: string;
+  banner_file_id?: string;
 };
