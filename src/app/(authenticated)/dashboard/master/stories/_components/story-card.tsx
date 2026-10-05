@@ -56,68 +56,73 @@ export default function StoryCard({ story, onDelete }: TStoryCardProps) {
 
   return (
     <>
-      {/* pt-0: the banner sits flush with the top edge of the card */}
-      <Card className="pt-0">
-        <StoryCardBanner />
+      {/* pt-0: the banner sits flush with the top edge of the card.
+          gap-2 keeps the title close to the description; pt-2 / mt-2 restore
+          some breathing room around the banner and the footer. */}
+      <Card className="gap-2 pt-0">
+        <div className="relative">
+          <StoryCardBanner />
 
-        <CardHeader>
-          <div className="flex justify-between gap-2">
-            <CardTitle className="min-w-0 truncate">
-              <Button
-                variant="link"
-                className="p-0 h-auto text-base"
-                render={
-                  <Link href={`/dashboard/master/stories/${story.id}`} />
-                }
-                nativeButton={false}
-              >
-                {story.title}
-              </Button>
-            </CardTitle>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button size="icon-sm" variant="ghost">
-                    <EllipsisVertical />
-                  </Button>
-                }
-              />
-              <DropdownMenuContent>
-                <DropdownMenuGroup>
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  aria-label="Story actions"
+                  className="absolute top-2 right-2 bg-background/80 backdrop-blur hover:bg-background aria-expanded:bg-background"
+                >
+                  <EllipsisVertical />
+                </Button>
+              }
+            />
+            <DropdownMenuContent align="end">
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  render={
+                    <Link href={`/dashboard/master/stories/${story.id}`} />
+                  }
+                >
+                  <Eye />
+                  View
+                </DropdownMenuItem>
+                {canUpdateStories && (
                   <DropdownMenuItem
                     render={
-                      <Link href={`/dashboard/master/stories/${story.id}`} />
+                      <Link
+                        href={`/dashboard/master/stories/${story.id}/edit`}
+                      />
                     }
                   >
-                    <Eye />
-                    View
+                    <Pencil />
+                    Edit
                   </DropdownMenuItem>
-                  {canUpdateStories && (
-                    <DropdownMenuItem
-                      render={
-                        <Link
-                          href={`/dashboard/master/stories/${story.id}/edit`}
-                        />
-                      }
-                    >
-                      <Pencil />
-                      Edit
-                    </DropdownMenuItem>
-                  )}
-                  {canDeleteStories && onDelete && (
-                    <DropdownMenuItem
-                      variant="destructive"
-                      onClick={() => setConfirmDeleteId(story.id)}
-                    >
-                      <Trash />
-                      Delete
-                    </DropdownMenuItem>
-                  )}
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+                )}
+                {canDeleteStories && onDelete && (
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onClick={() => setConfirmDeleteId(story.id)}
+                  >
+                    <Trash />
+                    Delete
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        <CardHeader className="pt-2">
+          <CardTitle className="min-w-0 truncate">
+            <Button
+              variant="link"
+              className="p-0 h-auto text-base"
+              render={<Link href={`/dashboard/master/stories/${story.id}`} />}
+              nativeButton={false}
+            >
+              {story.title}
+            </Button>
+          </CardTitle>
         </CardHeader>
 
         <CardContent>
@@ -130,7 +135,7 @@ export default function StoryCard({ story, onDelete }: TStoryCardProps) {
           </p>
         </CardContent>
 
-        <CardFooter className="border-t pt-3">
+        <CardFooter className="mt-2 border-t pt-3">
           <div className="flex flex-wrap gap-1.5">
             <StoryStatusBadge status={story.status} />
             <Badge variant="outline">{toTitleCase(story.type)}</Badge>
