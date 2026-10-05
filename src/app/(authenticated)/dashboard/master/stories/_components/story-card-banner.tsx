@@ -35,7 +35,7 @@ export default function StoryCardBanner({
             placeholderClassName,
           )}
         >
-          <Swords className="size-10 text-primary/40" />
+          <Swords className="size-10 text-primary" />
         </div>
       </Else>
     </If>

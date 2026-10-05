@@ -6,6 +6,7 @@ import type { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/en
 export type TStoryCreatorEntity = {
   id: string;
   display_name: string;
+  avatar_url?: string | null;
 };
 
 export type TStoryEntity = TBaseEntity & {

@@ -1,7 +1,11 @@
 import { CalendarPlus, Feather, History } from "lucide-react";
 
-import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
-import { getInitials } from "@/utils/user-helper";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/app/_components/ui/avatar";
+import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 import dayjs from "@/libs/dayjs";
 
 import StoryDetailSectionCard from "./story-detail-section-card";
@@ -13,7 +17,7 @@ export default function StoryDetailChronicleCard({
   story,
   className,
 }: TStoryDetailCardProps) {
-  const creatorName = story.created_by?.display_name;
+  const creator = story.created_by;
 
   return (
     <StoryDetailSectionCard
@@ -25,14 +29,21 @@ export default function StoryDetailChronicleCard({
         icon={Feather}
         label="Written By"
         value={
-          creatorName && (
+          creator?.display_name && (
             <span className="flex items-center gap-2">
               <Avatar className="size-7">
+                <AvatarImage
+                  src={
+                    creator?.avatar_url ??
+                    makeDefaultAvatarUrl(creator?.display_name)
+                  }
+                  alt={creator?.display_name || "-"}
+                />
                 <AvatarFallback className="bg-primary/10 font-heading text-xs text-primary">
-                  {getInitials(creatorName)}
+                  {getInitials(creator?.display_name)}
                 </AvatarFallback>
               </Avatar>
-              {creatorName}
+              {creator?.display_name}
             </span>
           )
         }
