@@ -7,6 +7,7 @@ export const RoleEditFormSchema = z.object({
     .max(100, "Name must be at most 100 characters")
     .regex(/[A-Za-z0-9]/, "Name must contain at least one letter or number"),
   description: z.string().optional(),
+  isShowInPublic: z.boolean(),
   permissionIds: z.array(z.string()),
 });
 

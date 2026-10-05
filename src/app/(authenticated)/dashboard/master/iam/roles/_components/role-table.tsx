@@ -9,7 +9,9 @@ import {
 import Link from "next/link";
 import type { SortingState } from "@tanstack/react-table";
 import { createColumnHelper } from "@tanstack/react-table";
+import { If, Then, Else } from "react-if";
 
+import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
 import {
   DropdownMenu,
@@ -116,6 +118,28 @@ export default function RoleTable({
         />
       ),
       cell: (info) => info.getValue() || "-",
+    }),
+
+    columnHelper.accessor("is_show_in_public", {
+      header: () => (
+        <DataTableSortableColHeader
+          label="Show in Public"
+          sortKey="is_show_in_public"
+          sortBy={queryTable.sortBy}
+          order={queryTable.order}
+          onClick={() => onActionHandler.onSortingChange("is_show_in_public")}
+        />
+      ),
+      cell: (info) => (
+        <If condition={info.getValue()}>
+          <Then>
+            <Badge>Yes</Badge>
+          </Then>
+          <Else>
+            <Badge variant="secondary">No</Badge>
+          </Else>
+        </If>
+      ),
     }),
 
     columnHelper.accessor("created_at", {

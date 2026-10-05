@@ -3,9 +3,11 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Pencil, Trash } from "lucide-react";
+import { If, Then, Else } from "react-if";
 import { useParams, useRouter, notFound } from "next/navigation";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
+import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import {
@@ -152,6 +154,28 @@ export default function RoleDetailPageClient() {
                   </TableHead>
                   <TableCell className="border px-4 py-6 whitespace-normal break-words">
                     {renderValue(role?.description)}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableHead className="border bg-secondary px-4 py-6">
+                    Show in Public
+                  </TableHead>
+                  <TableCell className="border px-4 py-6">
+                    <If condition={roleQuery.isLoading}>
+                      <Then>
+                        <Skeleton className="h-6 w-full" />
+                      </Then>
+                      <Else>
+                        <If condition={!!role?.is_show_in_public}>
+                          <Then>
+                            <Badge>Yes</Badge>
+                          </Then>
+                          <Else>
+                            <Badge variant="secondary">No</Badge>
+                          </Else>
+                        </If>
+                      </Else>
+                    </If>
                   </TableCell>
                 </TableRow>
                 <TableRow>

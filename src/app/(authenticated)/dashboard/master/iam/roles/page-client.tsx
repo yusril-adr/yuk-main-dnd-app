@@ -34,7 +34,14 @@ export default function RolesPageClient() {
     pageSize: parseAsInteger.withDefault(10),
     search: parseAsString.withDefault(""),
     sortBy: createSortByParser(
-      ["id", "name", "description", "created_at", "updated_at"] as const,
+      [
+        "id",
+        "name",
+        "description",
+        "is_show_in_public",
+        "created_at",
+        "updated_at",
+      ] as const,
       "Roles",
     ),
     order: parseAsStringEnum<OrderKeyEnum>(Object.values(OrderKeyEnum)),

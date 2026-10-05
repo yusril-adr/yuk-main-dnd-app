@@ -69,6 +69,7 @@ export default function RoleEditPageClient() {
         <RoleEditForm
           name={role?.name}
           description={role?.description}
+          isShowInPublic={role?.is_show_in_public}
           permissionIds={role?.permissions?.map((permission) => permission.id)}
           permissions={permissionsQuery.data?.data?.data?.items ?? []}
           isLoading={roleQuery.isLoading}

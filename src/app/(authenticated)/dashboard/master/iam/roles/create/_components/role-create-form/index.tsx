@@ -12,6 +12,7 @@ import {
 } from "@/app/_components/ui/field";
 import { Input } from "@/app/_components/ui/input";
 import { Textarea } from "@/app/_components/ui/textarea";
+import { Checkbox } from "@/app/_components/ui/checkbox";
 import { Button } from "@/app/_components/ui/button";
 import { Spinner } from "@/app/_components/ui/spinner";
 
@@ -38,6 +39,7 @@ export default function RoleCreateForm({
       defaultValues: {
         name: "",
         description: "",
+        isShowInPublic: true,
         permissionIds: [],
       },
     });
@@ -48,7 +50,9 @@ export default function RoleCreateForm({
         property: String(
           error.property === "permission_ids"
             ? "permissionIds"
-            : error.property,
+            : error.property === "is_show_in_public"
+              ? "isShowInPublic"
+              : error.property,
         ),
         messages: error.messages,
       }));
@@ -61,6 +65,7 @@ export default function RoleCreateForm({
     onSubmitPayload({
       name: data.name,
       description: data.description,
+      is_show_in_public: data.isShowInPublic,
       permissionIds: data.permissionIds,
     });
   };
@@ -103,6 +108,31 @@ export default function RoleCreateForm({
                     disabled={isFormDisabled}
                     {...field}
                   />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="isShowInPublic"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field
+                  orientation="horizontal"
+                  data-invalid={fieldState.invalid}
+                >
+                  <Checkbox
+                    id="isShowInPublic"
+                    checked={field.value}
+                    onCheckedChange={(checked) => field.onChange(checked)}
+                    onBlur={field.onBlur}
+                    disabled={isFormDisabled}
+                  />
+                  <FieldLabel htmlFor="isShowInPublic">
+                    Show in public
+                  </FieldLabel>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}

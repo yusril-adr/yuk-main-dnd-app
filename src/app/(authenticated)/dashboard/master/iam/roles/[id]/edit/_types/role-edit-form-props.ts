@@ -4,6 +4,7 @@ import type { TRoleUpdatePayload } from "@/api/main/modules/master/iam/roles/[id
 export type TRoleEditFormProps = {
   name: string | undefined;
   description: string | undefined;
+  isShowInPublic: boolean | undefined;
   permissionIds: string[] | undefined;
   permissions: TPermissionResponse[];
   isLoading: boolean;
