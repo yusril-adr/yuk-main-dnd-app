@@ -20,3 +20,10 @@ export function toSentenceCase(value: string): string {
     character.toUpperCase(),
   );
 }
+
+// API validation errors use snake_case properties; forms use camelCase field names
+export function toCamelCase(value: string): string {
+  return value.replace(/_([a-z0-9])/g, (_, character: string) =>
+    character.toUpperCase(),
+  );
+}

@@ -28,6 +28,9 @@ const CONFIG = {
             ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "permission"],
           },
         },
+        STORY: {
+          ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "story"],
+        },
       },
     },
     REQUESTOR_API: {
