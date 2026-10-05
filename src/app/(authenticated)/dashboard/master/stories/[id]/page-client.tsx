@@ -34,6 +34,7 @@ import type { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/st
 import { toTitleCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
 
+import StoryCardBanner from "@/app/(authenticated)/dashboard/master/stories/_components/story-card-banner";
 import StoryStatusBadge from "@/app/(authenticated)/dashboard/master/stories/_components/story-status-badge";
 import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-by-id";
 import { useGetStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-by-id";
@@ -127,7 +128,20 @@ export default function StoryDetailPageClient() {
           )}
         </div>
 
-        <Card>
+        {/* pt-0: the banner sits flush with the top edge of the card */}
+        <Card className="pt-0">
+          <If condition={storyQuery.isLoading}>
+            <Then>
+              <Skeleton className="aspect-video w-full rounded-none" />
+            </Then>
+            <Else>
+              <StoryCardBanner
+                bannerUrl={story?.banner_url}
+                title={story?.title ?? "Story banner"}
+              />
+            </Else>
+          </If>
+
           <CardContent>
             <Table>
               <TableBody>
