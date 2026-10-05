@@ -4,14 +4,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
 import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { Button } from "@/app/_components/ui/button";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
-import { useFilter } from "@/app/_hooks/use-filter";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { OrderKeyEnum } from "@/common/enums/order-key";
@@ -23,17 +21,14 @@ import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-s
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
 
-import StoryTable from "@/app/(authenticated)/dashboard/master/stories/_components/story-table";
-import type { TStoryTableSortBy } from "@/app/(authenticated)/dashboard/master/stories/_types/story-table-sort-by";
+import StoryCardList from "@/app/(authenticated)/dashboard/master/stories/_components/story-card-list";
 import type {
-  TStoryTableFilterValues,
-  TStoryTableUserItem,
-} from "@/app/(authenticated)/dashboard/master/stories/_types/story-table-props";
+  TStoryCardListFilters,
+  TStoryCardListUserItem,
+} from "@/app/(authenticated)/dashboard/master/stories/_types/story-card-list-props";
 import { useGetStoryPagination } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-pagination";
 import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-by-id";
 import { useGetUserPagination } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-user-pagination";
-
-let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 
 export default function StoriesPageClient() {
   const router = useRouter();
@@ -41,7 +36,7 @@ export default function StoriesPageClient() {
   const queryClient = useQueryClient();
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
-    pageSize: parseAsInteger.withDefault(10),
+    pageSize: parseAsInteger.withDefault(12),
     search: parseAsString.withDefault(""),
     sortBy: createSortByParser(
       [
@@ -56,8 +51,10 @@ export default function StoriesPageClient() {
         "updated_at",
       ] as const,
       "Stories",
-    ),
-    order: parseAsStringEnum<OrderKeyEnum>(Object.values(OrderKeyEnum)),
+    ).withDefault("updated_at"),
+    order: parseAsStringEnum<OrderKeyEnum>(
+      Object.values(OrderKeyEnum),
+    ).withDefault(OrderKeyEnum.DESC),
     status: parseAsStringEnum<StoryStatusEnum>(Object.values(StoryStatusEnum)),
     type: parseAsStringEnum<StoryTypeEnum>(Object.values(StoryTypeEnum)),
     locationType: parseAsStringEnum<StoryLocationTypeEnum>(
@@ -65,23 +62,6 @@ export default function StoriesPageClient() {
     ),
     createdBy: parseAsString,
   });
-
-  const { control, handleSubmit, reset } = useForm<TStoryTableFilterValues>({
-    defaultValues: {
-      status: queryStates.status || null,
-      type: queryStates.type || null,
-      locationType: queryStates.locationType || null,
-      createdBy: queryStates.createdBy || null,
-    },
-  });
-
-  const { onFilterReset, onFilterSubmit, columnFilters } =
-    useFilter<TStoryTableFilterValues>(
-      ["status", "type", "locationType", "createdBy"],
-      queryStates,
-      setQueryStates,
-      reset,
-    );
 
   const queryStatesIntoPayload: TStoryPaginationPayload = useMemo(
     () => ({
@@ -132,7 +112,7 @@ export default function StoriesPageClient() {
   });
 
   const userItems = useMemo(() => {
-    const items: TStoryTableUserItem[] = (
+    const items: TStoryCardListUserItem[] = (
       usersData?.data?.data?.items ?? []
     ).map((user) => ({ value: user.id, label: user.display_name }));
 
@@ -156,53 +136,16 @@ export default function StoriesPageClient() {
 
   const onSearchChange = useCallback(
     (value: string) => {
-      if (value && value.length < 3) {
-        return;
-      }
-
-      if (debounceSearchTimeoutId) {
-        clearTimeout(debounceSearchTimeoutId);
-      }
-
-      debounceSearchTimeoutId = setTimeout(() => {
-        setQueryStates({ search: value, page: 1 });
-      }, 300);
+      setQueryStates({ search: value, page: 1 });
     },
     [setQueryStates],
   );
 
-  const applySorting = useCallback(
-    (key: string) => {
-      if (queryStates.sortBy === key) {
-        let desiredOrder: OrderKeyEnum | null = null;
-        let desiredKey: TStoryTableSortBy | null = key as TStoryTableSortBy;
-
-        switch (queryStates.order) {
-          case OrderKeyEnum.ASC:
-            desiredOrder = OrderKeyEnum.DESC;
-            break;
-          case OrderKeyEnum.DESC:
-            desiredKey = null;
-            break;
-          default:
-            desiredOrder = OrderKeyEnum.ASC;
-            break;
-        }
-
-        setQueryStates({
-          order: desiredOrder,
-          sortBy: desiredKey,
-          page: 1,
-        });
-      } else {
-        setQueryStates({
-          sortBy: key as TStoryTableSortBy,
-          order: OrderKeyEnum.ASC,
-          page: 1,
-        });
-      }
+  const onFilterApply = useCallback(
+    (filters: TStoryCardListFilters) => {
+      setQueryStates({ ...filters, page: 1 });
     },
-    [queryStates.order, queryStates.sortBy, setQueryStates],
+    [setQueryStates],
   );
 
   const handlePageChange = useCallback(
@@ -240,27 +183,21 @@ export default function StoriesPageClient() {
           )}
         </div>
 
-        <StoryTable
+        <StoryCardList
           data={stories}
           isLoading={isLoading}
           pageCount={responseData?.data?.data?.meta?.total_page || 1}
           rowCount={responseData?.data?.data?.meta?.total_all_data || 0}
           queryTable={queryStates}
-          columnFilters={columnFilters}
           userItems={userItems}
           canFilterByCreator={canViewUsers}
+          onUserSearchChange={setUserSearch}
           onActionHandler={{
             onPageChange: handlePageChange,
             onPageSizeChange: handlePageSizeChange,
-            onSortingChange: applySorting,
             onSearchChange,
+            onFilterApply,
             onDeleteStory: deleteStoryMutate,
-            onUserSearchChange: setUserSearch,
-            onFilterForm: {
-              filterControl: control,
-              onFilterSubmit: handleSubmit(onFilterSubmit),
-              onFilterReset,
-            },
           }}
         />
       </main>
