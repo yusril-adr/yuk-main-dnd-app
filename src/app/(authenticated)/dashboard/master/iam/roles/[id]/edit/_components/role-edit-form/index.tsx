@@ -12,6 +12,7 @@ import {
 } from "@/app/_components/ui/field";
 import { Input } from "@/app/_components/ui/input";
 import { Textarea } from "@/app/_components/ui/textarea";
+import { Checkbox } from "@/app/_components/ui/checkbox";
 import { Button } from "@/app/_components/ui/button";
 import { Spinner } from "@/app/_components/ui/spinner";
 
@@ -24,6 +25,7 @@ import RoleEditPermissionChecboxInput from "../role-edit-permission-checbox-inpu
 export default function RoleEditForm({
   name,
   description,
+  isShowInPublic,
   permissionIds,
   permissions,
   isLoading,
@@ -37,9 +39,10 @@ export default function RoleEditForm({
     () => ({
       name: name ?? "",
       description: description ?? "",
+      isShowInPublic: isShowInPublic ?? true,
       permissionIds: permissionIds ?? [],
     }),
-    [description, name, permissionIds],
+    [description, isShowInPublic, name, permissionIds],
   );
 
   const { control, handleSubmit, setError } = useForm<TRoleEditFormSchema>({
@@ -53,7 +56,9 @@ export default function RoleEditForm({
         property: String(
           error.property === "permission_ids"
             ? "permissionIds"
-            : error.property,
+            : error.property === "is_show_in_public"
+              ? "isShowInPublic"
+              : error.property,
         ),
         messages: error.messages,
       }));
@@ -66,6 +71,7 @@ export default function RoleEditForm({
     onSubmitPayload({
       name: data.name,
       description: data.description,
+      is_show_in_public: data.isShowInPublic,
       permissionIds: data.permissionIds,
     });
   };
@@ -109,6 +115,31 @@ export default function RoleEditForm({
                     disabled={isFormDisabled}
                     {...field}
                   />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="isShowInPublic"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field
+                  orientation="horizontal"
+                  data-invalid={fieldState.invalid}
+                >
+                  <Checkbox
+                    id="isShowInPublic"
+                    checked={field.value}
+                    onCheckedChange={(checked) => field.onChange(checked)}
+                    onBlur={field.onBlur}
+                    disabled={isFormDisabled}
+                  />
+                  <FieldLabel htmlFor="isShowInPublic">
+                    Show in public
+                  </FieldLabel>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}

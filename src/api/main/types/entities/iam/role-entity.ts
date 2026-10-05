@@ -6,5 +6,6 @@ export type TRoleEntity = TBaseEntity & {
   key: RoleKeyEnum;
   name: string;
   description?: string;
+  is_show_in_public: boolean;
   permissions?: TPermissionEntity[];
 };

@@ -4,12 +4,14 @@ import { useCallback, useEffect, useMemo } from "react";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { Button } from "@/app/_components/ui/button";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { useFilter } from "@/app/_hooks/use-filter";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { OrderKeyEnum } from "@/common/enums/order-key";
@@ -20,6 +22,8 @@ import type { TRolePaginationPayload } from "@/api/main/modules/master/iam/roles
 
 import RoleTable from "@/app/(authenticated)/dashboard/master/iam/roles/_components/role-table";
 import type { TRoleTableSortBy } from "@/app/(authenticated)/dashboard/master/iam/roles/_types/role-table-sort-by";
+import type { TRoleTableFilterValues } from "@/app/(authenticated)/dashboard/master/iam/roles/_types/role-table-props";
+import { RoleShowInPublicFilterEnum } from "@/app/(authenticated)/dashboard/master/iam/roles/_enums/role-show-in-public-filter";
 import { useGetRolePagination } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-role-pagination";
 import { useDeleteRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-delete-role-by-id";
 
@@ -34,11 +38,35 @@ export default function RolesPageClient() {
     pageSize: parseAsInteger.withDefault(10),
     search: parseAsString.withDefault(""),
     sortBy: createSortByParser(
-      ["id", "name", "description", "created_at", "updated_at"] as const,
+      [
+        "id",
+        "name",
+        "description",
+        "is_show_in_public",
+        "created_at",
+        "updated_at",
+      ] as const,
       "Roles",
     ),
     order: parseAsStringEnum<OrderKeyEnum>(Object.values(OrderKeyEnum)),
+    isShowInPublic: parseAsStringEnum<RoleShowInPublicFilterEnum>(
+      Object.values(RoleShowInPublicFilterEnum),
+    ),
   });
+
+  const { control, handleSubmit, reset } = useForm<TRoleTableFilterValues>({
+    defaultValues: {
+      isShowInPublic: queryStates.isShowInPublic || null,
+    },
+  });
+
+  const { onFilterReset, onFilterSubmit, columnFilters } =
+    useFilter<TRoleTableFilterValues>(
+      ["isShowInPublic"],
+      queryStates,
+      setQueryStates,
+      reset,
+    );
 
   const queryStatesIntoPayload: TRolePaginationPayload = useMemo(
     () => ({
@@ -47,6 +75,10 @@ export default function RolesPageClient() {
       search: queryStates.search,
       sort_by: queryStates.sortBy ?? undefined,
       order: queryStates.order ?? undefined,
+      // URL stores the filter as "true"/"false"; API expects a boolean (undefined = all)
+      is_show_in_public: queryStates.isShowInPublic
+        ? queryStates.isShowInPublic === RoleShowInPublicFilterEnum.YES
+        : undefined,
     }),
     [queryStates],
   );
@@ -168,12 +200,18 @@ export default function RolesPageClient() {
           pageCount={responseData?.data?.data?.meta?.total_page || 1}
           rowCount={responseData?.data?.data?.meta?.total_all_data || 0}
           queryTable={queryStates}
+          columnFilters={columnFilters}
           onActionHandler={{
             onPageChange: handlePageChange,
             onPageSizeChange: handlePageSizeChange,
             onSortingChange: applySorting,
             onSearchChange,
             onDeleteRole: deleteRoleMutate,
+            onFilterForm: {
+              filterControl: control,
+              onFilterSubmit: handleSubmit(onFilterSubmit),
+              onFilterReset,
+            },
           }}
         />
       </main>
