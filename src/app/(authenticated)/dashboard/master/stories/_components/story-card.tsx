@@ -58,12 +58,17 @@ export default function StoryCard({ story, onDelete }: TStoryCardProps) {
     <>
       {/* pt-0: the banner sits flush with the top edge of the card.
           gap-2 keeps the title close to the description. Cards in a grid row
-          stretch to the tallest one (banners have natural heights), so the
-          footer is pinned to the bottom with mt-auto; pb-2 on the content
-          keeps a minimum gap above it. */}
+          stretch to the tallest one, so the footer is pinned to the bottom with
+          mt-auto; pb-2 on the content keeps a minimum gap above it. */}
       <Card className="gap-2 pt-0">
         <div className="relative">
-          <StoryCardBanner bannerUrl={story.banner_url} title={story.title} />
+          {/* Fixed 16:9 crop on list cards so every card is the same size
+              (the form preview and detail page keep the natural ratio) */}
+          <StoryCardBanner
+            bannerUrl={story.banner_url}
+            title={story.title}
+            imageClassName="aspect-video max-h-none object-cover"
+          />
 
           <DropdownMenu>
             <DropdownMenuTrigger
