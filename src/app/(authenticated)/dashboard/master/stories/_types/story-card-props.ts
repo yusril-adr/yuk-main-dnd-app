@@ -2,5 +2,6 @@ import type { TStoryResponse } from "@/api/main/modules/master/stories/types/sto
 
 export type TStoryCardProps = {
   story: TStoryResponse;
+  onArchive?: (id: string) => void;
   onDelete?: (id: string) => void;
 };

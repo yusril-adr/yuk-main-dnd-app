@@ -30,6 +30,7 @@ export type TStoryCardListActionHandler = {
   onPageSizeChange: (pageSize: number) => void;
   onSearchChange: (value: string) => void;
   onFilterApply: (filters: TStoryCardListFilters) => void;
+  onArchiveStory: (id: string) => void;
   onDeleteStory: (id: string) => void;
 };
 

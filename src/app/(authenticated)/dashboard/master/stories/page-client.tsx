@@ -28,6 +28,7 @@ import type {
 } from "@/app/(authenticated)/dashboard/master/stories/_types/story-card-list-props";
 import { useGetStoryPagination } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-pagination";
 import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-by-id";
+import { useArchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-archive-story-by-id";
 import { useGetUserPagination } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-user-pagination";
 
 export default function StoriesPageClient() {
@@ -92,6 +93,15 @@ export default function StoriesPageClient() {
       }
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
+      });
+    },
+  });
+  const { mutate: archiveStoryMutate } = useArchiveStoryById({
+    // Refresh on success and on error (e.g. 404 when the story was deleted
+    // elsewhere), so the card shows its real status or disappears
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
       });
@@ -197,6 +207,7 @@ export default function StoriesPageClient() {
             onPageSizeChange: handlePageSizeChange,
             onSearchChange,
             onFilterApply,
+            onArchiveStory: archiveStoryMutate,
             onDeleteStory: deleteStoryMutate,
           }}
         />

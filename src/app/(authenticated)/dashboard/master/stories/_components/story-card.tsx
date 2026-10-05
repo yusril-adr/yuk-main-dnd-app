@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { EllipsisVertical, Eye, Pencil, Trash } from "lucide-react";
+import { Archive, EllipsisVertical, Eye, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
 import { Else, If, Then } from "react-if";
 
@@ -32,12 +32,17 @@ import {
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { PermissionEnum } from "@/common/enums/permission";
 import { toTitleCase } from "@/utils/format-text";
+import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 
 import StoryCardBanner from "./story-card-banner";
 import StoryStatusBadge from "./story-status-badge";
 import type { TStoryCardProps } from "@/app/(authenticated)/dashboard/master/stories/_types/story-card-props";
 
-export default function StoryCard({ story, onDelete }: TStoryCardProps) {
+export default function StoryCard({
+  story,
+  onArchive,
+  onDelete,
+}: TStoryCardProps) {
   const { auth } = useAuthContext();
   const canUpdateStories = auth?.permissions.includes(
     PermissionEnum.STORIES_UPDATE,
@@ -45,7 +50,20 @@ export default function StoryCard({ story, onDelete }: TStoryCardProps) {
   const canDeleteStories = auth?.permissions.includes(
     PermissionEnum.STORIES_DELETE,
   );
+  // Same rule as the detail page: stories:update and not already archived
+  const canArchiveStory =
+    !!canUpdateStories &&
+    story.status !== StoryStatusEnum.ARCHIVED &&
+    !!onArchive;
+  const [confirmArchiveId, setConfirmArchiveId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+
+  const onArchiveConfirm = useCallback(() => {
+    if (confirmArchiveId && onArchive) {
+      onArchive(confirmArchiveId);
+    }
+    setConfirmArchiveId(null);
+  }, [confirmArchiveId, onArchive]);
 
   const onDeleteConfirm = useCallback(() => {
     if (confirmDeleteId && onDelete) {
@@ -107,6 +125,16 @@ export default function StoryCard({ story, onDelete }: TStoryCardProps) {
                     Edit
                   </DropdownMenuItem>
                 )}
+                <If condition={canArchiveStory}>
+                  <Then>
+                    <DropdownMenuItem
+                      onClick={() => setConfirmArchiveId(story.id)}
+                    >
+                      <Archive />
+                      Archive
+                    </DropdownMenuItem>
+                  </Then>
+                </If>
                 {canDeleteStories && onDelete && (
                   <DropdownMenuItem
                     variant="destructive"
@@ -151,6 +179,31 @@ export default function StoryCard({ story, onDelete }: TStoryCardProps) {
           </div>
         </CardFooter>
       </Card>
+
+      <AlertDialog
+        open={confirmArchiveId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setConfirmArchiveId(null);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Archive story?</AlertDialogTitle>
+            <AlertDialogDescription>
+              The story will be marked as archived. You can change its status
+              again from the edit page.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={onArchiveConfirm}>
+              Archive
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <AlertDialog
         open={confirmDeleteId !== null}
