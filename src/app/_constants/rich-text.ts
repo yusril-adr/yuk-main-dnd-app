@@ -15,7 +15,13 @@ export const RICH_TEXT_CONTENT_CLASS_NAME = [
   // Quotes double as D&D "read-aloud" boxed text
   "[&_blockquote]:my-3 [&_blockquote]:rounded-e-md [&_blockquote]:border-s-4 [&_blockquote]:border-primary/40 [&_blockquote]:bg-primary/5 [&_blockquote]:px-4 [&_blockquote]:py-2 [&_blockquote]:italic",
   "[&_hr]:my-4 [&_hr]:border-border",
+  // External images: responsive, never wider than the text, capped height
+  "[&_img]:my-3 [&_img]:block [&_img]:h-auto [&_img]:max-h-[32rem] [&_img]:w-auto [&_img]:max-w-full [&_img]:rounded-md",
 ].join(" ");
+
+// Editor only: outline the selected image (ProseMirror adds this class)
+export const RICH_TEXT_EDITOR_SELECTED_IMAGE_CLASS_NAME =
+  "[&_img.ProseMirror-selectednode]:ring-2 [&_img.ProseMirror-selectednode]:ring-ring [&_img.ProseMirror-selectednode]:ring-offset-2 [&_img.ProseMirror-selectednode]:ring-offset-background";
 
 // Toolbar toggle that is currently on (bold, list, link, ...)
 export const RICH_TEXT_TOOLBAR_ACTIVE_CLASS_NAME =

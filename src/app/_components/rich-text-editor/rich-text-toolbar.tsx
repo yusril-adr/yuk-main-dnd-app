@@ -17,6 +17,7 @@ import {
 import { Separator } from "@/app/_components/ui/separator";
 import type { TRichTextToolbarProps } from "@/app/_types/rich-text-toolbar-props";
 
+import RichTextImagePopover from "./rich-text-image-popover";
 import RichTextLinkPopover from "./rich-text-link-popover";
 import RichTextToolbarButton from "./rich-text-toolbar-button";
 
@@ -33,6 +34,7 @@ export default function RichTextToolbar({
       isUnderline: currentEditor.isActive("underline"),
       isStrike: currentEditor.isActive("strike"),
       isLink: currentEditor.isActive("link"),
+      isImage: currentEditor.isActive("image"),
       isHeading2: currentEditor.isActive("heading", { level: 2 }),
       isHeading3: currentEditor.isActive("heading", { level: 3 }),
       isBulletList: currentEditor.isActive("bulletList"),
@@ -80,6 +82,11 @@ export default function RichTextToolbar({
       <RichTextLinkPopover
         editor={editor}
         isActive={state.isLink}
+        disabled={disabled}
+      />
+      <RichTextImagePopover
+        editor={editor}
+        isActive={state.isImage}
         disabled={disabled}
       />
 

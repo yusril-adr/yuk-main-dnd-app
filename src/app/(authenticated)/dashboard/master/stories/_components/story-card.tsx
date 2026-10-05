@@ -59,6 +59,9 @@ export default function StoryCard({
   // Same rule as the detail page: allowed to update and not already archived
   const canArchiveStory =
     canUpdateStory && story.status !== StoryStatusEnum.ARCHIVED && !!onArchive;
+  // Plain text from rich text HTML (or an old plain-text value); "" when the
+  // description is empty or only has images
+  const descriptionText = getRichTextPlainText(story.description);
   const [confirmArchiveId, setConfirmArchiveId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
@@ -169,9 +172,8 @@ export default function StoryCard({
         <CardContent className="pb-2">
           {/* min-h-15 = 3 lines of text-sm, keeps cards in the same row equal height */}
           <p className="line-clamp-3 min-h-15 text-muted-foreground">
-            <If condition={!!story.description}>
-              {/* Plain text from rich text HTML (or an old plain-text value) */}
-              <Then>{getRichTextPlainText(story.description)}</Then>
+            <If condition={!!descriptionText}>
+              <Then>{descriptionText}</Then>
               <Else>No description.</Else>
             </If>
           </p>
