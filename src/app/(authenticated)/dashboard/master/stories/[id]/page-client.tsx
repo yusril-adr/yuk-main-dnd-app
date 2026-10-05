@@ -8,7 +8,6 @@ import { If, Then, Else } from "react-if";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { Button } from "@/app/_components/ui/button";
-import { Card, CardContent } from "@/app/_components/ui/card";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,25 +18,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@/app/_components/ui/table";
-import { Skeleton } from "@/app/_components/ui/skeleton";
 import { PermissionEnum } from "@/common/enums/permission";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
-import type { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
-import { toTitleCase } from "@/utils/format-text";
-import dayjs from "@/libs/dayjs";
+import type { TStoryResponse } from "@/api/main/modules/master/stories/types/story-response";
 
-import StoryCardBanner from "@/app/(authenticated)/dashboard/master/stories/_components/story-card-banner";
-import StoryStatusBadge from "@/app/(authenticated)/dashboard/master/stories/_components/story-status-badge";
 import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-by-id";
 import { useGetStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-by-id";
+import StoryDetailHero from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-hero";
+import StoryDetailQuestCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-quest-card";
+import StoryDetailAdventureCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-adventure-card";
+import StoryDetailChronicleCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-chronicle-card";
+import StoryDetailSkeleton from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-skeleton";
 
 export default function StoryDetailPageClient() {
   const { auth } = useAuthContext();
@@ -63,14 +55,6 @@ export default function StoryDetailPageClient() {
       router.push("/dashboard/master/stories");
     },
   });
-
-  const renderValue = (value: string | null | undefined) => {
-    if (storyQuery.isLoading) {
-      return <Skeleton className="h-6 w-full" />;
-    }
-
-    return value || "-";
-  };
 
   useEffect(() => {
     if (
@@ -128,154 +112,34 @@ export default function StoryDetailPageClient() {
           )}
         </div>
 
-        {/* pt-0: the banner sits flush with the top edge of the card */}
-        <Card className="pt-0">
-          <If condition={storyQuery.isLoading}>
-            <Then>
-              <Skeleton className="aspect-video w-full rounded-none" />
-            </Then>
-            <Else>
-              <StoryCardBanner
-                bannerUrl={story?.banner_url}
-                title={story?.title ?? "Story banner"}
-              />
-            </Else>
-          </If>
-
-          <CardContent>
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableHead className="w-1/3 border bg-secondary px-4 py-6">
-                    Title
-                  </TableHead>
-                  <TableCell className="border px-4 py-6">
-                    {renderValue(story?.title)}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead className="border bg-secondary px-4 py-6">
-                    Slug
-                  </TableHead>
-                  <TableCell className="border px-4 py-6">
-                    {renderValue(story?.slug)}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead className="border bg-secondary px-4 py-6">
-                    Status
-                  </TableHead>
-                  <TableCell className="border px-4 py-6">
-                    <If condition={storyQuery.isLoading}>
-                      <Then>
-                        <Skeleton className="h-6 w-full" />
-                      </Then>
-                      <Else>
-                        <If condition={!!story}>
-                          <Then>
-                            <StoryStatusBadge
-                              status={story?.status as StoryStatusEnum}
-                            />
-                          </Then>
-                          <Else>-</Else>
-                        </If>
-                      </Else>
-                    </If>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead className="border bg-secondary px-4 py-6">
-                    Type
-                  </TableHead>
-                  <TableCell className="border px-4 py-6">
-                    {renderValue(story?.type && toTitleCase(story.type))}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead className="border bg-secondary px-4 py-6">
-                    Game System
-                  </TableHead>
-                  <TableCell className="border px-4 py-6">
-                    {renderValue(story?.game_system)}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead className="border bg-secondary px-4 py-6">
-                    Max Members
-                  </TableHead>
-                  <TableCell className="border px-4 py-6">
-                    {renderValue(story?.max_members?.toString())}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead className="border bg-secondary px-4 py-6">
-                    Start At
-                  </TableHead>
-                  <TableCell className="border px-4 py-6">
-                    {renderValue(
-                      story?.start_at &&
-                        dayjs(story.start_at).format("YYYY-MM-DD HH:mm"),
-                    )}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead className="border bg-secondary px-4 py-6">
-                    Location Type
-                  </TableHead>
-                  <TableCell className="border px-4 py-6">
-                    {renderValue(story?.location_type && toTitleCase(story.location_type))}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead className="border bg-secondary px-4 py-6">
-                    Location Detail
-                  </TableHead>
-                  <TableCell className="border px-4 py-6 whitespace-normal break-words">
-                    {renderValue(story?.location_detail)}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead className="border bg-secondary px-4 py-6">
-                    Description
-                  </TableHead>
-                  <TableCell className="border px-4 py-6 whitespace-normal break-words">
-                    {renderValue(story?.description)}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead className="border bg-secondary px-4 py-6">
-                    Created By
-                  </TableHead>
-                  <TableCell className="border px-4 py-6">
-                    {renderValue(story?.created_by?.display_name)}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead className="border bg-secondary px-4 py-6">
-                    Created At
-                  </TableHead>
-                  <TableCell className="border px-4 py-6">
-                    {renderValue(
-                      story &&
-                        dayjs(story.created_at).format("YYYY-MM-DD HH:mm:ss"),
-                    )}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead className="border bg-secondary px-4 py-6">
-                    Updated At
-                  </TableHead>
-                  <TableCell className="border px-4 py-6">
-                    {renderValue(
-                      story &&
-                        dayjs(story.updated_at).format("YYYY-MM-DD HH:mm:ss"),
-                    )}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+        <If condition={storyQuery.isLoading}>
+          <Then>
+            <StoryDetailSkeleton />
+          </Then>
+          <Else>
+            <If condition={!!story}>
+              <Then>
+                <div className="flex flex-col gap-6">
+                  <StoryDetailHero story={story as TStoryResponse} />
+                  <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                    <StoryDetailQuestCard
+                      story={story as TStoryResponse}
+                      className="lg:col-span-2 lg:self-start"
+                    />
+                    <div className="flex flex-col gap-6">
+                      <StoryDetailAdventureCard
+                        story={story as TStoryResponse}
+                      />
+                      <StoryDetailChronicleCard
+                        story={story as TStoryResponse}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </Then>
+            </If>
+          </Else>
+        </If>
 
         <AlertDialog
           open={isDeleteDialogOpen}

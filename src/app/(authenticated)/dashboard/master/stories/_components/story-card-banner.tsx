@@ -1,11 +1,14 @@
 import { Swords } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
+import { cn } from "@/utils/cn";
+
 import type { TStoryCardBannerProps } from "@/app/(authenticated)/dashboard/master/stories/_types/story-card-banner-props";
 
 export default function StoryCardBanner({
   bannerUrl,
   title,
+  className,
 }: TStoryCardBannerProps) {
   return (
     <If condition={!!bannerUrl}>
@@ -16,12 +19,17 @@ export default function StoryCardBanner({
         <img
           src={bannerUrl ?? undefined}
           alt={title}
-          className="aspect-video w-full object-cover"
+          className={cn("aspect-video w-full object-cover", className)}
         />
       </Then>
       <Else>
         {/* Placeholder for stories without a banner */}
-        <div className="flex aspect-video w-full items-center justify-center bg-gradient-to-br from-primary/20 via-secondary/30 to-accent/20">
+        <div
+          className={cn(
+            "flex aspect-video w-full items-center justify-center bg-gradient-to-br from-primary/20 via-secondary/30 to-accent/20",
+            className,
+          )}
+        >
           <Swords className="size-10 text-primary/40" />
         </div>
       </Else>
