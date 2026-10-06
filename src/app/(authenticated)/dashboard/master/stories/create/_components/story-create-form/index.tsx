@@ -31,6 +31,7 @@ import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_co
 import StoryFormActions from "@/app/(authenticated)/dashboard/master/stories/_components/story-form-actions";
 import RichTextEditor from "@/app/_components/rich-text-editor";
 import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
+import { toStoryRewardPayload } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
 import {
   StoryCreateFormSchema,
   type TStoryCreateFormSchema,
@@ -54,6 +55,8 @@ export default function StoryCreateForm({
         description: "",
         gameSystem: "",
         maxMembers: "",
+        expAwarded: "0",
+        pointAwarded: "0",
         startAt: "",
         locationDetail: "",
       },
@@ -119,6 +122,8 @@ export default function StoryCreateForm({
       type: data.type,
       game_system: data.gameSystem || undefined,
       max_members: data.maxMembers ? Number(data.maxMembers) : undefined,
+      exp_awarded: toStoryRewardPayload(data.expAwarded),
+      point_awarded: toStoryRewardPayload(data.pointAwarded),
       // datetime-local is the browser's local time; send it as ISO (UTC)
       start_at: data.startAt ? dayjs(data.startAt).toISOString() : undefined,
       location_type: data.locationType,
@@ -278,6 +283,54 @@ export default function StoryCreateForm({
                 </Field>
               )}
             />
+
+            {/* Rewards side by side from sm up */}
+            <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-4">
+              <Controller
+                name="expAwarded"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field className="grid" data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="expAwarded">XP Awarded</FieldLabel>
+                    <Input
+                      id="expAwarded"
+                      type="number"
+                      inputMode="numeric"
+                      min={0}
+                      step={1}
+                      placeholder="0"
+                      disabled={isFormDisabled}
+                      {...field}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="pointAwarded"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field className="grid" data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="pointAwarded">Gold Awarded (GP)</FieldLabel>
+                    <Input
+                      id="pointAwarded"
+                      type="number"
+                      inputMode="numeric"
+                      min={0}
+                      step={1}
+                      placeholder="0"
+                      disabled={isFormDisabled}
+                      {...field}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </div>
 
             <Controller
               name="startAt"
