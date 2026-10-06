@@ -405,6 +405,7 @@ export default function StoryCardList({
               key={story.id}
               story={story}
               onArchive={onActionHandler.onArchiveStory}
+              onUnarchive={onActionHandler.onUnarchiveStory}
               onDelete={onActionHandler.onDeleteStory}
             />
           ))}

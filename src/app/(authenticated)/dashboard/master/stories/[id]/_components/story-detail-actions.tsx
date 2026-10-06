@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { Archive, EllipsisVertical, Pencil, Trash } from "lucide-react";
+import {
+  Archive,
+  ArchiveRestore,
+  EllipsisVertical,
+  Pencil,
+  Trash,
+} from "lucide-react";
 import { If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
@@ -17,9 +23,12 @@ export default function StoryDetailActions({
   storyId,
   canEdit,
   canArchive,
+  canUnarchive,
   canDelete,
   isArchivePending,
+  isUnarchivePending,
   onArchiveClick,
+  onUnarchiveClick,
   onDeleteClick,
 }: TStoryDetailActionsProps) {
   const editHref = `/dashboard/master/stories/${storyId}/edit`;
@@ -43,6 +52,17 @@ export default function StoryDetailActions({
               onClick={onArchiveClick}
             >
               <Archive /> Archive
+            </Button>
+          </Then>
+        </If>
+        <If condition={canUnarchive}>
+          <Then>
+            <Button
+              variant="outline"
+              disabled={isUnarchivePending}
+              onClick={onUnarchiveClick}
+            >
+              <ArchiveRestore /> Unarchive
             </Button>
           </Then>
         </If>
@@ -84,6 +104,17 @@ export default function StoryDetailActions({
                   >
                     <Archive />
                     Archive
+                  </DropdownMenuItem>
+                </Then>
+              </If>
+              <If condition={canUnarchive}>
+                <Then>
+                  <DropdownMenuItem
+                    disabled={isUnarchivePending}
+                    onClick={onUnarchiveClick}
+                  >
+                    <ArchiveRestore />
+                    Unarchive
                   </DropdownMenuItem>
                 </Then>
               </If>

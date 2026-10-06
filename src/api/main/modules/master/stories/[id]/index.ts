@@ -33,3 +33,19 @@ export const deleteStoryById = async (id: string) => {
 
   return response;
 };
+
+// Saves the current status as the previous status, then sets archived
+export const archiveStoryById = async (id: string) => {
+  const response = await mainAxios.patch(
+    MAIN_API_PATH.MASTER.STORY.ARCHIVE(id),
+  );
+  return response;
+};
+
+// Restores the status saved before archiving (400 when there is none)
+export const unarchiveStoryById = async (id: string) => {
+  const response = await mainAxios.patch(
+    MAIN_API_PATH.MASTER.STORY.UNARCHIVE(id),
+  );
+  return response;
+};
