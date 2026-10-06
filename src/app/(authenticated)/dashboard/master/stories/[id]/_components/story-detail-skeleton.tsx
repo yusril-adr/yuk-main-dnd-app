@@ -58,7 +58,7 @@ export default function StoryDetailSkeleton() {
           </CardContent>
         </Card>
         <div className="flex flex-col gap-6">
-          <SectionCardSkeleton rows={4} />
+          <SectionCardSkeleton rows={5} />
           <SectionCardSkeleton rows={3} />
         </div>
       </div>

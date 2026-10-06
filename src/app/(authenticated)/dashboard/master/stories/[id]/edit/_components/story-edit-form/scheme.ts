@@ -4,6 +4,17 @@ import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-typ
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
 import { countRichTextCharacters } from "@/utils/rich-text";
 import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
+import { STORY_REWARD_MAX } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-reward";
+
+// Kept as the raw input string ("" = 0); whole number between 0 and the DB max
+const storyRewardSchema = (label: string) =>
+  z
+    .string()
+    .regex(/^\d*$/, `${label} must be a whole number of 0 or more`)
+    .refine(
+      (value) => !value || Number(value) <= STORY_REWARD_MAX,
+      `${label} must be at most ${STORY_REWARD_MAX.toLocaleString("en-US")}`,
+    );
 
 export const StoryEditFormSchema = z.object({
   // Newly uploaded banner file id ("" = unchanged or removed)
@@ -33,6 +44,8 @@ export const StoryEditFormSchema = z.object({
   maxMembers: z
     .string()
     .regex(/^([1-9]\d*)?$/, "Max members must be a whole number of at least 1"),
+  expAwarded: storyRewardSchema("XP awarded"),
+  pointAwarded: storyRewardSchema("Gold awarded"),
   // datetime-local input value ("" = not set)
   startAt: z.string(),
   locationType: z.enum(StoryLocationTypeEnum, "Location type is required"),

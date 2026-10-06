@@ -16,6 +16,9 @@ export type TStoryEntity = TBaseEntity & {
   status: StoryStatusEnum;
   type: StoryTypeEnum;
   game_system: string | null;
+  // Rewards for completing the story (API default 0, never null)
+  exp_awarded: number;
+  point_awarded: number;
   max_members: number | null;
   start_at: string | null;
   location_type: StoryLocationTypeEnum;

@@ -35,6 +35,7 @@ import { toTitleCase } from "@/utils/format-text";
 import { getRichTextPlainText } from "@/utils/rich-text";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
+import { formatStoryReward } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
 
 import StoryCardBanner from "./story-card-banner";
 import StoryStatusBadge from "./story-status-badge";
@@ -62,6 +63,9 @@ export default function StoryCard({
   // Plain text from rich text HTML (or an old plain-text value); "" when the
   // description is empty or only has images
   const descriptionText = getRichTextPlainText(story.description);
+  // Reward badges only for rewards above 0
+  const expReward = formatStoryReward(story.exp_awarded, "XP");
+  const goldReward = formatStoryReward(story.point_awarded, "GP");
   const [confirmArchiveId, setConfirmArchiveId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
@@ -180,9 +184,24 @@ export default function StoryCard({
         </CardContent>
 
         <CardFooter className="mt-auto border-t pt-3">
-          <div className="flex flex-wrap gap-1.5">
-            <StoryStatusBadge status={story.status} />
-            <Badge variant="outline">{toTitleCase(story.type)}</Badge>
+          {/* Status / type on the left, rewards on the right (wraps on narrow cards) */}
+          <div className="flex w-full flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <StoryStatusBadge status={story.status} />
+              <Badge variant="outline">{toTitleCase(story.type)}</Badge>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <If condition={!!expReward}>
+                <Then>
+                  <Badge variant="outline">{expReward}</Badge>
+                </Then>
+              </If>
+              <If condition={!!goldReward}>
+                <Then>
+                  <Badge variant="outline">{goldReward}</Badge>
+                </Then>
+              </If>
+            </div>
           </div>
         </CardFooter>
       </Card>
