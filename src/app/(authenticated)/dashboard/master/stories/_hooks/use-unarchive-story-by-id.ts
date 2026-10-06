@@ -2,11 +2,12 @@ import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { toast } from "sonner";
 
-import { archiveStoryById } from "@/api/main/modules/master/stories/[id]";
+import { unarchiveStoryById } from "@/api/main/modules/master/stories/[id]";
 
-// PATCH /:id/archive (stories:update or the story's creator); the API keeps
-// the current status so the story can be unarchived later
-export function useArchiveStoryById(
+// PATCH /:id/unarchive (stories:update or the story's creator). A 400 (no
+// previous status, e.g. archived before this feature) shows the API message
+// as an error toast via the axios interceptor
+export function useUnarchiveStoryById(
   options?: Omit<
     UseMutationOptions<AxiosResponse, Error, string>,
     "mutationFn"
@@ -14,14 +15,14 @@ export function useArchiveStoryById(
 ) {
   return useMutation({
     ...options,
-    mutationFn: (id: string) => archiveStoryById(id),
+    mutationFn: (id: string) => unarchiveStoryById(id),
     onMutate: (...args) => {
-      toast.loading("Archiving story...");
+      toast.loading("Unarchiving story...");
       options?.onMutate?.(...args);
     },
     onSuccess: (...args) => {
       toast.dismiss();
-      toast.success("Story archived");
+      toast.success("Story unarchived");
       options?.onSuccess?.(...args);
     },
   });

@@ -28,6 +28,7 @@ import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-s
 import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-by-id";
 import { useGetStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-by-id";
 import { useArchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-archive-story-by-id";
+import { useUnarchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-unarchive-story-by-id";
 import StoryDetailHero from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-hero";
 import StoryDetailQuestCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-quest-card";
 import StoryDetailAdventureCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-adventure-card";
@@ -44,6 +45,7 @@ export default function StoryDetailPageClient() {
   const queryClient = useQueryClient();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false);
+  const [isUnarchiveDialogOpen, setIsUnarchiveDialogOpen] = useState(false);
   const storyQuery = useGetStoryById(storyId);
   const story = storyQuery.data?.data?.data;
   const canUpdateStory = canManageStory(
@@ -81,8 +83,25 @@ export default function StoryDetailPageClient() {
     },
   });
 
+  const unarchiveStoryMutation = useUnarchiveStoryById({
+    onError: (mutationError) => {
+      if (mutationError instanceof MainAPINotFoundError) {
+        router.push("/dashboard/master/stories");
+      }
+    },
+    onSuccess: () => {
+      // Refreshes the list and this detail query (its key starts with STORY.ALL())
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
+      });
+    },
+  });
+
   const canArchiveStory =
     canUpdateStory && story?.status !== StoryStatusEnum.ARCHIVED;
+  // Unarchive restores the status saved when the story was archived
+  const canUnarchiveStory =
+    canUpdateStory && story?.status === StoryStatusEnum.ARCHIVED;
 
   useEffect(() => {
     if (
@@ -106,6 +125,11 @@ export default function StoryDetailPageClient() {
     setIsArchiveDialogOpen(false);
   };
 
+  const onUnarchiveHandler = () => {
+    unarchiveStoryMutation.mutate(storyId);
+    setIsUnarchiveDialogOpen(false);
+  };
+
   const onDeleteHandler = () => {
     deleteStoryMutation.mutate(storyId);
     setIsDeleteDialogOpen(false);
@@ -127,9 +151,12 @@ export default function StoryDetailPageClient() {
                 storyId={storyId}
                 canEdit={canUpdateStory}
                 canArchive={canArchiveStory}
+                canUnarchive={canUnarchiveStory}
                 canDelete={canDeleteStory}
                 isArchivePending={archiveStoryMutation.isPending}
+                isUnarchivePending={unarchiveStoryMutation.isPending}
                 onArchiveClick={() => setIsArchiveDialogOpen(true)}
+                onUnarchiveClick={() => setIsUnarchiveDialogOpen(true)}
                 onDeleteClick={() => setIsDeleteDialogOpen(true)}
               />
             </Then>
@@ -173,8 +200,8 @@ export default function StoryDetailPageClient() {
             <AlertDialogHeader>
               <AlertDialogTitle>Archive story?</AlertDialogTitle>
               <AlertDialogDescription>
-                The story will be marked as archived. You can change its status
-                again from the edit page.
+                The story will be marked as archived. You can unarchive it later
+                to restore its previous status.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -184,6 +211,30 @@ export default function StoryDetailPageClient() {
                 onClick={onArchiveHandler}
               >
                 Archive
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog
+          open={isUnarchiveDialogOpen}
+          onOpenChange={setIsUnarchiveDialogOpen}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Unarchive story?</AlertDialogTitle>
+              <AlertDialogDescription>
+                The story will go back to the status it had before it was
+                archived (Draft or Published).
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                disabled={unarchiveStoryMutation.isPending}
+                onClick={onUnarchiveHandler}
+              >
+                Unarchive
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

@@ -25,6 +25,8 @@ const MAIN_API_PATH = {
     STORY: {
       DEFAULT: "/api/v1/master/stories",
       DETAIL: (id: string) => `/api/v1/master/stories/${id}`,
+      ARCHIVE: (id: string) => `/api/v1/master/stories/${id}/archive`,
+      UNARCHIVE: (id: string) => `/api/v1/master/stories/${id}/unarchive`,
     },
   },
 };

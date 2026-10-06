@@ -1,5 +1,12 @@
 import { useCallback, useState } from "react";
-import { Archive, EllipsisVertical, Eye, Pencil, Trash } from "lucide-react";
+import {
+  Archive,
+  ArchiveRestore,
+  EllipsisVertical,
+  Eye,
+  Pencil,
+  Trash,
+} from "lucide-react";
 import Link from "next/link";
 import { Else, If, Then } from "react-if";
 
@@ -44,6 +51,7 @@ import type { TStoryCardProps } from "@/app/(authenticated)/dashboard/master/sto
 export default function StoryCard({
   story,
   onArchive,
+  onUnarchive,
   onDelete,
 }: TStoryCardProps) {
   const { auth } = useAuthContext();
@@ -60,6 +68,11 @@ export default function StoryCard({
   // Same rule as the detail page: allowed to update and not already archived
   const canArchiveStory =
     canUpdateStory && story.status !== StoryStatusEnum.ARCHIVED && !!onArchive;
+  // Same rule as the detail page: allowed to update and currently archived
+  const canUnarchiveStory =
+    canUpdateStory &&
+    story.status === StoryStatusEnum.ARCHIVED &&
+    !!onUnarchive;
   // Plain text from rich text HTML (or an old plain-text value); "" when the
   // description is empty or only has images
   const descriptionText = getRichTextPlainText(story.description);
@@ -67,6 +80,9 @@ export default function StoryCard({
   const expReward = formatStoryReward(story.exp_awarded, "XP");
   const goldReward = formatStoryReward(story.point_awarded, "GP");
   const [confirmArchiveId, setConfirmArchiveId] = useState<string | null>(null);
+  const [confirmUnarchiveId, setConfirmUnarchiveId] = useState<string | null>(
+    null,
+  );
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const onArchiveConfirm = useCallback(() => {
@@ -75,6 +91,13 @@ export default function StoryCard({
     }
     setConfirmArchiveId(null);
   }, [confirmArchiveId, onArchive]);
+
+  const onUnarchiveConfirm = useCallback(() => {
+    if (confirmUnarchiveId && onUnarchive) {
+      onUnarchive(confirmUnarchiveId);
+    }
+    setConfirmUnarchiveId(null);
+  }, [confirmUnarchiveId, onUnarchive]);
 
   const onDeleteConfirm = useCallback(() => {
     if (confirmDeleteId && onDelete) {
@@ -143,6 +166,16 @@ export default function StoryCard({
                     >
                       <Archive />
                       Archive
+                    </DropdownMenuItem>
+                  </Then>
+                </If>
+                <If condition={canUnarchiveStory}>
+                  <Then>
+                    <DropdownMenuItem
+                      onClick={() => setConfirmUnarchiveId(story.id)}
+                    >
+                      <ArchiveRestore />
+                      Unarchive
                     </DropdownMenuItem>
                   </Then>
                 </If>
@@ -218,14 +251,39 @@ export default function StoryCard({
           <AlertDialogHeader>
             <AlertDialogTitle>Archive story?</AlertDialogTitle>
             <AlertDialogDescription>
-              The story will be marked as archived. You can change its status
-              again from the edit page.
+              The story will be marked as archived. You can unarchive it later
+              to restore its previous status.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={onArchiveConfirm}>
               Archive
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        open={confirmUnarchiveId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setConfirmUnarchiveId(null);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Unarchive story?</AlertDialogTitle>
+            <AlertDialogDescription>
+              The story will go back to the status it had before it was archived
+              (Draft or Published).
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={onUnarchiveConfirm}>
+              Unarchive
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
