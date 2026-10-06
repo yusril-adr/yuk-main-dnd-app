@@ -22,6 +22,8 @@ RUN npm ci --omit=dev
 
 COPY --from=builder --chown=nextjs:nextjs /app/public ./public
 COPY --from=builder --chown=nextjs:nextjs /app/.next ./.next
+COPY --from=builder --chown=nextjs:nextjs /app/next.config.ts ./next.config.ts
+COPY --from=builder --chown=nextjs:nextjs /app/tsconfig.json ./tsconfig.json
 
 USER nextjs
 
