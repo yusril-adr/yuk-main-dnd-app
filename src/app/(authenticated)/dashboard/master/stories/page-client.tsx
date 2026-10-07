@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
+import { createParser, parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
@@ -31,6 +31,21 @@ import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stori
 import { useArchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-archive-story-by-id";
 import { useUnarchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-unarchive-story-by-id";
 import { useGetUserPagination } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-user-pagination";
+
+function parseAsNumericEnum<T extends Record<string, number | string>>(
+  enumObj: T,
+) {
+  const numericValues = Object.values(enumObj).filter(
+    (v): v is number => typeof v === "number",
+  );
+  return createParser({
+    parse: (value) => {
+      const n = Number(value);
+      return numericValues.includes(n) ? (n as T[keyof T] & number) : null;
+    },
+    serialize: (value) => String(value),
+  });
+}
 
 export default function StoriesPageClient() {
   const router = useRouter();
@@ -59,11 +74,9 @@ export default function StoriesPageClient() {
     order: parseAsStringEnum<OrderKeyEnum>(
       Object.values(OrderKeyEnum),
     ).withDefault(OrderKeyEnum.DESC),
-    status: parseAsStringEnum<StoryStatusEnum>(Object.values(StoryStatusEnum)),
-    type: parseAsStringEnum<StoryTypeEnum>(Object.values(StoryTypeEnum)),
-    locationType: parseAsStringEnum<StoryLocationTypeEnum>(
-      Object.values(StoryLocationTypeEnum),
-    ),
+    status: parseAsNumericEnum(StoryStatusEnum),
+    type: parseAsNumericEnum(StoryTypeEnum),
+    locationType: parseAsNumericEnum(StoryLocationTypeEnum),
     createdBy: parseAsString,
   });
 

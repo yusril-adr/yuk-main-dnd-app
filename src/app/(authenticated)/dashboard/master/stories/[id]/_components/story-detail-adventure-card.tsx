@@ -1,6 +1,6 @@
 import { CalendarClock, Dices, Map, Trophy, Users } from "lucide-react";
 
-import { toTitleCase } from "@/utils/format-text";
+import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
 import dayjs from "@/libs/dayjs";
 
 import StoryDetailSectionCard from "./story-detail-section-card";
@@ -61,7 +61,7 @@ export default function StoryDetailAdventureCard({
       />
       <StoryDetailInfoRow
         icon={STORY_LOCATION_TYPE_ICON[story.location_type]}
-        label={`Location · ${toTitleCase(story.location_type)}`}
+        label={`Location · ${STORY_LOCATION_TYPE_LABEL[story.location_type]}`}
         value={story.location_detail}
         emptyText="-"
       />

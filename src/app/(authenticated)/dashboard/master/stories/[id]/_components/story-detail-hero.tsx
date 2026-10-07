@@ -1,6 +1,6 @@
 import { Badge } from "@/app/_components/ui/badge";
 import { Card } from "@/app/_components/ui/card";
-import { toTitleCase } from "@/utils/format-text";
+import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 
 import StoryCardBanner from "@/app/(authenticated)/dashboard/master/stories/_components/story-card-banner";
 import StoryStatusBadge from "@/app/(authenticated)/dashboard/master/stories/_components/story-status-badge";
@@ -29,7 +29,7 @@ export default function StoryDetailHero({ story }: TStoryDetailCardProps) {
           <StoryStatusBadge status={story.status} />
           <Badge variant="outline" className="gap-1 [&>svg]:size-3">
             <TypeIcon />
-            {toTitleCase(story.type)}
+            {STORY_TYPE_LABEL[story.type]}
           </Badge>
           <span className="font-mono text-xs text-muted-foreground">
             /{story.slug}

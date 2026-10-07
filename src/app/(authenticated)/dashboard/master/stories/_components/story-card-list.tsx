@@ -33,10 +33,12 @@ import {
 } from "@/app/_components/ui/select";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import { generatePages } from "@/utils/table-helper";
-import { toTitleCase } from "@/utils/format-text";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
+import { STORY_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-status-label";
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
+import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
+import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
 
 import StoryCard from "./story-card";
 import StoryCardSkeleton from "./story-card-skeleton";
@@ -260,10 +262,11 @@ export default function StoryCardList({
                   <FieldLabel htmlFor="status">Status</FieldLabel>
                   <Combobox
                     id="status"
-                    items={Object.values(StoryStatusEnum)}
+                    items={Object.values(StoryStatusEnum).filter(
+                      (v): v is StoryStatusEnum => typeof v === "number",
+                    )}
                     value={filterStatus}
-                    // Show "Published" / "Oneshot" / "Online"; the filter value stays lowercase
-                    itemToStringLabel={(item) => toTitleCase(item)}
+                    itemToStringLabel={(item) => STORY_STATUS_LABEL[item]}
                     onValueChange={(value) => setFilterStatus(value || null)}
                   >
                     <ComboboxInput placeholder="Select status" showClear />
@@ -272,7 +275,7 @@ export default function StoryCardList({
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {toTitleCase(item)}
+                            {STORY_STATUS_LABEL[item as StoryStatusEnum]}
                           </ComboboxItem>
                         )}
                       </ComboboxList>
@@ -284,10 +287,11 @@ export default function StoryCardList({
                   <FieldLabel htmlFor="type">Type</FieldLabel>
                   <Combobox
                     id="type"
-                    items={Object.values(StoryTypeEnum)}
+                    items={Object.values(StoryTypeEnum).filter(
+                      (v): v is StoryTypeEnum => typeof v === "number",
+                    )}
                     value={filterType}
-                    // Show "Published" / "Oneshot" / "Online"; the filter value stays lowercase
-                    itemToStringLabel={(item) => toTitleCase(item)}
+                    itemToStringLabel={(item) => STORY_TYPE_LABEL[item]}
                     onValueChange={(value) => setFilterType(value || null)}
                   >
                     <ComboboxInput placeholder="Select type" showClear />
@@ -296,7 +300,7 @@ export default function StoryCardList({
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {toTitleCase(item)}
+                            {STORY_TYPE_LABEL[item as StoryTypeEnum]}
                           </ComboboxItem>
                         )}
                       </ComboboxList>
@@ -308,10 +312,13 @@ export default function StoryCardList({
                   <FieldLabel htmlFor="location-type">Location</FieldLabel>
                   <Combobox
                     id="location-type"
-                    items={Object.values(StoryLocationTypeEnum)}
+                    items={Object.values(StoryLocationTypeEnum).filter(
+                      (v): v is StoryLocationTypeEnum => typeof v === "number",
+                    )}
                     value={filterLocationType}
-                    // Show "Published" / "Oneshot" / "Online"; the filter value stays lowercase
-                    itemToStringLabel={(item) => toTitleCase(item)}
+                    itemToStringLabel={(item) =>
+                      STORY_LOCATION_TYPE_LABEL[item]
+                    }
                     onValueChange={(value) => setFilterLocationType(value || null)}
                   >
                     <ComboboxInput placeholder="Select location" showClear />
@@ -320,7 +327,7 @@ export default function StoryCardList({
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {toTitleCase(item)}
+                            {STORY_LOCATION_TYPE_LABEL[item as StoryLocationTypeEnum]}
                           </ComboboxItem>
                         )}
                       </ComboboxList>

@@ -35,7 +35,7 @@ export const StoryEditFormSchema = z.object({
       `Description must be at most ${STORY_DESCRIPTION_MAX_LENGTH} characters`,
     )
     .optional(),
-  type: z.enum(StoryTypeEnum, "Type is required"),
+  type: z.nativeEnum(StoryTypeEnum, "Type is required"),
   gameSystem: z
     .string()
     .max(100, "Game system must be at most 100 characters")
@@ -48,7 +48,7 @@ export const StoryEditFormSchema = z.object({
   pointAwarded: storyRewardSchema("Gold awarded"),
   // datetime-local input value ("" = not set)
   startAt: z.string(),
-  locationType: z.enum(StoryLocationTypeEnum, "Location type is required"),
+  locationType: z.nativeEnum(StoryLocationTypeEnum, "Location type is required"),
   locationDetail: z
     .string("Location detail is required")
     .min(1, "Location detail is required"),

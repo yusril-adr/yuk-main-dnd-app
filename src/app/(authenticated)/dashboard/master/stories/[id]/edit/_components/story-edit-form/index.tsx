@@ -33,9 +33,11 @@ import { Button } from "@/app/_components/ui/button";
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
+import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
+import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
 import { applyValidationErrors } from "@/utils/validation-helper";
-import { toCamelCase, toTitleCase } from "@/utils/format-text";
+import { toCamelCase } from "@/utils/format-text";
 import { toRichTextHtml } from "@/utils/rich-text";
 import dayjs from "@/libs/dayjs";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
@@ -288,7 +290,9 @@ export default function StoryEditForm({
                   <FieldLabel htmlFor="type">Type</FieldLabel>
                   <Combobox
                     id="type"
-                    items={Object.values(StoryTypeEnum)}
+                    items={Object.values(StoryTypeEnum).filter(
+                      (v): v is StoryTypeEnum => typeof v === "number",
+                    )}
                     onValueChange={field.onChange}
                     disabled={isFormDisabled}
                     {...field}
@@ -296,7 +300,7 @@ export default function StoryEditForm({
                     // (and on create until picked); null = no selection for Base UI
                     value={field.value ?? null}
                     // Same labels as the detail page (e.g. "oneshot" -> "Oneshot")
-                    itemToStringLabel={(item) => toTitleCase(item)}
+                    itemToStringLabel={(item) => STORY_TYPE_LABEL[item]}
                   >
                     <ComboboxInput placeholder="Select type" />
                     <ComboboxContent>
@@ -304,7 +308,7 @@ export default function StoryEditForm({
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {toTitleCase(item)}
+                            {STORY_TYPE_LABEL[item as StoryTypeEnum]}
                           </ComboboxItem>
                         )}
                       </ComboboxList>
@@ -444,7 +448,9 @@ export default function StoryEditForm({
                   <FieldLabel htmlFor="locationType">Location Type</FieldLabel>
                   <Combobox
                     id="locationType"
-                    items={Object.values(StoryLocationTypeEnum)}
+                    items={Object.values(StoryLocationTypeEnum).filter(
+                      (v): v is StoryLocationTypeEnum => typeof v === "number",
+                    )}
                     onValueChange={field.onChange}
                     disabled={isFormDisabled}
                     {...field}
@@ -452,7 +458,7 @@ export default function StoryEditForm({
                     // (and on create until picked); null = no selection for Base UI
                     value={field.value ?? null}
                     // Same labels as the detail page (e.g. "oneshot" -> "Oneshot")
-                    itemToStringLabel={(item) => toTitleCase(item)}
+                    itemToStringLabel={(item) => STORY_LOCATION_TYPE_LABEL[item as StoryLocationTypeEnum]}
                   >
                     <ComboboxInput placeholder="Select location type" />
                     <ComboboxContent>
@@ -460,7 +466,7 @@ export default function StoryEditForm({
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {toTitleCase(item)}
+                            {STORY_LOCATION_TYPE_LABEL[item as StoryLocationTypeEnum]}
                           </ComboboxItem>
                         )}
                       </ComboboxList>

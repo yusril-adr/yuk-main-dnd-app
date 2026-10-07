@@ -38,9 +38,9 @@ import {
 } from "@/app/_components/ui/alert-dialog";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { PermissionEnum } from "@/common/enums/permission";
-import { toTitleCase } from "@/utils/format-text";
 import { getRichTextPlainText } from "@/utils/rich-text";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
+import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
 import { formatStoryReward } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
 
@@ -221,7 +221,7 @@ export default function StoryCard({
           <div className="flex w-full flex-wrap items-center justify-between gap-2">
             <div className="flex flex-wrap items-center gap-2">
               <StoryStatusBadge status={story.status} />
-              <Badge variant="outline">{toTitleCase(story.type)}</Badge>
+              <Badge variant="outline">{STORY_TYPE_LABEL[story.type]}</Badge>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <If condition={!!expReward}>
