@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import { CalendarDays as CalendarIcon, XIcon } from "lucide-react";
+import { Else, If, Then } from "react-if";
 
 import { Card, CardContent, CardFooter } from "@/app/_components/ui/card";
 import {
@@ -19,6 +22,13 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "@/app/_components/ui/combobox";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/app/_components/ui/popover";
+import { Calendar } from "@/app/_components/ui/calendar";
+import { Button } from "@/app/_components/ui/button";
 
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
@@ -32,10 +42,7 @@ import StoryFormActions from "@/app/(authenticated)/dashboard/master/stories/_co
 import RichTextEditor from "@/app/_components/rich-text-editor";
 import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 import { toStoryRewardPayload } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
-import {
-  StoryCreateFormSchema,
-  type TStoryCreateFormSchema,
-} from "./scheme";
+import { StoryCreateFormSchema, type TStoryCreateFormSchema } from "./scheme";
 import type { TStoryCreateFormProps } from "../../_types/story-create-form-props";
 
 export default function StoryCreateForm({
@@ -62,9 +69,7 @@ export default function StoryCreateForm({
       },
     });
 
-  const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(
-    null,
-  );
+  const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(null);
 
   // Revoke the previous local preview when it changes, and on unmount
   useEffect(() => {
@@ -110,6 +115,42 @@ export default function StoryCreateForm({
 
   const [submittingStatus, setSubmittingStatus] =
     useState<StoryStatusEnum | null>(null);
+
+  const [dateOpen, setDateOpen] = useState(false);
+
+  const onDateSelect = useCallback(
+    (
+      date: Date | undefined,
+      onChange: (value: string) => void,
+      currentValue: string,
+    ) => {
+      if (date) {
+        const current = currentValue ? new Date(currentValue) : new Date();
+        date.setHours(current.getHours(), current.getMinutes());
+        onChange(date.toISOString());
+      }
+      setDateOpen(false);
+    },
+    [],
+  );
+
+  const onTimeChange = useCallback(
+    (
+      e: React.ChangeEvent<HTMLInputElement>,
+      onChange: (value: string) => void,
+      currentValue: string,
+    ) => {
+      const [hours, minutes] = e.target.value.split(":").map(Number);
+      const date = currentValue ? new Date(currentValue) : new Date();
+      date.setHours(hours, minutes);
+      onChange(date.toISOString());
+    },
+    [],
+  );
+
+  const onClearStartAt = useCallback((onChange: (value: string) => void) => {
+    onChange("");
+  }, []);
 
   const submitPayload = (
     data: TStoryCreateFormSchema,
@@ -300,6 +341,7 @@ export default function StoryCreateForm({
                       step={1}
                       placeholder="0"
                       disabled={isFormDisabled}
+                      className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                       {...field}
                     />
                     {fieldState.invalid && (
@@ -313,7 +355,9 @@ export default function StoryCreateForm({
                 control={control}
                 render={({ field, fieldState }) => (
                   <Field className="grid" data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="pointAwarded">Gold Awarded (GP)</FieldLabel>
+                    <FieldLabel htmlFor="pointAwarded">
+                      Gold Awarded (GP)
+                    </FieldLabel>
                     <Input
                       id="pointAwarded"
                       type="number"
@@ -322,6 +366,7 @@ export default function StoryCreateForm({
                       step={1}
                       placeholder="0"
                       disabled={isFormDisabled}
+                      className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                       {...field}
                     />
                     {fieldState.invalid && (
@@ -337,14 +382,73 @@ export default function StoryCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="startAt">Start At</FieldLabel>
-                  <Input
-                    id="startAt"
-                    type="datetime-local"
-                    placeholder="Select start date and time"
-                    disabled={isFormDisabled}
-                    {...field}
-                  />
+                  <FieldLabel>Start At</FieldLabel>
+                  <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-4">
+                    <Popover open={dateOpen} onOpenChange={setDateOpen}>
+                      <PopoverTrigger
+                        render={
+                          <Button
+                            variant="outline"
+                            data-empty={!field.value}
+                            className="justify-start bg-inherit text-left font-normal data-[empty=true]:text-muted-foreground"
+                            disabled={isFormDisabled}
+                          />
+                        }
+                      >
+                        <CalendarIcon />
+                        <If condition={!!field.value}>
+                          <Then>
+                            {field.value
+                              ? format(new Date(field.value), "PPP")
+                              : null}
+                          </Then>
+                          <Else>
+                            <span>Pick a date</span>
+                          </Else>
+                        </If>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          captionLayout="dropdown"
+                          selected={
+                            field.value ? new Date(field.value) : undefined
+                          }
+                          onSelect={(date) =>
+                            onDateSelect(date, field.onChange, field.value)
+                          }
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <div className="flex gap-2">
+                      <Input
+                        type="time"
+                        disabled={isFormDisabled}
+                        value={
+                          field.value
+                            ? format(new Date(field.value), "HH:mm")
+                            : ""
+                        }
+                        onChange={(e) =>
+                          onTimeChange(e, field.onChange, field.value)
+                        }
+                        className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                      />
+                      <If condition={!!field.value}>
+                        <Then>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            disabled={isFormDisabled}
+                            onClick={() => onClearStartAt(field.onChange)}
+                            type="button"
+                          >
+                            <XIcon />
+                          </Button>
+                        </Then>
+                      </If>
+                    </div>
+                  </div>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -394,7 +498,9 @@ export default function StoryCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="locationDetail">Location Detail</FieldLabel>
+                  <FieldLabel htmlFor="locationDetail">
+                    Location Detail
+                  </FieldLabel>
                   <Textarea
                     id="locationDetail"
                     placeholder="e.g. Discord link or venue address"

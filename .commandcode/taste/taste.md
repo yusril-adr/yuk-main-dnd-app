@@ -19,10 +19,11 @@
 - Organizes API clients under `src/api/{namespace}/` (e.g., `requestor`, `main`) with a consistent per-resource module pattern (path constants, types, fetch functions); new modules should mirror an existing module's structure and return shape (e.g., `main/permissions` mirrors `requestor`) rather than inventing a new layout. Confidence: 0.6
 - Nests API feature modules under `src/api/{namespace}/modules/{feature}/` (e.g., `src/api/main/modules/permissions/index.ts`) rather than directly under the namespace folder. Confidence: 0.6
 - Prefers filter, sort_by/order, and pagination (page/per_page) to be genuinely implemented in API modules — including on dummy/stub data — rather than accepting the params but ignoring them (e.g., asked to "also handle sort by and pagination", then "sort by and filter", on the permissions module whose dummy stub previously ignored them). Confidence: 0.7
-- When in plan mode and a scope change arises, expects the plan document to be updated/rewritten first before proceeding with implementation — won't skip straight to coding. Reaffirmed by explicitly blocking implementation of a bug fix until the plan was written. Confidence: 0.85
+- When in plan mode and a scope change arises — or when a new mid-implementation change is requested — expects the plan document to be written/updated first so it can be reviewed and approved before proceeding with implementation. Won't skip straight to coding even for follow-up tweaks. Confidence: 0.9
 - Wants plans to include full implementation code per file, not just high-level descriptions or bullet summaries — asked "show me implementation code in your plan" and proceeded only after the plan contained concrete code snippets for every file. Confidence: 0.8
 - Wants plan documents to show only the final chosen approach concisely — not the intermediate reasoning, exploration of alternatives, or multiple approaches considered. Said "only write your final thought of your plan" after a plan contained verbose deliberation with rejected alternatives. Confidence: 0.8
 - Keeps the axios-based API envelope (e.g., `AxiosResponse<TRequestorApiPaginationResponse<T>>`) as a stable contract/abstraction layer deliberately, even when the actual transport is Supabase RPC — so downstream hooks/tables reading `response.data.data.items`/`meta` never change and migrating to a real REST API later only swaps the function body (dummy → RPC → REST). Confidence: 0.8
+- After completing code changes, expects the agent to handle git operations — said "use git status, and commit me" — treating git status + commit as a natural follow-up to implementation rather than something to handle manually. Confidence: 0.7
 
 # Auth
 
@@ -39,7 +40,8 @@ See [nextjs/taste.md](nextjs/taste.md)
 # Style
 
 See [style/taste.md](style/taste.md)
- than creating a new data-fetching layer or re-implementing the API call. Confidence: 0.6
+than creating a new data-fetching layer or re-implementing the API call. Confidence: 0.6
+
 - Refers to routes by approximate/shorthand paths (e.g., `/dashboard/iam/permission` for `/dashboard/master/iam/permissions`, `/dashboard/requestors` for `/dashboard/requestor`) and expects the agent to resolve them against the sidebar nav config rather than taking the path literally. Confidence: 0.5
 
 # Auth
