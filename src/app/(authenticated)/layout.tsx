@@ -23,7 +23,8 @@ export default function AuthenticatedLayout({
       auth &&
       !authQuery?.isLoading &&
       !auth?.selected_role &&
-      pathname !== "/switch-role"
+      pathname !== "/switch-role" &&
+      pathname !== "/settings"
     ) {
       const from = encodeURIComponent(pathname);
       router.push(`/switch-role?from=${from}`);

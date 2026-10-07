@@ -1,12 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import Link from "next/link";
-import {
-  KeyRound,
-  RotateCcwClock,
-  Upload,
-  UserRound,
-} from "lucide-react";
+import { KeyRound, RotateCcwClock, Upload, UserRound } from "lucide-react";
 import { Else, If, Then } from "react-if";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -161,7 +156,7 @@ export default function SettingsProfileForm({
   const canRemoveAvatar = !!previewUrl || (!!avatarUrl && !isAvatarRemoved);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
       <Card>
         <CardContent>
           <FieldGroup>
@@ -322,7 +317,6 @@ export default function SettingsProfileForm({
                 </Field>
               )}
             />
-
           </FieldGroup>
         </CardContent>
 
@@ -337,7 +331,7 @@ export default function SettingsProfileForm({
               {/* Outline on phones; ghost from sm up (variant cannot be responsive) */}
               <Button
                 type="button"
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 className="w-full sm:hidden"
                 disabled={isFormDisabled || isUploadingAvatar}
@@ -348,7 +342,7 @@ export default function SettingsProfileForm({
               </Button>
               <Button
                 type="button"
-                variant="ghost"
+                variant="secondary"
                 size="sm"
                 className="me-auto hidden sm:inline-flex"
                 disabled={isFormDisabled || isUploadingAvatar}

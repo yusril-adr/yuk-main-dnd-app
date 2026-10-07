@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Else, If, Then } from "react-if";
@@ -58,15 +58,27 @@ export default function SettingsPasswordDialog({
   const [isShowNewPassword, setIsShowNewPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
 
-  const handleOpenChange = (nextOpen: boolean) => {
-    if (!nextOpen) {
-      reset();
-      setIsShowCurrentPassword(false);
-      setIsShowNewPassword(false);
-      setIsShowConfirmPassword(false);
+  const handleOpenChange = useCallback(
+    (nextOpen: boolean) => {
+      if (!nextOpen) {
+        reset();
+        setIsShowCurrentPassword(false);
+        setIsShowNewPassword(false);
+        setIsShowConfirmPassword(false);
+      }
+      onOpenChange(nextOpen);
+    },
+    [reset, onOpenChange],
+  );
+
+  const prevIsPending = useRef(isPending);
+
+  useEffect(() => {
+    if (prevIsPending.current && !isPending && !mutationError) {
+      handleOpenChange(false);
     }
-    onOpenChange(nextOpen);
-  };
+    prevIsPending.current = isPending;
+  }, [isPending, mutationError, handleOpenChange]);
 
   useEffect(() => {
     if (mutationError instanceof MainAPIValidationError) {

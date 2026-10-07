@@ -2,7 +2,7 @@
 - Questions redundant operations in config/build files (e.g., duplicate `npm ci` in a Dockerfile) — expects each step to have clear justification and will call out unnecessary work rather than accepting it silently. Confidence: 0.7
 - Prefers Dockerfile Node.js version to match `.nvmrc` — expects version alignment between local development (nvm) and container builds. Confidence: 0.8
 - Values cross-project consistency — when an adjacent/sibling project already establishes a convention (e.g., README format, documentation style), prefers mirroring that convention rather than inventing a new one from scratch. Confidence: 0.6
-- Prefers eliminating unnecessary state and addressing root causes over suppressing lint warnings — when faced with a lint violation, chooses to restructure code to make the warning irrelevant (e.g., removing a redundant `mounted` hydration gate) rather than disabling the rule, even when the lint-suppression approach is idiomatic and widely accepted. Confidence: 0.6
+- Prefers eliminating unnecessary state and addressing root causes over suppressing lint warnings — when faced with a lint violation, chooses to restructure code to make the warning irrelevant (e.g., removing a redundant `mounted` hydration gate, wrapping a function in `useCallback` to stabilize effect dependencies) rather than disabling the rule or ignoring the warning. Proactively flags lint issues from IDE diagnostics and expects a proper structural fix. Confidence: 0.7
 
 - Prefers build-time code generation (a Node script wired into the `dev`/`build` scripts, committing the generated file) over runtime filesystem detection for derived config lists — keeps generated artifacts in sync automatically at dev/build time. Confidence: 0.6
 - Prefers single explicit npm script commands (inlining a codegen step into `dev`/`build` with `&&`) over npm lifecycle hooks (`predev`/`prebuild`) — values explicitness and one-place clarity over implicit automatic hooks. Confidence: 0.7
@@ -23,7 +23,7 @@
 - Wants plans to include full implementation code per file, not just high-level descriptions or bullet summaries — asked "show me implementation code in your plan" and proceeded only after the plan contained concrete code snippets for every file. Confidence: 0.8
 - Wants plan documents to show only the final chosen approach concisely — not the intermediate reasoning, exploration of alternatives, or multiple approaches considered. Said "only write your final thought of your plan" after a plan contained verbose deliberation with rejected alternatives. Confidence: 0.8
 - Keeps the axios-based API envelope (e.g., `AxiosResponse<TRequestorApiPaginationResponse<T>>`) as a stable contract/abstraction layer deliberately, even when the actual transport is Supabase RPC — so downstream hooks/tables reading `response.data.data.items`/`meta` never change and migrating to a real REST API later only swaps the function body (dummy → RPC → REST). Confidence: 0.8
-- After completing code changes, expects the agent to handle git operations — said "use git status, and commit me" — treating git status + commit as a natural follow-up to implementation rather than something to handle manually. Confidence: 0.7
+- After completing code changes, expects the agent to handle git operations — said "use git status, and commit me" — treating git status + commit as a natural follow-up to implementation rather than something to handle manually. Prefers to review the proposed commit message before it's actually committed rather than auto-committing. Confidence: 0.7
 
 # Auth
 
