@@ -10,7 +10,7 @@ const outFile = resolve(root, "src", "generated", "protected-routes.ts");
 async function main() {
   const entries = await readdir(protectedDir, { withFileTypes: true });
   const routes = entries
-    .filter((entry) => entry.isDirectory() && !entry.name.startsWith("("))
+    .filter((entry) => entry.isDirectory() && !entry.name.startsWith("(") && !entry.name.startsWith("_"))
     .map((entry) => `/${entry.name}`)
     .sort();
 
