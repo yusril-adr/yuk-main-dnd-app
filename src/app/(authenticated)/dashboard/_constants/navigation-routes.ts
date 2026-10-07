@@ -6,7 +6,6 @@ import {
   Coins,
   FileClock,
   Gauge,
-  HandCoins,
   Medal,
   Scale,
   ShieldKeyhole,
