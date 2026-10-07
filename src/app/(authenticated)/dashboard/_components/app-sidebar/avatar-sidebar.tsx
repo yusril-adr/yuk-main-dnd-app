@@ -7,6 +7,7 @@ import {
   LogOut,
   ShieldCogCorner,
   User,
+  UserRoundCog,
   UserRoundKey,
 } from "lucide-react";
 import {
@@ -125,6 +126,10 @@ export function AvatarSidebar() {
               <DropdownMenuItem render={<Link href="/profile" />}>
                 <User />
                 Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem render={<Link href="/settings" />}>
+                <UserRoundCog />
+                Settings
               </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
                 <LogOut />

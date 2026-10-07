@@ -11,6 +11,7 @@ import {
   ChessKnight,
   UserRoundKey,
   ShieldCogCorner,
+  UserRoundCog,
 } from "lucide-react";
 
 import { Button } from "@/app/_components/ui/button";
@@ -93,6 +94,10 @@ export function AvatarDropdown() {
           <DropdownMenuItem render={<Link href="/profile" />}>
             <User />
             Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem render={<Link href="/settings" />}>
+            <UserRoundCog />
+            Settings
           </DropdownMenuItem>
           <DropdownMenuItem onClick={logout}>
             <LogOut />

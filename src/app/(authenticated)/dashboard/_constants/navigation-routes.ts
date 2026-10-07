@@ -135,24 +135,6 @@ const NAV_ROUTES: TNavSidebar[] = [
         path: "/dashboard/master/goods",
         authorizedPermissions: [PermissionEnum.GOODS_VIEW],
       },
-      {
-        title: "Transactions",
-        icon: HandCoins,
-        children: [
-          {
-            title: "Experience Points",
-            icon: Medal,
-            path: "/dashboard/master/transactions/experience-points",
-            authorizedPermissions: [PermissionEnum.POINTS_VIEW],
-          },
-          {
-            title: "Gold Pieces",
-            icon: Coins,
-            path: "/dashboard/master/transactions/gold-pieces",
-            authorizedPermissions: [PermissionEnum.POINTS_VIEW],
-          },
-        ],
-      },
     ],
   },
 ];
