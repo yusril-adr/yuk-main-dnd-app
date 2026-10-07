@@ -3,6 +3,8 @@ const MAIN_API_PATH = {
     LOGIN: "/api/v1/auth/login",
     ME: "/api/v1/auth/me",
     SWITCH_ROLE: "/api/v1/auth/switch-role",
+    PROFILE: "/api/v1/auth/profile",
+    PASSWORD: "/api/v1/auth/password",
   },
   FILE: {
     UPLOAD: "/api/v1/files/upload",
