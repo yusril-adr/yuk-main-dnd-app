@@ -10,7 +10,7 @@ export default async function AppTopbarLayout({
 
   return (
     <div className="w-full flex flex-col">
-      <AppTopBar hasAccessToken={hasAccessToken}></AppTopBar>
+      <AppTopBar hasAccessToken={hasAccessToken} />
       {children}
     </div>
   );

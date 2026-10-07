@@ -1,22 +1,19 @@
-import type { TNavSidebar } from "@/app/(authenticated)/dashboard/_types/nav-sidebar";
+import type { TNavSidebar } from "@/app/(authenticated)/_types/nav-sidebar";
 import {
-  BrainCircuit,
   CalendarDays,
   ClockFading,
   Coins,
-  FileClock,
   Gauge,
   Medal,
   Scale,
   ShieldKeyhole,
   ShieldUser,
-  Shredder,
   Swords,
   Users,
   UserShield,
 } from "lucide-react";
 import { PermissionEnum } from "@/common/enums/permission";
-import { NavSidebarVariantEnum } from "@/app/(authenticated)/dashboard/_enums/nav-sidebar-variant";
+import { NavSidebarVariantEnum } from "@/app/(authenticated)/_enums/nav-sidebar-variant";
 
 const NAV_ROUTES: TNavSidebar[] = [
   {
@@ -57,32 +54,6 @@ const NAV_ROUTES: TNavSidebar[] = [
             title: "Gold Pieces",
             icon: Coins,
             path: "/dashboard/logs/gold-pieces",
-          },
-        ],
-      },
-      {
-        title: "Requestor",
-        icon: BrainCircuit,
-        children: [
-          {
-            title: "Dashboard",
-            icon: Gauge,
-            path: "/dashboard/requestor",
-          },
-          {
-            title: "Users",
-            icon: Users,
-            path: "/dashboard/requestor/users",
-          },
-          {
-            title: "Requests",
-            icon: Shredder,
-            path: "/dashboard/requestor/requests",
-          },
-          {
-            title: "Audit Logs",
-            icon: FileClock,
-            path: "/dashboard/requestor/audit-logs",
           },
         ],
       },

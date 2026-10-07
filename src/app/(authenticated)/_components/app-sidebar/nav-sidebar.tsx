@@ -9,8 +9,8 @@ import {
   SidebarMenuItem,
 } from "@/app/_components/ui/sidebar";
 
-import type { TNavSidebar } from "@/app/(authenticated)/dashboard/_types/nav-sidebar";
-import { NavSidebarVariantEnum } from "@/app/(authenticated)/dashboard/_enums/nav-sidebar-variant";
+import type { TNavSidebar } from "@/app/(authenticated)/_types/nav-sidebar";
+import { NavSidebarVariantEnum } from "@/app/(authenticated)/_enums/nav-sidebar-variant";
 import { NavCollapsibleMenu } from "./nav-collapsible-menu";
 import { NavLabelGroup } from "./nav-label-group";
 

@@ -17,7 +17,7 @@ import {
 } from "@/app/_components/ui/collapsible";
 import { cn } from "@/utils/cn";
 
-import type { TNavSidebar } from "@/app/(authenticated)/dashboard/_types/nav-sidebar";
+import type { TNavSidebar } from "@/app/(authenticated)/_types/nav-sidebar";
 
 export function NavCollapsibleMenu({ item }: { item: TNavSidebar }) {
   const pathName = usePathname();
