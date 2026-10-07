@@ -1,6 +1,6 @@
 import type { RoleKeyEnum } from "@/common/enums/role-key";
 import type { PermissionEnum } from "@/common/enums/permission";
-import type { NavSidebarVariantEnum } from "@/app/(authenticated)/dashboard/_enums/nav-sidebar-variant";
+import type { NavSidebarVariantEnum } from "@/app/(authenticated)/_enums/nav-sidebar-variant";
 import type { LucideIcon } from "lucide-react";
 
 export type TNavSidebar = {
