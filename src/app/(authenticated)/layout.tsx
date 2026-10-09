@@ -24,6 +24,7 @@ export default function AuthenticatedLayout({
       !authQuery?.isLoading &&
       !auth?.selected_role &&
       pathname !== "/switch-role" &&
+      pathname !== "/profile" &&
       pathname !== "/settings"
     ) {
       const from = encodeURIComponent(pathname);
