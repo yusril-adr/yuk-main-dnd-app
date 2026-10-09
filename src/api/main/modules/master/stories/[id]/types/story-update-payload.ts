@@ -10,7 +10,7 @@ type TStoryClearableField =
   | "banner_file_id";
 
 export type TStoryUpdatePayload = Partial<
-  Omit<TStoryCreatePayload, TStoryClearableField>
+  Omit<TStoryCreatePayload, TStoryClearableField | "status">
 > & {
   [K in TStoryClearableField]?: TStoryCreatePayload[K] | null;
 };

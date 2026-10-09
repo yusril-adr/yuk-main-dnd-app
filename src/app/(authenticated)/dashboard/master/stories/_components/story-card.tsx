@@ -5,6 +5,7 @@ import {
   EllipsisVertical,
   Eye,
   Pencil,
+  Send,
   Trash,
 } from "lucide-react";
 import Link from "next/link";
@@ -52,6 +53,7 @@ export default function StoryCard({
   story,
   onArchive,
   onUnarchive,
+  onPublish,
   onDelete,
 }: TStoryCardProps) {
   const { auth } = useAuthContext();
@@ -73,6 +75,8 @@ export default function StoryCard({
     canUpdateStory &&
     story.status === StoryStatusEnum.ARCHIVED &&
     !!onUnarchive;
+  const canPublishStory =
+    canUpdateStory && story.status === StoryStatusEnum.DRAFT && !!onPublish;
   // Plain text from rich text HTML (or an old plain-text value); "" when the
   // description is empty or only has images
   const descriptionText = getRichTextPlainText(story.description);
@@ -80,6 +84,9 @@ export default function StoryCard({
   const expReward = formatStoryReward(story.exp_awarded, "XP");
   const goldReward = formatStoryReward(story.point_awarded, "GP");
   const [confirmArchiveId, setConfirmArchiveId] = useState<string | null>(null);
+  const [confirmPublishId, setConfirmPublishId] = useState<string | null>(
+    null,
+  );
   const [confirmUnarchiveId, setConfirmUnarchiveId] = useState<string | null>(
     null,
   );
@@ -91,6 +98,13 @@ export default function StoryCard({
     }
     setConfirmArchiveId(null);
   }, [confirmArchiveId, onArchive]);
+
+  const onPublishConfirm = useCallback(() => {
+    if (confirmPublishId && onPublish) {
+      onPublish(confirmPublishId);
+    }
+    setConfirmPublishId(null);
+  }, [confirmPublishId, onPublish]);
 
   const onUnarchiveConfirm = useCallback(() => {
     if (confirmUnarchiveId && onUnarchive) {
@@ -159,6 +173,16 @@ export default function StoryCard({
                     Edit
                   </DropdownMenuItem>
                 )}
+                <If condition={canPublishStory}>
+                  <Then>
+                    <DropdownMenuItem
+                      onClick={() => setConfirmPublishId(story.id)}
+                    >
+                      <Send />
+                      Publish
+                    </DropdownMenuItem>
+                  </Then>
+                </If>
                 <If condition={canArchiveStory}>
                   <Then>
                     <DropdownMenuItem
@@ -238,6 +262,30 @@ export default function StoryCard({
           </div>
         </CardFooter>
       </Card>
+
+      <AlertDialog
+        open={confirmPublishId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setConfirmPublishId(null);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Publish story?</AlertDialogTitle>
+            <AlertDialogDescription>
+              The story will be marked as published.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={onPublishConfirm}>
+              Publish
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <AlertDialog
         open={confirmArchiveId !== null}

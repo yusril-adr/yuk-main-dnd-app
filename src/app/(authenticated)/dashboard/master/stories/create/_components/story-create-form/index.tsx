@@ -40,7 +40,7 @@ import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
-import StoryFormActions from "@/app/(authenticated)/dashboard/master/stories/_components/story-form-actions";
+import StoryCreateFormActions from "./story-create-form-actions";
 import RichTextEditor from "@/app/_components/rich-text-editor";
 import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 import { toStoryRewardPayload } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
@@ -519,7 +519,7 @@ export default function StoryCreateForm({
         </CardContent>
 
         <CardFooter className="border-t-1 pt-4">
-          <StoryFormActions
+          <StoryCreateFormActions
             cancelHref="/dashboard/master/stories"
             disabled={isFormDisabled || isUploadingBanner}
             isPending={isPending}

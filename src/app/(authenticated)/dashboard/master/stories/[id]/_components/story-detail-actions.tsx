@@ -4,6 +4,7 @@ import {
   ArchiveRestore,
   EllipsisVertical,
   Pencil,
+  Send,
   Trash,
 } from "lucide-react";
 import { If, Then } from "react-if";
@@ -22,11 +23,14 @@ import type { TStoryDetailActionsProps } from "@/app/(authenticated)/dashboard/m
 export default function StoryDetailActions({
   storyId,
   canEdit,
+  canPublish,
   canArchive,
   canUnarchive,
   canDelete,
+  isPublishPending,
   isArchivePending,
   isUnarchivePending,
+  onPublishClick,
   onArchiveClick,
   onUnarchiveClick,
   onDeleteClick,
@@ -41,6 +45,17 @@ export default function StoryDetailActions({
           <Then>
             <Button render={<Link href={editHref} />} nativeButton={false}>
               <Pencil /> Edit
+            </Button>
+          </Then>
+        </If>
+        <If condition={canPublish}>
+          <Then>
+            <Button
+              variant="default"
+              disabled={isPublishPending}
+              onClick={onPublishClick}
+            >
+              <Send /> Publish
             </Button>
           </Then>
         </If>
@@ -93,6 +108,17 @@ export default function StoryDetailActions({
                   <DropdownMenuItem render={<Link href={editHref} />}>
                     <Pencil />
                     Edit
+                  </DropdownMenuItem>
+                </Then>
+              </If>
+              <If condition={canPublish}>
+                <Then>
+                  <DropdownMenuItem
+                    disabled={isPublishPending}
+                    onClick={onPublishClick}
+                  >
+                    <Send />
+                    Publish
                   </DropdownMenuItem>
                 </Then>
               </If>

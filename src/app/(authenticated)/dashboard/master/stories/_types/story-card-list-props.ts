@@ -32,6 +32,7 @@ export type TStoryCardListActionHandler = {
   onFilterApply: (filters: TStoryCardListFilters) => void;
   onArchiveStory: (id: string) => void;
   onUnarchiveStory: (id: string) => void;
+  onPublishStory: (id: string) => void;
   onDeleteStory: (id: string) => void;
 };
 

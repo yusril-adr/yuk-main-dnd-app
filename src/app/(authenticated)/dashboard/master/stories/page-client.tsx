@@ -30,6 +30,7 @@ import { useGetStoryPagination } from "@/app/(authenticated)/dashboard/master/st
 import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-by-id";
 import { useArchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-archive-story-by-id";
 import { useUnarchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-unarchive-story-by-id";
+import { usePublishStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-publish-story-by-id";
 import { useGetUserPagination } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-user-pagination";
 
 function parseAsNumericEnum<T extends Record<string, number | string>>(
@@ -127,6 +128,16 @@ export default function StoriesPageClient() {
   const { mutate: unarchiveStoryMutate } = useUnarchiveStoryById({
     // Same as archive: refresh on success and on error (404 / 400), so the
     // card shows its real status or disappears (e.g. under an Archived filter)
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
+      });
+    },
+  });
+
+  const { mutate: publishStoryMutate } = usePublishStoryById({
+    // Refresh on success and on error (e.g. 404 when the story was deleted
+    // elsewhere), so the card shows its real status or disappears
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
@@ -234,6 +245,7 @@ export default function StoriesPageClient() {
             onSearchChange,
             onFilterApply,
             onArchiveStory: archiveStoryMutate,
+            onPublishStory: publishStoryMutate,
             onUnarchiveStory: unarchiveStoryMutate,
             onDeleteStory: deleteStoryMutate,
           }}

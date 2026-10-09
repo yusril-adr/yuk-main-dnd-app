@@ -31,7 +31,6 @@ import { Calendar } from "@/app/_components/ui/calendar";
 import { Button } from "@/app/_components/ui/button";
 
 import MainAPIValidationError from "@/api/main/errors/validation-error";
-import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
 import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
@@ -41,7 +40,7 @@ import { toCamelCase } from "@/utils/format-text";
 import { toRichTextHtml } from "@/utils/rich-text";
 import dayjs from "@/libs/dayjs";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
-import StoryFormActions from "@/app/(authenticated)/dashboard/master/stories/_components/story-form-actions";
+import StoryEditFormActions from "./story-edit-form-actions";
 import RichTextEditor from "@/app/_components/rich-text-editor";
 import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 import { toStoryRewardPayload } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
@@ -137,9 +136,6 @@ export default function StoryEditForm({
     }
   }, [mutationError, setError]);
 
-  const [submittingStatus, setSubmittingStatus] =
-    useState<StoryStatusEnum | null>(null);
-
   const [dateOpen, setDateOpen] = useState(false);
 
   const onDateSelect = useCallback(
@@ -176,10 +172,7 @@ export default function StoryEditForm({
     onChange("");
   }, []);
 
-  const submitPayload = (
-    data: TStoryEditFormSchema,
-    status: StoryStatusEnum,
-  ) => {
+  const submitPayload = (data: TStoryEditFormSchema) => {
     // undefined = untouched (left out of the JSON), null = remove, string = new banner
     let bannerFileId: string | null | undefined;
     if (data.bannerFileId) {
@@ -192,7 +185,6 @@ export default function StoryEditForm({
       title: data.title,
       // Emptied optional fields are sent as null so the API clears them
       description: data.description || null,
-      status,
       type: data.type,
       game_system: data.gameSystem || null,
       max_members: data.maxMembers ? Number(data.maxMembers) : null,
@@ -207,13 +199,7 @@ export default function StoryEditForm({
     });
   };
 
-  // Each footer button validates the form, then submits it with its own status
-  const onSubmitWithStatus = (status: StoryStatusEnum) => {
-    handleSubmit((data) => {
-      setSubmittingStatus(status);
-      submitPayload(data, status);
-    })();
-  };
+  const onSave = handleSubmit((data) => submitPayload(data));
 
   const isFormDisabled = isPending || isPaused || isLoading;
 
@@ -503,13 +489,12 @@ export default function StoryEditForm({
         </CardContent>
 
         <CardFooter className="border-t-1 pt-4">
-          <StoryFormActions
+          <StoryEditFormActions
             cancelHref="/dashboard/master/stories"
             disabled={isFormDisabled || isUploadingBanner}
             isPending={isPending}
-            submittingStatus={submittingStatus}
             currentStatus={story?.status}
-            onSubmitWithStatus={onSubmitWithStatus}
+            onSave={onSave}
           />
         </CardFooter>
       </Card>

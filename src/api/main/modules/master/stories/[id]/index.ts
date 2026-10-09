@@ -42,6 +42,15 @@ export const archiveStoryById = async (id: string) => {
   return response;
 };
 
+// Sets a draft to published; 400 when it is not a draft; allowed for
+// stories:update or the creator
+export const publishStoryById = async (id: string) => {
+  const response = await mainAxios.patch(
+    MAIN_API_PATH.MASTER.STORY.PUBLISH(id),
+  );
+  return response;
+};
+
 // Restores the status saved before archiving (400 when there is none)
 export const unarchiveStoryById = async (id: string) => {
   const response = await mainAxios.patch(

@@ -7,37 +7,25 @@ import { Field, FieldGroup } from "@/app/_components/ui/field";
 import { Spinner } from "@/app/_components/ui/spinner";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 
-import StoryStatusBadge from "./story-status-badge";
-import type { TStoryFormActionsProps } from "@/app/(authenticated)/dashboard/master/stories/_types/story-form-actions-props";
+import type { TStoryCreateFormActionsProps } from "@/app/(authenticated)/dashboard/master/stories/create/_types/story-create-form-actions-props";
 
-export default function StoryFormActions({
+export default function StoryCreateFormActions({
   cancelHref,
   disabled,
   isPending,
   submittingStatus,
-  currentStatus,
   onSubmitWithStatus,
-}: TStoryFormActionsProps) {
+}: TStoryCreateFormActionsProps) {
   const isSubmitting = (status: StoryStatusEnum) =>
     isPending && submittingStatus === status;
 
   return (
     <FieldGroup>
-      {/* Phones: status on its own line, then full-width stacked buttons.
-          sm+: one row, status left, buttons right */}
+      {/* Phones: full-width stacked buttons. sm+: one row, buttons right */}
       <Field
         orientation="horizontal"
         className="flex-col items-stretch sm:flex-row sm:items-center"
       >
-        <If condition={!!currentStatus}>
-          <Then>
-            <span className="flex items-center gap-2 text-sm text-muted-foreground">
-              Current status:
-              <StoryStatusBadge status={currentStatus as StoryStatusEnum} />
-            </span>
-          </Then>
-        </If>
-
         <div className="flex flex-col gap-3 sm:ms-auto sm:flex-row">
           <Button
             className="w-full sm:w-auto"

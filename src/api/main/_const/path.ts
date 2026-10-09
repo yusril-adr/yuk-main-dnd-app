@@ -28,6 +28,7 @@ const MAIN_API_PATH = {
       DEFAULT: "/api/v1/master/stories",
       DETAIL: (id: string) => `/api/v1/master/stories/${id}`,
       ARCHIVE: (id: string) => `/api/v1/master/stories/${id}/archive`,
+      PUBLISH: (id: string) => `/api/v1/master/stories/${id}/publish`,
       UNARCHIVE: (id: string) => `/api/v1/master/stories/${id}/unarchive`,
     },
   },

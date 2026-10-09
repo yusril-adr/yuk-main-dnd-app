@@ -4,5 +4,6 @@ export type TStoryCardProps = {
   story: TStoryResponse;
   onArchive?: (id: string) => void;
   onUnarchive?: (id: string) => void;
+  onPublish?: (id: string) => void;
   onDelete?: (id: string) => void;
 };

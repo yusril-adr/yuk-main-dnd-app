@@ -29,6 +29,7 @@ import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stori
 import { useGetStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-by-id";
 import { useArchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-archive-story-by-id";
 import { useUnarchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-unarchive-story-by-id";
+import { usePublishStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-publish-story-by-id";
 import StoryDetailHero from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-hero";
 import StoryDetailQuestCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-quest-card";
 import StoryDetailAdventureCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-adventure-card";
@@ -46,6 +47,7 @@ export default function StoryDetailPageClient() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false);
   const [isUnarchiveDialogOpen, setIsUnarchiveDialogOpen] = useState(false);
+  const [isPublishDialogOpen, setIsPublishDialogOpen] = useState(false);
   const storyQuery = useGetStoryById(storyId);
   const story = storyQuery.data?.data?.data;
   const canUpdateStory = canManageStory(
@@ -97,11 +99,27 @@ export default function StoryDetailPageClient() {
     },
   });
 
+  const publishStoryMutation = usePublishStoryById({
+    onError: (mutationError) => {
+      if (mutationError instanceof MainAPINotFoundError) {
+        router.push("/dashboard/master/stories");
+      }
+    },
+    onSuccess: () => {
+      // Refreshes the list and this detail query (its key starts with STORY.ALL())
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
+      });
+    },
+  });
+
   const canArchiveStory =
     canUpdateStory && story?.status !== StoryStatusEnum.ARCHIVED;
   // Unarchive restores the status saved when the story was archived
   const canUnarchiveStory =
     canUpdateStory && story?.status === StoryStatusEnum.ARCHIVED;
+  const canPublishStory =
+    canUpdateStory && story?.status === StoryStatusEnum.DRAFT;
 
   useEffect(() => {
     if (
@@ -119,6 +137,11 @@ export default function StoryDetailPageClient() {
     ],
     [story?.title],
   );
+
+  const onPublishHandler = () => {
+    publishStoryMutation.mutate(storyId);
+    setIsPublishDialogOpen(false);
+  };
 
   const onArchiveHandler = () => {
     archiveStoryMutation.mutate(storyId);
@@ -150,11 +173,14 @@ export default function StoryDetailPageClient() {
               <StoryDetailActions
                 storyId={storyId}
                 canEdit={canUpdateStory}
+                canPublish={canPublishStory}
                 canArchive={canArchiveStory}
                 canUnarchive={canUnarchiveStory}
                 canDelete={canDeleteStory}
+                isPublishPending={publishStoryMutation.isPending}
                 isArchivePending={archiveStoryMutation.isPending}
                 isUnarchivePending={unarchiveStoryMutation.isPending}
+                onPublishClick={() => setIsPublishDialogOpen(true)}
                 onArchiveClick={() => setIsArchiveDialogOpen(true)}
                 onUnarchiveClick={() => setIsUnarchiveDialogOpen(true)}
                 onDeleteClick={() => setIsDeleteDialogOpen(true)}
@@ -191,6 +217,29 @@ export default function StoryDetailPageClient() {
             </If>
           </Else>
         </If>
+
+        <AlertDialog
+          open={isPublishDialogOpen}
+          onOpenChange={setIsPublishDialogOpen}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Publish story?</AlertDialogTitle>
+              <AlertDialogDescription>
+                The story will be marked as published.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                disabled={publishStoryMutation.isPending}
+                onClick={onPublishHandler}
+              >
+                Publish
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
         <AlertDialog
           open={isArchiveDialogOpen}
