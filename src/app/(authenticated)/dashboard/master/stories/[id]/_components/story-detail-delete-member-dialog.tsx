@@ -76,6 +76,9 @@ export default function StoryDetailDeleteMemberDialog({
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
       setSearchInput(value);
+      if (value && value.length < 3) {
+        return;
+      }
       clearTimeout(searchTimeoutRef.current);
       searchTimeoutRef.current = setTimeout(() => {
         setSearch(value);
