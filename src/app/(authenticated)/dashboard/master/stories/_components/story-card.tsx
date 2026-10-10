@@ -44,6 +44,7 @@ import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-s
 import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
 import { formatStoryReward } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
+import { isCancelledStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/is-cancelled-story";
 
 import StoryCardBanner from "./story-card-banner";
 import StoryStatusBadge from "./story-status-badge";
@@ -67,10 +68,9 @@ export default function StoryCard({
     story,
     PermissionEnum.STORIES_DELETE,
   );
-  const isCancelled = story.status === StoryStatusEnum.CANCELLED;
-  // Same rule as the detail page: update and delete 400 once cancelled
-  const canEditStory = canUpdateStory && !isCancelled;
-  const canDeleteStoryAction = canDeleteStory && !isCancelled && !!onDelete;
+  // Edit 400s when cancelled, including archived stories whose previous status was cancelled.
+  const canEditStory = canUpdateStory && !isCancelledStory(story);
+  const canDeleteStoryAction = canDeleteStory && !!onDelete;
   // Same rule as the detail page: allowed to update and not already archived
   const canArchiveStory =
     canUpdateStory && story.status !== StoryStatusEnum.ARCHIVED && !!onArchive;

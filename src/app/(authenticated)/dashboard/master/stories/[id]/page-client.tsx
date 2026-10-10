@@ -40,6 +40,7 @@ import StoryDetailSkeleton from "@/app/(authenticated)/dashboard/master/stories/
 import StoryDetailActions from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-actions";
 import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
 import { canCancelStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-cancel-story";
+import { isCancelledStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/is-cancelled-story";
 
 export default function StoryDetailPageClient() {
   const { auth } = useAuthContext();
@@ -196,16 +197,12 @@ export default function StoryDetailPageClient() {
             <Then>
               <StoryDetailActions
                 storyId={storyId}
-                canEdit={
-                  canUpdateStory && story?.status !== StoryStatusEnum.CANCELLED
-                }
+                canEdit={canUpdateStory && !isCancelledStory(story)}
                 canPublish={canPublishStory}
                 canArchive={canArchiveStory}
                 canUnarchive={canUnarchiveStory}
                 canCancel={canCancelStoryAction}
-                canDelete={
-                  canDeleteStory && story?.status !== StoryStatusEnum.CANCELLED
-                }
+                canDelete={canDeleteStory}
                 isPublishPending={publishStoryMutation.isPending}
                 isArchivePending={archiveStoryMutation.isPending}
                 isUnarchivePending={unarchiveStoryMutation.isPending}
@@ -244,8 +241,7 @@ export default function StoryDetailPageClient() {
                       <StoryDetailMembersCard
                         storyId={storyId}
                         canManageMembers={
-                          canUpdateStory &&
-                          story?.status !== StoryStatusEnum.CANCELLED
+                          canUpdateStory && !isCancelledStory(story)
                         }
                       />
                     </div>
