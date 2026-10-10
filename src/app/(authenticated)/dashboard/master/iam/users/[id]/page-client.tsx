@@ -31,7 +31,7 @@ import {
 } from "@/app/_components/ui/alert-dialog";
 import { PermissionEnum } from "@/common/enums/permission";
 import CONFIG from "@/common/constants/config";
-import { getInitials } from "@/utils/user-helper";
+import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import dayjs from "@/libs/dayjs";
 
@@ -189,7 +189,10 @@ export default function UserDetailPageClient() {
                     <div className="absolute inset-0 rounded-full bg-primary/5 scale-110" />
                     <Avatar className="h-28 w-28 ring-2 ring-primary/20 ring-offset-2 ring-offset-card">
                       <AvatarImage
-                        src={user?.avatar_url}
+                        src={
+                          user?.avatar_url ??
+                          makeDefaultAvatarUrl(user?.display_name)
+                        }
                         alt={user?.display_name}
                       />
                       <AvatarFallback className="text-2xl font-heading">

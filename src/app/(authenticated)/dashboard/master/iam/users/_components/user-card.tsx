@@ -38,7 +38,7 @@ import {
 } from "@/app/_components/ui/alert-dialog";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { PermissionEnum } from "@/common/enums/permission";
-import { getInitials } from "@/utils/user-helper";
+import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 
 import type { TUserCardProps } from "@/app/(authenticated)/dashboard/master/iam/users/_types/user-card-props";
 import { Else, If, Then } from "react-if";
@@ -67,7 +67,12 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
           <div className="flex justify-between">
             <div className="flex items-center gap-3">
               <Avatar size="lg">
-                <AvatarImage src={user.avatar_url} alt={user.display_name} />
+                <AvatarImage
+                  src={
+                    user?.avatar_url ?? makeDefaultAvatarUrl(user?.display_name)
+                  }
+                  alt={user.display_name}
+                />
                 <AvatarFallback>
                   {getInitials(user.display_name)}
                 </AvatarFallback>
