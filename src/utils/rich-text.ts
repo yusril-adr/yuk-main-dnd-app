@@ -1,9 +1,10 @@
 import DOMPurify from "dompurify";
 
-// The only tags the editor produces (StarterKit without code / code block, H2–H3)
+// The only tags the editor produces (StarterKit without code / code block, H1–H3)
 const RICH_TEXT_ALLOWED_TAGS = [
   "p",
   "br",
+  "h1",
   "h2",
   "h3",
   "strong",
@@ -19,7 +20,7 @@ const RICH_TEXT_ALLOWED_TAGS = [
   "img",
 ];
 const RICH_TEXT_TAG_PATTERN =
-  /<\/?(p|br|h2|h3|strong|em|u|s|a|ul|ol|li|blockquote|hr|img)\b[^>]*>/i;
+  /<\/?(p|br|h1|h2|h3|strong|em|u|s|a|ul|ol|li|blockquote|hr|img)\b[^>]*>/i;
 const HTML_ENTITIES: Record<string, string> = {
   "&amp;": "&",
   "&lt;": "<",
@@ -112,7 +113,7 @@ export function getRichTextPlainText(value: string | null | undefined): string {
 
   return value
     .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<\/(p|h2|h3|li|blockquote)>/gi, "\n")
+    .replace(/<\/(p|h1|h2|h3|li|blockquote)>/gi, "\n")
     .replace(/<[^>]+>/g, "")
     .replace(/&(amp|lt|gt|quot|#39|nbsp);/g, (entity) => HTML_ENTITIES[entity])
     .trim();

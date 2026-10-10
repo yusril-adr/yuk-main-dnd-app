@@ -5,6 +5,7 @@ export const RICH_TEXT_CONTENT_CLASS_NAME = [
   "break-words leading-relaxed",
   "[&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
   "[&_p]:my-2",
+  "[&_h1]:mt-6 [&_h1]:mb-2 [&_h1]:font-heading [&_h1]:text-2xl [&_h1]:text-primary",
   "[&_h2]:mt-5 [&_h2]:mb-2 [&_h2]:font-heading [&_h2]:text-xl [&_h2]:text-primary",
   "[&_h3]:mt-4 [&_h3]:mb-1.5 [&_h3]:font-heading [&_h3]:text-lg",
   "[&_strong]:font-semibold",

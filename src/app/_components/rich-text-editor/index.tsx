@@ -35,7 +35,7 @@ export default function RichTextEditor({
   const extensions = useMemo(
     () => [
       StarterKit.configure({
-        heading: { levels: [2, 3] },
+        heading: { levels: [1, 2, 3] },
         code: false,
         codeBlock: false,
         link: { openOnClick: false, autolink: true, defaultProtocol: "https" },

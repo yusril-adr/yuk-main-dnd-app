@@ -1,6 +1,7 @@
 import { useEditorState } from "@tiptap/react";
 import {
   Bold,
+  Heading1,
   Heading2,
   Heading3,
   Italic,
@@ -35,6 +36,7 @@ export default function RichTextToolbar({
       isStrike: currentEditor.isActive("strike"),
       isLink: currentEditor.isActive("link"),
       isImage: currentEditor.isActive("image"),
+      isHeading1: currentEditor.isActive("heading", { level: 1 }),
       isHeading2: currentEditor.isActive("heading", { level: 2 }),
       isHeading3: currentEditor.isActive("heading", { level: 3 }),
       isBulletList: currentEditor.isActive("bulletList"),
@@ -93,14 +95,21 @@ export default function RichTextToolbar({
       <Separator orientation="vertical" className="mx-1" />
 
       <RichTextToolbarButton
-        label="Heading"
+        label="Heading 1"
+        icon={Heading1}
+        isActive={state.isHeading1}
+        disabled={disabled}
+        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+      />
+      <RichTextToolbarButton
+        label="Heading 2"
         icon={Heading2}
         isActive={state.isHeading2}
         disabled={disabled}
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
       />
       <RichTextToolbarButton
-        label="Subheading"
+        label="Heading 3"
         icon={Heading3}
         isActive={state.isHeading3}
         disabled={disabled}
