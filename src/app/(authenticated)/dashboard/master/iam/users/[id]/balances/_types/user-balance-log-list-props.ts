@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react";
+
 import type { TUserBalanceLogQuery } from "../_utils/user-balance-log-payload";
 
 export type TUserBalanceLogRow = {
@@ -9,7 +11,11 @@ export type TUserBalanceLogRow = {
   updated_at: string;
 };
 
-export type TUserBalanceLogTableProps<TType extends number> = {
+export type TUserBalanceLogListFilter<TType extends number> = {
+  type: TType | null;
+};
+
+export type TUserBalanceLogListProps<TType extends number> = {
   data: TUserBalanceLogRow[];
   isLoading: boolean;
   pageCount: number;
@@ -17,9 +23,10 @@ export type TUserBalanceLogTableProps<TType extends number> = {
   queryTable: TUserBalanceLogQuery;
   typeOptions: TType[];
   typeLabels: Record<TType, string>;
+  typeIcons: Record<TType, LucideIcon>;
+  isExpense?: (type: TType) => boolean;
   onPageChange: (page: number) => void;
   onPageSizeChange: (pageSize: number) => void;
-  onSortingChange: (key: string) => void;
   onSearchChange: (value: string) => void;
-  onFilterApply: (type: TType | null) => void;
+  onFilterApply: (filter: TUserBalanceLogListFilter<TType>) => void;
 };

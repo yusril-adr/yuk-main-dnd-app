@@ -3,12 +3,31 @@
 import { useCallback, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { notFound, useParams, useRouter } from "next/navigation";
-import { ArrowLeft, Coins, Medal } from "lucide-react";
-import { createParser, parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
+import {
+  ArrowDownLeft,
+  ArrowLeft,
+  ArrowUpRight,
+  BookOpen,
+  ChessKnight,
+  Coins,
+  Medal,
+  type LucideIcon,
+} from "lucide-react";
+import {
+  createParser,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+} from "nuqs";
 import { Else, If, Then } from "react-if";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/_components/ui/tabs";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/app/_components/ui/tabs";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { useGetUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-by-id";
@@ -18,15 +37,12 @@ import { UserPointLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/p
 import { USER_POINT_LOG_TYPE_LABEL } from "@/api/main/modules/master/iam/users/[id]/points/enums/user-point-log-type-label";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import { PermissionEnum } from "@/common/enums/permission";
-import { OrderKeyEnum } from "@/common/enums/order-key";
-import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
-import UserBalanceLogTable from "./_components/user-balance-log-table";
+import UserBalanceLogList from "./_components/user-balance-log-list";
 import { UserBalanceTabEnum } from "./_enums/user-balance-tab";
 import { useGetUserExperiencePointPagination } from "./_hooks/use-get-user-experience-point-pagination";
 import { useGetUserPointPagination } from "./_hooks/use-get-user-point-pagination";
-import { USER_BALANCE_LOG_SORT_BY } from "./_types/user-balance-log-sort-by";
-import type { TUserBalanceLogSortBy } from "./_types/user-balance-log-sort-by";
+import type { TUserBalanceLogListFilter } from "./_types/user-balance-log-list-props";
 import { toUserBalanceLogPayload } from "./_utils/user-balance-log-payload";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | undefined;
@@ -34,7 +50,9 @@ let debounceSearchTimeoutId: NodeJS.Timeout | number | undefined;
 const BALANCE_LOG_TYPE_VALUES = [
   ...new Set(
     [UserExpLogTypeEnum, UserPointLogTypeEnum].flatMap((enumObj) =>
-      Object.values(enumObj).filter((value): value is number => typeof value === "number"),
+      Object.values(enumObj).filter(
+        (value): value is number => typeof value === "number",
+      ),
     ),
   ),
 ];
@@ -48,6 +66,16 @@ const parseAsBalanceLogType = createParser({
     return String(value);
   },
 });
+
+const EXP_LOG_TYPE_ICONS: Record<UserExpLogTypeEnum, LucideIcon> = {
+  [UserExpLogTypeEnum.PLAYER]: ChessKnight,
+  [UserExpLogTypeEnum.DM]: BookOpen,
+};
+
+const POINT_LOG_TYPE_ICONS: Record<UserPointLogTypeEnum, LucideIcon> = {
+  [UserPointLogTypeEnum.INCOME]: ArrowDownLeft,
+  [UserPointLogTypeEnum.EXPENSE]: ArrowUpRight,
+};
 
 function StatBlock({
   label,
@@ -71,14 +99,14 @@ export default function UserBalancesPageClient() {
   const { id } = useParams();
   const router = useRouter();
   const userId = id as string;
-  const canViewPoints = !!auth?.permissions.includes(PermissionEnum.POINTS_VIEW);
+  const canViewPoints = !!auth?.permissions.includes(
+    PermissionEnum.POINTS_VIEW,
+  );
 
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
     pageSize: parseAsInteger.withDefault(10),
     search: parseAsString.withDefault(""),
-    sortBy: createSortByParser(USER_BALANCE_LOG_SORT_BY, "Balances"),
-    order: parseAsStringEnum<OrderKeyEnum>(Object.values(OrderKeyEnum)),
     tab: parseAsStringEnum<UserBalanceTabEnum>(
       Object.values(UserBalanceTabEnum),
     ).withDefault(UserBalanceTabEnum.EXPERIENCE_POINTS),
@@ -94,12 +122,10 @@ export default function UserBalancesPageClient() {
   const logsEnabled = canViewPoints && userQuery.isSuccess;
   const expQuery = useGetUserExperiencePointPagination(userId, payload, {
     enabled:
-      logsEnabled &&
-      queryStates.tab === UserBalanceTabEnum.EXPERIENCE_POINTS,
+      logsEnabled && queryStates.tab === UserBalanceTabEnum.EXPERIENCE_POINTS,
   });
   const pointQuery = useGetUserPointPagination(userId, payload, {
-    enabled:
-      logsEnabled && queryStates.tab === UserBalanceTabEnum.GOLD_PIECES,
+    enabled: logsEnabled && queryStates.tab === UserBalanceTabEnum.GOLD_PIECES,
   });
   const expItems = expQuery.data?.data?.data?.items ?? [];
   const expMeta = expQuery.data?.data?.data?.meta;
@@ -131,8 +157,6 @@ export default function UserBalancesPageClient() {
         tab: value,
         page: 1,
         search: "",
-        sortBy: null,
-        order: null,
         type: null,
       });
     },
@@ -150,39 +174,6 @@ export default function UserBalancesPageClient() {
     [setQueryStates],
   );
 
-  const onSortingChange = useCallback(
-    (key: string) => {
-      if (queryStates.sortBy === key) {
-        let desiredOrder: OrderKeyEnum | null = null;
-        let desiredKey: TUserBalanceLogSortBy | null =
-          key as TUserBalanceLogSortBy;
-        switch (queryStates.order) {
-          case OrderKeyEnum.ASC:
-            desiredOrder = OrderKeyEnum.DESC;
-            break;
-          case OrderKeyEnum.DESC:
-            desiredKey = null;
-            break;
-          default:
-            desiredOrder = OrderKeyEnum.ASC;
-            break;
-        }
-        setQueryStates({
-          order: desiredOrder,
-          sortBy: desiredKey,
-          page: 1,
-        });
-        return;
-      }
-      setQueryStates({
-        sortBy: key as TUserBalanceLogSortBy,
-        order: OrderKeyEnum.ASC,
-        page: 1,
-      });
-    },
-    [queryStates.order, queryStates.sortBy, setQueryStates],
-  );
-
   const onPageChange = useCallback(
     (page: number) => {
       setQueryStates({ page });
@@ -198,15 +189,21 @@ export default function UserBalancesPageClient() {
   );
 
   const onExpFilterApply = useCallback(
-    (type: UserExpLogTypeEnum | null) => {
-      setQueryStates({ type, page: 1 });
+    (filter: TUserBalanceLogListFilter<UserExpLogTypeEnum>) => {
+      setQueryStates({
+        type: filter.type,
+        page: 1,
+      });
     },
     [setQueryStates],
   );
 
   const onPointFilterApply = useCallback(
-    (type: UserPointLogTypeEnum | null) => {
-      setQueryStates({ type, page: 1 });
+    (filter: TUserBalanceLogListFilter<UserPointLogTypeEnum>) => {
+      setQueryStates({
+        type: filter.type,
+        page: 1,
+      });
     },
     [setQueryStates],
   );
@@ -227,8 +224,6 @@ export default function UserBalancesPageClient() {
     page: queryStates.page,
     pageSize: queryStates.pageSize,
     search: queryStates.search,
-    sortBy: queryStates.sortBy,
-    order: queryStates.order,
     type: queryStates.type,
   };
 
@@ -272,17 +267,29 @@ export default function UserBalancesPageClient() {
           </Else>
         </If>
 
-        <Tabs value={queryStates.tab} onValueChange={onTabChange}>
-          <TabsList>
-            <TabsTrigger value={UserBalanceTabEnum.EXPERIENCE_POINTS}>
-              <Medal className="size-4" /> Experience Points
+        <Tabs
+          className="w-full min-w-0"
+          value={queryStates.tab}
+          onValueChange={onTabChange}
+        >
+          <TabsList className="w-full">
+            <TabsTrigger
+              className="min-w-0"
+              value={UserBalanceTabEnum.EXPERIENCE_POINTS}
+            >
+              <Medal className="size-4 shrink-0" />
+              <span className="min-w-0 truncate">Experience Points</span>
             </TabsTrigger>
-            <TabsTrigger value={UserBalanceTabEnum.GOLD_PIECES}>
-              <Coins className="size-4" /> Gold Pieces
+            <TabsTrigger
+              className="min-w-0"
+              value={UserBalanceTabEnum.GOLD_PIECES}
+            >
+              <Coins className="size-4 shrink-0" />
+              <span className="min-w-0 truncate">Gold Pieces</span>
             </TabsTrigger>
           </TabsList>
           <TabsContent value={UserBalanceTabEnum.EXPERIENCE_POINTS}>
-            <UserBalanceLogTable
+            <UserBalanceLogList<UserExpLogTypeEnum>
               key={queryStates.tab}
               data={expItems}
               isLoading={expQuery.isLoading || expQuery.isFetching}
@@ -291,15 +298,15 @@ export default function UserBalancesPageClient() {
               queryTable={queryTable}
               typeOptions={[UserExpLogTypeEnum.PLAYER, UserExpLogTypeEnum.DM]}
               typeLabels={USER_EXP_LOG_TYPE_LABEL}
+              typeIcons={EXP_LOG_TYPE_ICONS}
               onPageChange={onPageChange}
               onPageSizeChange={onPageSizeChange}
-              onSortingChange={onSortingChange}
               onSearchChange={onSearchChange}
               onFilterApply={onExpFilterApply}
             />
           </TabsContent>
           <TabsContent value={UserBalanceTabEnum.GOLD_PIECES}>
-            <UserBalanceLogTable
+            <UserBalanceLogList<UserPointLogTypeEnum>
               key={queryStates.tab}
               data={pointItems}
               isLoading={pointQuery.isLoading || pointQuery.isFetching}
@@ -311,9 +318,10 @@ export default function UserBalancesPageClient() {
                 UserPointLogTypeEnum.EXPENSE,
               ]}
               typeLabels={USER_POINT_LOG_TYPE_LABEL}
+              typeIcons={POINT_LOG_TYPE_ICONS}
+              isExpense={(type) => type === UserPointLogTypeEnum.EXPENSE}
               onPageChange={onPageChange}
               onPageSizeChange={onPageSizeChange}
-              onSortingChange={onSortingChange}
               onSearchChange={onSearchChange}
               onFilterApply={onPointFilterApply}
             />
