@@ -1,7 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Search, UserPlus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+import { Search } from "lucide-react";
+import { toast } from "sonner";
 import { Else, If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
@@ -19,33 +22,45 @@ import {
   InputGroupInput,
 } from "@/app/_components/ui/input-group";
 import { Spinner } from "@/app/_components/ui/spinner";
+import { useAddStoryMembers } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-add-story-members";
 import {
-  getStoryMemberSearchParam,
-  useGetStoryMemberPagination,
-} from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-member-pagination";
+  getAvailableStoryUserSearchParam,
+  useGetAvailableStoryUserPagination,
+} from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-available-story-user-pagination";
 import { STORY_MEMBER_DIALOG_PER_PAGE } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-member-preview";
-import type { TStoryDetailMembersDialogProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-members-dialog-props";
+import type { TStoryDetailAddMemberDialogProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-add-member-dialog-props";
+import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import MainAPIValidationError from "@/api/main/errors/validation-error";
+import CONFIG from "@/common/constants/config";
 
-import StoryDetailMemberRow from "./story-detail-member-row";
+import StoryDetailAddMemberRow from "./story-detail-add-member-row";
 
-export default function StoryDetailMembersDialog({
+function getAddButtonLabel(count: number): string {
+  if (count === 0) return "Add";
+  if (count === 1) return "Add 1 member";
+  return `Add ${count} members`;
+}
+
+export default function StoryDetailAddMemberDialog({
   storyId,
   open,
   onOpenChange,
-  canManageMembers,
-  onAddMember,
-}: TStoryDetailMembersDialogProps) {
+}: TStoryDetailAddMemberDialogProps) {
+  const queryClient = useQueryClient();
+  const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
+  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
   const searchTimeoutRef = useRef<NodeJS.Timeout | number | undefined>(
     undefined,
   );
-  const query = useGetStoryMemberPagination(storyId, STORY_MEMBER_DIALOG_PER_PAGE, {
-    search,
-    enabled: open,
-  });
+  const query = useGetAvailableStoryUserPagination(
+    storyId,
+    STORY_MEMBER_DIALOG_PER_PAGE,
+    { search, enabled: open },
+  );
   const items = query.data?.pages.flatMap((page) => page.data.data.items) ?? [];
-  const isSearching = !!getStoryMemberSearchParam(search);
+  const isSearching = !!getAvailableStoryUserSearchParam(search);
   const [scrollNode, setScrollNode] = useState<HTMLDivElement | null>(null);
   const [sentinelNode, setSentinelNode] = useState<HTMLDivElement | null>(null);
 
@@ -76,15 +91,37 @@ export default function StoryDetailMembersDialog({
         searchTimeoutRef.current = undefined;
         setSearchInput("");
         setSearch("");
+        setSelectedUserIds([]);
       }
       onOpenChange(nextOpen);
     },
     [onOpenChange],
   );
 
-  const onAddMemberClick = useCallback(() => {
-    onAddMember();
-  }, [onAddMember]);
+  const addMembers = useAddStoryMembers({
+    onSuccess: () => {
+      // Member lists and this detail query all start with STORY.ALL().
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
+      });
+      onDialogOpenChange(false);
+    },
+    onError: (mutationError) => {
+      if (mutationError instanceof MainAPINotFoundError) {
+        router.push("/dashboard/master/stories");
+        return;
+      }
+      // 403/409/5xx are already toasted by the axios interceptor.
+      // 400 validation arrays are not. Stay open and keep the selection.
+      if (mutationError instanceof MainAPIValidationError) {
+        toast.error(
+          mutationError.errors[0]?.messages[0] ?? "Couldn't add story members.",
+        );
+      }
+    },
+  });
+
+  const isAdding = addMembers.isPending || addMembers.isPaused;
 
   useEffect(() => {
     return () => {
@@ -109,6 +146,32 @@ export default function StoryDetailMembersDialog({
     void query.fetchNextPage();
   }, [query]);
 
+  const onUserCheckedChange = useCallback((userId: string, checked: boolean) => {
+    setSelectedUserIds((current) => {
+      if (checked && !current.includes(userId)) {
+        return [...current, userId];
+      }
+      if (!checked) {
+        return current.filter((id) => id !== userId);
+      }
+      return current;
+    });
+  }, []);
+
+  const onCancelClick = useCallback(() => {
+    onDialogOpenChange(false);
+  }, [onDialogOpenChange]);
+
+  const onAddClick = useCallback(() => {
+    if (isAdding || selectedUserIds.length === 0) {
+      return;
+    }
+    addMembers.mutate({
+      id: storyId,
+      payload: { user_ids: selectedUserIds },
+    });
+  }, [addMembers, isAdding, selectedUserIds, storyId]);
+
   useEffect(() => {
     if (!open || !scrollNode || !sentinelNode) return;
 
@@ -129,9 +192,9 @@ export default function StoryDetailMembersDialog({
     <Dialog open={open} onOpenChange={onDialogOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Party</DialogTitle>
+          <DialogTitle>Add member</DialogTitle>
           <DialogDescription className="sr-only">
-            Full list of story members
+            Add adventurers to this party
           </DialogDescription>
         </DialogHeader>
         <InputGroup>
@@ -155,7 +218,7 @@ export default function StoryDetailMembersDialog({
               <If condition={query.isError}>
                 <Then>
                   <p className="italic text-muted-foreground">
-                    Couldn&apos;t load party members.
+                    Couldn&apos;t load available adventurers.
                   </p>
                 </Then>
                 <Else>
@@ -169,18 +232,20 @@ export default function StoryDetailMembersDialog({
                         </Then>
                         <Else>
                           <p className="italic text-muted-foreground">
-                            No adventurers have joined this party yet.
+                            No adventurers are available to join.
                           </p>
                         </Else>
                       </If>
                     </Then>
                     <Else>
                       <ul className="flex flex-col gap-3">
-                        {items.map((member) => (
-                          <li key={member.id}>
-                            <StoryDetailMemberRow
-                              member={member}
-                              variant="detail"
+                        {items.map((user) => (
+                          <li key={user.id}>
+                            <StoryDetailAddMemberRow
+                              user={user}
+                              checked={selectedUserIds.includes(user.id)}
+                              disabled={isAdding}
+                              onCheckedChange={onUserCheckedChange}
                             />
                           </li>
                         ))}
@@ -212,16 +277,23 @@ export default function StoryDetailMembersDialog({
           </If>
           <div ref={onSentinelRef} className="h-px" />
         </div>
-        <If condition={canManageMembers}>
-          <Then>
-            <DialogFooter>
-              <Button type="button" onClick={onAddMemberClick}>
-                <UserPlus data-icon="inline-start" />
-                Add member
-              </Button>
-            </DialogFooter>
-          </Then>
-        </If>
+        <DialogFooter>
+          <Button type="button" variant="outline" onClick={onCancelClick}>
+            Cancel
+          </Button>
+          <Button
+            type="button"
+            disabled={isAdding || selectedUserIds.length === 0}
+            onClick={onAddClick}
+          >
+            <If condition={isAdding}>
+              <Then>
+                <Spinner data-icon="inline-start" />
+              </Then>
+            </If>
+            {getAddButtonLabel(selectedUserIds.length)}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

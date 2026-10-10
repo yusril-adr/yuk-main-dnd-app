@@ -47,13 +47,14 @@ export default function StoryDetailMemberRow({
       >
         {member.user.display_name}
       </Link>
-      <If condition={!!statusLabel}>
-        <Then>
-          <Badge variant="outline" className="ms-auto shrink-0">
-            {statusLabel}
-          </Badge>
-        </Then>
-      </If>
+      {/* Per-member actions (attended, absent) mount here, beside the status badge. */}
+      <span className="ms-auto flex shrink-0 items-center gap-2">
+        <If condition={!!statusLabel}>
+          <Then>
+            <Badge variant="outline">{statusLabel}</Badge>
+          </Then>
+        </If>
+      </span>
     </span>
   );
 }

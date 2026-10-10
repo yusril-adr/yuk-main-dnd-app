@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { UserRoundGroup } from "lucide-react";
+import { UserPlus, UserRoundGroup } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
@@ -9,6 +9,7 @@ import { useGetStoryMemberPagination } from "@/app/(authenticated)/dashboard/mas
 import { STORY_MEMBER_PREVIEW_COUNT } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-member-preview";
 import type { TStoryDetailMembersCardProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-members-card-props";
 
+import StoryDetailAddMemberDialog from "./story-detail-add-member-dialog";
 import StoryDetailMemberRow from "./story-detail-member-row";
 import StoryDetailMembersCardSkeleton from "./story-detail-members-card-skeleton";
 import StoryDetailMembersDialog from "./story-detail-members-dialog";
@@ -16,8 +17,10 @@ import StoryDetailSectionCard from "./story-detail-section-card";
 
 export default function StoryDetailMembersCard({
   storyId,
+  canManageMembers,
 }: TStoryDetailMembersCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const query = useGetStoryMemberPagination(
     storyId,
     STORY_MEMBER_PREVIEW_COUNT,
@@ -28,8 +31,16 @@ export default function StoryDetailMembersCard({
     setIsDialogOpen(true);
   }, []);
 
+  const onAddMemberClick = useCallback(() => {
+    setIsAddDialogOpen(true);
+  }, []);
+
   const onDialogOpenChange = useCallback((nextOpen: boolean) => {
     setIsDialogOpen(nextOpen);
+  }, []);
+
+  const onAddDialogOpenChange = useCallback((nextOpen: boolean) => {
+    setIsAddDialogOpen(nextOpen);
   }, []);
 
   return (
@@ -52,6 +63,19 @@ export default function StoryDetailMembersCard({
                     <p className="italic text-muted-foreground">
                       No adventurers have joined this party yet.
                     </p>
+                    <If condition={canManageMembers}>
+                      <Then>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={onAddMemberClick}
+                        >
+                          <UserPlus data-icon="inline-start" />
+                          Add member
+                        </Button>
+                      </Then>
+                    </If>
                   </Then>
                   <Else>
                     <ul className="flex flex-wrap gap-2">
@@ -83,6 +107,13 @@ export default function StoryDetailMembersCard({
         storyId={storyId}
         open={isDialogOpen}
         onOpenChange={onDialogOpenChange}
+        canManageMembers={canManageMembers}
+        onAddMember={onAddMemberClick}
+      />
+      <StoryDetailAddMemberDialog
+        storyId={storyId}
+        open={isAddDialogOpen}
+        onOpenChange={onAddDialogOpenChange}
       />
     </>
   );

@@ -211,7 +211,10 @@ export default function StoryDetailPageClient() {
                       <StoryDetailChronicleCard
                         story={story as TStoryResponse}
                       />
-                      <StoryDetailMembersCard storyId={storyId} />
+                      <StoryDetailMembersCard
+                        storyId={storyId}
+                        canManageMembers={canUpdateStory}
+                      />
                     </div>
                     <StoryDetailQuestCard
                       story={story as TStoryResponse}
