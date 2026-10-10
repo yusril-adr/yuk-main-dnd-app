@@ -9,7 +9,10 @@ export const UserCreateFormSchema = z.object({
     .string("Password is required")
     .min(1, "Password is required")
     .min(8, "Password must be at least 8 characters"),
-  username: z.string().optional(),
+  username: z
+    .string()
+    .regex(/^\S*$/, "Username must not contain spaces")
+    .optional(),
   displayName: z
     .string("Display name is required")
     .min(1, "Display name is required"),
