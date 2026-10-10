@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { If, Then } from "react-if";
 
 import {
@@ -35,11 +36,17 @@ export default function StoryDetailMemberRow({
   }
 
   const statusLabel = STORY_MEMBER_STATUS_LABEL[member.status];
+  const guildmateSlug = member.user.username?.trim() || member.user.id;
 
   return (
     <span className="flex min-w-0 items-center gap-2">
       {avatar}
-      <span className="min-w-0 truncate">{member.user.display_name}</span>
+      <Link
+        href={`/guildmates/${encodeURIComponent(guildmateSlug)}`}
+        className="min-w-0 truncate text-primary underline-offset-4 hover:underline"
+      >
+        {member.user.display_name}
+      </Link>
       <If condition={!!statusLabel}>
         <Then>
           <Badge variant="outline" className="ms-auto shrink-0">
