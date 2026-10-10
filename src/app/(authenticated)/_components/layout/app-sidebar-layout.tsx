@@ -10,7 +10,7 @@ export default function AppSidebarLayout({
     <>
       <AppSidebar />
       <SidebarInset>
-        <SidebarTrigger className="sticky top-0" />
+        <SidebarTrigger className="sticky top-0" size="icon-lg" />
 
         {children}
       </SidebarInset>
