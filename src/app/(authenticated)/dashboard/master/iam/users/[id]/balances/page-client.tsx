@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { notFound, useParams, useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   ArrowDownLeft,
   ArrowLeft,
@@ -11,6 +12,7 @@ import {
   ChessKnight,
   Coins,
   Medal,
+  Plus,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -22,6 +24,7 @@ import {
 import { Else, If, Then } from "react-if";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
+import { Button } from "@/app/_components/ui/button";
 import {
   Tabs,
   TabsContent,
@@ -33,13 +36,20 @@ import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { useGetUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-by-id";
 import { UserExpLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type";
 import { USER_EXP_LOG_TYPE_LABEL } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type-label";
+import type { TAddUserExperiencePointsPayload } from "@/api/main/modules/master/iam/users/[id]/experience-points/types/add-user-experience-points-payload";
 import { UserPointLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/points/enums/user-point-log-type";
 import { USER_POINT_LOG_TYPE_LABEL } from "@/api/main/modules/master/iam/users/[id]/points/enums/user-point-log-type-label";
+import type { TAddUserPointsPayload } from "@/api/main/modules/master/iam/users/[id]/points/types/add-user-points-payload";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import CONFIG from "@/common/constants/config";
 import { PermissionEnum } from "@/common/enums/permission";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
+import AddUserExperiencePointsDialog from "./_components/add-user-experience-points-dialog";
+import AddUserPointsDialog from "./_components/add-user-points-dialog";
 import UserBalanceLogList from "./_components/user-balance-log-list";
 import { UserBalanceTabEnum } from "./_enums/user-balance-tab";
+import { useAddUserExperiencePoints } from "./_hooks/use-add-user-experience-points";
+import { useAddUserPoints } from "./_hooks/use-add-user-points";
 import { useGetUserExperiencePointPagination } from "./_hooks/use-get-user-experience-point-pagination";
 import { useGetUserPointPagination } from "./_hooks/use-get-user-point-pagination";
 import type { TUserBalanceLogListFilter } from "./_types/user-balance-log-list-props";
@@ -98,9 +108,13 @@ export default function UserBalancesPageClient() {
   const { auth, authQuery } = useAuthContext();
   const { id } = useParams();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const userId = id as string;
   const canViewPoints = !!auth?.permissions.includes(
     PermissionEnum.POINTS_VIEW,
+  );
+  const canCreatePoints = !!auth?.permissions.includes(
+    PermissionEnum.POINTS_CREATE,
   );
 
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
@@ -112,6 +126,14 @@ export default function UserBalancesPageClient() {
     ).withDefault(UserBalanceTabEnum.EXPERIENCE_POINTS),
     type: parseAsBalanceLogType,
   });
+  const [isAddExpDialogOpen, setIsAddExpDialogOpen] = useState(false);
+  const [isAddPointDialogOpen, setIsAddPointDialogOpen] = useState(false);
+  const [addDialogTab, setAddDialogTab] = useState(queryStates.tab);
+  if (queryStates.tab !== addDialogTab) {
+    setAddDialogTab(queryStates.tab);
+    setIsAddExpDialogOpen(false);
+    setIsAddPointDialogOpen(false);
+  }
 
   const userQuery = useGetUserById(userId);
   const user = userQuery.data?.data?.data;
@@ -131,6 +153,33 @@ export default function UserBalancesPageClient() {
   const expMeta = expQuery.data?.data?.data?.meta;
   const pointItems = pointQuery.data?.data?.data?.items ?? [];
   const pointMeta = pointQuery.data?.data?.data?.meta;
+
+  const onAddSuccess = () => {
+    queryClient.invalidateQueries({
+      queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.IAM.USER.ALL(), userId],
+    });
+    setQueryStates({ page: 1 });
+  };
+  const onAddError = (error: Error) => {
+    if (error instanceof MainAPINotFoundError) notFound();
+  };
+
+  const {
+    mutate: addExpMutate,
+    error: addExpError,
+    isPending: addExpIsPending,
+  } = useAddUserExperiencePoints({
+    onSuccess: onAddSuccess,
+    onError: onAddError,
+  });
+  const {
+    mutate: addPointMutate,
+    error: addPointError,
+    isPending: addPointIsPending,
+  } = useAddUserPoints({
+    onSuccess: onAddSuccess,
+    onError: onAddError,
+  });
 
   useEffect(() => {
     if (userQuery.isError && userQuery.error instanceof MainAPINotFoundError) {
@@ -208,6 +257,13 @@ export default function UserBalancesPageClient() {
     [setQueryStates],
   );
 
+  const onSubmitExperience = (payload: TAddUserExperiencePointsPayload) => {
+    addExpMutate({ id: userId, payload });
+  };
+  const onSubmitPoints = (payload: TAddUserPointsPayload) => {
+    addPointMutate({ id: userId, payload });
+  };
+
   const breadcrumbItems = useMemo(
     () => [
       { name: "Users", link: "/dashboard/master/iam/users" },
@@ -231,11 +287,41 @@ export default function UserBalancesPageClient() {
     <div className="w-full flex justify-center min-w-0">
       <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
         <AppBreadcrumb items={breadcrumbItems} />
-        <div className="flex items-center mt-4 mb-6 gap-x-2">
-          <Link href={`/dashboard/master/iam/users/${userId}`}>
-            <ArrowLeft />
-          </Link>
-          <h1 className="font-heading text-2xl">Balances</h1>
+        <div className="flex items-center justify-between mt-4 mb-6 gap-2">
+          <div className="flex items-center gap-x-2 min-w-0">
+            <Link href={`/dashboard/master/iam/users/${userId}`}>
+              <ArrowLeft />
+            </Link>
+            <h1 className="font-heading text-2xl">Balances</h1>
+          </div>
+          {canCreatePoints && (
+            <Button
+              type="button"
+              className="shrink-0"
+              onClick={() => {
+                if (queryStates.tab === UserBalanceTabEnum.EXPERIENCE_POINTS) {
+                  setIsAddExpDialogOpen(true);
+                } else {
+                  setIsAddPointDialogOpen(true);
+                }
+              }}
+            >
+              <Plus />
+              {queryStates.tab === UserBalanceTabEnum.EXPERIENCE_POINTS ? (
+                <>
+                  <span className="md:hidden">Add EXP</span>
+                  <span className="hidden md:inline">
+                    Add Experience Points
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="md:hidden">Add GP</span>
+                  <span className="hidden md:inline">Add Gold Pieces</span>
+                </>
+              )}
+            </Button>
+          )}
         </div>
 
         <If condition={userQuery.isLoading}>
@@ -327,6 +413,24 @@ export default function UserBalancesPageClient() {
             />
           </TabsContent>
         </Tabs>
+        {canCreatePoints && (
+          <>
+            <AddUserExperiencePointsDialog
+              open={isAddExpDialogOpen}
+              onOpenChange={setIsAddExpDialogOpen}
+              onSubmitPayload={onSubmitExperience}
+              mutationError={addExpError}
+              isPending={addExpIsPending}
+            />
+            <AddUserPointsDialog
+              open={isAddPointDialogOpen}
+              onOpenChange={setIsAddPointDialogOpen}
+              onSubmitPayload={onSubmitPoints}
+              mutationError={addPointError}
+              isPending={addPointIsPending}
+            />
+          </>
+        )}
       </main>
     </div>
   );
