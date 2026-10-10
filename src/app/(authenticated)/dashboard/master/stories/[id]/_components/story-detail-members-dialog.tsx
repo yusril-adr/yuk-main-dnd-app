@@ -41,10 +41,14 @@ export default function StoryDetailMembersDialog({
   const searchTimeoutRef = useRef<NodeJS.Timeout | number | undefined>(
     undefined,
   );
-  const query = useGetStoryMemberPagination(storyId, STORY_MEMBER_DIALOG_PER_PAGE, {
-    search,
-    enabled: open,
-  });
+  const query = useGetStoryMemberPagination(
+    storyId,
+    STORY_MEMBER_DIALOG_PER_PAGE,
+    {
+      search,
+      enabled: open,
+    },
+  );
   const items = query.data?.pages.flatMap((page) => page.data.data.items) ?? [];
   const isSearching = !!getStoryMemberSearchParam(search);
   const [scrollNode, setScrollNode] = useState<HTMLDivElement | null>(null);
@@ -223,14 +227,18 @@ export default function StoryDetailMembersDialog({
         <If condition={canManageMembers}>
           <Then>
             <DialogFooter className="sm:justify-between">
-              <Button type="button" variant="outline" onClick={onDeleteMemberClick}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onDeleteMemberClick}
+              >
                 <UserMinus data-icon="inline-start" />
-                Remove members
+                Remove
               </Button>
               <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                 <Button type="button" onClick={onAddMemberClick}>
                   <UserPlus data-icon="inline-start" />
-                  Add member
+                  Add
                 </Button>
               </div>
             </DialogFooter>
