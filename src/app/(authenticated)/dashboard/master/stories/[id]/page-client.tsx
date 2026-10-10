@@ -211,9 +211,9 @@ export default function StoryDetailPageClient() {
                       <StoryDetailChronicleCard
                         story={story as TStoryResponse}
                       />
+                      <StoryDetailMembersCard storyId={storyId} />
                     </div>
                   </div>
-                  <StoryDetailMembersCard storyId={storyId} />
                 </div>
               </Then>
             </If>

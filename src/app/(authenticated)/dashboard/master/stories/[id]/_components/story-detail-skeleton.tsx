@@ -28,7 +28,7 @@ function SectionCardSkeleton({ rows }: { rows: number }) {
   );
 }
 
-// Same structure as the loaded page: hero (image + title block), then the 2 + 1 card grid, then the party card
+// Same structure as the loaded page: hero, then quest beside adventure, chronicle, and party
 export default function StoryDetailSkeleton() {
   return (
     <div className="flex flex-col gap-6">
@@ -62,9 +62,9 @@ export default function StoryDetailSkeleton() {
         <div className="flex flex-col gap-6">
           <SectionCardSkeleton rows={5} />
           <SectionCardSkeleton rows={3} />
+          <StoryDetailMembersCardSkeleton />
         </div>
       </div>
-      <StoryDetailMembersCardSkeleton />
     </div>
   );
 }
