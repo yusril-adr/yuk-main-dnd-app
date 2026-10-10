@@ -18,7 +18,10 @@ export default function StoryDetailMembersCard({
   storyId,
 }: TStoryDetailMembersCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const query = useGetStoryMemberPagination(storyId, STORY_MEMBER_PREVIEW_COUNT);
+  const query = useGetStoryMemberPagination(
+    storyId,
+    STORY_MEMBER_PREVIEW_COUNT,
+  );
   const items = query.data?.pages[0]?.data.data.items ?? [];
 
   const onShowMoreClick = useCallback(() => {
@@ -65,7 +68,6 @@ export default function StoryDetailMembersCard({
                       type="button"
                       variant="outline"
                       size="sm"
-                      className="self-start"
                       onClick={onShowMoreClick}
                     >
                       Show more
