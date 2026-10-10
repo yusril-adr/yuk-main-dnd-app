@@ -28,7 +28,27 @@ function SectionCardSkeleton({ rows }: { rows: number }) {
   );
 }
 
-// Same structure as the loaded page: hero, then quest beside adventure, chronicle, and party
+function QuestCardSkeleton({ className }: { className: string }) {
+  return (
+    <Card className={className}>
+      <CardHeader>
+        <div className="flex items-center gap-2">
+          <Skeleton className="size-8 rounded-full" />
+          <Skeleton className="h-5 w-36" />
+        </div>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-3">
+        <Skeleton className="h-px w-full" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-11/12" />
+        <Skeleton className="h-4 w-2/3" />
+      </CardContent>
+    </Card>
+  );
+}
+
+// same structure as the loaded page — hero, then below `lg` sidebar cards with the quest placeholder last; from `lg`, quest placeholder beside the sidebar.
 export default function StoryDetailSkeleton() {
   return (
     <div className="flex flex-col gap-6">
@@ -44,26 +64,13 @@ export default function StoryDetailSkeleton() {
         </div>
       </Card>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <Card className="border-2 border-primary/15 lg:col-span-2 lg:self-start">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Skeleton className="size-8 rounded-full" />
-              <Skeleton className="h-5 w-36" />
-            </div>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-3">
-            <Skeleton className="h-px w-full" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-11/12" />
-            <Skeleton className="h-4 w-2/3" />
-          </CardContent>
-        </Card>
+        <QuestCardSkeleton className="max-lg:hidden border-2 border-primary/15 lg:col-span-2 lg:self-start" />
         <div className="flex flex-col gap-6">
           <SectionCardSkeleton rows={5} />
           <SectionCardSkeleton rows={3} />
           <StoryDetailMembersCardSkeleton />
         </div>
+        <QuestCardSkeleton className="border-2 border-primary/15 lg:hidden" />
       </div>
     </div>
   );

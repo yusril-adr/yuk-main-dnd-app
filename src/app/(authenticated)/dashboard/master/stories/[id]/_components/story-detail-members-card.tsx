@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { Users } from "lucide-react";
+import { UserRoundGroup } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
@@ -39,7 +39,7 @@ export default function StoryDetailMembersCard({
           <StoryDetailMembersCardSkeleton />
         </Then>
         <Else>
-          <StoryDetailSectionCard icon={Users} title="Party">
+          <StoryDetailSectionCard icon={UserRoundGroup} title="Party">
             <If condition={query.isError}>
               <Then>
                 <p className="italic text-muted-foreground">

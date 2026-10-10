@@ -202,7 +202,7 @@ export default function StoryDetailPageClient() {
                   <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                     <StoryDetailQuestCard
                       story={story as TStoryResponse}
-                      className="lg:col-span-2 lg:self-start"
+                      className="max-lg:hidden lg:col-span-2 lg:self-start"
                     />
                     <div className="flex flex-col gap-6">
                       <StoryDetailAdventureCard
@@ -213,6 +213,10 @@ export default function StoryDetailPageClient() {
                       />
                       <StoryDetailMembersCard storyId={storyId} />
                     </div>
+                    <StoryDetailQuestCard
+                      story={story as TStoryResponse}
+                      className="lg:hidden"
+                    />
                   </div>
                 </div>
               </Then>
