@@ -38,8 +38,11 @@ import StoryDetailChronicleCard from "@/app/(authenticated)/dashboard/master/sto
 import StoryDetailMembersCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-members-card";
 import StoryDetailSkeleton from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-skeleton";
 import StoryDetailActions from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-actions";
+import StoryCompleteDialog from "@/app/(authenticated)/dashboard/master/stories/_components/story-complete-dialog";
 import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
 import { canCancelStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-cancel-story";
+import { canCompleteStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-complete-story";
+import { isCompletedStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/is-completed-story";
 import { isCancelledStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/is-cancelled-story";
 
 export default function StoryDetailPageClient() {
@@ -53,6 +56,7 @@ export default function StoryDetailPageClient() {
   const [isUnarchiveDialogOpen, setIsUnarchiveDialogOpen] = useState(false);
   const [isPublishDialogOpen, setIsPublishDialogOpen] = useState(false);
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [isCompleteDialogOpen, setIsCompleteDialogOpen] = useState(false);
   const storyQuery = useGetStoryById(storyId);
   const story = storyQuery.data?.data?.data;
   const canUpdateStory = canManageStory(
@@ -140,6 +144,10 @@ export default function StoryDetailPageClient() {
   const canPublishStory =
     canUpdateStory && story?.status === StoryStatusEnum.DRAFT;
   const canCancelStoryAction = canCancelStory(canUpdateStory, story?.status);
+  const canCompleteStoryAction = canCompleteStory(
+    canUpdateStory,
+    story?.status,
+  );
 
   useEffect(() => {
     if (
@@ -197,8 +205,13 @@ export default function StoryDetailPageClient() {
             <Then>
               <StoryDetailActions
                 storyId={storyId}
-                canEdit={canUpdateStory && !isCancelledStory(story)}
+                canEdit={
+                  canUpdateStory &&
+                  !isCancelledStory(story) &&
+                  !isCompletedStory(story)
+                }
                 canPublish={canPublishStory}
+                canComplete={canCompleteStoryAction}
                 canArchive={canArchiveStory}
                 canUnarchive={canUnarchiveStory}
                 canCancel={canCancelStoryAction}
@@ -208,6 +221,7 @@ export default function StoryDetailPageClient() {
                 isUnarchivePending={unarchiveStoryMutation.isPending}
                 isCancelPending={cancelStoryMutation.isPending}
                 onPublishClick={() => setIsPublishDialogOpen(true)}
+                onCompleteClick={() => setIsCompleteDialogOpen(true)}
                 onArchiveClick={() => setIsArchiveDialogOpen(true)}
                 onUnarchiveClick={() => setIsUnarchiveDialogOpen(true)}
                 onCancelClick={() => setIsCancelDialogOpen(true)}
@@ -241,7 +255,9 @@ export default function StoryDetailPageClient() {
                       <StoryDetailMembersCard
                         storyId={storyId}
                         canManageMembers={
-                          canUpdateStory && !isCancelledStory(story)
+                          canUpdateStory &&
+                          !isCancelledStory(story) &&
+                          !isCompletedStory(story)
                         }
                       />
                     </div>
@@ -375,6 +391,11 @@ export default function StoryDetailPageClient() {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+        <StoryCompleteDialog
+          storyId={storyId}
+          open={isCompleteDialogOpen}
+          onOpenChange={setIsCompleteDialogOpen}
+        />
       </main>
     </div>
   );

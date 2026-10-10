@@ -2,6 +2,7 @@ export type TStoryDetailActionsProps = {
   storyId: string;
   canEdit: boolean;
   canPublish: boolean;
+  canComplete: boolean;
   canArchive: boolean;
   canUnarchive: boolean;
   canCancel: boolean;
@@ -11,6 +12,7 @@ export type TStoryDetailActionsProps = {
   isUnarchivePending: boolean;
   isCancelPending: boolean;
   onPublishClick: () => void;
+  onCompleteClick: () => void;
   onArchiveClick: () => void;
   onUnarchiveClick: () => void;
   onCancelClick: () => void;

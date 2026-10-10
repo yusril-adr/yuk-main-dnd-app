@@ -3,6 +3,7 @@ import {
   Archive,
   ArchiveRestore,
   Ban,
+  CircleCheck,
   EllipsisVertical,
   Pencil,
   Send,
@@ -25,6 +26,7 @@ export default function StoryDetailActions({
   storyId,
   canEdit,
   canPublish,
+  canComplete,
   canArchive,
   canUnarchive,
   canCancel,
@@ -34,6 +36,7 @@ export default function StoryDetailActions({
   isUnarchivePending,
   isCancelPending,
   onPublishClick,
+  onCompleteClick,
   onArchiveClick,
   onUnarchiveClick,
   onCancelClick,
@@ -60,6 +63,13 @@ export default function StoryDetailActions({
               onClick={onPublishClick}
             >
               <Send /> Publish
+            </Button>
+          </Then>
+        </If>
+        <If condition={canComplete}>
+          <Then>
+            <Button variant="default" onClick={onCompleteClick}>
+              <CircleCheck /> Complete
             </Button>
           </Then>
         </If>
@@ -134,6 +144,14 @@ export default function StoryDetailActions({
                   >
                     <Send />
                     Publish
+                  </DropdownMenuItem>
+                </Then>
+              </If>
+              <If condition={canComplete}>
+                <Then>
+                  <DropdownMenuItem onClick={onCompleteClick}>
+                    <CircleCheck />
+                    Complete
                   </DropdownMenuItem>
                 </Then>
               </If>
