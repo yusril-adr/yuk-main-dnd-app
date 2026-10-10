@@ -1,5 +1,6 @@
 import type { AxiosResponse } from "axios";
 import type { TStoryUpdatePayload } from "./types/story-update-payload";
+import type { TCompleteStoryPayload } from "./types/complete-story-payload";
 import type { TMainApiResponse } from "@/api/main/types/response";
 import type { TStoryResponse } from "../types/story-response";
 import { mainAxios } from "@/api/main/_libs/axios";
@@ -55,6 +56,32 @@ export const publishStoryById = async (id: string) => {
 export const unarchiveStoryById = async (id: string) => {
   const response = await mainAxios.patch(
     MAIN_API_PATH.MASTER.STORY.UNARCHIVE(id),
+  );
+  return response;
+};
+
+// Sets cancelled and clears the saved previous status. 400 when already
+// cancelled or archived. Allowed for stories:update or the creator.
+export const cancelStoryById = async (id: string) => {
+  const response = await mainAxios.patch(
+    MAIN_API_PATH.MASTER.STORY.CANCEL(id),
+  );
+  return response;
+};
+
+// Completes a published story. user_ids are the attended members and may be
+// empty. 400 unless the story is published. Allowed for stories:update or
+// the creator.
+export const completeStoryById = async ({
+  id,
+  payload,
+}: {
+  id: string;
+  payload: TCompleteStoryPayload;
+}) => {
+  const response = await mainAxios.patch(
+    MAIN_API_PATH.MASTER.STORY.COMPLETE(id),
+    payload,
   );
   return response;
 };

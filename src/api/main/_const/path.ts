@@ -33,6 +33,8 @@ const MAIN_API_PATH = {
       ARCHIVE: (id: string) => `/api/v1/master/stories/${id}/archive`,
       PUBLISH: (id: string) => `/api/v1/master/stories/${id}/publish`,
       UNARCHIVE: (id: string) => `/api/v1/master/stories/${id}/unarchive`,
+      CANCEL: (id: string) => `/api/v1/master/stories/${id}/cancel`,
+      COMPLETE: (id: string) => `/api/v1/master/stories/${id}/complete`,
       MEMBERS: (id: string) => `/api/v1/master/stories/${id}/members`,
       AVAILABLE_USERS: (id: string) =>
         `/api/v1/master/stories/${id}/available-users`,
