@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { EllipsisVertical, Pencil, Trash } from "lucide-react";
+import { Coins, EllipsisVertical, Pencil, Trash } from "lucide-react";
 import { If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
@@ -15,16 +15,29 @@ import type { TUserDetailActionsProps } from "@/app/(authenticated)/dashboard/ma
 
 export default function UserDetailActions({
   userId,
+  canViewBalances,
   canEdit,
   canDelete,
   onDeleteClick,
 }: TUserDetailActionsProps) {
   const editHref = `/dashboard/master/iam/users/${userId}/edit`;
+  const balancesHref = `/dashboard/master/iam/users/${userId}/balances`;
 
   return (
     <div className="ms-auto">
       {/* sm and up: full buttons */}
       <div className="hidden gap-2 sm:flex">
+        <If condition={canViewBalances}>
+          <Then>
+            <Button
+              variant="outline"
+              nativeButton={false}
+              render={<Link href={balancesHref} />}
+            >
+              <Coins /> Balances
+            </Button>
+          </Then>
+        </If>
         <If condition={canEdit}>
           <Then>
             <Button
@@ -58,6 +71,14 @@ export default function UserDetailActions({
           />
           <DropdownMenuContent align="end">
             <DropdownMenuGroup>
+              <If condition={canViewBalances}>
+                <Then>
+                  <DropdownMenuItem render={<Link href={balancesHref} />}>
+                    <Coins />
+                    Balances
+                  </DropdownMenuItem>
+                </Then>
+              </If>
               <If condition={canEdit}>
                 <Then>
                   <DropdownMenuItem render={<Link href={editHref} />}>

@@ -88,6 +88,7 @@ export default function UserDetailPageClient() {
   const canDeleteUsers = auth?.permissions.includes(
     PermissionEnum.USERS_DELETE,
   );
+  const canViewPoints = auth?.permissions.includes(PermissionEnum.POINTS_VIEW);
 
   const deleteUserMutation = useDeleteUserById({
     onError: (mutationError) => {
@@ -140,9 +141,10 @@ export default function UserDetailPageClient() {
             <ArrowLeft />
           </Link>
           <h1 className="font-heading text-2xl">User Detail</h1>
-          {user && (canUpdateUsers || canDeleteUsers) && (
+          {user && (canViewPoints || canUpdateUsers || canDeleteUsers) && (
             <UserDetailActions
               userId={userId}
+              canViewBalances={!!canViewPoints}
               canEdit={!!canUpdateUsers}
               canDelete={!!canDeleteUsers}
               onDeleteClick={() => setIsDeleteDialogOpen(true)}

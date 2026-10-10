@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { EllipsisVertical, Eye, Pencil, Trash } from "lucide-react";
+import { Coins, EllipsisVertical, Eye, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -50,6 +50,9 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
   );
   const canDeleteUsers = auth?.permissions.includes(
     PermissionEnum.USERS_DELETE,
+  );
+  const canViewPoints = auth?.permissions.includes(
+    PermissionEnum.POINTS_VIEW,
   );
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
@@ -122,6 +125,18 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
                     <Eye />
                     View
                   </DropdownMenuItem>
+                  {canViewPoints && (
+                    <DropdownMenuItem
+                      render={
+                        <Link
+                          href={`/dashboard/master/iam/users/${user.id}/balances`}
+                        />
+                      }
+                    >
+                      <Coins />
+                      Balances
+                    </DropdownMenuItem>
+                  )}
                   {canUpdateUsers && (
                     <DropdownMenuItem
                       render={
