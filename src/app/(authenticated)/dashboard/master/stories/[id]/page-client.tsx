@@ -352,6 +352,8 @@ export default function StoryDetailPageClient() {
               <AlertDialogTitle>Cancel story?</AlertDialogTitle>
               <AlertDialogDescription>
                 The story will be marked as cancelled. This cannot be undone.
+                The story cannot be edited, and members cannot be added or
+                removed.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
