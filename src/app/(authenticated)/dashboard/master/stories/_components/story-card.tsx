@@ -67,6 +67,10 @@ export default function StoryCard({
     story,
     PermissionEnum.STORIES_DELETE,
   );
+  const isCancelled = story.status === StoryStatusEnum.CANCELLED;
+  // Same rule as the detail page: update and delete 400 once cancelled
+  const canEditStory = canUpdateStory && !isCancelled;
+  const canDeleteStoryAction = canDeleteStory && !isCancelled && !!onDelete;
   // Same rule as the detail page: allowed to update and not already archived
   const canArchiveStory =
     canUpdateStory && story.status !== StoryStatusEnum.ARCHIVED && !!onArchive;
@@ -161,7 +165,7 @@ export default function StoryCard({
                   <Eye />
                   View
                 </DropdownMenuItem>
-                {canUpdateStory && (
+                {canEditStory && (
                   <DropdownMenuItem
                     render={
                       <Link
@@ -203,7 +207,7 @@ export default function StoryCard({
                     </DropdownMenuItem>
                   </Then>
                 </If>
-                {canDeleteStory && onDelete && (
+                {canDeleteStoryAction && (
                   <DropdownMenuItem
                     variant="destructive"
                     onClick={() => setConfirmDeleteId(story.id)}

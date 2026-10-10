@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   Archive,
   ArchiveRestore,
+  Ban,
   EllipsisVertical,
   Pencil,
   Send,
@@ -26,13 +27,16 @@ export default function StoryDetailActions({
   canPublish,
   canArchive,
   canUnarchive,
+  canCancel,
   canDelete,
   isPublishPending,
   isArchivePending,
   isUnarchivePending,
+  isCancelPending,
   onPublishClick,
   onArchiveClick,
   onUnarchiveClick,
+  onCancelClick,
   onDeleteClick,
 }: TStoryDetailActionsProps) {
   const editHref = `/dashboard/master/stories/${storyId}/edit`;
@@ -78,6 +82,17 @@ export default function StoryDetailActions({
               onClick={onUnarchiveClick}
             >
               <ArchiveRestore /> Unarchive
+            </Button>
+          </Then>
+        </If>
+        <If condition={canCancel}>
+          <Then>
+            <Button
+              variant="destructive"
+              disabled={isCancelPending}
+              onClick={onCancelClick}
+            >
+              <Ban /> Cancel
             </Button>
           </Then>
         </If>
@@ -141,6 +156,18 @@ export default function StoryDetailActions({
                   >
                     <ArchiveRestore />
                     Unarchive
+                  </DropdownMenuItem>
+                </Then>
+              </If>
+              <If condition={canCancel}>
+                <Then>
+                  <DropdownMenuItem
+                    variant="destructive"
+                    disabled={isCancelPending}
+                    onClick={onCancelClick}
+                  >
+                    <Ban />
+                    Cancel
                   </DropdownMenuItem>
                 </Then>
               </If>

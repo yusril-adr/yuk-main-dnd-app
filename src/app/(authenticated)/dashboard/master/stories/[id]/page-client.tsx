@@ -30,6 +30,7 @@ import { useGetStoryById } from "@/app/(authenticated)/dashboard/master/stories/
 import { useArchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-archive-story-by-id";
 import { useUnarchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-unarchive-story-by-id";
 import { usePublishStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-publish-story-by-id";
+import { useCancelStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-cancel-story-by-id";
 import StoryDetailHero from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-hero";
 import StoryDetailQuestCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-quest-card";
 import StoryDetailAdventureCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-adventure-card";
@@ -38,6 +39,7 @@ import StoryDetailMembersCard from "@/app/(authenticated)/dashboard/master/stori
 import StoryDetailSkeleton from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-skeleton";
 import StoryDetailActions from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-actions";
 import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
+import { canCancelStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-cancel-story";
 
 export default function StoryDetailPageClient() {
   const { auth } = useAuthContext();
@@ -49,6 +51,7 @@ export default function StoryDetailPageClient() {
   const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false);
   const [isUnarchiveDialogOpen, setIsUnarchiveDialogOpen] = useState(false);
   const [isPublishDialogOpen, setIsPublishDialogOpen] = useState(false);
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const storyQuery = useGetStoryById(storyId);
   const story = storyQuery.data?.data?.data;
   const canUpdateStory = canManageStory(
@@ -114,6 +117,20 @@ export default function StoryDetailPageClient() {
     },
   });
 
+  const cancelStoryMutation = useCancelStoryById({
+    onError: (mutationError) => {
+      if (mutationError instanceof MainAPINotFoundError) {
+        router.push("/dashboard/master/stories");
+      }
+    },
+    onSuccess: () => {
+      // Refreshes the list and this detail query (its key starts with STORY.ALL())
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
+      });
+    },
+  });
+
   const canArchiveStory =
     canUpdateStory && story?.status !== StoryStatusEnum.ARCHIVED;
   // Unarchive restores the status saved when the story was archived
@@ -121,6 +138,7 @@ export default function StoryDetailPageClient() {
     canUpdateStory && story?.status === StoryStatusEnum.ARCHIVED;
   const canPublishStory =
     canUpdateStory && story?.status === StoryStatusEnum.DRAFT;
+  const canCancelStoryAction = canCancelStory(canUpdateStory, story?.status);
 
   useEffect(() => {
     if (
@@ -154,6 +172,11 @@ export default function StoryDetailPageClient() {
     setIsUnarchiveDialogOpen(false);
   };
 
+  const onCancelHandler = () => {
+    cancelStoryMutation.mutate(storyId);
+    setIsCancelDialogOpen(false);
+  };
+
   const onDeleteHandler = () => {
     deleteStoryMutation.mutate(storyId);
     setIsDeleteDialogOpen(false);
@@ -173,17 +196,24 @@ export default function StoryDetailPageClient() {
             <Then>
               <StoryDetailActions
                 storyId={storyId}
-                canEdit={canUpdateStory}
+                canEdit={
+                  canUpdateStory && story?.status !== StoryStatusEnum.CANCELLED
+                }
                 canPublish={canPublishStory}
                 canArchive={canArchiveStory}
                 canUnarchive={canUnarchiveStory}
-                canDelete={canDeleteStory}
+                canCancel={canCancelStoryAction}
+                canDelete={
+                  canDeleteStory && story?.status !== StoryStatusEnum.CANCELLED
+                }
                 isPublishPending={publishStoryMutation.isPending}
                 isArchivePending={archiveStoryMutation.isPending}
                 isUnarchivePending={unarchiveStoryMutation.isPending}
+                isCancelPending={cancelStoryMutation.isPending}
                 onPublishClick={() => setIsPublishDialogOpen(true)}
                 onArchiveClick={() => setIsArchiveDialogOpen(true)}
                 onUnarchiveClick={() => setIsUnarchiveDialogOpen(true)}
+                onCancelClick={() => setIsCancelDialogOpen(true)}
                 onDeleteClick={() => setIsDeleteDialogOpen(true)}
               />
             </Then>
@@ -213,7 +243,10 @@ export default function StoryDetailPageClient() {
                       />
                       <StoryDetailMembersCard
                         storyId={storyId}
-                        canManageMembers={canUpdateStory}
+                        canManageMembers={
+                          canUpdateStory &&
+                          story?.status !== StoryStatusEnum.CANCELLED
+                        }
                       />
                     </div>
                     <StoryDetailQuestCard
@@ -293,6 +326,30 @@ export default function StoryDetailPageClient() {
                 onClick={onUnarchiveHandler}
               >
                 Unarchive
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog
+          open={isCancelDialogOpen}
+          onOpenChange={setIsCancelDialogOpen}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Cancel story?</AlertDialogTitle>
+              <AlertDialogDescription>
+                The story will be marked as cancelled. This cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                variant="destructive"
+                disabled={cancelStoryMutation.isPending}
+                onClick={onCancelHandler}
+              >
+                Cancel story
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
