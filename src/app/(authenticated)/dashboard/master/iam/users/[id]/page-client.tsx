@@ -3,13 +3,12 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter, notFound } from "next/navigation";
-import { ArrowLeft, Dot, Pencil, Trash } from "lucide-react";
+import { ArrowLeft, Dot } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Else, If, Then } from "react-if";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
-import { Button } from "@/app/_components/ui/button";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import {
   Avatar,
@@ -37,6 +36,7 @@ import dayjs from "@/libs/dayjs";
 
 import { useGetUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-by-id";
 import { useDeleteUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-delete-user-by-id";
+import UserDetailActions from "./_components/user-detail-actions";
 
 function DetailRow({
   label,
@@ -141,33 +141,12 @@ export default function UserDetailPageClient() {
           </Link>
           <h1 className="font-heading text-2xl">User Detail</h1>
           {user && (canUpdateUsers || canDeleteUsers) && (
-            <div className="ms-auto flex gap-2">
-              <If condition={!!canUpdateUsers}>
-                <Then>
-                  <Button
-                    variant="outline"
-                    render={
-                      <Link
-                        href={`/dashboard/master/iam/users/${userId}/edit`}
-                      />
-                    }
-                    nativeButton={false}
-                  >
-                    <Pencil /> Edit
-                  </Button>
-                </Then>
-              </If>
-              <If condition={!!canDeleteUsers}>
-                <Then>
-                  <Button
-                    variant="destructive"
-                    onClick={() => setIsDeleteDialogOpen(true)}
-                  >
-                    <Trash /> Delete
-                  </Button>
-                </Then>
-              </If>
-            </div>
+            <UserDetailActions
+              userId={userId}
+              canEdit={!!canUpdateUsers}
+              canDelete={!!canDeleteUsers}
+              onDeleteClick={() => setIsDeleteDialogOpen(true)}
+            />
           )}
         </div>
 
