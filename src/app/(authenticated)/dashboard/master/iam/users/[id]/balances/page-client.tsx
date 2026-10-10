@@ -26,6 +26,13 @@ import { Else, If, Then } from "react-if";
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { Button } from "@/app/_components/ui/button";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/app/_components/ui/dialog";
+import {
   Tabs,
   TabsContent,
   TabsList,
@@ -53,6 +60,7 @@ import { useAddUserPoints } from "./_hooks/use-add-user-points";
 import { useGetUserExperiencePointPagination } from "./_hooks/use-get-user-experience-point-pagination";
 import { useGetUserPointPagination } from "./_hooks/use-get-user-point-pagination";
 import type { TUserBalanceLogListFilter } from "./_types/user-balance-log-list-props";
+import { formatCompactBalance } from "./_utils/format-compact-balance";
 import { toUserBalanceLogPayload } from "./_utils/user-balance-log-payload";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | undefined;
@@ -92,14 +100,55 @@ function StatBlock({
   value,
 }: {
   label: string;
-  value: React.ReactNode;
+  value: number | null | undefined;
 }) {
+  const [open, setOpen] = useState(false);
+
+  if (value == null || !Number.isFinite(value)) {
+    return (
+      <div className="flex flex-col items-center gap-1">
+        <span className="text-xs text-muted-foreground tracking-wider uppercase">
+          {label}
+        </span>
+        <span className="text-lg font-heading font-medium">-</span>
+      </div>
+    );
+  }
+
+  const exact = value.toLocaleString();
+  const compact = formatCompactBalance(value);
+  const abbreviated = compact !== exact;
+
   return (
     <div className="flex flex-col items-center gap-1">
       <span className="text-xs text-muted-foreground tracking-wider uppercase">
         {label}
       </span>
-      <span className="text-lg font-heading font-medium">{value}</span>
+      {abbreviated ? (
+        <button
+          type="button"
+          className="text-lg font-heading font-medium cursor-pointer underline decoration-dotted underline-offset-4"
+          aria-label={`Show exact ${label}`}
+          onClick={() => setOpen(true)}
+        >
+          {compact}
+        </button>
+      ) : (
+        <span className="text-lg font-heading font-medium">{exact}</span>
+      )}
+      {abbreviated && (
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{label}</DialogTitle>
+              <DialogDescription className="sr-only">
+                Exact {label}
+              </DialogDescription>
+            </DialogHeader>
+            <p className="text-lg font-heading font-medium">{exact}</p>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
@@ -337,18 +386,9 @@ export default function UserBalancesPageClient() {
           </Then>
           <Else>
             <div className="grid grid-cols-3 gap-6 w-full mb-6">
-              <StatBlock
-                label="Player EXP"
-                value={user?.player_exp?.toLocaleString() ?? "-"}
-              />
-              <StatBlock
-                label="DM EXP"
-                value={user?.dm_exp?.toLocaleString() ?? "-"}
-              />
-              <StatBlock
-                label="Gold Pieces"
-                value={user?.points?.toLocaleString() ?? "-"}
-              />
+              <StatBlock label="Player EXP" value={user?.player_exp} />
+              <StatBlock label="DM EXP" value={user?.dm_exp} />
+              <StatBlock label="Gold Pieces" value={user?.points} />
             </div>
           </Else>
         </If>
