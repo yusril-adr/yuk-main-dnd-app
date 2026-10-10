@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader } from "@/app/_components/ui/card";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 
+import StoryDetailMembersCardSkeleton from "./story-detail-members-card-skeleton";
+
 function SectionCardSkeleton({ rows }: { rows: number }) {
   return (
     <Card className="border-2 border-primary/15">
@@ -26,7 +28,7 @@ function SectionCardSkeleton({ rows }: { rows: number }) {
   );
 }
 
-// Same structure as the loaded page: hero (image + title block), then the 2 + 1 card grid
+// Same structure as the loaded page: hero (image + title block), then the 2 + 1 card grid, then the party card
 export default function StoryDetailSkeleton() {
   return (
     <div className="flex flex-col gap-6">
@@ -62,6 +64,7 @@ export default function StoryDetailSkeleton() {
           <SectionCardSkeleton rows={3} />
         </div>
       </div>
+      <StoryDetailMembersCardSkeleton />
     </div>
   );
 }

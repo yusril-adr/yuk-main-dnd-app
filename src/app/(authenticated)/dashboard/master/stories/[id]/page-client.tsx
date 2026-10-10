@@ -34,6 +34,7 @@ import StoryDetailHero from "@/app/(authenticated)/dashboard/master/stories/[id]
 import StoryDetailQuestCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-quest-card";
 import StoryDetailAdventureCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-adventure-card";
 import StoryDetailChronicleCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-chronicle-card";
+import StoryDetailMembersCard from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-members-card";
 import StoryDetailSkeleton from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-skeleton";
 import StoryDetailActions from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-actions";
 import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
@@ -212,6 +213,7 @@ export default function StoryDetailPageClient() {
                       />
                     </div>
                   </div>
+                  <StoryDetailMembersCard storyId={storyId} />
                 </div>
               </Then>
             </If>

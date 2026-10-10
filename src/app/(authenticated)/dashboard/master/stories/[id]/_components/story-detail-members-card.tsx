@@ -1,0 +1,87 @@
+"use client";
+
+import { useCallback, useState } from "react";
+import { Users } from "lucide-react";
+import { Else, If, Then } from "react-if";
+
+import { Button } from "@/app/_components/ui/button";
+import { useGetStoryMemberPagination } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-member-pagination";
+import { STORY_MEMBER_PREVIEW_COUNT } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-member-preview";
+import type { TStoryDetailMembersCardProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-members-card-props";
+
+import StoryDetailMemberRow from "./story-detail-member-row";
+import StoryDetailMembersCardSkeleton from "./story-detail-members-card-skeleton";
+import StoryDetailMembersDialog from "./story-detail-members-dialog";
+import StoryDetailSectionCard from "./story-detail-section-card";
+
+export default function StoryDetailMembersCard({
+  storyId,
+}: TStoryDetailMembersCardProps) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const query = useGetStoryMemberPagination(storyId, STORY_MEMBER_PREVIEW_COUNT);
+  const items = query.data?.pages[0]?.data.data.items ?? [];
+
+  const onShowMoreClick = useCallback(() => {
+    setIsDialogOpen(true);
+  }, []);
+
+  const onDialogOpenChange = useCallback((nextOpen: boolean) => {
+    setIsDialogOpen(nextOpen);
+  }, []);
+
+  return (
+    <>
+      <If condition={query.isLoading}>
+        <Then>
+          <StoryDetailMembersCardSkeleton />
+        </Then>
+        <Else>
+          <StoryDetailSectionCard icon={Users} title="Party">
+            <If condition={query.isError}>
+              <Then>
+                <p className="italic text-muted-foreground">
+                  Couldn&apos;t load party members.
+                </p>
+              </Then>
+              <Else>
+                <If condition={items.length === 0}>
+                  <Then>
+                    <p className="italic text-muted-foreground">
+                      No adventurers have joined this party yet.
+                    </p>
+                  </Then>
+                  <Else>
+                    <ul className="flex flex-wrap gap-2">
+                      {items.map((member) => (
+                        <li key={member.id}>
+                          <StoryDetailMemberRow
+                            member={member}
+                            variant="avatar"
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="self-start"
+                      onClick={onShowMoreClick}
+                    >
+                      Show more
+                    </Button>
+                  </Else>
+                </If>
+              </Else>
+            </If>
+          </StoryDetailSectionCard>
+        </Else>
+      </If>
+      <StoryDetailMembersDialog
+        storyId={storyId}
+        open={isDialogOpen}
+        onOpenChange={onDialogOpenChange}
+      />
+    </>
+  );
+}

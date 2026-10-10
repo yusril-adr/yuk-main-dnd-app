@@ -1,0 +1,2 @@
+export const STORY_MEMBER_PREVIEW_COUNT = 5;
+export const STORY_MEMBER_DIALOG_PER_PAGE = 10;
