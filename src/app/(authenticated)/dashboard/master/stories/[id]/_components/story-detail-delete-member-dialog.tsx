@@ -1,7 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Search, UserMinus, UserPlus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+import { Search } from "lucide-react";
+import { toast } from "sonner";
 import { Else, If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
@@ -19,32 +22,43 @@ import {
   InputGroupInput,
 } from "@/app/_components/ui/input-group";
 import { Spinner } from "@/app/_components/ui/spinner";
+import { useDeleteStoryMembers } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-members";
 import {
   getStoryMemberSearchParam,
   useGetStoryMemberPagination,
 } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-member-pagination";
 import { STORY_MEMBER_DIALOG_PER_PAGE } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-member-preview";
-import type { TStoryDetailMembersDialogProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-members-dialog-props";
+import type { TStoryDetailDeleteMemberDialogProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-delete-member-dialog-props";
+import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import MainAPIValidationError from "@/api/main/errors/validation-error";
+import CONFIG from "@/common/constants/config";
 
-import StoryDetailMemberRow from "./story-detail-member-row";
+import StoryDetailDeleteMemberRow from "./story-detail-delete-member-row";
 
-export default function StoryDetailMembersDialog({
+function getRemoveButtonLabel(count: number): string {
+  if (count === 0) return "Remove";
+  if (count === 1) return "Remove 1 member";
+  return `Remove ${count} members`;
+}
+
+export default function StoryDetailDeleteMemberDialog({
   storyId,
   open,
   onOpenChange,
-  canManageMembers,
-  onDeleteMember,
-  onAddMember,
-}: TStoryDetailMembersDialogProps) {
+}: TStoryDetailDeleteMemberDialogProps) {
+  const queryClient = useQueryClient();
+  const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
+  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
   const searchTimeoutRef = useRef<NodeJS.Timeout | number | undefined>(
     undefined,
   );
-  const query = useGetStoryMemberPagination(storyId, STORY_MEMBER_DIALOG_PER_PAGE, {
-    search,
-    enabled: open,
-  });
+  const query = useGetStoryMemberPagination(
+    storyId,
+    STORY_MEMBER_DIALOG_PER_PAGE,
+    { search, enabled: open },
+  );
   const items = query.data?.pages.flatMap((page) => page.data.data.items) ?? [];
   const isSearching = !!getStoryMemberSearchParam(search);
   const [scrollNode, setScrollNode] = useState<HTMLDivElement | null>(null);
@@ -77,19 +91,43 @@ export default function StoryDetailMembersDialog({
         searchTimeoutRef.current = undefined;
         setSearchInput("");
         setSearch("");
+        setSelectedUserIds([]);
       }
       onOpenChange(nextOpen);
     },
     [onOpenChange],
   );
 
-  const onAddMemberClick = useCallback(() => {
-    onAddMember();
-  }, [onAddMember]);
+  const deleteMembers = useDeleteStoryMembers({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
+      });
+      onDialogOpenChange(false);
+    },
+    onError: (mutationError) => {
+      if (mutationError instanceof MainAPINotFoundError) {
+        // Story missing leaves the detail page. A missing user, or a user who
+        // is no longer a member, is a stale selection — stay open.
+        if (mutationError.message.startsWith("Story with id")) {
+          router.push("/dashboard/master/stories");
+          return;
+        }
+        toast.error(
+          mutationError.message || "Couldn't remove story members.",
+        );
+        return;
+      }
+      if (mutationError instanceof MainAPIValidationError) {
+        toast.error(
+          mutationError.errors[0]?.messages[0] ??
+            "Couldn't remove story members.",
+        );
+      }
+    },
+  });
 
-  const onDeleteMemberClick = useCallback(() => {
-    onDeleteMember();
-  }, [onDeleteMember]);
+  const isRemoving = deleteMembers.isPending || deleteMembers.isPaused;
 
   useEffect(() => {
     return () => {
@@ -114,6 +152,32 @@ export default function StoryDetailMembersDialog({
     void query.fetchNextPage();
   }, [query]);
 
+  const onUserCheckedChange = useCallback((userId: string, checked: boolean) => {
+    setSelectedUserIds((current) => {
+      if (checked && !current.includes(userId)) {
+        return [...current, userId];
+      }
+      if (!checked) {
+        return current.filter((id) => id !== userId);
+      }
+      return current;
+    });
+  }, []);
+
+  const onCancelClick = useCallback(() => {
+    onDialogOpenChange(false);
+  }, [onDialogOpenChange]);
+
+  const onDeleteClick = useCallback(() => {
+    if (isRemoving || selectedUserIds.length === 0) {
+      return;
+    }
+    deleteMembers.mutate({
+      id: storyId,
+      payload: { user_ids: selectedUserIds },
+    });
+  }, [deleteMembers, isRemoving, selectedUserIds, storyId]);
+
   useEffect(() => {
     if (!open || !scrollNode || !sentinelNode) return;
 
@@ -134,9 +198,9 @@ export default function StoryDetailMembersDialog({
     <Dialog open={open} onOpenChange={onDialogOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Party</DialogTitle>
+          <DialogTitle>Remove members</DialogTitle>
           <DialogDescription className="sr-only">
-            Full list of story members
+            Remove adventurers from this party
           </DialogDescription>
         </DialogHeader>
         <InputGroup>
@@ -183,9 +247,11 @@ export default function StoryDetailMembersDialog({
                       <ul className="flex flex-col gap-3">
                         {items.map((member) => (
                           <li key={member.id}>
-                            <StoryDetailMemberRow
+                            <StoryDetailDeleteMemberRow
                               member={member}
-                              variant="detail"
+                              checked={selectedUserIds.includes(member.user.id)}
+                              disabled={isRemoving}
+                              onCheckedChange={onUserCheckedChange}
                             />
                           </li>
                         ))}
@@ -217,22 +283,24 @@ export default function StoryDetailMembersDialog({
           </If>
           <div ref={onSentinelRef} className="h-px" />
         </div>
-        <If condition={canManageMembers}>
-          <Then>
-            <DialogFooter className="sm:justify-between">
-              <Button type="button" variant="outline" onClick={onDeleteMemberClick}>
-                <UserMinus data-icon="inline-start" />
-                Remove members
-              </Button>
-              <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-                <Button type="button" onClick={onAddMemberClick}>
-                  <UserPlus data-icon="inline-start" />
-                  Add member
-                </Button>
-              </div>
-            </DialogFooter>
-          </Then>
-        </If>
+        <DialogFooter>
+          <Button type="button" variant="outline" onClick={onCancelClick}>
+            Cancel
+          </Button>
+          <Button
+            type="button"
+            variant="destructive"
+            disabled={isRemoving || selectedUserIds.length === 0}
+            onClick={onDeleteClick}
+          >
+            <If condition={isRemoving}>
+              <Then>
+                <Spinner data-icon="inline-start" />
+              </Then>
+            </If>
+            {getRemoveButtonLabel(selectedUserIds.length)}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

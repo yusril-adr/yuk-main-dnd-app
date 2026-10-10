@@ -10,6 +10,7 @@ import { STORY_MEMBER_PREVIEW_COUNT } from "@/app/(authenticated)/dashboard/mast
 import type { TStoryDetailMembersCardProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-members-card-props";
 
 import StoryDetailAddMemberDialog from "./story-detail-add-member-dialog";
+import StoryDetailDeleteMemberDialog from "./story-detail-delete-member-dialog";
 import StoryDetailMemberRow from "./story-detail-member-row";
 import StoryDetailMembersCardSkeleton from "./story-detail-members-card-skeleton";
 import StoryDetailMembersDialog from "./story-detail-members-dialog";
@@ -21,6 +22,7 @@ export default function StoryDetailMembersCard({
 }: TStoryDetailMembersCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const query = useGetStoryMemberPagination(
     storyId,
     STORY_MEMBER_PREVIEW_COUNT,
@@ -41,6 +43,14 @@ export default function StoryDetailMembersCard({
 
   const onAddDialogOpenChange = useCallback((nextOpen: boolean) => {
     setIsAddDialogOpen(nextOpen);
+  }, []);
+
+  const onDeleteMemberClick = useCallback(() => {
+    setIsDeleteDialogOpen(true);
+  }, []);
+
+  const onDeleteDialogOpenChange = useCallback((nextOpen: boolean) => {
+    setIsDeleteDialogOpen(nextOpen);
   }, []);
 
   return (
@@ -108,12 +118,18 @@ export default function StoryDetailMembersCard({
         open={isDialogOpen}
         onOpenChange={onDialogOpenChange}
         canManageMembers={canManageMembers}
+        onDeleteMember={onDeleteMemberClick}
         onAddMember={onAddMemberClick}
       />
       <StoryDetailAddMemberDialog
         storyId={storyId}
         open={isAddDialogOpen}
         onOpenChange={onAddDialogOpenChange}
+      />
+      <StoryDetailDeleteMemberDialog
+        storyId={storyId}
+        open={isDeleteDialogOpen}
+        onOpenChange={onDeleteDialogOpenChange}
       />
     </>
   );

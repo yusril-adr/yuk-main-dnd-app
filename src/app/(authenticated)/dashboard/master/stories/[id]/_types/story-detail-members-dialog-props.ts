@@ -3,5 +3,6 @@ export type TStoryDetailMembersDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   canManageMembers: boolean;
+  onDeleteMember: () => void;
   onAddMember: () => void;
 };
