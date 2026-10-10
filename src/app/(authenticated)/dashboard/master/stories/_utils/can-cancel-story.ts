@@ -1,6 +1,7 @@
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 
-// Draft, published, and completed only. Archived and cancelled 400.
+// UI rule, not the API rule. Published and completed only.
+// Draft is not offered even if cancel would succeed. Archived and cancelled stay hidden.
 // Caller still applies stories:update or the creator.
 export function canCancelStory(
   canUpdateStory: boolean,
@@ -8,8 +9,7 @@ export function canCancelStory(
 ): boolean {
   return (
     canUpdateStory &&
-    (status === StoryStatusEnum.DRAFT ||
-      status === StoryStatusEnum.PUBLISHED ||
+    (status === StoryStatusEnum.PUBLISHED ||
       status === StoryStatusEnum.COMPLETED)
   );
 }
