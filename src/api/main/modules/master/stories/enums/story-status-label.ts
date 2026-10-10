@@ -4,4 +4,6 @@ export const STORY_STATUS_LABEL: Record<StoryStatusEnum, string> = {
   [StoryStatusEnum.DRAFT]: "Draft",
   [StoryStatusEnum.PUBLISHED]: "Published",
   [StoryStatusEnum.ARCHIVED]: "Archived",
+  [StoryStatusEnum.CANCELLED]: "Cancelled",
+  [StoryStatusEnum.COMPLETED]: "Completed",
 };
