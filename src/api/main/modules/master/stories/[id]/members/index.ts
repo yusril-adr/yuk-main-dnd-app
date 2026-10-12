@@ -4,7 +4,7 @@ import { mainAxios } from "@/api/main/_libs/axios";
 import type { TMainApiPaginationResponse } from "@/api/main/types/response";
 import type { TStoryMembersUserIdsPayload } from "./types/story-members-user-ids-payload";
 import type { TStoryMemberPaginationPayload } from "./types/story-member-pagination-payload";
-import type { TStoryMemberResponse } from "./types/story-member-response";
+import type { TStoryMemberPaginationResponse } from "./types/story-member-pagination-response";
 
 export const addStoryMembers = async ({
   id,
@@ -41,10 +41,11 @@ export const getStoryMemberPagination = async ({
 }: {
   id: string;
   payload: TStoryMemberPaginationPayload;
-}): Promise<AxiosResponse<TMainApiPaginationResponse<TStoryMemberResponse>>> => {
-  const response = await mainAxios.get(
-    MAIN_API_PATH.MASTER.STORY.MEMBERS(id),
-    { params: payload },
-  );
+}): Promise<
+  AxiosResponse<TMainApiPaginationResponse<TStoryMemberPaginationResponse>>
+> => {
+  const response = await mainAxios.get(MAIN_API_PATH.MASTER.STORY.MEMBERS(id), {
+    params: payload,
+  });
   return response;
 };

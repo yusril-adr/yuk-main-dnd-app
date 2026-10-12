@@ -1,7 +1,7 @@
-import type { TStoryResponse } from "@/api/main/modules/master/stories/types/story-response";
+import type { TStoryPaginationResponse } from "@/api/main/modules/master/stories/types/story-pagination-response";
 
 export type TStoryCardProps = {
-  story: TStoryResponse;
+  story: TStoryPaginationResponse;
   onArchive?: (id: string) => void;
   onUnarchive?: (id: string) => void;
   onPublish?: (id: string) => void;

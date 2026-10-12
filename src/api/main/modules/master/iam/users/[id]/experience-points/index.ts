@@ -5,7 +5,7 @@ import { mainAxios } from "@/api/main/_libs/axios";
 import type { TMainApiPaginationResponse } from "@/api/main/types/response";
 import type { TAddUserExperiencePointsPayload } from "./types/add-user-experience-points-payload";
 import type { TUserExperiencePointPaginationPayload } from "./types/user-experience-point-pagination-payload";
-import type { TUserExperiencePointResponse } from "./types/user-experience-point-response";
+import type { TUserExperiencePointPaginationResponse } from "./types/user-experience-point-pagination-response";
 
 export const addUserExperiencePoints = async ({
   id,
@@ -28,7 +28,9 @@ export const getUserExperiencePointPagination = async ({
   id: string;
   payload: TUserExperiencePointPaginationPayload;
 }): Promise<
-  AxiosResponse<TMainApiPaginationResponse<TUserExperiencePointResponse>>
+  AxiosResponse<
+    TMainApiPaginationResponse<TUserExperiencePointPaginationResponse>
+  >
 > => {
   const response = await mainAxios.get(
     MAIN_API_PATH.MASTER.IAM.USER.EXPERIENCE_POINTS(id),

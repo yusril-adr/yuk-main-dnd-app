@@ -1,3 +1,3 @@
-import type { TUserPointResponse } from "../types/user-point-response";
+import type { TUserPointPaginationResponse } from "../types/user-point-pagination-response";
 
-export type TUserPointSortBy = keyof TUserPointResponse;
+export type TUserPointSortBy = keyof TUserPointPaginationResponse;

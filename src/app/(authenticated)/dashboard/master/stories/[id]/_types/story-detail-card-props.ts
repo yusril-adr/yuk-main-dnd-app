@@ -1,6 +1,6 @@
-import type { TStoryResponse } from "@/api/main/modules/master/stories/types/story-response";
+import type { TStoryPaginationResponse } from "@/api/main/modules/master/stories/types/story-pagination-response";
 
 export type TStoryDetailCardProps = {
-  story: TStoryResponse;
+  story: TStoryPaginationResponse;
   className?: string;
 };

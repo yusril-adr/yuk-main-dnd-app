@@ -1,5 +1,5 @@
 import type { OrderKeyEnum } from "@/common/enums/order-key";
-import type { TStoryResponse } from "@/api/main/modules/master/stories/types/story-response";
+import type { TStoryPaginationResponse } from "@/api/main/modules/master/stories/types/story-pagination-response";
 import type { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import type { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
 import type { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
@@ -37,7 +37,7 @@ export type TStoryCardListActionHandler = {
 };
 
 export type TStoryCardListProps = {
-  data: TStoryResponse[];
+  data: TStoryPaginationResponse[];
   isLoading: boolean;
   pageCount: number;
   rowCount: number;

@@ -1,3 +1,6 @@
-import type { TStoryResponse } from "../types/story-response";
+import type { TStoryPaginationResponse } from "../types/story-pagination-response";
 
-export type TStorySortBy = Exclude<keyof TStoryResponse, "created_by" | "status_before">;
+export type TStorySortBy = Exclude<
+  keyof TStoryPaginationResponse,
+  "created_by" | "status_before"
+>;

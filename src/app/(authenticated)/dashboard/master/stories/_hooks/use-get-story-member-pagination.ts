@@ -1,14 +1,16 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { getStoryMemberPagination } from "@/api/main/modules/master/stories/[id]/members";
-import type { TStoryMemberResponse } from "@/api/main/modules/master/stories/[id]/members/types/story-member-response";
+import type { TStoryMemberPaginationResponse } from "@/api/main/modules/master/stories/[id]/members/types/story-member-pagination-response";
 import type { TMainApiPaginationResponse } from "@/api/main/types/response";
 import CONFIG from "@/common/constants/config";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 
 // created_at asc is join order. updated_at (the API default) reshuffles when status changes.
 export function getStoryMemberNextPage(
-  lastPage: AxiosResponse<TMainApiPaginationResponse<TStoryMemberResponse>>,
+  lastPage: AxiosResponse<
+    TMainApiPaginationResponse<TStoryMemberPaginationResponse>
+  >,
 ): number | undefined {
   const meta = lastPage.data?.data?.meta;
   if (!meta) return undefined;

@@ -22,7 +22,7 @@ import { PermissionEnum } from "@/common/enums/permission";
 import CONFIG from "@/common/constants/config";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
-import type { TStoryResponse } from "@/api/main/modules/master/stories/types/story-response";
+import type { TStoryPaginationResponse } from "@/api/main/modules/master/stories/types/story-pagination-response";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 
 import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-by-id";
@@ -239,18 +239,18 @@ export default function StoryDetailPageClient() {
             <If condition={!!story}>
               <Then>
                 <div className="flex flex-col gap-6">
-                  <StoryDetailHero story={story as TStoryResponse} />
+                  <StoryDetailHero story={story as TStoryPaginationResponse} />
                   <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                     <StoryDetailQuestCard
-                      story={story as TStoryResponse}
+                      story={story as TStoryPaginationResponse}
                       className="max-lg:hidden lg:col-span-2 lg:self-start"
                     />
                     <div className="flex flex-col gap-6">
                       <StoryDetailAdventureCard
-                        story={story as TStoryResponse}
+                        story={story as TStoryPaginationResponse}
                       />
                       <StoryDetailChronicleCard
-                        story={story as TStoryResponse}
+                        story={story as TStoryPaginationResponse}
                       />
                       <StoryDetailMembersCard
                         storyId={storyId}
@@ -262,7 +262,7 @@ export default function StoryDetailPageClient() {
                       />
                     </div>
                     <StoryDetailQuestCard
-                      story={story as TStoryResponse}
+                      story={story as TStoryPaginationResponse}
                       className="lg:hidden"
                     />
                   </div>

@@ -1,3 +1,6 @@
-import type { TPermissionResponse } from "@/api/main/modules/master/iam/permissions/types/permission-response";
+import type { TPermissionPaginationResponse } from "@/api/main/modules/master/iam/permissions/types/permission-pagination-response";
 
-export type TPermissionTableCol = Omit<TPermissionResponse, "updated_at"> & {};
+export type TPermissionTableCol = Omit<
+  TPermissionPaginationResponse,
+  "updated_at"
+> & {};

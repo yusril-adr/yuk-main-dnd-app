@@ -3,7 +3,7 @@ import MAIN_API_PATH from "@/api/main/_const/path";
 import { mainAxios } from "@/api/main/_libs/axios";
 import type { TMainApiPaginationResponse } from "@/api/main/types/response";
 import type { TAvailableStoryUserPaginationPayload } from "./types/available-story-user-pagination-payload";
-import type { TAvailableStoryUserResponse } from "./types/available-story-user-response";
+import type { TAvailableStoryUserPaginationResponse } from "./types/available-story-user-pagination-response";
 
 export const getAvailableStoryUserPagination = async ({
   id,
@@ -12,7 +12,9 @@ export const getAvailableStoryUserPagination = async ({
   id: string;
   payload: TAvailableStoryUserPaginationPayload;
 }): Promise<
-  AxiosResponse<TMainApiPaginationResponse<TAvailableStoryUserResponse>>
+  AxiosResponse<
+    TMainApiPaginationResponse<TAvailableStoryUserPaginationResponse>
+  >
 > => {
   const response = await mainAxios.get(
     MAIN_API_PATH.MASTER.STORY.AVAILABLE_USERS(id),

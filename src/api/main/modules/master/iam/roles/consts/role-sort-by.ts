@@ -1,3 +1,3 @@
-import { TRoleResponse } from "../types/role-response";
+import { TRolePaginationResponse } from "../types/role-pagination-response";
 
-export type TRoleSortBy = keyof TRoleResponse;
+export type TRoleSortBy = Exclude<keyof TRolePaginationResponse, "action_list">;

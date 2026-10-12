@@ -1,13 +1,13 @@
 import type { AxiosResponse } from "axios";
 import type { TStoryUpdatePayload } from "./types/story-update-payload";
 import type { TCompleteStoryPayload } from "./types/complete-story-payload";
+import { TStoryDetailResponse } from "./types/story-detail-response";
 import type { TMainApiResponse } from "@/api/main/types/response";
-import type { TStoryResponse } from "../types/story-response";
 import { mainAxios } from "@/api/main/_libs/axios";
 import MAIN_API_PATH from "@/api/main/_const/path";
 
 export const getStoryById = async (id: string) => {
-  const response: AxiosResponse<TMainApiResponse<TStoryResponse>> =
+  const response: AxiosResponse<TMainApiResponse<TStoryDetailResponse>> =
     await mainAxios.get(MAIN_API_PATH.MASTER.STORY.DETAIL(id));
 
   return response;
@@ -63,9 +63,7 @@ export const unarchiveStoryById = async (id: string) => {
 // Sets cancelled and clears the saved previous status. 400 when already
 // cancelled or archived. Allowed for stories:update or the creator.
 export const cancelStoryById = async (id: string) => {
-  const response = await mainAxios.patch(
-    MAIN_API_PATH.MASTER.STORY.CANCEL(id),
-  );
+  const response = await mainAxios.patch(MAIN_API_PATH.MASTER.STORY.CANCEL(id));
   return response;
 };
 

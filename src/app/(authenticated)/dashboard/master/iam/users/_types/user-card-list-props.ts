@@ -1,5 +1,5 @@
 import type { OrderKeyEnum } from "@/common/enums/order-key";
-import type { TUserResponse } from "@/api/main/modules/master/iam/users/types/user-response";
+import type { TUserPaginationResponse } from "@/api/main/modules/master/iam/users/types/user-pagination-response";
 import type { TUserCardListSortBy } from "./user-card-list-sort-by";
 
 export type TUserCardListQueryTable = {
@@ -24,7 +24,7 @@ export type TUserCardListActionHandler = {
 };
 
 export type TUserCardListProps = {
-  data: TUserResponse[];
+  data: TUserPaginationResponse[];
   isLoading: boolean;
   pageCount: number;
   rowCount: number;

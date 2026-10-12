@@ -1,14 +1,14 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { getAvailableStoryUserPagination } from "@/api/main/modules/master/stories/[id]/available-users";
-import type { TAvailableStoryUserResponse } from "@/api/main/modules/master/stories/[id]/available-users/types/available-story-user-response";
+import type { TAvailableStoryUserPaginationResponse } from "@/api/main/modules/master/stories/[id]/available-users/types/available-story-user-pagination-response";
 import type { TMainApiPaginationResponse } from "@/api/main/types/response";
 import CONFIG from "@/common/constants/config";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 
 export function getAvailableStoryUserNextPage(
   lastPage: AxiosResponse<
-    TMainApiPaginationResponse<TAvailableStoryUserResponse>
+    TMainApiPaginationResponse<TAvailableStoryUserPaginationResponse>
   >,
 ): number | undefined {
   const meta = lastPage.data?.data?.meta;

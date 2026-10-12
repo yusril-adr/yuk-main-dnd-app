@@ -1,3 +1,3 @@
-import type { TRoleResponse } from "@/api/main/modules/master/iam/roles/types/role-response";
+import type { TRolePaginationResponse } from "@/api/main/modules/master/iam/roles/types/role-pagination-response";
 
-export type TRoleTableCol = Omit<TRoleResponse, "permissions">;
+export type TRoleTableCol = Omit<TRolePaginationResponse, "permissions">;

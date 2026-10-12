@@ -1,12 +1,12 @@
 import type { AxiosResponse } from "axios";
 import { TRoleUpdatePayload } from "./types/role-update-payload";
+import { TRoleDetailResponse } from "./types/role-detail-response";
 import { TMainApiResponse } from "@/api/main/types/response";
-import { TRoleResponse } from "../types/role-response";
 import { mainAxios } from "@/api/main/_libs/axios";
 import MAIN_API_PATH from "@/api/main/_const/path";
 
 export const getRoleById = async (id: string) => {
-  const response: AxiosResponse<TMainApiResponse<TRoleResponse>> =
+  const response: AxiosResponse<TMainApiResponse<TRoleDetailResponse>> =
     await mainAxios.get(MAIN_API_PATH.MASTER.IAM.ROLE.DETAIL(id));
 
   return response;

@@ -1,6 +1,6 @@
-import type { TStoryMemberResponse } from "@/api/main/modules/master/stories/[id]/members/types/story-member-response";
+import type { TStoryMemberPaginationResponse } from "@/api/main/modules/master/stories/[id]/members/types/story-member-pagination-response";
 
 export type TStoryDetailMemberRowProps = {
-  member: TStoryMemberResponse;
+  member: TStoryMemberPaginationResponse;
   variant: "avatar" | "detail";
 };

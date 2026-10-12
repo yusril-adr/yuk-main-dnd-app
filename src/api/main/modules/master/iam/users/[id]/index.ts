@@ -4,11 +4,11 @@ import MAIN_API_PATH from "@/api/main/_const/path";
 import { mainAxios } from "@/api/main/_libs/axios";
 import type { TMainApiResponse } from "@/api/main/types/response";
 import type { TUserUpdatePayload } from "./types/user-update-payload";
-import type { TUserResponse } from "../types/user-response";
+import type { TUserDetailResponse } from "./types/user-detail-response";
 
 export const getUserById = async (
   id: string,
-): Promise<AxiosResponse<TMainApiResponse<TUserResponse>>> => {
+): Promise<AxiosResponse<TMainApiResponse<TUserDetailResponse>>> => {
   const response = await mainAxios.get(
     MAIN_API_PATH.MASTER.IAM.USER.DETAIL(id),
   );

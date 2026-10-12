@@ -3,7 +3,7 @@ import MAIN_API_PATH from "@/api/main/_const/path";
 import { mainAxios } from "@/api/main/_libs/axios";
 import type { TMainApiPaginationResponse } from "@/api/main/types/response";
 import type { TStoryPaginationPayload } from "./types/story-pagination-payload";
-import type { TStoryResponse } from "./types/story-response";
+import type { TStoryPaginationResponse } from "./types/story-pagination-response";
 import type { TStoryCreatePayload } from "./types/story-create-payload";
 
 export const createStory = async (payload: TStoryCreatePayload) => {
@@ -17,7 +17,9 @@ export const createStory = async (payload: TStoryCreatePayload) => {
 
 export const getStoryPagination = async (
   payload: TStoryPaginationPayload,
-): Promise<AxiosResponse<TMainApiPaginationResponse<TStoryResponse>>> => {
+): Promise<
+  AxiosResponse<TMainApiPaginationResponse<TStoryPaginationResponse>>
+> => {
   const response = await mainAxios.get(MAIN_API_PATH.MASTER.STORY.DEFAULT, {
     params: payload,
   });

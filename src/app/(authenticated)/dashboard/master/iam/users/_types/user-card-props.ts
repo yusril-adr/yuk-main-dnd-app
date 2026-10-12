@@ -1,6 +1,6 @@
-import type { TUserResponse } from "@/api/main/modules/master/iam/users/types/user-response";
+import type { TUserPaginationResponse } from "@/api/main/modules/master/iam/users/types/user-pagination-response";
 
 export type TUserCardProps = {
-  user: TUserResponse;
+  user: TUserPaginationResponse;
   onDelete?: (id: string) => void;
 };

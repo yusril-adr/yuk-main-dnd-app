@@ -1,3 +1,4 @@
-import type { TUserExperiencePointResponse } from "../types/user-experience-point-response";
+import type { TUserExperiencePointPaginationResponse } from "../types/user-experience-point-pagination-response";
 
-export type TUserExperiencePointSortBy = keyof TUserExperiencePointResponse;
+export type TUserExperiencePointSortBy =
+  keyof TUserExperiencePointPaginationResponse;

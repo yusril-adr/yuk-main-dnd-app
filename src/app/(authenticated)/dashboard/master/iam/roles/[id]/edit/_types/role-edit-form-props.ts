@@ -1,4 +1,4 @@
-import type { TPermissionResponse } from "@/api/main/modules/master/iam/permissions/types/permission-response";
+import type { TPermissionPaginationResponse } from "@/api/main/modules/master/iam/permissions/types/permission-pagination-response";
 import type { TRoleUpdatePayload } from "@/api/main/modules/master/iam/roles/[id]/types/role-update-payload";
 
 export type TRoleEditFormProps = {
@@ -6,7 +6,7 @@ export type TRoleEditFormProps = {
   description: string | undefined;
   isShowInPublic: boolean | undefined;
   permissionIds: string[] | undefined;
-  permissions: TPermissionResponse[];
+  permissions: TPermissionPaginationResponse[];
   isLoading: boolean;
   isPermissionsLoading: boolean;
   onSubmitPayload: (payload: TRoleUpdatePayload) => void;

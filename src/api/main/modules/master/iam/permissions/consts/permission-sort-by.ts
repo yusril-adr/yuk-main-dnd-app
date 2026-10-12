@@ -1,3 +1,3 @@
-import type { TPermissionResponse } from "@/api/main/modules/master/iam/permissions/types/permission-response";
+import type { TPermissionPaginationResponse } from "@/api/main/modules/master/iam/permissions/types/permission-pagination-response";
 
-export type TPermissionSortBy = keyof TPermissionResponse;
+export type TPermissionSortBy = keyof TPermissionPaginationResponse;
