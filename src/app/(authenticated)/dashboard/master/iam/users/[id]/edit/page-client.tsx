@@ -14,7 +14,7 @@ import UserEditForm from "./_components/user-edit-form";
 import { useGetUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-by-id";
 import { useUpdateUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-update-user-by-id";
 import { useAvatarUploadFile } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-avatar-upload-file";
-import { useGetRolePagination } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-role-pagination";
+import { useGetRoleOptions } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-role-options";
 
 export default function UserEditPageClient() {
   const params = useParams();
@@ -29,7 +29,7 @@ export default function UserEditPageClient() {
   const user = getDataQuery.data?.data?.data;
   const isEditForbidden = !!user && !user.action_list.is_can_update;
 
-  const rolesQuery = useGetRolePagination(roleSearch || undefined);
+  const rolesQuery = useGetRoleOptions(roleSearch || undefined);
 
   const {
     mutate: updateUserMutate,
