@@ -14,10 +14,7 @@ import { useUpdateStoryById } from "@/app/(authenticated)/dashboard/master/stori
 import { useBannerUploadFile } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-banner-upload-file";
 import type { TStoryBannerUploadHandler } from "@/app/(authenticated)/dashboard/master/stories/_types/story-banner-upload-handler";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
-import { useAuthContext } from "@/app/_hooks/use-auth-context";
-import { PermissionEnum } from "@/common/enums/permission";
-import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
-import { isCompletedStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/is-completed-story";
+import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import CONFIG from "@/common/constants/config";
 
 export default function StoryEditPageClient() {
@@ -52,15 +49,11 @@ export default function StoryEditPageClient() {
     [uploadBannerMutate],
   );
   const story = storyQuery.data?.data?.data;
-  const { auth } = useAuthContext();
-  // Only decide permission once both the story and the user's data are loaded.
-  // A completed story redirects on its own and must not also toast the permission message.
-  const isCompleted = isCompletedStory(story);
-  const isEditForbidden =
+  const isCompletedEditBlocked =
     !!story &&
-    !!auth &&
-    !isCompleted &&
-    !canManageStory(auth, story, PermissionEnum.STORIES_UPDATE);
+    !story.action_list.is_can_update &&
+    story.status === StoryStatusEnum.COMPLETED;
+  const isEditForbidden = !!story && !story.action_list.is_can_update;
 
   useEffect(() => {
     if (
@@ -72,18 +65,17 @@ export default function StoryEditPageClient() {
   }, [storyQuery.error, storyQuery.isError, router]);
 
   useEffect(() => {
-    if (isCompleted) {
-      toast.error("Completed stories can't be edited");
-      router.replace(`/dashboard/master/stories/${storyId}`);
+    if (!isEditForbidden) {
+      return;
     }
-  }, [isCompleted, router, storyId]);
 
-  useEffect(() => {
-    if (isEditForbidden) {
-      toast.error("You don't have permission to edit this story");
-      router.replace(`/dashboard/master/stories/${storyId}`);
-    }
-  }, [isEditForbidden, router, storyId]);
+    toast.error(
+      isCompletedEditBlocked
+        ? "Completed stories can't be edited"
+        : "You don't have permission to edit this story",
+    );
+    router.replace(`/dashboard/master/stories/${storyId}`);
+  }, [isCompletedEditBlocked, isEditForbidden, router, storyId]);
 
   return (
     <div className="w-full flex justify-center">
@@ -112,7 +104,7 @@ export default function StoryEditPageClient() {
 
         <StoryEditForm
           story={story}
-          isLoading={storyQuery.isLoading || isEditForbidden || isCompleted}
+          isLoading={storyQuery.isLoading || isEditForbidden}
           onSubmitPayload={(payload) =>
             updateStoryMutation.mutate({ id: storyId, payload })
           }

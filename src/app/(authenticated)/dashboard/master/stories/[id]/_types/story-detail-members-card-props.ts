@@ -1,4 +1,5 @@
 export type TStoryDetailMembersCardProps = {
   storyId: string;
-  canManageMembers: boolean;
+  canAddMembers: boolean;
+  canRemoveMembers: boolean;
 };

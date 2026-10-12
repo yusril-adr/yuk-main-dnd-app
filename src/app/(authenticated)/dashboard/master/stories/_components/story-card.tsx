@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import {
   Archive,
   ArchiveRestore,
-  CircleCheck,
   EllipsisVertical,
   Eye,
   Pencil,
@@ -38,19 +37,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
-import { useAuthContext } from "@/app/_hooks/use-auth-context";
-import { PermissionEnum } from "@/common/enums/permission";
 import { getRichTextPlainText } from "@/utils/rich-text";
-import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
-import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
-import { canCompleteStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-complete-story";
-import { isCompletedStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/is-completed-story";
 import { formatStoryReward } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
-import { isCancelledStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/is-cancelled-story";
 
 import StoryCardBanner from "./story-card-banner";
-import StoryCompleteDialog from "./story-complete-dialog";
 import StoryStatusBadge from "./story-status-badge";
 import type { TStoryCardProps } from "@/app/(authenticated)/dashboard/master/stories/_types/story-card-props";
 
@@ -61,33 +52,13 @@ export default function StoryCard({
   onPublish,
   onDelete,
 }: TStoryCardProps) {
-  const { auth } = useAuthContext();
-  const canUpdateStory = canManageStory(
-    auth,
-    story,
-    PermissionEnum.STORIES_UPDATE,
-  );
-  const canDeleteStory = canManageStory(
-    auth,
-    story,
-    PermissionEnum.STORIES_DELETE,
-  );
-  // Edit is hidden when cancelled or completed, including an archived story
-  // whose previous status was cancelled or completed.
-  const canEditStory =
-    canUpdateStory && !isCancelledStory(story) && !isCompletedStory(story);
-  const canCompleteStoryAction = canCompleteStory(canUpdateStory, story.status);
-  const canDeleteStoryAction = canDeleteStory && !!onDelete;
-  // Same rule as the detail page: allowed to update and not already archived
-  const canArchiveStory =
-    canUpdateStory && story.status !== StoryStatusEnum.ARCHIVED && !!onArchive;
-  // Same rule as the detail page: allowed to update and currently archived
+  const canEditStory = story.action_list.is_can_update;
+  const canDeleteStoryAction =
+    story.action_list.is_can_delete && !!onDelete;
+  const canArchiveStory = story.action_list.is_can_archive && !!onArchive;
   const canUnarchiveStory =
-    canUpdateStory &&
-    story.status === StoryStatusEnum.ARCHIVED &&
-    !!onUnarchive;
-  const canPublishStory =
-    canUpdateStory && story.status === StoryStatusEnum.DRAFT && !!onPublish;
+    story.action_list.is_can_unarchive && !!onUnarchive;
+  const canPublishStory = story.action_list.is_can_publish && !!onPublish;
   // Plain text from rich text HTML (or an old plain-text value); "" when the
   // description is empty or only has images
   const descriptionText = getRichTextPlainText(story.description);
@@ -102,9 +73,6 @@ export default function StoryCard({
     null,
   );
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
-  const [confirmCompleteId, setConfirmCompleteId] = useState<string | null>(
-    null,
-  );
 
   const onArchiveConfirm = useCallback(() => {
     if (confirmArchiveId && onArchive) {
@@ -194,16 +162,6 @@ export default function StoryCard({
                     >
                       <Send />
                       Publish
-                    </DropdownMenuItem>
-                  </Then>
-                </If>
-                <If condition={canCompleteStoryAction}>
-                  <Then>
-                    <DropdownMenuItem
-                      onClick={() => setConfirmCompleteId(story.id)}
-                    >
-                      <CircleCheck />
-                      Complete
                     </DropdownMenuItem>
                   </Then>
                 </If>
@@ -385,19 +343,6 @@ export default function StoryCard({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <If condition={canCompleteStoryAction}>
-        <Then>
-          <StoryCompleteDialog
-            storyId={story.id}
-            open={confirmCompleteId !== null}
-            onOpenChange={(open) => {
-              if (!open) {
-                setConfirmCompleteId(null);
-              }
-            }}
-          />
-        </Then>
-      </If>
     </>
   );
 }

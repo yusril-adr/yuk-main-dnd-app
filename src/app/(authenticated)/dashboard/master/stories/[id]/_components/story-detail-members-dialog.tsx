@@ -32,7 +32,8 @@ export default function StoryDetailMembersDialog({
   storyId,
   open,
   onOpenChange,
-  canManageMembers,
+  canAddMembers,
+  canRemoveMembers,
   onDeleteMember,
   onAddMember,
 }: TStoryDetailMembersDialogProps) {
@@ -224,23 +225,31 @@ export default function StoryDetailMembersDialog({
           </If>
           <div ref={onSentinelRef} className="h-px" />
         </div>
-        <If condition={canManageMembers}>
+        <If condition={canAddMembers || canRemoveMembers}>
           <Then>
             <DialogFooter className="sm:justify-between">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onDeleteMemberClick}
-              >
-                <UserMinus data-icon="inline-start" />
-                Remove
-              </Button>
-              <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-                <Button type="button" onClick={onAddMemberClick}>
-                  <UserPlus data-icon="inline-start" />
-                  Add
-                </Button>
-              </div>
+              <If condition={canRemoveMembers}>
+                <Then>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={onDeleteMemberClick}
+                  >
+                    <UserMinus data-icon="inline-start" />
+                    Remove
+                  </Button>
+                </Then>
+              </If>
+              <If condition={canAddMembers}>
+                <Then>
+                  <div className="flex flex-col-reverse gap-2 sm:ml-auto sm:flex-row sm:justify-end">
+                    <Button type="button" onClick={onAddMemberClick}>
+                      <UserPlus data-icon="inline-start" />
+                      Add
+                    </Button>
+                  </div>
+                </Then>
+              </If>
             </DialogFooter>
           </Then>
         </If>

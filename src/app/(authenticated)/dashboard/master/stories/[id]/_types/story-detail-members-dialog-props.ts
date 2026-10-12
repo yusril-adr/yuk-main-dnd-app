@@ -2,7 +2,8 @@ export type TStoryDetailMembersDialogProps = {
   storyId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  canManageMembers: boolean;
+  canAddMembers: boolean;
+  canRemoveMembers: boolean;
   onDeleteMember: () => void;
   onAddMember: () => void;
 };

@@ -18,7 +18,8 @@ import StoryDetailSectionCard from "./story-detail-section-card";
 
 export default function StoryDetailMembersCard({
   storyId,
-  canManageMembers,
+  canAddMembers,
+  canRemoveMembers,
 }: TStoryDetailMembersCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -73,7 +74,7 @@ export default function StoryDetailMembersCard({
                     <p className="italic text-muted-foreground">
                       No adventurers have joined this party yet.
                     </p>
-                    <If condition={canManageMembers}>
+                    <If condition={canAddMembers}>
                       <Then>
                         <Button
                           type="button"
@@ -117,7 +118,8 @@ export default function StoryDetailMembersCard({
         storyId={storyId}
         open={isDialogOpen}
         onOpenChange={onDialogOpenChange}
-        canManageMembers={canManageMembers}
+        canAddMembers={canAddMembers}
+        canRemoveMembers={canRemoveMembers}
         onDeleteMember={onDeleteMemberClick}
         onAddMember={onAddMemberClick}
       />

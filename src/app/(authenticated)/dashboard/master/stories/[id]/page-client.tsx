@@ -18,12 +18,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
-import { PermissionEnum } from "@/common/enums/permission";
 import CONFIG from "@/common/constants/config";
-import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import type { TStoryPaginationResponse } from "@/api/main/modules/master/stories/types/story-pagination-response";
-import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 
 import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-by-id";
 import { useGetStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-by-id";
@@ -39,14 +36,8 @@ import StoryDetailMembersCard from "@/app/(authenticated)/dashboard/master/stori
 import StoryDetailSkeleton from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-skeleton";
 import StoryDetailActions from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-actions";
 import StoryCompleteDialog from "@/app/(authenticated)/dashboard/master/stories/_components/story-complete-dialog";
-import { canManageStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-manage-story";
-import { canCancelStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-cancel-story";
-import { canCompleteStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/can-complete-story";
-import { isCompletedStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/is-completed-story";
-import { isCancelledStory } from "@/app/(authenticated)/dashboard/master/stories/_utils/is-cancelled-story";
 
 export default function StoryDetailPageClient() {
-  const { auth } = useAuthContext();
   const { id } = useParams();
   const router = useRouter();
   const storyId = id as string;
@@ -59,16 +50,24 @@ export default function StoryDetailPageClient() {
   const [isCompleteDialogOpen, setIsCompleteDialogOpen] = useState(false);
   const storyQuery = useGetStoryById(storyId);
   const story = storyQuery.data?.data?.data;
-  const canUpdateStory = canManageStory(
-    auth,
-    story,
-    PermissionEnum.STORIES_UPDATE,
-  );
-  const canDeleteStory = canManageStory(
-    auth,
-    story,
-    PermissionEnum.STORIES_DELETE,
-  );
+  const canEdit = !!story && story.action_list.is_can_update;
+  const canPublish = !!story && story.action_list.is_can_publish;
+  const canComplete = !!story && story.action_list.is_can_complete;
+  const canArchive = !!story && story.action_list.is_can_archive;
+  const canUnarchive = !!story && story.action_list.is_can_unarchive;
+  const canCancel = !!story && story.action_list.is_can_cancel;
+  const canDelete = !!story && story.action_list.is_can_delete;
+  const canAddMembers = !!story && story.action_list.is_can_add_members;
+  const canRemoveMembers =
+    !!story && story.action_list.is_can_remove_members;
+  const hasStoryActions =
+    canEdit ||
+    canPublish ||
+    canComplete ||
+    canArchive ||
+    canUnarchive ||
+    canCancel ||
+    canDelete;
   const deleteStoryMutation = useDeleteStoryById({
     onError: (mutationError) => {
       if (mutationError instanceof MainAPINotFoundError) {
@@ -136,19 +135,6 @@ export default function StoryDetailPageClient() {
     },
   });
 
-  const canArchiveStory =
-    canUpdateStory && story?.status !== StoryStatusEnum.ARCHIVED;
-  // Unarchive restores the status saved when the story was archived
-  const canUnarchiveStory =
-    canUpdateStory && story?.status === StoryStatusEnum.ARCHIVED;
-  const canPublishStory =
-    canUpdateStory && story?.status === StoryStatusEnum.DRAFT;
-  const canCancelStoryAction = canCancelStory(canUpdateStory, story?.status);
-  const canCompleteStoryAction = canCompleteStory(
-    canUpdateStory,
-    story?.status,
-  );
-
   useEffect(() => {
     if (
       storyQuery.isError &&
@@ -201,21 +187,17 @@ export default function StoryDetailPageClient() {
             <ArrowLeft />
           </Link>
           <h1 className="font-heading text-2xl">Story Detail</h1>
-          <If condition={!!story && (canUpdateStory || canDeleteStory)}>
+          <If condition={hasStoryActions}>
             <Then>
               <StoryDetailActions
                 storyId={storyId}
-                canEdit={
-                  canUpdateStory &&
-                  !isCancelledStory(story) &&
-                  !isCompletedStory(story)
-                }
-                canPublish={canPublishStory}
-                canComplete={canCompleteStoryAction}
-                canArchive={canArchiveStory}
-                canUnarchive={canUnarchiveStory}
-                canCancel={canCancelStoryAction}
-                canDelete={canDeleteStory}
+                canEdit={canEdit}
+                canPublish={canPublish}
+                canComplete={canComplete}
+                canArchive={canArchive}
+                canUnarchive={canUnarchive}
+                canCancel={canCancel}
+                canDelete={canDelete}
                 isPublishPending={publishStoryMutation.isPending}
                 isArchivePending={archiveStoryMutation.isPending}
                 isUnarchivePending={unarchiveStoryMutation.isPending}
@@ -254,11 +236,8 @@ export default function StoryDetailPageClient() {
                       />
                       <StoryDetailMembersCard
                         storyId={storyId}
-                        canManageMembers={
-                          canUpdateStory &&
-                          !isCancelledStory(story) &&
-                          !isCompletedStory(story)
-                        }
+                        canAddMembers={canAddMembers}
+                        canRemoveMembers={canRemoveMembers}
                       />
                     </div>
                     <StoryDetailQuestCard
