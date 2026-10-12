@@ -6,6 +6,8 @@ import type { TMainApiPaginationResponse } from "@/api/main/types/response";
 import type { TUserCreatePayload } from "./types/user-create-payload";
 import type { TUserPaginationPayload } from "./types/user-pagination-payload";
 import type { TUserPaginationResponse } from "./types/user-pagination-response";
+import type { TUserOptionsPayload } from "./types/user-options-payload";
+import type { TUserOptionResponse } from "./types/user-options-response";
 
 export const createUser = async (payload: TUserCreatePayload) => {
   const response = await mainAxios.post(
@@ -22,6 +24,16 @@ export const getUserPagination = async (
   AxiosResponse<TMainApiPaginationResponse<TUserPaginationResponse>>
 > => {
   const response = await mainAxios.get(MAIN_API_PATH.MASTER.IAM.USER.DEFAULT, {
+    params: payload,
+  });
+
+  return response;
+};
+
+export const getUserOptions = async (
+  payload: TUserOptionsPayload,
+): Promise<AxiosResponse<TMainApiPaginationResponse<TUserOptionResponse>>> => {
+  const response = await mainAxios.get(MAIN_API_PATH.MASTER.IAM.USER.OPTIONS, {
     params: payload,
   });
 

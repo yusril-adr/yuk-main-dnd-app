@@ -13,6 +13,7 @@ const MAIN_API_PATH = {
     IAM: {
       USER: {
         DEFAULT: "/api/v1/master/iam/users",
+        OPTIONS: "/api/v1/master/iam/users/options",
         DETAIL: (id: string) => `/api/v1/master/iam/users/${id}`,
         EXPERIENCE_POINTS: (id: string) =>
           `/api/v1/master/iam/users/${id}/experience-points`,

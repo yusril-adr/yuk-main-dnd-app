@@ -31,7 +31,7 @@ import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stori
 import { useArchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-archive-story-by-id";
 import { useUnarchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-unarchive-story-by-id";
 import { usePublishStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-publish-story-by-id";
-import { useGetUserPagination } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-user-pagination";
+import { useGetUserOptions } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-user-options";
 
 function parseAsNumericEnum<T extends Record<string, number | string>>(
   enumObj: T,
@@ -154,7 +154,7 @@ export default function StoriesPageClient() {
   // so the "Created By" filter is hidden and the query is disabled.
   const canViewUsers = !!auth?.permissions.includes(PermissionEnum.USERS_VIEW);
   const [userSearch, setUserSearch] = useState("");
-  const { data: usersData } = useGetUserPagination(userSearch || undefined, {
+  const { data: usersData } = useGetUserOptions(userSearch || undefined, {
     enabled: canViewUsers,
   });
 
