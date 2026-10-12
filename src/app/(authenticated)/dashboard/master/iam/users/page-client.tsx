@@ -19,7 +19,7 @@ import UserCardList from "@/app/(authenticated)/dashboard/master/iam/users/_comp
 import type { TUserCardListSortBy } from "@/app/(authenticated)/dashboard/master/iam/users/_types/user-card-list-sort-by";
 import { useGetUserPagination } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-pagination";
 import { useDeleteUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-delete-user-by-id";
-import { useGetRolePagination } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-role-pagination";
+import { useGetRoleOptions } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-role-options";
 import CONFIG from "@/common/constants/config";
 
 export default function UsersPageClient() {
@@ -78,7 +78,7 @@ export default function UsersPageClient() {
 
   const [roleSearch, setRoleSearch] = useState("");
 
-  const { data: rolesData } = useGetRolePagination(roleSearch || undefined);
+  const { data: rolesData } = useGetRoleOptions(roleSearch || undefined);
   const roleItems = (rolesData?.data?.data?.items ?? []).map((role) => ({
     value: role.id,
     label: role.name,

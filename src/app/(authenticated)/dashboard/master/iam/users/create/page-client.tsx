@@ -11,7 +11,7 @@ import CONFIG from "@/common/constants/config";
 import UserCreateForm from "./_components/user-create-form";
 import { useCreateUser } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-create-user";
 import { useAvatarUploadFile } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-avatar-upload-file";
-import { useGetRolePagination } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-role-pagination";
+import { useGetRoleOptions } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-role-options";
 
 export default function UserCreatePageClient() {
   const router = useRouter();
@@ -19,7 +19,7 @@ export default function UserCreatePageClient() {
   const [roleSearch, setRoleSearch] = useState("");
   const [avatarFileId, setAvatarFileId] = useState<string | null>(null);
 
-  const rolesQuery = useGetRolePagination(roleSearch || undefined);
+  const rolesQuery = useGetRoleOptions(roleSearch || undefined);
   const createUserMutation = useCreateUser({
     onSuccess: () => {
       queryClient.invalidateQueries({

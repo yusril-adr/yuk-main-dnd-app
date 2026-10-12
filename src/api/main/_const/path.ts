@@ -20,6 +20,7 @@ const MAIN_API_PATH = {
       },
       ROLE: {
         DEFAULT: "/api/v1/master/iam/roles",
+        OPTIONS: "/api/v1/master/iam/roles/options",
         DETAIL: (id: string) => `/api/v1/master/iam/roles/${id}`,
       },
       PERMISSION: {
