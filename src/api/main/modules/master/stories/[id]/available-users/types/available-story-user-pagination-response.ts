@@ -1,3 +1,6 @@
-import type { TStoryMemberUserEntity } from "@/api/main/types/entities/story/story-member-entity";
+import { TUserEntity } from "@/api/main/types/entities/iam/user-entity";
 
-export type TAvailableStoryUserPaginationResponse = TStoryMemberUserEntity;
+export type TAvailableStoryUserPaginationResponse = Pick<
+  TUserEntity,
+  "id" | "display_name" | "avatar_url"
+>;

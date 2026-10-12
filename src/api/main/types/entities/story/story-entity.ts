@@ -2,12 +2,7 @@ import type { TBaseEntity } from "../base-entity";
 import type { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import type { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
 import type { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
-
-export type TStoryCreatorEntity = {
-  id: string;
-  display_name: string;
-  avatar_url?: string | null;
-};
+import { TUserEntity } from "../iam/user-entity";
 
 export type TStoryEntity = TBaseEntity & {
   title: string;
@@ -24,5 +19,5 @@ export type TStoryEntity = TBaseEntity & {
   location_type: StoryLocationTypeEnum;
   location_detail: string;
   banner_url: string | null;
-  created_by?: TStoryCreatorEntity;
+  created_by?: TUserEntity;
 };
