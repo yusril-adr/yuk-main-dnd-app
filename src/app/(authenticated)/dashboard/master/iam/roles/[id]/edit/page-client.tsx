@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { notFound, useParams, useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
@@ -35,11 +36,21 @@ export default function RoleEditPageClient() {
     },
   });
   const role = roleQuery.data?.data?.data;
+  const isEditForbidden = !!role && !role.action_list.is_can_update;
   useEffect(() => {
     if (roleQuery.isError && roleQuery.error instanceof MainAPINotFoundError) {
       notFound();
     }
   }, [roleQuery.error, roleQuery.isError, router]);
+
+  useEffect(() => {
+    if (!isEditForbidden) {
+      return;
+    }
+
+    toast.error("You don't have permission to edit this role");
+    router.replace(`/dashboard/master/iam/roles/${roleId}`);
+  }, [isEditForbidden, router, roleId]);
 
   return (
     <div className="w-full flex justify-center">
@@ -72,7 +83,7 @@ export default function RoleEditPageClient() {
           isShowInPublic={role?.is_show_in_public}
           permissionIds={role?.permissions?.map((permission) => permission.id)}
           permissions={permissionsQuery.data?.data?.data?.items ?? []}
-          isLoading={roleQuery.isLoading}
+          isLoading={roleQuery.isLoading || isEditForbidden}
           isPermissionsLoading={permissionsQuery.isLoading}
           onSubmitPayload={(payload) =>
             updateRoleMutation.mutate({ id: roleId, payload })

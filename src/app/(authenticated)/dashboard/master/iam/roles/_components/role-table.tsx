@@ -56,8 +56,6 @@ import {
   DataTableSortableColHeader,
 } from "@/app/_components/data-table";
 import { OrderKeyEnum } from "@/common/enums/order-key";
-import { PermissionEnum } from "@/common/enums/permission";
-import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import dayjs from "@/libs/dayjs";
 
 import type { TRoleTableCol } from "@/app/(authenticated)/dashboard/master/iam/roles/_types/role-table-col";
@@ -73,14 +71,10 @@ export default function RoleTable({
   columnFilters,
   onActionHandler,
 }: TRoleTableProps) {
-  const { auth } = useAuthContext();
   const filterForm = onActionHandler.onFilterForm;
   const [confirmedDeletedId, setConfirmedDeletedId] = useState<string | null>(
     null,
   );
-
-  const canUpdateRoles = auth?.permissions.includes(PermissionEnum.ROLES_UPDATE);
-  const canDeleteRoles = auth?.permissions.includes(PermissionEnum.ROLES_DELETE);
 
   const onDeleteHandler = useCallback(() => {
     if (confirmedDeletedId) {
@@ -198,7 +192,7 @@ export default function RoleTable({
                 <Eye />
                 View
               </DropdownMenuItem>
-              {canUpdateRoles && (
+              {row.original.action_list.is_can_update && (
                 <DropdownMenuItem
                   render={
                     <Link
@@ -210,7 +204,7 @@ export default function RoleTable({
                   Edit
                 </DropdownMenuItem>
               )}
-              {canDeleteRoles && (
+              {row.original.action_list.is_can_delete && (
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={() => setConfirmedDeletedId(row.original.id)}

@@ -28,8 +28,6 @@ import {
   TableRow,
 } from "@/app/_components/ui/table";
 import { Skeleton } from "@/app/_components/ui/skeleton";
-import { PermissionEnum } from "@/common/enums/permission";
-import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import dayjs from "@/libs/dayjs";
 
@@ -39,19 +37,14 @@ import { useGetRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles
 import { groupPermissionsByModule } from "../_utils/group-permissions-by-module";
 
 export default function RoleDetailPageClient() {
-  const { auth } = useAuthContext();
   const { id } = useParams();
   const router = useRouter();
   const roleId = id as string;
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const roleQuery = useGetRoleById(roleId);
   const role = roleQuery.data?.data?.data;
-  const canUpdateRoles = auth?.permissions.includes(
-    PermissionEnum.ROLES_UPDATE,
-  );
-  const canDeleteRoles = auth?.permissions.includes(
-    PermissionEnum.ROLES_DELETE,
-  );
+  const canUpdateRoles = !!role && role.action_list.is_can_update;
+  const canDeleteRoles = !!role && role.action_list.is_can_delete;
   const deleteRoleMutation = useDeleteRoleById({
     onError: (mutationError) => {
       if (mutationError instanceof MainAPINotFoundError) {

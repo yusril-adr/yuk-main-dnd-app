@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
@@ -26,6 +27,7 @@ export default function UserEditPageClient() {
 
   const getDataQuery = useGetUserById(userId);
   const user = getDataQuery.data?.data?.data;
+  const isEditForbidden = !!user && !user.action_list.is_can_update;
 
   const rolesQuery = useGetRolePagination(roleSearch || undefined);
 
@@ -74,6 +76,15 @@ export default function UserEditPageClient() {
     }
   }, [getDataQuery.error, getDataQuery.isError, router]);
 
+  useEffect(() => {
+    if (!isEditForbidden) {
+      return;
+    }
+
+    toast.error("You don't have permission to edit this user");
+    router.replace(`/dashboard/master/iam/users/${userId}`);
+  }, [isEditForbidden, router, userId]);
+
   const breadcrumbItems = [
     { name: "Users", link: "/dashboard/master/iam/users" },
     ...(!getDataQuery.isLoading
@@ -105,7 +116,7 @@ export default function UserEditPageClient() {
           bio={user?.bio}
           avatarUrl={user?.avatar_url}
           roleIds={user?.roles?.map((r) => r.id)}
-          isLoading={getDataQuery.isLoading}
+          isLoading={getDataQuery.isLoading || isEditForbidden}
           onSubmitPayload={(payload) =>
             updateUserMutate({ id: userId, payload })
           }

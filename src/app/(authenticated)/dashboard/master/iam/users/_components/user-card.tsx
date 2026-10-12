@@ -36,24 +36,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
-import { useAuthContext } from "@/app/_hooks/use-auth-context";
-import { PermissionEnum } from "@/common/enums/permission";
 import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 
 import type { TUserCardProps } from "@/app/(authenticated)/dashboard/master/iam/users/_types/user-card-props";
 import { Else, If, Then } from "react-if";
 
 export default function UserCard({ user, onDelete }: TUserCardProps) {
-  const { auth } = useAuthContext();
-  const canUpdateUsers = auth?.permissions.includes(
-    PermissionEnum.USERS_UPDATE,
-  );
-  const canDeleteUsers = auth?.permissions.includes(
-    PermissionEnum.USERS_DELETE,
-  );
-  const canViewPoints = auth?.permissions.includes(
-    PermissionEnum.POINTS_VIEW,
-  );
+  const canUpdateUsers = user.action_list.is_can_update;
+  const canDeleteUsers = user.action_list.is_can_delete;
+  const canViewPoints = user.action_list.is_can_view_balances;
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const onDeleteConfirm = useCallback(() => {

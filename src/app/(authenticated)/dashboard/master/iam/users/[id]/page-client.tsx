@@ -8,7 +8,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Else, If, Then } from "react-if";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
-import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import {
   Avatar,
@@ -28,7 +27,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
-import { PermissionEnum } from "@/common/enums/permission";
 import CONFIG from "@/common/constants/config";
 import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
@@ -71,7 +69,6 @@ function StatBlock({
 }
 
 export default function UserDetailPageClient() {
-  const { auth } = useAuthContext();
   const { id } = useParams();
   const router = useRouter();
   const userId = id as string;
@@ -82,13 +79,9 @@ export default function UserDetailPageClient() {
   const userQuery = useGetUserById(userId);
   const user = userQuery.data?.data?.data;
 
-  const canUpdateUsers = auth?.permissions.includes(
-    PermissionEnum.USERS_UPDATE,
-  );
-  const canDeleteUsers = auth?.permissions.includes(
-    PermissionEnum.USERS_DELETE,
-  );
-  const canViewPoints = auth?.permissions.includes(PermissionEnum.POINTS_VIEW);
+  const canUpdateUsers = !!user && user.action_list.is_can_update;
+  const canDeleteUsers = !!user && user.action_list.is_can_delete;
+  const canViewPoints = !!user && user.action_list.is_can_view_balances;
 
   const deleteUserMutation = useDeleteUserById({
     onError: (mutationError) => {

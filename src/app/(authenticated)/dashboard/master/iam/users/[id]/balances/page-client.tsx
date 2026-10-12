@@ -39,7 +39,6 @@ import {
   TabsTrigger,
 } from "@/app/_components/ui/tabs";
 import { Skeleton } from "@/app/_components/ui/skeleton";
-import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { useGetUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-by-id";
 import { UserExpLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type";
 import { USER_EXP_LOG_TYPE_LABEL } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type-label";
@@ -49,7 +48,6 @@ import { USER_POINT_LOG_TYPE_LABEL } from "@/api/main/modules/master/iam/users/[
 import type { TAddUserPointsPayload } from "@/api/main/modules/master/iam/users/[id]/points/types/add-user-points-payload";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import CONFIG from "@/common/constants/config";
-import { PermissionEnum } from "@/common/enums/permission";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import AddUserExperiencePointsDialog from "./_components/add-user-experience-points-dialog";
 import AddUserPointsDialog from "./_components/add-user-points-dialog";
@@ -154,17 +152,10 @@ function StatBlock({
 }
 
 export default function UserBalancesPageClient() {
-  const { auth, authQuery } = useAuthContext();
   const { id } = useParams();
   const router = useRouter();
   const queryClient = useQueryClient();
   const userId = id as string;
-  const canViewPoints = !!auth?.permissions.includes(
-    PermissionEnum.POINTS_VIEW,
-  );
-  const canCreatePoints = !!auth?.permissions.includes(
-    PermissionEnum.POINTS_CREATE,
-  );
 
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
@@ -186,6 +177,8 @@ export default function UserBalancesPageClient() {
 
   const userQuery = useGetUserById(userId);
   const user = userQuery.data?.data?.data;
+  const canViewPoints = !!user && user.action_list.is_can_view_balances;
+  const canCreatePoints = !!user && user.action_list.is_can_create_balances;
   const payload = useMemo(
     () => toUserBalanceLogPayload(queryStates),
     [queryStates],
@@ -237,10 +230,10 @@ export default function UserBalancesPageClient() {
   }, [userQuery.error, userQuery.isError]);
 
   useEffect(() => {
-    if (authQuery?.isSuccess && !canViewPoints) {
+    if (userQuery.isSuccess && !canViewPoints) {
       router.replace(`/dashboard/master/iam/users/${userId}`);
     }
-  }, [authQuery?.isSuccess, canViewPoints, router, userId]);
+  }, [userQuery.isSuccess, canViewPoints, router, userId]);
 
   const onTabChange = useCallback(
     (value: unknown) => {
