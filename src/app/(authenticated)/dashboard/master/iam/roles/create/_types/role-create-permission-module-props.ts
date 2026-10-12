@@ -1,8 +1,8 @@
-import type { TPermissionPaginationResponse } from "@/api/main/modules/master/iam/permissions/types/permission-pagination-response";
+import type { TPermissionOptionResponse } from "@/api/main/modules/master/iam/permissions/types/permission-options-response";
 
 export type TRoleCreatePermissionModuleProps = {
   module: string;
-  permissions: TPermissionPaginationResponse[];
+  permissions: TPermissionOptionResponse[];
   selectedPermissionIds: string[];
   onPermissionChange: (permissionIds: string[]) => void;
   disabled: boolean;

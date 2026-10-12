@@ -5,10 +5,10 @@ import type {
   TMainApiListResponse,
   TMainApiPaginationResponse,
 } from "@/api/main/types/response";
-import type { TPermissionEntity } from "@/api/main/types/entities/iam/permission-entity";
 import type { TPermissionPaginationResponse } from "./types/permission-pagination-response";
 import type { TPermissionPaginationPayload } from "./types/permission-pagination-payload";
 import type { TPermissionOptionsPayload } from "./types/permission-options-payload";
+import type { TPermissionOptionResponse } from "./types/permission-options-response";
 
 export const getPermissionPagination = async (
   payload: TPermissionPaginationPayload,
@@ -27,7 +27,7 @@ export const getPermissionPagination = async (
 
 export const getPermissionOptions = async (
   payload: TPermissionOptionsPayload,
-): Promise<AxiosResponse<TMainApiListResponse<TPermissionEntity>>> => {
+): Promise<AxiosResponse<TMainApiListResponse<TPermissionOptionResponse>>> => {
   const response = await mainAxios.get(
     MAIN_API_PATH.MASTER.IAM.PERMISSION.OPTIONS,
     {
