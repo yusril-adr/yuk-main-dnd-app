@@ -26,7 +26,7 @@ const MAIN_API_PATH = {
       },
       PERMISSION: {
         DEFAULT: "/api/v1/master/iam/permissions",
-        FULL: "/api/v1/master/iam/permissions/full",
+        OPTIONS: "/api/v1/master/iam/permissions/options",
       },
     },
     STORY: {

@@ -1,7 +1,7 @@
-import type { TPermissionPaginationResponse } from "@/api/main/modules/master/iam/permissions/types/permission-pagination-response";
+import type { TPermissionOptionResponse } from "@/api/main/modules/master/iam/permissions/types/permission-options-response";
 
 export type TRoleEditPermissionChecboxInputProps = {
-  permissions: TPermissionPaginationResponse[];
+  permissions: TPermissionOptionResponse[];
   value: string[];
   onChange: (permissionIds: string[]) => void;
   disabled: boolean;

@@ -9,12 +9,12 @@ import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import CONFIG from "@/common/constants/config";
 import RoleCreateForm from "./_components/role-create-form";
 import { useCreateRole } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-create-role";
-import { useGetAllPermissions } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-all-permissions";
+import { useGetPermissionOptions } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-permission-options";
 
 export default function RoleCreatePageClient() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const permissionsQuery = useGetAllPermissions();
+  const permissionsQuery = useGetPermissionOptions();
   const createRoleMutation = useCreateRole({
     onSuccess: () => {
       queryClient.invalidateQueries({

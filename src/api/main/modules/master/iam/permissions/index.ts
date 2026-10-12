@@ -7,8 +7,8 @@ import type {
 } from "@/api/main/types/response";
 import type { TPermissionPaginationResponse } from "./types/permission-pagination-response";
 import type { TPermissionPaginationPayload } from "./types/permission-pagination-payload";
-import { TPermissionFullListPayload } from "./types/permission-full-list-payload";
-import { TPermissionFullListResponse } from "./types/permission-full-list-response";
+import type { TPermissionOptionsPayload } from "./types/permission-options-payload";
+import type { TPermissionOptionResponse } from "./types/permission-options-response";
 
 export const getPermissionPagination = async (
   payload: TPermissionPaginationPayload,
@@ -25,13 +25,11 @@ export const getPermissionPagination = async (
   return response;
 };
 
-export const getAllPermissions = async (
-  payload: TPermissionFullListPayload,
-): Promise<
-  AxiosResponse<TMainApiListResponse<TPermissionFullListResponse>>
-> => {
+export const getPermissionOptions = async (
+  payload: TPermissionOptionsPayload,
+): Promise<AxiosResponse<TMainApiListResponse<TPermissionOptionResponse>>> => {
   const response = await mainAxios.get(
-    MAIN_API_PATH.MASTER.IAM.PERMISSION.FULL,
+    MAIN_API_PATH.MASTER.IAM.PERMISSION.OPTIONS,
     {
       params: payload,
     },

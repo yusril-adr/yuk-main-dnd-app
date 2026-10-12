@@ -9,7 +9,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import RoleEditForm from "./_components/role-edit-form";
-import { useGetAllPermissions } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-all-permissions";
+import { useGetPermissionOptions } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-permission-options";
 import { useGetRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-role-by-id";
 import { useUpdateRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-update-role-by-id";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
@@ -21,7 +21,7 @@ export default function RoleEditPageClient() {
   const queryClient = useQueryClient();
   const roleId = id as string;
   const roleQuery = useGetRoleById(roleId);
-  const permissionsQuery = useGetAllPermissions();
+  const permissionsQuery = useGetPermissionOptions();
   const updateRoleMutation = useUpdateRoleById({
     onSuccess: () => {
       queryClient.invalidateQueries({
