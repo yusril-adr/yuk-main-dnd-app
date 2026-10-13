@@ -47,6 +47,7 @@ import {
 } from "@/app/_components/ui/avatar";
 
 import MainAPIValidationError from "@/api/main/errors/validation-error";
+import { emptyToNull } from "@/utils/form-helper";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { UserEditFormSchema, type TUserEditFormSchema } from "./scheme";
 import type { TUserEditFormProps } from "../../_types/user-edit-form-props";
@@ -150,9 +151,9 @@ export default function UserEditForm({
       email: data.email,
       password: data.password || undefined,
       display_name: data.displayName,
-      username: data.username || undefined,
+      username: emptyToNull(data.username),
       avatar_file_id: data.avatarFileId || undefined,
-      bio: data.bio || undefined,
+      bio: emptyToNull(data.bio),
       role_ids: data.roleIds.length > 0 ? data.roleIds : undefined,
     });
   };

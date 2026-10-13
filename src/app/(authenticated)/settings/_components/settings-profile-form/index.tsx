@@ -25,6 +25,7 @@ import {
 } from "@/app/_components/ui/avatar";
 
 import MainAPIValidationError from "@/api/main/errors/validation-error";
+import { emptyToNull } from "@/utils/form-helper";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
 import {
@@ -135,12 +136,12 @@ export default function SettingsProfileForm({
   }, [previewUrl, setValue, onAvatarRemovedChange]);
 
   const onSubmit: SubmitHandler<TSettingsProfileFormSchema> = (data) => {
-    // Always send all fields so emptying username / bio clears them
+    // Always send all fields; cleared username / bio go as null to clear them
     onSubmitPayload({
       email: data.email,
-      username: data.username,
+      username: emptyToNull(data.username),
       display_name: data.displayName,
-      bio: data.bio,
+      bio: emptyToNull(data.bio),
       avatar_file_id: data.avatarFileId
         ? data.avatarFileId
         : isAvatarRemoved
