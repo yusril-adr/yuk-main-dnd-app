@@ -21,8 +21,8 @@ import { StoryMemberStatusEnum } from "@/api/main/modules/master/stories/enums/s
 import {
   PUBLIC_STORY_MEMBER_STATUS_BADGE_VARIANT,
   PUBLIC_STORY_MEMBER_STATUS_LABEL,
-} from "@/app/(public)/stories/_constants/public-story-member";
-import type { TPublicStoryPartyMemberProps } from "@/app/(public)/stories/_types/public-story-components-props";
+} from "@/app/(public)/stories/[slug]/_constants/public-story-member";
+import type { TPublicStoryPartyMemberProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
 
 export default function PublicStoryPartyMember({
   member,

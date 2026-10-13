@@ -10,12 +10,12 @@ import dayjs from "@/libs/dayjs";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 
-import { useGetPublicStoryByIdentifier } from "@/app/(public)/stories/_hooks/use-get-public-story-by-identifier";
-import PublicStoryDetailHero from "@/app/(public)/stories/_components/public-story-detail-hero";
-import PublicStoryDetailSection from "@/app/(public)/stories/_components/public-story-detail-section";
-import PublicStoryDetailSummary from "@/app/(public)/stories/_components/public-story-detail-summary";
-import PublicStoryDetailSkeleton from "@/app/(public)/stories/_components/public-story-detail-skeleton";
-import PublicStoryParty from "@/app/(public)/stories/_components/public-story-party";
+import { useGetPublicStoryByIdentifier } from "@/app/(public)/stories/[slug]/_hooks/use-get-public-story-by-identifier";
+import PublicStoryDetailHero from "@/app/(public)/stories/[slug]/_components/public-story-detail-hero";
+import PublicStoryDetailSection from "@/app/(public)/stories/[slug]/_components/public-story-detail-section";
+import PublicStoryDetailSummary from "@/app/(public)/stories/[slug]/_components/public-story-detail-summary";
+import PublicStoryDetailSkeleton from "@/app/(public)/stories/[slug]/_components/public-story-detail-skeleton";
+import PublicStoryParty from "@/app/(public)/stories/[slug]/_components/public-story-party";
 import PublicStoryErrorState from "@/app/(public)/stories/_components/public-story-error-state";
 import { PUBLIC_STORY_DETAIL_DATE_FORMAT } from "@/app/(public)/stories/_constants/public-story-date-format";
 

@@ -6,7 +6,7 @@ import {
 } from "@/app/_components/ui/card";
 import { cn } from "@/utils/cn";
 
-import type { TPublicStoryDetailSectionProps } from "@/app/(public)/stories/_types/public-story-components-props";
+import type { TPublicStoryDetailSectionProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
 
 // Detail page section on shadcn Card (icon + title header, content body)
 export default function PublicStoryDetailSection({

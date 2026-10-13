@@ -25,9 +25,9 @@ import CONFIG from "@/common/constants/config";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 
-import { useJoinPublicStory } from "@/app/(public)/stories/_hooks/use-join-public-story";
-import { useCancelJoinPublicStory } from "@/app/(public)/stories/_hooks/use-cancel-join-public-story";
-import type { TPublicStoryDetailProps } from "@/app/(public)/stories/_types/public-story-components-props";
+import { useJoinPublicStory } from "@/app/(public)/stories/[slug]/_hooks/use-join-public-story";
+import { useCancelJoinPublicStory } from "@/app/(public)/stories/[slug]/_hooks/use-cancel-join-public-story";
+import type { TPublicStoryDetailProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
 
 // Renders the action inline in the sidebar on desktop and as a fixed bottom
 // bar on mobile (one instance, so the dialog and mutation state are shared)

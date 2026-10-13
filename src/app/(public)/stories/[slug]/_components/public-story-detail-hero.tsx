@@ -2,11 +2,11 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { If, Then } from "react-if";
 
-import PublicStoryBanner from "./public-story-banner";
-import PublicStoryStatusBadge from "./public-story-status-badge";
-import PublicStoryTypeBadge from "./public-story-type-badge";
-import PublicStoryLocationBadge from "./public-story-location-badge";
-import type { TPublicStoryDetailProps } from "@/app/(public)/stories/_types/public-story-components-props";
+import PublicStoryBanner from "@/app/(public)/stories/_components/public-story-banner";
+import PublicStoryStatusBadge from "@/app/(public)/stories/_components/public-story-status-badge";
+import PublicStoryTypeBadge from "@/app/(public)/stories/_components/public-story-type-badge";
+import PublicStoryLocationBadge from "@/app/(public)/stories/_components/public-story-location-badge";
+import type { TPublicStoryDetailProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
 
 // Full-bleed banner with the title laid over a gradient
 export default function PublicStoryDetailHero({

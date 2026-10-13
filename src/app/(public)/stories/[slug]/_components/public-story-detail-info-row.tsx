@@ -6,7 +6,7 @@ import {
   ItemTitle,
 } from "@/app/_components/ui/item";
 
-import type { TPublicStoryDetailInfoRowProps } from "@/app/(public)/stories/_types/public-story-components-props";
+import type { TPublicStoryDetailInfoRowProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
 
 // Label/value row on shadcn Item (label as the small title, value as text)
 export default function PublicStoryDetailInfoRow({
