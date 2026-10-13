@@ -8,6 +8,7 @@ import {
   AvatarImage,
 } from "@/app/_components/ui/avatar";
 import dayjs from "@/libs/dayjs";
+import { makeDefaultAvatarUrl } from "@/utils/user-helper";
 import { getRichTextPlainText } from "@/utils/rich-text";
 
 import PublicStoryBanner from "./public-story-banner";
@@ -101,7 +102,10 @@ export default function PublicStoryCard({ story }: TPublicStoryCardProps) {
               <div className="flex items-center gap-2">
                 <Avatar className="size-6">
                   <AvatarImage
-                    src={creator?.avatar_url ?? undefined}
+                    src={
+                      creator?.avatar_url ??
+                      makeDefaultAvatarUrl(creator?.display_name)
+                    }
                     alt={creator?.display_name}
                     loading="lazy"
                   />

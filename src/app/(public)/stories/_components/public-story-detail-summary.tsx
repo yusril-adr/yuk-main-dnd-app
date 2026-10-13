@@ -8,6 +8,7 @@ import {
 } from "@/app/_components/ui/avatar";
 import { cn } from "@/utils/cn";
 import dayjs from "@/libs/dayjs";
+import { makeDefaultAvatarUrl } from "@/utils/user-helper";
 import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
 
 import PublicStoryJoinActions from "./public-story-join-actions";
@@ -115,7 +116,10 @@ export default function PublicStoryDetailSummary({
           <div className="flex items-center gap-3 border-t bg-muted/30 px-5 py-4 sm:px-6">
             <Avatar className="size-10 ring-2 ring-primary/30">
               <AvatarImage
-                src={creator?.avatar_url ?? undefined}
+                src={
+                  creator?.avatar_url ??
+                  makeDefaultAvatarUrl(creator?.display_name)
+                }
                 alt={creator?.display_name}
                 loading="lazy"
               />
