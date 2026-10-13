@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { ChevronLeft, ChevronRight, RotateCw, Users } from "lucide-react";
+import { ChevronDown, RotateCw, Users } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
 import { Skeleton } from "@/app/_components/ui/skeleton";
+import { Spinner } from "@/app/_components/ui/spinner";
 
 import PublicStoryDetailSection from "./public-story-detail-section";
 import PublicStoryPartyMember from "./public-story-party-member";
 import { useGetPublicStoryMemberPagination } from "@/app/(public)/stories/_hooks/use-get-public-story-member-pagination";
-import { PUBLIC_STORY_MEMBER_PAGE_SIZE } from "@/app/(public)/stories/_constants/public-story-member";
+import { PUBLIC_STORY_MEMBER_PER_PAGE } from "@/app/(public)/stories/_constants/public-story-member";
 import type { TPublicStoryPartyProps } from "@/app/(public)/stories/_types/public-story-components-props";
 
 export default function PublicStoryParty({
@@ -16,17 +16,15 @@ export default function PublicStoryParty({
   maxMembers,
   className,
 }: TPublicStoryPartyProps) {
-  const [page, setPage] = useState(1);
-  const membersQuery = useGetPublicStoryMemberPagination(storyId, {
-    page,
-    per_page: PUBLIC_STORY_MEMBER_PAGE_SIZE,
-    // Join order: first to enlist comes first
-    sort_by: "created_at",
-  });
-  const members = membersQuery.data?.data?.data?.items ?? [];
-  const meta = membersQuery.data?.data?.data?.meta;
+  const membersQuery = useGetPublicStoryMemberPagination(
+    storyId,
+    PUBLIC_STORY_MEMBER_PER_PAGE,
+  );
+  const pages = membersQuery.data?.pages ?? [];
+  const members = pages.flatMap((page) => page.data?.data?.items ?? []);
+  // Latest page has the freshest total
+  const meta = pages[pages.length - 1]?.data?.data?.meta;
   const total = meta?.total_all_data ?? 0;
-  const totalPage = meta?.total_page || 1;
 
   return (
     <PublicStoryDetailSection
@@ -105,31 +103,23 @@ export default function PublicStoryParty({
                     ))}
                   </ul>
 
-                  <If condition={totalPage > 1}>
+                  <If condition={membersQuery.hasNextPage}>
                     <Then>
-                      <div className="flex items-center justify-between gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          disabled={page <= 1 || membersQuery.isFetching}
-                          onClick={() => setPage((p) => p - 1)}
-                        >
-                          <ChevronLeft /> Previous
-                        </Button>
-                        <span className="text-sm text-muted-foreground">
-                          Page {page} of {totalPage}
-                        </span>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          disabled={
-                            page >= totalPage || membersQuery.isFetching
-                          }
-                          onClick={() => setPage((p) => p + 1)}
-                        >
-                          Next <ChevronRight />
-                        </Button>
-                      </div>
+                      <Button
+                        variant="outline"
+                        className="w-full sm:w-auto sm:self-center"
+                        disabled={membersQuery.isFetchingNextPage}
+                        onClick={() => membersQuery.fetchNextPage()}
+                      >
+                        {membersQuery.isFetchingNextPage ? (
+                          <Spinner />
+                        ) : (
+                          <ChevronDown />
+                        )}
+                        {membersQuery.isFetchingNextPage
+                          ? "Summoning adventurers..."
+                          : `Show more adventurers (${total - members.length} more)`}
+                      </Button>
                     </Then>
                   </If>
                 </Else>
