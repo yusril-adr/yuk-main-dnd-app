@@ -347,6 +347,58 @@ export default function StoryEditForm({
               )}
             />
 
+            {/* Rewards side by side from sm up */}
+            <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-4">
+              <Controller
+                name="expAwarded"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field className="grid" data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="expAwarded">XP Awarded</FieldLabel>
+                    <Input
+                      id="expAwarded"
+                      type="number"
+                      inputMode="numeric"
+                      min={0}
+                      step={1}
+                      placeholder="0"
+                      disabled={isFormDisabled}
+                      className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      {...field}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="pointAwarded"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field className="grid" data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="pointAwarded">
+                      Gold Awarded (GP)
+                    </FieldLabel>
+                    <Input
+                      id="pointAwarded"
+                      type="number"
+                      inputMode="numeric"
+                      min={0}
+                      step={1}
+                      placeholder="0"
+                      disabled={isFormDisabled}
+                      className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      {...field}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </div>
+
             <Controller
               name="startAt"
               control={control}
@@ -444,7 +496,9 @@ export default function StoryEditForm({
                     // (and on create until picked); null = no selection for Base UI
                     value={field.value ?? null}
                     // Same labels as the detail page (e.g. "oneshot" -> "Oneshot")
-                    itemToStringLabel={(item) => STORY_LOCATION_TYPE_LABEL[item as StoryLocationTypeEnum]}
+                    itemToStringLabel={(item) =>
+                      STORY_LOCATION_TYPE_LABEL[item as StoryLocationTypeEnum]
+                    }
                   >
                     <ComboboxInput placeholder="Select location type" />
                     <ComboboxContent>
@@ -452,7 +506,11 @@ export default function StoryEditForm({
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {STORY_LOCATION_TYPE_LABEL[item as StoryLocationTypeEnum]}
+                            {
+                              STORY_LOCATION_TYPE_LABEL[
+                                item as StoryLocationTypeEnum
+                              ]
+                            }
                           </ComboboxItem>
                         )}
                       </ComboboxList>
