@@ -72,8 +72,8 @@ export default function StoryBannerField({
           </If>
         </div>
 
-        <div className="flex w-full flex-col gap-2 sm:w-72">
-          <div className="grid auto-cols-fr grid-flow-col gap-2">
+        <div className="flex w-full flex-col gap-2 sm:w-48">
+          <div className="flex flex-col gap-2">
             <Button
               type="button"
               variant="outline"
