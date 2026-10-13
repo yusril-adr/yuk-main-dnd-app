@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CalendarDays, Coins, Gamepad2, Sparkles, Trophy } from "lucide-react";
 import { If, Then } from "react-if";
 
@@ -140,9 +141,12 @@ export default function PublicStoryDetailSummary({
               <span className="text-xs text-muted-foreground">
                 Dungeon Master
               </span>
-              <span className="truncate font-medium">
+              <Link
+                href={`/guildmates/${encodeURIComponent(creator?.username?.trim() || creator?.id || "")}`}
+                className="truncate font-medium underline-offset-4 hover:text-primary hover:underline"
+              >
                 {creator?.display_name}
-              </span>
+              </Link>
             </div>
           </CardFooter>
         </Then>

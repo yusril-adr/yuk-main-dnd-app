@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CalendarPlus, Feather, History } from "lucide-react";
 
 import {
@@ -43,7 +44,12 @@ export default function StoryDetailChronicleCard({
                   {getInitials(creator?.display_name)}
                 </AvatarFallback>
               </Avatar>
-              {creator?.display_name}
+              <Link
+                href={`/guildmates/${encodeURIComponent(creator?.username?.trim() || creator?.id || "")}`}
+                className="min-w-0 truncate text-primary underline-offset-4 hover:underline"
+              >
+                {creator?.display_name}
+              </Link>
             </span>
           )
         }
