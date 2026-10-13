@@ -223,7 +223,7 @@ export default function UserEditForm({
                       <FieldDescription className="flex-1">
                         Your profile image should have a 1:1 ratio
                         <br />
-                        and be no larger than 1MB.
+                        and be no larger than 3MB.
                       </FieldDescription>
                     </div>
                   </div>

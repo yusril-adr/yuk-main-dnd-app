@@ -38,7 +38,7 @@ export default function StoryBannerField({
       return;
     }
     if (file.size > STORY_BANNER_MAX_FILE_SIZE_BYTES) {
-      onFileError("Banner must be 2 MB or smaller");
+      onFileError("Banner must be 5 MB or smaller");
       return;
     }
 
@@ -53,53 +53,55 @@ export default function StoryBannerField({
           <If condition={!!previewUrl}>
             <Then>
               {/* Plain <img> like the story card banner (blob: or public storage URL).
-                  Natural aspect ratio; tall images are capped and letterboxed. */}
+                  Cropped to 16:10 like the story cards. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={previewUrl ?? undefined}
                 alt="Story banner preview"
-                className="block h-auto max-h-64 w-full object-contain"
+                className="block aspect-[16/10] w-full object-cover"
               />
             </Then>
             <Else>
-              <div className="flex aspect-video w-full items-center justify-center">
+              <div className="flex aspect-[16/10] w-full items-center justify-center">
                 <ImageIcon className="size-8 text-muted-foreground" />
               </div>
             </Else>
           </If>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            disabled={disabled || isUploading}
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <If condition={isUploading}>
-              <Then>
-                <Spinner data-icon="inline-start" />
-              </Then>
-              <Else>
-                <Upload data-icon="inline-start" />
-              </Else>
-            </If>
-            Choose file
-          </Button>
+        <div className="flex w-full flex-col gap-2 sm:w-72">
+          <div className="grid auto-cols-fr grid-flow-col gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              disabled={disabled || isUploading}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <If condition={isUploading}>
+                <Then>
+                  <Spinner data-icon="inline-start" />
+                </Then>
+                <Else>
+                  <Upload data-icon="inline-start" />
+                </Else>
+              </If>
+              Choose file
+            </Button>
 
-          <If condition={!!previewUrl}>
-            <Then>
-              <Button
-                type="button"
-                variant="outline"
-                disabled={disabled || isUploading}
-                onClick={onRemove}
-              >
-                <Trash data-icon="inline-start" />
-                Remove
-              </Button>
-            </Then>
-          </If>
+            <If condition={!!previewUrl}>
+              <Then>
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={disabled || isUploading}
+                  onClick={onRemove}
+                >
+                  <Trash data-icon="inline-start" />
+                  Remove
+                </Button>
+              </Then>
+            </If>
+          </div>
 
           <input
             ref={fileInputRef}
@@ -109,8 +111,9 @@ export default function StoryBannerField({
             onChange={handleFileChange}
           />
           <FieldDescription>
-            JPG, PNG, or WebP image, max 2 MB. Shown at its original aspect
-            ratio.
+            JPG, PNG, or WebP image, max 5 MB. Recommended 16:10 (e.g. 1600
+            &times; 1000 px) with the main subject centered, since the public
+            pages crop the edges.
           </FieldDescription>
         </div>
       </div>

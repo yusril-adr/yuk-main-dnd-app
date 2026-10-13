@@ -117,12 +117,13 @@ export default function StoryCard({
           mt-auto; pb-2 on the content keeps a minimum gap above it. */}
       <Card className="gap-2 pt-0">
         <div className="relative">
-          {/* Fixed 16:9 crop on list cards so every card is the same size
-              (the form preview and detail page keep the natural ratio) */}
+          {/* Fixed 16:10 crop like the public story cards, so every card is
+              the same size (the form preview keeps the natural ratio) */}
           <StoryCardBanner
             bannerUrl={story.banner_url}
             title={story.title}
-            imageClassName="aspect-video max-h-none object-cover"
+            imageClassName="aspect-[16/10] max-h-none object-cover"
+            placeholderClassName="aspect-[16/10]"
           />
 
           <DropdownMenu>
