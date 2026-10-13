@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import {
   Avatar,
   AvatarFallback,
@@ -28,6 +30,7 @@ export default function PublicStoryPartyMember({
   member,
 }: TPublicStoryPartyMemberProps) {
   const { user } = member;
+  const guildmateSlug = user.username?.trim() || user.id;
 
   return (
     <Item
@@ -52,7 +55,12 @@ export default function PublicStoryPartyMember({
 
       <ItemContent className="min-w-0 gap-0">
         <ItemTitle className="block w-full truncate text-base text-foreground">
-          {user.display_name}
+          <Link
+            href={`/guildmates/${encodeURIComponent(guildmateSlug)}`}
+            className="underline-offset-4 hover:text-primary hover:underline"
+          >
+            {user.display_name}
+          </Link>
         </ItemTitle>
         <ItemDescription className="truncate text-foreground/75">
           {user.username ? `@${user.username} · ` : ""}
