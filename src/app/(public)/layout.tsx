@@ -1,9 +1,17 @@
-import AppTopbarLayout from "@/app/_components/layout/app-topbar-layout";
+"use client";
 
-export default function HomeLayout({
+import { Suspense } from "react";
+import AppTopbarLayout from "@/app/_components/layout/app-topbar-layout";
+import GlobalLoader from "@/app/_components/global-loader";
+
+export default function PublicLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <AppTopbarLayout>{children}</AppTopbarLayout>;
+  return (
+    <AppTopbarLayout>
+      <Suspense fallback={<GlobalLoader />}>{children}</Suspense>
+    </AppTopbarLayout>
+  );
 }
