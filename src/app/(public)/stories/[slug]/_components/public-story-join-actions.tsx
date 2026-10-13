@@ -26,6 +26,8 @@ import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 
 import { useJoinPublicStory } from "@/app/(public)/stories/[slug]/_hooks/use-join-public-story";
+import { useGetPublicStoryMemberPagination } from "@/app/(public)/stories/[slug]/_hooks/use-get-public-story-member-pagination";
+import { PUBLIC_STORY_MEMBER_PER_PAGE } from "@/app/(public)/stories/[slug]/_constants/public-story-member";
 import { useCancelJoinPublicStory } from "@/app/(public)/stories/[slug]/_hooks/use-cancel-join-public-story";
 import type { TPublicStoryDetailProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
 
@@ -38,6 +40,7 @@ export default function PublicStoryJoinActions({
   const queryClient = useQueryClient();
   const { auth, authQuery } = useAuthContext();
   const [isLeaveDialogOpen, setIsLeaveDialogOpen] = useState(false);
+  const [isFullDialogOpen, setIsFullDialogOpen] = useState(false);
 
   // Refreshes detail (action_list), the members list (nested key) and the
   // story list (joined_members); all start with STORY.ALL()
@@ -73,6 +76,25 @@ export default function PublicStoryJoinActions({
   const canLeave = story.action_list.is_can_cancel_join;
   const showLogin = isLoggedOut && isPublished;
   const isPending = joinMutation.isPending || cancelJoinMutation.isPending;
+  // max_members is not a join cap: past it, joiners wait as viewers until
+  // the Dungeon Master picks them as substitutes
+  // Same query (and cache) as the party list, so no extra request
+  const membersQuery = useGetPublicStoryMemberPagination(
+    story.id,
+    PUBLIC_STORY_MEMBER_PER_PAGE,
+  );
+  const memberPages = membersQuery.data?.pages ?? [];
+  const joinedTotal =
+    memberPages[memberPages.length - 1]?.data?.data?.meta?.total_all_data ?? 0;
+  const isPartyFull = !!story.max_members && joinedTotal >= story.max_members;
+
+  const onJoinClick = () => {
+    if (isPartyFull) {
+      setIsFullDialogOpen(true);
+      return;
+    }
+    joinMutation.mutate(story.id);
+  };
 
   if (!showLogin && !canJoin && !canLeave) {
     return null;
@@ -117,7 +139,7 @@ export default function PublicStoryJoinActions({
               size="lg"
               className="w-full"
               disabled={isPending}
-              onClick={() => joinMutation.mutate(story.id)}
+              onClick={onJoinClick}
             >
               {joinMutation.isPending ? <Spinner /> : <Swords />}
               Join the party
@@ -155,7 +177,7 @@ export default function PublicStoryJoinActions({
               &rdquo;. Thou may rejoin while the quest is still open.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="sm:grid sm:grid-cols-2">
             <AlertDialogCancel>Stay</AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
@@ -166,6 +188,32 @@ export default function PublicStoryJoinActions({
               }}
             >
               Leave the party
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={isFullDialogOpen} onOpenChange={setIsFullDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>The party is full</AlertDialogTitle>
+            <AlertDialogDescription>
+              All {story.max_members} player slots of &ldquo;{story.title}
+              &rdquo; are taken. Thou may still join, but as a viewer. Speak
+              with the Dungeon Master to learn whether thou can be a substitute
+              player.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="sm:grid sm:grid-cols-2">
+            <AlertDialogCancel>Not now</AlertDialogCancel>
+            <AlertDialogAction
+              disabled={joinMutation.isPending}
+              onClick={() => {
+                joinMutation.mutate(story.id);
+                setIsFullDialogOpen(false);
+              }}
+            >
+              Join as viewer
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
