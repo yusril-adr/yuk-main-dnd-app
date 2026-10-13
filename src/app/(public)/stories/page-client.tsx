@@ -1,16 +1,9 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import {
-  createParser,
-  parseAsInteger,
-  parseAsString,
-  parseAsStringEnum,
-} from "nuqs";
+import { createParser, parseAsInteger, parseAsString } from "nuqs";
 
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
-import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
-import { OrderKeyEnum } from "@/common/enums/order-key";
 import type { TPublicStoryPaginationPayload } from "@/api/main/modules/stories/types/public-story-pagination-payload";
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
@@ -48,22 +41,6 @@ export default function StoriesPageClient() {
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
     search: parseAsString.withDefault(""),
-    sortBy: createSortByParser(
-      [
-        "title",
-        "type",
-        "game_system",
-        "max_members",
-        "start_at",
-        "location_type",
-        "created_at",
-        "updated_at",
-      ] as const,
-      "Stories",
-    ).withDefault("updated_at"),
-    order: parseAsStringEnum<OrderKeyEnum>(
-      Object.values(OrderKeyEnum),
-    ).withDefault(OrderKeyEnum.DESC),
     status: parseAsNumericValues<TPublicStoryStatus>(
       PUBLIC_STORY_STATUS_OPTIONS,
     ),
@@ -79,8 +56,6 @@ export default function StoriesPageClient() {
       per_page: PUBLIC_STORY_PAGE_SIZE,
       search: queryStates.search,
       // nuqs parsers return null when unset, but API expects undefined — coalesce
-      sort_by: queryStates.sortBy ?? undefined,
-      order: queryStates.order ?? undefined,
       status: queryStates.status ?? undefined,
       type: queryStates.type ?? undefined,
       location_type: queryStates.locationType ?? undefined,
@@ -120,8 +95,6 @@ export default function StoriesPageClient() {
     setQueryStates({
       search: "",
       page: 1,
-      sortBy: null,
-      order: null,
       status: null,
       type: null,
       locationType: null,
