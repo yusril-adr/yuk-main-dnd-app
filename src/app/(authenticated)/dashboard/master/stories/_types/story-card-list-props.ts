@@ -33,6 +33,7 @@ export type TStoryCardListActionHandler = {
   onArchiveStory: (id: string) => void;
   onUnarchiveStory: (id: string) => void;
   onPublishStory: (id: string) => void;
+  onCancelStory: (id: string) => void;
   onDeleteStory: (id: string) => void;
 };
 

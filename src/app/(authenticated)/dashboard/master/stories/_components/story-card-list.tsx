@@ -319,7 +319,9 @@ export default function StoryCardList({
                     itemToStringLabel={(item) =>
                       STORY_LOCATION_TYPE_LABEL[item]
                     }
-                    onValueChange={(value) => setFilterLocationType(value || null)}
+                    onValueChange={(value) =>
+                      setFilterLocationType(value || null)
+                    }
                   >
                     <ComboboxInput placeholder="Select location" showClear />
                     <ComboboxContent>
@@ -327,7 +329,11 @@ export default function StoryCardList({
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {STORY_LOCATION_TYPE_LABEL[item as StoryLocationTypeEnum]}
+                            {
+                              STORY_LOCATION_TYPE_LABEL[
+                                item as StoryLocationTypeEnum
+                              ]
+                            }
                           </ComboboxItem>
                         )}
                       </ComboboxList>
@@ -414,6 +420,7 @@ export default function StoryCardList({
               onArchive={onActionHandler.onArchiveStory}
               onPublish={onActionHandler.onPublishStory}
               onUnarchive={onActionHandler.onUnarchiveStory}
+              onCancel={onActionHandler.onCancelStory}
               onDelete={onActionHandler.onDeleteStory}
             />
           ))}

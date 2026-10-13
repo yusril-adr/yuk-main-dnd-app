@@ -5,5 +5,6 @@ export type TStoryCardProps = {
   onArchive?: (id: string) => void;
   onUnarchive?: (id: string) => void;
   onPublish?: (id: string) => void;
+  onCancel?: (id: string) => void;
   onDelete?: (id: string) => void;
 };
