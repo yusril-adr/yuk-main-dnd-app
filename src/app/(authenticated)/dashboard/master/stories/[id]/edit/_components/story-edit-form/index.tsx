@@ -37,7 +37,6 @@ import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/s
 import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
-import { toRichTextHtml } from "@/utils/rich-text";
 import dayjs from "@/libs/dayjs";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
 import StoryEditFormActions from "./story-edit-form-actions";
@@ -62,8 +61,8 @@ export default function StoryEditForm({
       bannerFileId: "",
       isBannerRemoved: false,
       title: story?.title ?? "",
-      // Old plain-text descriptions become paragraphs / line breaks for the editor
-      description: toRichTextHtml(story?.description),
+      // Stored as Markdown
+      description: story?.description ?? "",
       type: story?.type as StoryTypeEnum,
       gameSystem: story?.game_system ?? "",
       maxMembers: story?.max_members ? String(story.max_members) : "",

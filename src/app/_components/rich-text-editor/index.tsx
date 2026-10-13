@@ -3,6 +3,7 @@ import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import type { Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Placeholder } from "@tiptap/extensions";
+import { Markdown } from "@tiptap/markdown";
 import { Else, If, Then } from "react-if";
 
 import { Skeleton } from "@/app/_components/ui/skeleton";
@@ -12,9 +13,12 @@ import {
 } from "@/app/_constants/rich-text";
 import type { TRichTextEditorProps } from "@/app/_types/rich-text-editor-props";
 import { RichTextCharacterCount } from "@/libs/tiptap/rich-text-character-count";
-import { RichTextImage } from "@/libs/tiptap/rich-text-image";
+// Image insert disabled: descriptions are stored as Markdown for Discord, which doesn't render inline images. Re-enable if Discord support isn't needed.
+// import { RichTextImage } from "@/libs/tiptap/rich-text-image";
+import { RichTextUnderline } from "@/libs/tiptap/rich-text-underline";
 import { cn } from "@/utils/cn";
-import { removeHtmlImages } from "@/utils/rich-text";
+// Image insert disabled: descriptions are stored as Markdown for Discord, which doesn't render inline images. Re-enable if Discord support isn't needed.
+// import { removeHtmlImages } from "@/utils/rich-text";
 
 import RichTextToolbar from "./rich-text-toolbar";
 
@@ -39,9 +43,18 @@ export default function RichTextEditor({
         code: false,
         codeBlock: false,
         link: { openOnClick: false, autolink: true, defaultProtocol: "https" },
+        // Divider disabled: descriptions are stored as Markdown for Discord,
+        // which has no horizontal rule. Re-enable if Discord support isn't needed.
+        horizontalRule: false,
+        // Replaced by RichTextUnderline (Discord-style __text__ in Markdown)
+        underline: false,
       }),
+      RichTextUnderline,
+      // Content is loaded from and saved as Markdown (editor.getMarkdown())
+      Markdown,
       Placeholder.configure({ placeholder }),
-      RichTextImage,
+      // Image insert disabled: descriptions are stored as Markdown for Discord, which doesn't render inline images. Re-enable if Discord support isn't needed.
+      // RichTextImage,
       // Images count as 0 characters (same as countRichTextCharacters)
       RichTextCharacterCount.configure({ limit: maxLength }),
     ],
@@ -56,6 +69,7 @@ export default function RichTextEditor({
     editable: !disabled,
     extensions,
     content: value,
+    contentType: "markdown",
     editorProps: {
       attributes: {
         ...(id ? { id } : {}),
@@ -70,18 +84,19 @@ export default function RichTextEditor({
           "min-h-32 px-3 py-2 text-base outline-none md:text-sm",
         ),
       },
+      // Image insert disabled: descriptions are stored as Markdown for Discord, which doesn't render inline images. Re-enable if Discord support isn't needed.
       // Images only come from the Image button: strip <img> from pasted and
       // dropped HTML (runs for both paste and drop)
-      transformPastedHTML: (html) => removeHtmlImages(html),
+      // transformPastedHTML: (html) => removeHtmlImages(html),
       // Dropping files (e.g. an image from the desktop) would make the browser
       // open the file and leave the form; ignore them. Moving content inside
       // the editor still works
       handleDrop: (_view, event, _slice, moved) =>
         !moved && !!event.dataTransfer?.files.length,
     },
-    // An empty document is "<p></p>"; store "" so optional / required checks work
+    // Stored as Markdown; an empty document is saved as "" so optional / required checks work
     onUpdate: ({ editor: currentEditor }) => {
-      onChange(currentEditor.isEmpty ? "" : currentEditor.getHTML());
+      onChange(currentEditor.isEmpty ? "" : currentEditor.getMarkdown());
     },
     onBlur: () => onBlur?.(),
   });
@@ -92,9 +107,12 @@ export default function RichTextEditor({
       return;
     }
 
-    const currentValue = editor.isEmpty ? "" : editor.getHTML();
+    const currentValue = editor.isEmpty ? "" : editor.getMarkdown();
     if (value !== currentValue) {
-      editor.commands.setContent(value, { emitUpdate: false });
+      editor.commands.setContent(value, {
+        emitUpdate: false,
+        contentType: "markdown",
+      });
     }
   }, [editor, value]);
 

@@ -3,6 +3,7 @@ import { Else, If, Then } from "react-if";
 
 import RichTextContent from "@/app/_components/rich-text-content";
 
+import StoryDetailCopyDescriptionButton from "./story-detail-copy-description-button";
 import StoryDetailSectionCard from "./story-detail-section-card";
 import type { TStoryDetailCardProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-card-props";
 
@@ -18,6 +19,11 @@ export default function StoryDetailQuestCard({
     >
       <If condition={!!story.description}>
         <Then>
+          <div className="flex justify-end">
+            <StoryDetailCopyDescriptionButton
+              description={story.description as string}
+            />
+          </div>
           <RichTextContent
             value={story.description as string}
             className="text-base"
