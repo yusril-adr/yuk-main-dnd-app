@@ -191,7 +191,7 @@ export default function StoryCompleteDialog({
           <AlertDialogTitle>Complete story?</AlertDialogTitle>
           <AlertDialogDescription>
             Choose who attended. Checked members are marked attended and receive
-            rewards. Unchecked members are marked absent and receive no rewards.
+            rewards. Unchecked members are marked viewer and receive no rewards.
             The story and its members cannot be edited after this.
           </AlertDialogDescription>
         </AlertDialogHeader>

@@ -10,15 +10,15 @@ export const PUBLIC_STORY_MEMBER_STATUS_LABEL: Record<
 > = {
   [StoryMemberStatusEnum.REGISTERED]: "Enlisted",
   [StoryMemberStatusEnum.ATTENDED]: "Attended",
-  [StoryMemberStatusEnum.ABSENT]: "Absent",
+  [StoryMemberStatusEnum.VIEWER]: "Viewer",
 };
 
-// Badge variants per member status (Absent adds a destructive outline tint)
+// Badge variants per member status (Viewer adds a destructive outline tint)
 export const PUBLIC_STORY_MEMBER_STATUS_BADGE_VARIANT: Record<
   StoryMemberStatusEnum,
   "default" | "secondary" | "outline"
 > = {
   [StoryMemberStatusEnum.REGISTERED]: "secondary",
   [StoryMemberStatusEnum.ATTENDED]: "default",
-  [StoryMemberStatusEnum.ABSENT]: "outline",
+  [StoryMemberStatusEnum.VIEWER]: "outline",
 };

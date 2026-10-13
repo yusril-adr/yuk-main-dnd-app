@@ -65,7 +65,7 @@ export default function PublicStoryPartyMember({
           variant={PUBLIC_STORY_MEMBER_STATUS_BADGE_VARIANT[member.status]}
           className={cn(
             "rounded-sm shadow-none",
-            member.status === StoryMemberStatusEnum.ABSENT &&
+            member.status === StoryMemberStatusEnum.VIEWER &&
               "border-destructive/50 text-destructive",
           )}
         >

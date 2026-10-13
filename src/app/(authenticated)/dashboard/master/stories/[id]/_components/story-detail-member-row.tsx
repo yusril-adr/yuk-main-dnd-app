@@ -47,7 +47,7 @@ export default function StoryDetailMemberRow({
       >
         {member.user.display_name}
       </Link>
-      {/* Per-member actions (attended, absent) mount here, beside the status badge. */}
+      {/* Per-member actions (attended, viewer) mount here, beside the status badge. */}
       <span className="ms-auto flex shrink-0 items-center gap-2">
         <If condition={!!statusLabel}>
           <Then>
