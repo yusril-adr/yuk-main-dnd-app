@@ -8,7 +8,7 @@ export function GuestActions() {
   return (
     <>
       <Link href="/login" className={buttonVariants({ variant: "default" })}>
-        Log in
+        Masuk
       </Link>
     </>
   );
