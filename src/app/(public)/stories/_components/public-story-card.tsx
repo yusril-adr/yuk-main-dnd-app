@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, CalendarDays, Trophy, Users } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Crown, Trophy, Users } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 import {
@@ -15,7 +15,14 @@ import {
   AvatarImage,
 } from "@/app/_components/ui/avatar";
 import dayjs from "@/libs/dayjs";
-import { makeDefaultAvatarUrl } from "@/utils/user-helper";
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@/app/_components/ui/item";
+import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 import { getRichTextPlainText } from "@/utils/rich-text";
 
 import PublicStoryBanner from "./public-story-banner";
@@ -117,27 +124,37 @@ export default function PublicStoryCard({
 
           <If condition={!!creator}>
             <Then>
-              <div className="flex items-center gap-2">
-                <Avatar className="size-6">
-                  <AvatarImage
-                    src={
-                      creator?.avatar_url ??
-                      makeDefaultAvatarUrl(creator?.display_name)
-                    }
-                    alt={creator?.display_name}
-                    loading="lazy"
-                  />
-                  <AvatarFallback className="text-[10px]">
-                    {creator?.display_name?.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="truncate text-xs text-muted-foreground">
-                  Game Master{" "}
-                  <span className="font-medium text-foreground">
+              <Item
+                variant="muted"
+                size="sm"
+                className="flex-nowrap rounded-sm border-primary/20 px-2.5 py-2"
+              >
+                <ItemMedia>
+                  <Avatar className="size-9 border-2 border-primary/40">
+                    <AvatarImage
+                      src={
+                        creator?.avatar_url ??
+                        makeDefaultAvatarUrl(creator?.display_name)
+                      }
+                      alt={creator?.display_name}
+                      loading="lazy"
+                      className="object-cover"
+                    />
+                    <AvatarFallback className="font-heading text-sm">
+                      {getInitials(creator?.display_name ?? "")}
+                    </AvatarFallback>
+                  </Avatar>
+                </ItemMedia>
+                <ItemContent className="min-w-0 gap-0">
+                  <ItemDescription className="flex items-center gap-1 text-[10px] font-medium tracking-widest text-primary uppercase [&>svg]:size-3">
+                    <Crown />
+                    Dungeon Master
+                  </ItemDescription>
+                  <ItemTitle className="block w-full truncate font-heading text-sm text-foreground">
                     {creator?.display_name}
-                  </span>
-                </span>
-              </div>
+                  </ItemTitle>
+                </ItemContent>
+              </Item>
             </Then>
           </If>
         </CardFooter>

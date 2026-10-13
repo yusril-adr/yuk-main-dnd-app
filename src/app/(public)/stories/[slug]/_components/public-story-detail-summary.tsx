@@ -137,7 +137,9 @@ export default function PublicStoryDetailSummary({
               </AvatarFallback>
             </Avatar>
             <div className="flex min-w-0 flex-col">
-              <span className="text-xs text-muted-foreground">Game Master</span>
+              <span className="text-xs text-muted-foreground">
+                Dungeon Master
+              </span>
               <span className="truncate font-medium">
                 {creator?.display_name}
               </span>

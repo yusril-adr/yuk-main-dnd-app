@@ -84,7 +84,7 @@ export default function PublicStoryJoinActions({
     ? "Log in to enlist in this quest."
     : canLeave
       ? "Thou art enlisted in this quest."
-      : "Anyone may join. The Game Master rewards the bravest at the end.";
+      : "Anyone may join. The Dungeon Master rewards the bravest at the end.";
 
   const action = (
     <If condition={showLogin}>
