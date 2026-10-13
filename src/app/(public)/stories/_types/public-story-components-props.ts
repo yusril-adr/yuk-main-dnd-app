@@ -73,10 +73,6 @@ export type TPublicStoryDetailSectionProps = {
   children: ReactNode;
 };
 
-export type TPublicStoryOrnamentProps = {
-  className?: string;
-};
-
 export type TPublicStoryDetailInfoRowProps = {
   icon: LucideIcon;
   label: string;

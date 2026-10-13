@@ -3,6 +3,13 @@ import { ArrowUpRight, CalendarDays, Trophy, Users } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardTitle,
+} from "@/app/_components/ui/card";
+import {
   Avatar,
   AvatarFallback,
   AvatarImage,
@@ -30,51 +37,55 @@ export default function PublicStoryCard({ story }: TPublicStoryCardProps) {
     <Link
       // Slug URL, falling back to the id (the API accepts both)
       href={`/stories/${story.slug || story.id}`}
-      className="group relative flex h-full flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm hover:border-primary/40 motion-safe:transition-[border-color,transform] motion-safe:duration-200 sm:motion-safe:hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+      className="group block h-full rounded-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
     >
-      {/* Cover image; title and game system sit on a translucent solid panel
+      {/* h-full + flex column (Card default) + mt-auto footer keeps cards in a
+          grid row equal height */}
+      <Card className="h-full gap-3 pt-0 group-hover:ring-primary/40 motion-safe:transition-[box-shadow,transform] motion-safe:duration-200 sm:gap-4 sm:motion-safe:group-hover:-translate-y-0.5">
+        {/* Cover image; title and game system sit on a translucent solid panel
           (no gradient overlay) so they stay legible over any banner */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
-        <PublicStoryBanner bannerUrl={story.banner_url} title={story.title} />
+        <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+          <PublicStoryBanner bannerUrl={story.banner_url} title={story.title} />
 
-        <div className="absolute inset-x-2 top-2 flex items-start justify-between gap-2 sm:inset-x-3 sm:top-3">
-          <PublicStoryStatusBadge status={story.status} />
-          <span className="hidden size-8 items-center justify-center rounded-full bg-background/90 text-foreground opacity-0 group-hover:opacity-100 sm:flex motion-safe:transition-opacity [&>svg]:size-4">
-            <ArrowUpRight />
-          </span>
+          <div className="absolute inset-x-2 top-2 flex items-start justify-between gap-2 sm:inset-x-3 sm:top-3">
+            <PublicStoryStatusBadge status={story.status} />
+            <span className="hidden size-8 items-center justify-center rounded-full bg-background/90 text-foreground opacity-0 group-hover:opacity-100 sm:flex motion-safe:transition-opacity [&>svg]:size-4">
+              <ArrowUpRight />
+            </span>
+          </div>
+
+          <div className="absolute inset-x-2 bottom-2 flex flex-col gap-0.5 rounded-lg border bg-background/90 px-3 py-2 sm:inset-x-3 sm:bottom-3">
+            <If condition={!!story.game_system}>
+              <Then>
+                <span className="truncate text-[11px] font-medium tracking-wider text-muted-foreground uppercase sm:text-xs">
+                  {story.game_system}
+                </span>
+              </Then>
+            </If>
+            <CardTitle className="line-clamp-2 text-lg leading-tight sm:text-xl">
+              {story.title}
+            </CardTitle>
+          </div>
         </div>
 
-        <div className="absolute inset-x-2 bottom-2 flex flex-col gap-0.5 rounded-lg border bg-background/90 px-3 py-2 sm:inset-x-3 sm:bottom-3">
-          <If condition={!!story.game_system}>
-            <Then>
-              <span className="truncate text-[11px] font-medium tracking-wider text-muted-foreground uppercase sm:text-xs">
-                {story.game_system}
-              </span>
-            </Then>
-          </If>
-          <h3 className="line-clamp-2 font-heading text-lg leading-tight text-foreground sm:text-xl">
-            {story.title}
-          </h3>
-        </div>
-      </div>
+        <CardContent className="flex flex-col gap-3 sm:gap-4">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <PublicStoryTypeBadge type={story.type} />
+            <PublicStoryLocationBadge locationType={story.location_type} />
+          </div>
 
-      <div className="flex flex-1 flex-col gap-3 p-4 sm:gap-4 sm:p-5">
-        <div className="flex flex-wrap items-center gap-1.5">
-          <PublicStoryTypeBadge type={story.type} />
-          <PublicStoryLocationBadge locationType={story.location_type} />
-        </div>
+          {/* min-h-15 = 3 lines of text-sm keeps cards in a row the same height */}
+          <CardDescription className="line-clamp-3 min-h-15">
+            <If condition={!!descriptionText}>
+              <Then>{descriptionText}</Then>
+              <Else>
+                <span className="italic">The tale is yet to be written…</span>
+              </Else>
+            </If>
+          </CardDescription>
+        </CardContent>
 
-        {/* min-h-15 = 3 lines of text-sm keeps cards in a row the same height */}
-        <p className="line-clamp-3 min-h-15 text-sm text-muted-foreground">
-          <If condition={!!descriptionText}>
-            <Then>{descriptionText}</Then>
-            <Else>
-              <span className="italic">The tale is yet to be written…</span>
-            </Else>
-          </If>
-        </p>
-
-        <div className="mt-auto flex flex-col gap-3 border-t pt-4">
+        <CardFooter className="mt-auto flex-col items-stretch gap-3 border-t">
           <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5 [&>svg]:size-3.5">
               <CalendarDays />
@@ -122,8 +133,8 @@ export default function PublicStoryCard({ story }: TPublicStoryCardProps) {
               </div>
             </Then>
           </If>
-        </div>
-      </div>
+        </CardFooter>
+      </Card>
     </Link>
   );
 }

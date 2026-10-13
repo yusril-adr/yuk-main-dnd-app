@@ -2,6 +2,7 @@ import { ChevronDown, RotateCw, Users } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
+import { Item, ItemGroup } from "@/app/_components/ui/item";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { Spinner } from "@/app/_components/ui/spinner";
 
@@ -52,20 +53,23 @@ export default function PublicStoryParty({
 
       <If condition={membersQuery.isLoading}>
         <Then>
-          <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
+          <ItemGroup className="grid grid-cols-1 gap-2 md:grid-cols-2">
             {Array.from({ length: 4 }).map((_, idx) => (
-              <li
+              <Item
                 key={idx}
-                className="flex items-center gap-3 rounded-md border p-3"
+                role="listitem"
+                variant="outline"
+                size="sm"
+                className="flex-nowrap"
               >
                 <Skeleton className="size-11 rounded-full" />
                 <div className="flex flex-1 flex-col gap-1.5">
                   <Skeleton className="h-4 w-1/2" />
                   <Skeleton className="h-3.5 w-3/4" />
                 </div>
-              </li>
+              </Item>
             ))}
-          </ul>
+          </ItemGroup>
         </Then>
         <Else>
           <If condition={membersQuery.isError}>
@@ -97,11 +101,11 @@ export default function PublicStoryParty({
                   </div>
                 </Then>
                 <Else>
-                  <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <ItemGroup className="grid grid-cols-1 gap-2 md:grid-cols-2">
                     {members.map((member) => (
                       <PublicStoryPartyMember key={member.id} member={member} />
                     ))}
-                  </ul>
+                  </ItemGroup>
 
                   <If condition={membersQuery.hasNextPage}>
                     <Then>

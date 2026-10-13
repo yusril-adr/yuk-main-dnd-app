@@ -131,7 +131,7 @@ export default function PublicStoryJoinActions({
   return (
     <>
       {/* Desktop: inside the sticky sidebar */}
-      <div className="hidden flex-col gap-2 px-6 lg:flex">
+      <div className="hidden flex-col gap-2 px-(--card-spacing) lg:flex">
         {action}
         <p className="text-center text-sm text-foreground/80">{hint}</p>
       </div>

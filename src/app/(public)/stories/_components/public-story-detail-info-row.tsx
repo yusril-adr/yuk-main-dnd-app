@@ -1,21 +1,32 @@
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@/app/_components/ui/item";
+
 import type { TPublicStoryDetailInfoRowProps } from "@/app/(public)/stories/_types/public-story-components-props";
 
+// Label/value row on shadcn Item (label as the small title, value as text)
 export default function PublicStoryDetailInfoRow({
   icon: Icon,
   label,
   value,
 }: TPublicStoryDetailInfoRowProps) {
   return (
-    <div className="flex items-start gap-3">
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-sm border bg-muted text-muted-foreground [&>svg]:size-4">
+    <Item size="xs" className="items-start p-0">
+      <ItemMedia className="size-9 rounded-sm border bg-muted text-muted-foreground [&_svg]:size-4">
         <Icon />
-      </span>
-      <div className="flex min-w-0 flex-col">
-        <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+      </ItemMedia>
+      <ItemContent className="min-w-0 gap-0.5">
+        <ItemTitle className="text-xs tracking-wide text-muted-foreground uppercase">
           {label}
-        </span>
-        <span className="break-words text-sm font-medium">{value}</span>
-      </div>
-    </div>
+        </ItemTitle>
+        <ItemDescription className="line-clamp-none text-sm font-medium break-words text-foreground">
+          {value}
+        </ItemDescription>
+      </ItemContent>
+    </Item>
   );
 }

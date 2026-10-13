@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { Funnel, Search } from "lucide-react";
 
 import { Button } from "@/app/_components/ui/button";
+import { Tabs, TabsList, TabsTrigger } from "@/app/_components/ui/tabs";
 import {
   InputGroup,
   InputGroupAddon,
@@ -21,7 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/_components/ui/select";
-import { cn } from "@/utils/cn";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import { STORY_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-status-label";
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
@@ -312,30 +312,34 @@ export default function PublicStoryFilters({
         </Popover>
       </div>
 
-      <div className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
-        {TYPE_CHIPS.map((chip) => {
-          const Icon =
-            chip.value != null ? PUBLIC_STORY_TYPE_ICON[chip.value] : null;
-          const isActive = (queryTable.type ?? null) === chip.value;
-          return (
-            <button
-              key={chip.label}
-              type="button"
-              aria-pressed={isActive}
-              onClick={() => onTypeChipClick(chip.value)}
-              className={cn(
-                "flex shrink-0 items-center gap-1.5 rounded-sm border px-3.5 py-1.5 sm:px-4 text-sm font-medium motion-safe:transition-colors [&>svg]:size-3.5",
-                isActive
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground",
-              )}
-            >
-              {Icon && <Icon />}
-              {chip.label}
-            </button>
-          );
-        })}
-      </div>
+      {/* Type filter on shadcn Tabs; applies immediately */}
+      <Tabs
+        value={queryTable.type != null ? String(queryTable.type) : ALL}
+        onValueChange={(value) =>
+          onTypeChipClick(
+            value === ALL || value == null
+              ? null
+              : (Number(value) as StoryTypeEnum),
+          )
+        }
+      >
+        <TabsList className="h-10! w-full rounded-md border bg-card p-1 sm:w-fit">
+          {TYPE_CHIPS.map((chip) => {
+            const Icon =
+              chip.value != null ? PUBLIC_STORY_TYPE_ICON[chip.value] : null;
+            return (
+              <TabsTrigger
+                key={chip.label}
+                value={chip.value != null ? String(chip.value) : ALL}
+                className="rounded-sm px-3 text-foreground/75 data-active:bg-primary data-active:text-primary-foreground data-active:shadow-none sm:px-4"
+              >
+                {Icon && <Icon />}
+                {chip.label}
+              </TabsTrigger>
+            );
+          })}
+        </TabsList>
+      </Tabs>
     </div>
   );
 }

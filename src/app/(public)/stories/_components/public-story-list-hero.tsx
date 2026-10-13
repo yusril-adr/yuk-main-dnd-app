@@ -1,7 +1,8 @@
 import { Castle } from "lucide-react";
 import { If, Then } from "react-if";
 
-import PublicStoryOrnament from "./public-story-ornament";
+import { Card, CardContent } from "@/app/_components/ui/card";
+import { Separator } from "@/app/_components/ui/separator";
 import type { TPublicStoryListHeroProps } from "@/app/(public)/stories/_types/public-story-components-props";
 
 export default function PublicStoryListHero({
@@ -9,8 +10,8 @@ export default function PublicStoryListHero({
 }: TPublicStoryListHeroProps) {
   return (
     // Parchment-like panel: solid muted token, double thin frame
-    <section className="rounded-md border bg-muted/40 p-1.5">
-      <div className="flex flex-col items-center gap-3 rounded-sm border border-dashed border-primary/30 px-4 py-8 text-center sm:gap-4 sm:px-8 sm:py-12">
+    <Card className="rounded-md bg-muted/40 p-1.5 shadow-none">
+      <CardContent className="flex flex-col items-center gap-3 rounded-sm border border-dashed border-primary/30 px-4 py-8 text-center sm:gap-4 sm:px-8 sm:py-12">
         <Castle aria-hidden className="size-8 text-primary sm:size-10" />
         <p className="text-xs tracking-[0.25em] text-primary uppercase">
           The Quest Board
@@ -18,7 +19,7 @@ export default function PublicStoryListHero({
         <h1 className="font-heading text-3xl leading-tight sm:text-4xl lg:text-5xl">
           Seek thy next adventure
         </h1>
-        <PublicStoryOrnament className="w-40 sm:w-56" />
+        <Separator className="w-40! bg-primary/40 sm:w-56!" />
         <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
           Oneshots and campaigns posted by the guild. Pick a quest, join the
           party, and roll for initiative.
@@ -33,7 +34,7 @@ export default function PublicStoryListHero({
             </p>
           </Then>
         </If>
-      </div>
-    </section>
+      </CardContent>
+    </Card>
   );
 }
