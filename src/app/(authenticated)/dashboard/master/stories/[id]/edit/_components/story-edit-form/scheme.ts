@@ -26,8 +26,8 @@ export const StoryEditFormSchema = z.object({
     .min(1, "Title is required")
     .max(150, "Title must be at most 150 characters")
     .regex(/[A-Za-z0-9]/, "Title must contain at least one letter or number"),
-  // Rich text HTML ("" = empty). Counted like the editor: visible text,
-  // images 0, line breaks 1, nothing between paragraphs
+  // Markdown ("" = empty). Counted like the editor: visible text (no
+  // Markdown syntax), line breaks 1, nothing between paragraphs
   description: z
     .string()
     .refine(
@@ -48,7 +48,10 @@ export const StoryEditFormSchema = z.object({
   pointAwarded: storyRewardSchema("Gold awarded"),
   // datetime-local input value ("" = not set)
   startAt: z.string(),
-  locationType: z.nativeEnum(StoryLocationTypeEnum, "Location type is required"),
+  locationType: z.nativeEnum(
+    StoryLocationTypeEnum,
+    "Location type is required",
+  ),
   locationDetail: z
     .string("Location detail is required")
     .min(1, "Location detail is required"),

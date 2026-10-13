@@ -7,7 +7,8 @@ import {
   Italic,
   List,
   ListOrdered,
-  Minus,
+  // Divider disabled: descriptions are stored as Markdown for Discord, which has no horizontal rule. Re-enable if Discord support isn't needed.
+  // Minus,
   Quote,
   Redo2,
   Strikethrough,
@@ -18,7 +19,8 @@ import {
 import { Separator } from "@/app/_components/ui/separator";
 import type { TRichTextToolbarProps } from "@/app/_types/rich-text-toolbar-props";
 
-import RichTextImagePopover from "./rich-text-image-popover";
+// Image insert disabled: descriptions are stored as Markdown for Discord, which doesn't render inline images. Re-enable if Discord support isn't needed.
+// import RichTextImagePopover from "./rich-text-image-popover";
 import RichTextLinkPopover from "./rich-text-link-popover";
 import RichTextToolbarButton from "./rich-text-toolbar-button";
 
@@ -35,7 +37,8 @@ export default function RichTextToolbar({
       isUnderline: currentEditor.isActive("underline"),
       isStrike: currentEditor.isActive("strike"),
       isLink: currentEditor.isActive("link"),
-      isImage: currentEditor.isActive("image"),
+      // Image insert disabled: descriptions are stored as Markdown for Discord, which doesn't render inline images. Re-enable if Discord support isn't needed.
+      // isImage: currentEditor.isActive("image"),
       isHeading1: currentEditor.isActive("heading", { level: 1 }),
       isHeading2: currentEditor.isActive("heading", { level: 2 }),
       isHeading3: currentEditor.isActive("heading", { level: 3 }),
@@ -86,11 +89,12 @@ export default function RichTextToolbar({
         isActive={state.isLink}
         disabled={disabled}
       />
-      <RichTextImagePopover
+      {/* Image insert disabled: descriptions are stored as Markdown for Discord, which doesn't render inline images. Re-enable if Discord support isn't needed. */}
+      {/* <RichTextImagePopover
         editor={editor}
         isActive={state.isImage}
         disabled={disabled}
-      />
+      /> */}
 
       <Separator orientation="vertical" className="mx-1" />
 
@@ -139,12 +143,13 @@ export default function RichTextToolbar({
         disabled={disabled}
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
       />
-      <RichTextToolbarButton
+      {/* Divider disabled: descriptions are stored as Markdown for Discord, which has no horizontal rule. Re-enable if Discord support isn't needed. */}
+      {/* <RichTextToolbarButton
         label="Divider"
         icon={Minus}
         disabled={disabled}
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
-      />
+      /> */}
 
       <Separator orientation="vertical" className="mx-1" />
 

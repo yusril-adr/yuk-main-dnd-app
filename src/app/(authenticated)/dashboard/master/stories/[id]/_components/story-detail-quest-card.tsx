@@ -3,6 +3,7 @@ import { Else, If, Then } from "react-if";
 
 import RichTextContent from "@/app/_components/rich-text-content";
 
+import StoryDetailCopyDescriptionButton from "./story-detail-copy-description-button";
 import StoryDetailSectionCard from "./story-detail-section-card";
 import type { TStoryDetailCardProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-card-props";
 
@@ -15,6 +16,11 @@ export default function StoryDetailQuestCard({
       icon={Scroll}
       title="Quest Details"
       className={className}
+      action={
+        story.description ? (
+          <StoryDetailCopyDescriptionButton description={story.description} />
+        ) : undefined
+      }
     >
       <If condition={!!story.description}>
         <Then>
