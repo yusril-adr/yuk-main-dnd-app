@@ -22,7 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/_components/ui/select";
-import { OrderKeyEnum } from "@/common/enums/order-key";
 import { STORY_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-status-label";
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
 import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
@@ -32,29 +31,11 @@ import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enu
 import { PUBLIC_STORY_STATUS_OPTIONS } from "@/app/(public)/stories/_constants/public-story-status-options";
 import { PUBLIC_STORY_TYPE_ICON } from "@/app/(public)/stories/_constants/public-story-icons";
 import type { TPublicStoryStatus } from "@/app/(public)/stories/_types/public-story-card-list-props";
-import type { TPublicStoryCardListSortBy } from "@/app/(public)/stories/_types/public-story-card-list-sort-by";
 import type { TPublicStoryFiltersProps } from "@/app/(public)/stories/_types/public-story-filters-props";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 
 const ALL = "all";
-
-const SORT_BY_OPTIONS: { label: string; value: TPublicStoryCardListSortBy }[] =
-  [
-    { label: "Recently updated", value: "updated_at" },
-    { label: "Newest", value: "created_at" },
-    { label: "Start date", value: "start_at" },
-    { label: "Title", value: "title" },
-    { label: "Type", value: "type" },
-    { label: "Game system", value: "game_system" },
-    { label: "Player slots", value: "max_members" },
-    { label: "Location", value: "location_type" },
-  ];
-
-const SORT_ORDER_OPTIONS = [
-  { label: "Descending", value: OrderKeyEnum.DESC },
-  { label: "Ascending", value: OrderKeyEnum.ASC },
-];
 
 const STATUS_OPTIONS = [
   { label: "All statuses", value: ALL },
@@ -91,11 +72,6 @@ export default function PublicStoryFilters({
   onSearchChange,
   onFilterApply,
 }: TPublicStoryFiltersProps) {
-  const [filterSortBy, setFilterSortBy] =
-    useState<TPublicStoryCardListSortBy | null>(queryTable.sortBy ?? null);
-  const [filterOrder, setFilterOrder] = useState<OrderKeyEnum | null>(
-    queryTable.order ?? null,
-  );
   const [filterStatus, setFilterStatus] = useState<TPublicStoryStatus | null>(
     queryTable.status ?? null,
   );
@@ -125,8 +101,6 @@ export default function PublicStoryFilters({
   const onTypeChipClick = useCallback(
     (type: StoryTypeEnum | null) => {
       onFilterApply({
-        sortBy: queryTable.sortBy,
-        order: queryTable.order,
         status: queryTable.status,
         type,
         locationType: queryTable.locationType,
@@ -137,29 +111,16 @@ export default function PublicStoryFilters({
 
   const onApply = useCallback(() => {
     onFilterApply({
-      sortBy: filterSortBy,
-      order: filterOrder,
       status: filterStatus,
       type: queryTable.type,
       locationType: filterLocationType,
     });
-  }, [
-    filterSortBy,
-    filterOrder,
-    filterStatus,
-    filterLocationType,
-    queryTable.type,
-    onFilterApply,
-  ]);
+  }, [filterStatus, filterLocationType, queryTable.type, onFilterApply]);
 
   const onClear = useCallback(() => {
-    setFilterSortBy("updated_at");
-    setFilterOrder(OrderKeyEnum.DESC);
     setFilterStatus(null);
     setFilterLocationType(null);
     onFilterApply({
-      sortBy: null,
-      order: null,
       status: null,
       type: queryTable.type,
       locationType: null,
@@ -199,48 +160,6 @@ export default function PublicStoryFilters({
           </PopoverTrigger>
           <PopoverContent align="end" className="w-[calc(100vw-2rem)] max-w-80">
             <FieldGroup className="gap-4">
-              <Field className="grid gap-2">
-                <FieldLabel>Sort by</FieldLabel>
-                <div className="grid grid-cols-2 gap-2">
-                  <Select
-                    items={SORT_BY_OPTIONS}
-                    value={filterSortBy ?? undefined}
-                    onValueChange={(val) => setFilterSortBy(val || null)}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Field" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {SORT_BY_OPTIONS.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                  <Select
-                    items={SORT_ORDER_OPTIONS}
-                    value={filterOrder ?? undefined}
-                    onValueChange={(val) => setFilterOrder(val || null)}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Order" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {SORT_ORDER_OPTIONS.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </Field>
-
               <Field className="grid gap-2">
                 <FieldLabel>Status</FieldLabel>
                 <Select
