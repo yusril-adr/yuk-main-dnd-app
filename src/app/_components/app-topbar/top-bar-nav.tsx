@@ -20,8 +20,7 @@ export function TopBarNav({ className }: { className?: string }) {
         return (
           <Button
             key={item.href}
-            variant="ghost"
-            disabled={isActive}
+            variant={isActive ? "outline" : "ghost"}
             render={<Link href={item.href} />}
             className={cn("justify-start", className)}
           >
