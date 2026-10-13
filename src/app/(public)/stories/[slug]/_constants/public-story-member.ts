@@ -1,7 +1,7 @@
 import { StoryMemberStatusEnum } from "@/api/main/modules/master/stories/enums/story-member-status";
 
 // Members loaded per "Show more" batch
-export const PUBLIC_STORY_MEMBER_PER_PAGE = 12;
+export const PUBLIC_STORY_MEMBER_PER_PAGE = 6;
 
 // Medieval wording for the member status
 export const PUBLIC_STORY_MEMBER_STATUS_LABEL: Record<
