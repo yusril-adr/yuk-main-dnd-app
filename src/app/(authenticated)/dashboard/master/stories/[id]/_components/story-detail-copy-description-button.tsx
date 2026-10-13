@@ -20,9 +20,15 @@ export default function StoryDetailCopyDescriptionButton({
   };
 
   return (
-    <Button type="button" variant="outline" size="sm" onClick={onCopy}>
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon-sm"
+      aria-label="Copy description for Discord"
+      title="Copy for Discord"
+      onClick={onCopy}
+    >
       <Copy />
-      Copy for Discord
     </Button>
   );
 }

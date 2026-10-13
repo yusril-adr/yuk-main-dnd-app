@@ -1,4 +1,9 @@
-import { Card, CardContent, CardHeader } from "@/app/_components/ui/card";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+} from "@/app/_components/ui/card";
 import { cn } from "@/utils/cn";
 
 import StoryDetailOrnament from "./story-detail-ornament";
@@ -8,6 +13,7 @@ export default function StoryDetailSectionCard({
   icon: Icon,
   title,
   className,
+  action,
   children,
 }: TStoryDetailSectionCardProps) {
   return (
@@ -25,6 +31,7 @@ export default function StoryDetailSectionCard({
           </span>
           {title}
         </h3>
+        {action && <CardAction>{action}</CardAction>}
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <StoryDetailOrnament />

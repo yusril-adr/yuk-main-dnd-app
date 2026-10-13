@@ -16,14 +16,14 @@ export default function StoryDetailQuestCard({
       icon={Scroll}
       title="Quest Details"
       className={className}
+      action={
+        story.description ? (
+          <StoryDetailCopyDescriptionButton description={story.description} />
+        ) : undefined
+      }
     >
       <If condition={!!story.description}>
         <Then>
-          <div className="flex justify-end">
-            <StoryDetailCopyDescriptionButton
-              description={story.description as string}
-            />
-          </div>
           <RichTextContent
             value={story.description as string}
             className="text-base"
