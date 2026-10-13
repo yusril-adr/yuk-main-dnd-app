@@ -17,7 +17,7 @@ import PublicStoryDetailSummary from "@/app/(public)/stories/[slug]/_components/
 import PublicStoryDetailSkeleton from "@/app/(public)/stories/[slug]/_components/public-story-detail-skeleton";
 import PublicStoryParty from "@/app/(public)/stories/[slug]/_components/public-story-party";
 import PublicStoryErrorState from "@/app/(public)/stories/_components/public-story-error-state";
-import { PUBLIC_STORY_DETAIL_DATE_FORMAT } from "@/app/(public)/stories/_constants/public-story-date-format";
+import { PUBLIC_STORY_DETAIL_DATE_FORMAT } from "@/app/(public)/stories/[slug]/_constants/public-story-detail-date-format";
 
 export default function PublicStoryDetailPageClient() {
   // Slug URL; the API also accepts the id, so old /stories/<id> links still work
