@@ -65,11 +65,11 @@ export default function PublicStoryDetailSummary({
         />
         <PublicStoryDetailInfoRow
           icon={Trophy}
-          label="Reward slots"
-          // Not a join cap: anyone may join; the DM rewards up to this many
+          label="Player slots"
+          // Not a join cap: anyone may join; past this many, they join as viewers
           value={
             story.max_members
-              ? `Up to ${story.max_members} ${story.max_members === 1 ? "hero" : "heroes"} rewarded`
+              ? `Only ${story.max_members} ${story.max_members === 1 ? "hero" : "heroes"} can play. Once full, you can still join as a viewer.`
               : "No limit set"
           }
         />

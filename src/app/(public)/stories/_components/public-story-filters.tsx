@@ -47,7 +47,7 @@ const SORT_BY_OPTIONS: { label: string; value: TPublicStoryCardListSortBy }[] =
     { label: "Title", value: "title" },
     { label: "Type", value: "type" },
     { label: "Game system", value: "game_system" },
-    { label: "Reward slots", value: "max_members" },
+    { label: "Player slots", value: "max_members" },
     { label: "Location", value: "location_type" },
   ];
 
