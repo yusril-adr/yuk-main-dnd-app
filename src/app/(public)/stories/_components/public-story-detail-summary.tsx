@@ -44,7 +44,7 @@ export default function PublicStoryDetailSummary({
       role="complementary"
       aria-label="Quest summary"
       className={cn(
-        "gap-5 rounded-md pt-0 [--card-spacing:--spacing(5)] sm:gap-6 sm:[--card-spacing:--spacing(6)]",
+        "gap-5 pt-0 [--card-spacing:--spacing(5)] sm:gap-6 sm:[--card-spacing:--spacing(6)]",
         className,
       )}
     >
