@@ -112,7 +112,7 @@ export default function SettingsProfileForm({
       }
 
       if (file.size > SETTINGS_AVATAR_MAX_FILE_SIZE_BYTES) {
-        toast.error("Avatar must be 1 MB or smaller");
+        toast.error("Avatar must be 3 MB or smaller");
         event.target.value = "";
         return;
       }
@@ -221,7 +221,7 @@ export default function SettingsProfileForm({
                       <FieldDescription className="flex-1">
                         Your profile image should have a 1:1 ratio
                         <br />
-                        and be no larger than 1MB.
+                        and be no larger than 3MB.
                       </FieldDescription>
                     </div>
                   </div>

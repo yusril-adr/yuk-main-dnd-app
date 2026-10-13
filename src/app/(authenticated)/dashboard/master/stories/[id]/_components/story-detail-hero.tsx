@@ -12,13 +12,13 @@ export default function StoryDetailHero({ story }: TStoryDetailCardProps) {
 
   return (
     <Card className="gap-0 overflow-hidden py-0">
-      {/* Natural aspect ratio; very tall images capped at 28rem and letterboxed.
-          No banner: a short gradient strip instead of 16:9. */}
+      {/* Fixed responsive height with a center crop, like the public story
+          detail banner, so any image ratio fills the strip */}
       <StoryCardBanner
         bannerUrl={story.banner_url}
         title={story.title}
-        imageClassName="max-h-[28rem]"
-        placeholderClassName="aspect-auto h-40 sm:h-48"
+        imageClassName="h-56 max-h-none object-cover sm:h-72 lg:h-80"
+        placeholderClassName="aspect-auto h-56 sm:h-72 lg:h-80"
       />
 
       <div className="flex flex-col gap-2 border-t p-6">
