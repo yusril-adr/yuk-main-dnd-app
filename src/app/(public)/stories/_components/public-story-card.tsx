@@ -111,8 +111,8 @@ export default function PublicStoryCard({
           <span className="flex items-center gap-1.5 text-xs text-foreground/80 [&>svg]:size-3.5 [&>svg]:text-primary">
             <Trophy />
             {rewardSlots
-              ? `Up to ${rewardSlots} ${rewardSlots === 1 ? "hero" : "heroes"} rewarded`
-              : "No reward limit set"}
+              ? `Only ${rewardSlots} ${rewardSlots === 1 ? "hero" : "heroes"} can play, others join as viewers`
+              : "No player limit set"}
           </span>
 
           <If condition={!!creator}>

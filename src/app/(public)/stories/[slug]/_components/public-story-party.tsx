@@ -40,11 +40,11 @@ export default function PublicStoryParty({
             {total === 1 ? "adventurer has" : "adventurers have"} joined
             {maxMembers ? (
               <>
-                {" · up to "}
+                {" · only "}
                 <span className="font-medium text-foreground">
                   {maxMembers}
                 </span>{" "}
-                will be rewarded
+                can play, the rest join as viewers
               </>
             ) : null}
           </p>
