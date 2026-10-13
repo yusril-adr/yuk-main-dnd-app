@@ -1,6 +1,7 @@
 import { Else, If, Then } from "react-if";
 
 import { PUBLIC_STORY_PAGE_SIZE } from "@/app/(public)/stories/_constants/public-story-page-size";
+import { PUBLIC_STORY_EAGER_CARD_COUNT } from "@/app/(public)/stories/_constants/public-story-page-size";
 import PublicStoryCard from "./public-story-card";
 import PublicStoryCardSkeleton from "./public-story-card-skeleton";
 import PublicStoryEmptyState from "./public-story-empty-state";
@@ -47,8 +48,12 @@ export default function PublicStoryCardList({
                         <PublicStoryCardSkeleton key={`skeleton-${idx}`} />
                       ),
                     )
-                  : data.map((story) => (
-                      <PublicStoryCard key={story.id} story={story} />
+                  : data.map((story, idx) => (
+                      <PublicStoryCard
+                        key={story.id}
+                        story={story}
+                        priority={idx < PUBLIC_STORY_EAGER_CARD_COUNT}
+                      />
                     ))}
               </div>
             </Else>

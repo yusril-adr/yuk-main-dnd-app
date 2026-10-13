@@ -25,7 +25,10 @@ import PublicStoryLocationBadge from "./public-story-location-badge";
 import { PUBLIC_STORY_CARD_DATE_FORMAT } from "@/app/(public)/stories/_constants/public-story-date-format";
 import type { TPublicStoryCardProps } from "@/app/(public)/stories/_types/public-story-components-props";
 
-export default function PublicStoryCard({ story }: TPublicStoryCardProps) {
+export default function PublicStoryCard({
+  story,
+  priority = false,
+}: TPublicStoryCardProps) {
   // Plain text from rich text HTML; "" when empty or only images
   const descriptionText = getRichTextPlainText(story.description);
   // max_members is the number of reward slots, not a join cap: anyone can
@@ -45,7 +48,11 @@ export default function PublicStoryCard({ story }: TPublicStoryCardProps) {
         {/* Cover image; title and game system sit on a translucent solid panel
           (no gradient overlay) so they stay legible over any banner */}
         <div className="relative aspect-[16/10] overflow-hidden bg-muted">
-          <PublicStoryBanner bannerUrl={story.banner_url} title={story.title} />
+          <PublicStoryBanner
+            bannerUrl={story.banner_url}
+            title={story.title}
+            priority={priority}
+          />
 
           <div className="absolute inset-x-2 top-2 flex items-start justify-between gap-2 sm:inset-x-3 sm:top-3">
             <PublicStoryStatusBadge status={story.status} />

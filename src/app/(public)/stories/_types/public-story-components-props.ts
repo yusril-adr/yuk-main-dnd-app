@@ -10,6 +10,7 @@ import type { TPublicStoryDetailResponse } from "@/api/main/modules/stories/[id]
 
 export type TPublicStoryCardProps = {
   story: TPublicStoryPaginationResponse;
+  priority?: boolean;
 };
 
 export type TPublicStoryBannerProps = {

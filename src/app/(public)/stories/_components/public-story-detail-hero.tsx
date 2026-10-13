@@ -17,7 +17,8 @@ export default function PublicStoryDetailHero({
       <PublicStoryBanner
         bannerUrl={story.banner_url}
         title={story.title}
-        className="absolute inset-0 -z-20 animate-in duration-1000 fade-in zoom-in-105"
+        className="absolute inset-0 -z-20"
+        priority
         iconClassName="size-24"
       />
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/60 to-black/20" />
@@ -31,7 +32,7 @@ export default function PublicStoryDetailHero({
           All stories
         </Link>
 
-        <div className="flex max-w-4xl animate-in flex-col gap-4 duration-700 fade-in slide-in-from-bottom-6">
+        <div className="flex max-w-4xl flex-col gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <PublicStoryStatusBadge status={story.status} />
             <PublicStoryTypeBadge type={story.type} />
