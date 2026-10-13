@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { formatFileSize } from "@/utils/file-helper";
 import { ImageIcon, Trash, Upload } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
@@ -38,7 +39,9 @@ export default function StoryBannerField({
       return;
     }
     if (file.size > STORY_BANNER_MAX_FILE_SIZE_BYTES) {
-      onFileError("Banner must be 5 MB or smaller");
+      onFileError(
+        `Banner must be ${formatFileSize(STORY_BANNER_MAX_FILE_SIZE_BYTES)} or smaller`,
+      );
       return;
     }
 
@@ -69,8 +72,8 @@ export default function StoryBannerField({
           </If>
         </div>
 
-        <div className="flex w-full flex-col gap-2 sm:w-72">
-          <div className="grid auto-cols-fr grid-flow-col gap-2">
+        <div className="flex w-full flex-col gap-2 sm:w-48">
+          <div className="flex flex-col gap-2">
             <Button
               type="button"
               variant="outline"
@@ -111,9 +114,10 @@ export default function StoryBannerField({
             onChange={handleFileChange}
           />
           <FieldDescription>
-            JPG, PNG, or WebP image, max 5 MB. Recommended 16:10 (e.g. 1600
-            &times; 1000 px) with the main subject centered, since the public
-            pages crop the edges.
+            JPG, PNG, or WebP image, max{" "}
+            {formatFileSize(STORY_BANNER_MAX_FILE_SIZE_BYTES)}. Recommended
+            16:10 (e.g. 1600 &times; 1000 px) with the main subject centered,
+            since the public pages crop the edges.
           </FieldDescription>
         </div>
       </div>

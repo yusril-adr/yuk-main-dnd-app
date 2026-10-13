@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { USER_AVATAR_MAX_FILE_SIZE_BYTES } from "@/common/constants/user-avatar";
+import { formatFileSize } from "@/utils/file-helper";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import Link from "next/link";
 import {
@@ -223,7 +225,8 @@ export default function UserEditForm({
                       <FieldDescription className="flex-1">
                         Your profile image should have a 1:1 ratio
                         <br />
-                        and be no larger than 3MB.
+                        and be no larger than{" "}
+                        {formatFileSize(USER_AVATAR_MAX_FILE_SIZE_BYTES)}.
                       </FieldDescription>
                     </div>
                   </div>

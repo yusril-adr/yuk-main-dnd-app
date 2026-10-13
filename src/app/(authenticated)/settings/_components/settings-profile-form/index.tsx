@@ -29,9 +29,10 @@ import { emptyToNull } from "@/utils/form-helper";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
 import {
-  SETTINGS_AVATAR_ACCEPTED_MIME_PREFIX,
-  SETTINGS_AVATAR_MAX_FILE_SIZE_BYTES,
-} from "@/app/(authenticated)/settings/_constants/settings-avatar";
+  USER_AVATAR_ACCEPTED_MIME_PREFIX,
+  USER_AVATAR_MAX_FILE_SIZE_BYTES,
+} from "@/common/constants/user-avatar";
+import { formatFileSize } from "@/utils/file-helper";
 import {
   SettingsProfileFormSchema,
   type TSettingsProfileFormSchema,
@@ -105,14 +106,16 @@ export default function SettingsProfileForm({
         return;
       }
 
-      if (!file.type.startsWith(SETTINGS_AVATAR_ACCEPTED_MIME_PREFIX)) {
+      if (!file.type.startsWith(USER_AVATAR_ACCEPTED_MIME_PREFIX)) {
         toast.error("Avatar must be an image file");
         event.target.value = "";
         return;
       }
 
-      if (file.size > SETTINGS_AVATAR_MAX_FILE_SIZE_BYTES) {
-        toast.error("Avatar must be 3 MB or smaller");
+      if (file.size > USER_AVATAR_MAX_FILE_SIZE_BYTES) {
+        toast.error(
+          `Avatar must be ${formatFileSize(USER_AVATAR_MAX_FILE_SIZE_BYTES)} or smaller`,
+        );
         event.target.value = "";
         return;
       }
@@ -221,7 +224,8 @@ export default function SettingsProfileForm({
                       <FieldDescription className="flex-1">
                         Your profile image should have a 1:1 ratio
                         <br />
-                        and be no larger than 3MB.
+                        and be no larger than{" "}
+                        {formatFileSize(USER_AVATAR_MAX_FILE_SIZE_BYTES)}.
                       </FieldDescription>
                     </div>
                   </div>
