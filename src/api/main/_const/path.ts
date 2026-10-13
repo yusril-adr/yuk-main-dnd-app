@@ -6,6 +6,13 @@ const MAIN_API_PATH = {
     PROFILE: "/api/v1/auth/profile",
     PASSWORD: "/api/v1/auth/password",
   },
+  STORY: {
+    DEFAULT: "/api/v1/stories",
+    DETAIL: (id: string) => `/api/v1/stories/${id}`,
+    MEMBERS: (id: string) => `/api/v1/stories/${id}/members`,
+    JOIN: (id: string) => `/api/v1/stories/${id}/join`,
+    CANCEL_JOIN: (id: string) => `/api/v1/stories/${id}/cancel-join`,
+  },
   FILE: {
     UPLOAD: "/api/v1/files/upload",
   },
