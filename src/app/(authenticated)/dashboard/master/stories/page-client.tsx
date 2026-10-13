@@ -4,7 +4,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createParser, parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
+import {
+  createParser,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+} from "nuqs";
 import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
@@ -30,6 +35,7 @@ import { useGetStoryPagination } from "@/app/(authenticated)/dashboard/master/st
 import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-by-id";
 import { useArchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-archive-story-by-id";
 import { useUnarchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-unarchive-story-by-id";
+import { useCancelStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-cancel-story-by-id";
 import { usePublishStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-publish-story-by-id";
 import { useGetUserOptions } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-user-options";
 
@@ -145,6 +151,16 @@ export default function StoriesPageClient() {
     },
   });
 
+  const { mutate: cancelStoryMutate } = useCancelStoryById({
+    // Same as archive: refresh on success and on error (404 / 400), so the
+    // card shows its real status or disappears (e.g. under a Published filter)
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
+      });
+    },
+  });
+
   const stories = useMemo(
     () => responseData?.data?.data?.items ?? [],
     [responseData],
@@ -247,6 +263,7 @@ export default function StoriesPageClient() {
             onArchiveStory: archiveStoryMutate,
             onPublishStory: publishStoryMutate,
             onUnarchiveStory: unarchiveStoryMutate,
+            onCancelStory: cancelStoryMutate,
             onDeleteStory: deleteStoryMutate,
           }}
         />

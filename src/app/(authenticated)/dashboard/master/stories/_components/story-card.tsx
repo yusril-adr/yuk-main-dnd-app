@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import {
   Archive,
   ArchiveRestore,
+  Ban,
   EllipsisVertical,
   Eye,
   Pencil,
@@ -50,15 +51,15 @@ export default function StoryCard({
   onArchive,
   onUnarchive,
   onPublish,
+  onCancel,
   onDelete,
 }: TStoryCardProps) {
   const canEditStory = story.action_list.is_can_update;
-  const canDeleteStoryAction =
-    story.action_list.is_can_delete && !!onDelete;
+  const canDeleteStoryAction = story.action_list.is_can_delete && !!onDelete;
   const canArchiveStory = story.action_list.is_can_archive && !!onArchive;
-  const canUnarchiveStory =
-    story.action_list.is_can_unarchive && !!onUnarchive;
+  const canUnarchiveStory = story.action_list.is_can_unarchive && !!onUnarchive;
   const canPublishStory = story.action_list.is_can_publish && !!onPublish;
+  const canCancelStory = story.action_list.is_can_cancel && !!onCancel;
   // Plain text from rich text HTML (or an old plain-text value); "" when the
   // description is empty or only has images
   const descriptionText = getRichTextPlainText(story.description);
@@ -66,12 +67,11 @@ export default function StoryCard({
   const expReward = formatStoryReward(story.exp_awarded, "XP");
   const goldReward = formatStoryReward(story.point_awarded, "GP");
   const [confirmArchiveId, setConfirmArchiveId] = useState<string | null>(null);
-  const [confirmPublishId, setConfirmPublishId] = useState<string | null>(
-    null,
-  );
+  const [confirmPublishId, setConfirmPublishId] = useState<string | null>(null);
   const [confirmUnarchiveId, setConfirmUnarchiveId] = useState<string | null>(
     null,
   );
+  const [confirmCancelId, setConfirmCancelId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const onArchiveConfirm = useCallback(() => {
@@ -94,6 +94,13 @@ export default function StoryCard({
     }
     setConfirmUnarchiveId(null);
   }, [confirmUnarchiveId, onUnarchive]);
+
+  const onCancelConfirm = useCallback(() => {
+    if (confirmCancelId && onCancel) {
+      onCancel(confirmCancelId);
+    }
+    setConfirmCancelId(null);
+  }, [confirmCancelId, onCancel]);
 
   const onDeleteConfirm = useCallback(() => {
     if (confirmDeleteId && onDelete) {
@@ -182,6 +189,17 @@ export default function StoryCard({
                     >
                       <ArchiveRestore />
                       Unarchive
+                    </DropdownMenuItem>
+                  </Then>
+                </If>
+                <If condition={canCancelStory}>
+                  <Then>
+                    <DropdownMenuItem
+                      variant="destructive"
+                      onClick={() => setConfirmCancelId(story.id)}
+                    >
+                      <Ban />
+                      Cancel
                     </DropdownMenuItem>
                   </Then>
                 </If>
@@ -314,6 +332,31 @@ export default function StoryCard({
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={onUnarchiveConfirm}>
               Unarchive
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        open={confirmCancelId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setConfirmCancelId(null);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Cancel story?</AlertDialogTitle>
+            <AlertDialogDescription>
+              The story will be marked as cancelled. This cannot be undone. The
+              story cannot be edited, and members cannot be added or removed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={onCancelConfirm}>
+              Cancel story
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
