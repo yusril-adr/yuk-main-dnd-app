@@ -4,10 +4,11 @@ import type { TMainApiResponse } from "@/api/main/types/response";
 import { mainAxios } from "@/api/main/_libs/axios";
 import MAIN_API_PATH from "@/api/main/_const/path";
 
-// Public endpoint; 404 unless the story is published or completed
-export const getPublicStoryById = async (id: string) => {
+// Public endpoint; identifier is the story id (UUID) or its slug.
+// 404 unless the story is published or completed
+export const getPublicStoryByIdentifier = async (identifier: string) => {
   const response: AxiosResponse<TMainApiResponse<TPublicStoryDetailResponse>> =
-    await mainAxios.get(MAIN_API_PATH.STORY.DETAIL(id));
+    await mainAxios.get(MAIN_API_PATH.STORY.DETAIL(identifier));
 
   return response;
 };

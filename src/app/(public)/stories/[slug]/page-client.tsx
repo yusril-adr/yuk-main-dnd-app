@@ -10,7 +10,7 @@ import dayjs from "@/libs/dayjs";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 
-import { useGetPublicStoryById } from "@/app/(public)/stories/_hooks/use-get-public-story-by-id";
+import { useGetPublicStoryByIdentifier } from "@/app/(public)/stories/_hooks/use-get-public-story-by-identifier";
 import PublicStoryDetailHero from "@/app/(public)/stories/_components/public-story-detail-hero";
 import PublicStoryDetailSection from "@/app/(public)/stories/_components/public-story-detail-section";
 import PublicStoryDetailSummary from "@/app/(public)/stories/_components/public-story-detail-summary";
@@ -20,11 +20,14 @@ import PublicStoryErrorState from "@/app/(public)/stories/_components/public-sto
 import { PUBLIC_STORY_DETAIL_DATE_FORMAT } from "@/app/(public)/stories/_constants/public-story-date-format";
 
 export default function PublicStoryDetailPageClient() {
-  const { id } = useParams();
-  const storyId = id as string;
+  // Slug URL; the API also accepts the id, so old /stories/<id> links still work
+  const { slug } = useParams();
+  const storyIdentifier = slug as string;
   const { auth } = useAuthContext();
   // Keyed by viewer so action_list refetches after login/logout
-  const storyQuery = useGetPublicStoryById(storyId, { userId: auth?.id });
+  const storyQuery = useGetPublicStoryByIdentifier(storyIdentifier, {
+    userId: auth?.id,
+  });
   const story = storyQuery.data?.data?.data;
   const isNotFound =
     storyQuery.isError && storyQuery.error instanceof MainAPINotFoundError;
@@ -75,7 +78,7 @@ export default function PublicStoryDetailPageClient() {
                       </PublicStoryDetailSection>
 
                       <PublicStoryParty
-                        storyId={storyId}
+                        storyId={story.id}
                         maxMembers={story.max_members}
                       />
 

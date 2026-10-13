@@ -27,7 +27,8 @@ export default function PublicStoryCard({ story }: TPublicStoryCardProps) {
 
   return (
     <Link
-      href={`/stories/${story.id}`}
+      // Slug URL, falling back to the id (the API accepts both)
+      href={`/stories/${story.slug || story.id}`}
       className="group relative flex h-full flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm hover:border-primary/40 motion-safe:transition-[border-color,transform] motion-safe:duration-200 sm:motion-safe:hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
     >
       {/* Cover image; title and game system sit on a translucent solid panel

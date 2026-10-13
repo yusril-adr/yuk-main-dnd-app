@@ -8,8 +8,10 @@ const MAIN_API_PATH = {
   },
   STORY: {
     DEFAULT: "/api/v1/stories",
-    DETAIL: (id: string) => `/api/v1/stories/${id}`,
-    MEMBERS: (id: string) => `/api/v1/stories/${id}/members`,
+    // Detail and members accept the story id (UUID) or its slug
+    DETAIL: (identifier: string) => `/api/v1/stories/${identifier}`,
+    MEMBERS: (identifier: string) => `/api/v1/stories/${identifier}/members`,
+    // Join and cancel-join take the id only
     JOIN: (id: string) => `/api/v1/stories/${id}/join`,
     CANCEL_JOIN: (id: string) => `/api/v1/stories/${id}/cancel-join`,
   },
