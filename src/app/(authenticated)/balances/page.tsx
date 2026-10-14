@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import BalancesPageClient from "./page-client";
 
 export const metadata: Metadata = {
-  title: "YukMainDnD - Balances",
+  title: "Balances",
 };
 
 export default function BalancesPage() {

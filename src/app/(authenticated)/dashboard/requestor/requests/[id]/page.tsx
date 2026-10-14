@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import RequestDetailPageClient from "./page-client";
 
 export const metadata: Metadata = {
-  title: "YukMainDnD - Request Detail",
+  title: "Request Detail",
 };
 
 export default function RequestDetailPage() {

@@ -1,3 +1,5 @@
+"use client";
+
 import { AppTopBar } from "@/app/_components/app-topbar";
 
 export default function AppTopbarLayout({

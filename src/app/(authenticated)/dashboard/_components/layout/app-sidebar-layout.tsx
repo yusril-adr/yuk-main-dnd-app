@@ -1,3 +1,5 @@
+"use client";
+
 import { AppSidebar } from "@/app/(authenticated)/dashboard/_components/app-sidebar";
 import { SidebarInset, SidebarTrigger } from "@/app/_components/ui/sidebar";
 

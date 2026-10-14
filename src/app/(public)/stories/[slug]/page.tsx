@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import PublicStoryDetailPageClient from "./page-client";
 
 export const metadata: Metadata = {
-  title: "YukMainDnD - Story detail",
+  title: "Quest",
+  description: "Quest details, party and Dungeon Master on YukMainDnD.",
 };
 
 export default function PublicStoryDetailPage() {

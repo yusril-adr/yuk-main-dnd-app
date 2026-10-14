@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import StoriesPageClient from "./page-client";
 
 export const metadata: Metadata = {
-  title: "YukMainDnD - My Stories",
+  title: "My Stories",
 };
 
 export default function StoriesPage() {
