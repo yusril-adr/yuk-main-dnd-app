@@ -1,12 +1,159 @@
 "use client";
 
-import ComingSoonContent from "@/app/_components/coming-soon-content";
+import { useCallback, useMemo, useState } from "react";
+import { parseAsInteger, parseAsString } from "nuqs";
+
+import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
+import type { TPublicUserPaginationPayload } from "@/api/main/modules/users/types/public-user-pagination-payload";
+
+import PublicGuildmateHero from "@/app/(public)/guildmates/_components/public-guildmate-hero";
+import PublicGuildmateLegendsSection from "@/app/(public)/guildmates/_components/public-guildmate-legends-section";
+import PublicGuildmateSearch from "@/app/(public)/guildmates/_components/public-guildmate-search";
+import PublicGuildmateCardList from "@/app/(public)/guildmates/_components/public-guildmate-card-list";
+import { useGetPublicGuildmatePagination } from "@/app/(public)/guildmates/_hooks/use-get-public-guildmate-pagination";
+import { useGetTopDmExperience } from "@/app/(public)/guildmates/_hooks/use-get-top-dm-experience";
+import { useGetTopPlayerExperience } from "@/app/(public)/guildmates/_hooks/use-get-top-player-experience";
+import { useCurrentMonthRange } from "@/app/(public)/guildmates/_hooks/use-current-month-range";
+import { PUBLIC_GUILDMATE_PAGE_SIZE } from "@/app/(public)/guildmates/_constants/public-guildmate-page-size";
+import type { TPublicGuildmateLegendEntry } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 export default function GuildMatesPageClient() {
+  const [queryStates, setQueryStates] = useCamelCaseQueryStates({
+    page: parseAsInteger.withDefault(1),
+    search: parseAsString.withDefault(""),
+  });
+
+  const { payload: monthPayload, monthLabel } = useCurrentMonthRange();
+  const topDmQuery = useGetTopDmExperience(monthPayload);
+  const topPlayerQuery = useGetTopPlayerExperience(monthPayload);
+
+  const dmEntries: TPublicGuildmateLegendEntry[] = useMemo(
+    () =>
+      (topDmQuery.data?.data?.data ?? []).slice(0, 3).map((user, idx) => ({
+        rank: idx + 1,
+        user,
+        gainedExp: user.gained_dm_exp,
+      })),
+    [topDmQuery.data],
+  );
+  const playerEntries: TPublicGuildmateLegendEntry[] = useMemo(
+    () =>
+      (topPlayerQuery.data?.data?.data ?? []).slice(0, 3).map((user, idx) => ({
+        rank: idx + 1,
+        user,
+        gainedExp: user.gained_player_exp,
+      })),
+    [topPlayerQuery.data],
+  );
+
+  const payload: TPublicUserPaginationPayload = useMemo(
+    () => ({
+      page: queryStates.page,
+      per_page: PUBLIC_GUILDMATE_PAGE_SIZE,
+      search: queryStates.search,
+    }),
+    [queryStates],
+  );
+
+  const {
+    data: responseData,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetPublicGuildmatePagination(payload);
+  // Remounts the uncontrolled search input after a reset
+  const [searchKey, setSearchKey] = useState(0);
+
+  const guildmates = useMemo(
+    () => responseData?.data?.data?.items ?? [],
+    [responseData],
+  );
+
+  const onSearchChange = useCallback(
+    (value: string) => {
+      setQueryStates({ search: value, page: 1 });
+    },
+    [setQueryStates],
+  );
+
+  const onReset = useCallback(() => {
+    setQueryStates({ search: "", page: 1 });
+    setSearchKey((key) => key + 1);
+  }, [setQueryStates]);
+
+  const handlePageChange = useCallback(
+    (page: number) => {
+      setQueryStates({ page });
+      document
+        .getElementById("guildmates-heading")
+        ?.scrollIntoView({ behavior: "smooth" });
+    },
+    [setQueryStates],
+  );
+
+  const totalGuildmates = responseData?.data?.data?.meta?.total_all_data;
+
   return (
-    <div className="w-full flex justify-center min-w-0 h-full">
-      <main className="w-full max-w-7xl flex flex-col px-10 pb-10 gap-2">
-        <ComingSoonContent />
+    <div className="w-full flex justify-center min-w-0">
+      <main className="w-full max-w-7xl flex flex-col gap-8 px-4 pt-2 pb-10 sm:gap-10 sm:px-6 sm:pb-16 lg:px-10">
+        <PublicGuildmateHero
+          totalGuildmates={
+            queryStates.search ? null : (totalGuildmates ?? null)
+          }
+        />
+
+        <PublicGuildmateLegendsSection
+          monthLabel={monthLabel}
+          dmBoard={{
+            entries: dmEntries,
+            isLoading: topDmQuery.isLoading,
+            isError: topDmQuery.isError,
+            onRetry: () => topDmQuery.refetch(),
+          }}
+          playerBoard={{
+            entries: playerEntries,
+            isLoading: topPlayerQuery.isLoading,
+            isError: topPlayerQuery.isError,
+            onRetry: () => topPlayerQuery.refetch(),
+          }}
+        />
+
+        <section
+          aria-labelledby="guildmates-heading"
+          className="flex scroll-mt-20 flex-col gap-4 sm:gap-6"
+          id="guildmates-section"
+        >
+          <div className="flex flex-col items-center gap-1 text-center">
+            <h2
+              id="guildmates-heading"
+              className="scroll-mt-20 font-heading text-2xl sm:text-3xl"
+            >
+              The Guild Roll
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Every adventurer sworn to the guild.
+            </p>
+          </div>
+
+          <PublicGuildmateSearch
+            key={searchKey}
+            search={queryStates.search}
+            onSearchChange={onSearchChange}
+          />
+
+          <PublicGuildmateCardList
+            data={guildmates}
+            isLoading={isLoading}
+            isError={isError}
+            onRetry={() => refetch()}
+            onReset={onReset}
+            pageCount={responseData?.data?.data?.meta?.total_page || 1}
+            rowCount={totalGuildmates || 0}
+            page={queryStates.page}
+            search={queryStates.search}
+            onPageChange={handlePageChange}
+          />
+        </section>
       </main>
     </div>
   );

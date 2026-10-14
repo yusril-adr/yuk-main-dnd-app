@@ -15,6 +15,12 @@ const MAIN_API_PATH = {
     JOIN: (id: string) => `/api/v1/stories/${id}/join`,
     CANCEL_JOIN: (id: string) => `/api/v1/stories/${id}/cancel-join`,
   },
+  USER: {
+    // Public guildmates list; search matches username or display name
+    DEFAULT: "/api/v1/users",
+    TOP_DM_EXPERIENCE: "/api/v1/users/top-dm-experience",
+    TOP_PLAYER_EXPERIENCE: "/api/v1/users/top-player-experience",
+  },
   FILE: {
     UPLOAD: "/api/v1/files/upload",
   },
