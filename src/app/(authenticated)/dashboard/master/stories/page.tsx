@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import StoriesPageClient from "./page-client";
 
 export const metadata: Metadata = {
-  title: "YukMainDnD - Stories",
+  title: "Stories",
 };
 
 export default function StoriesPage() {

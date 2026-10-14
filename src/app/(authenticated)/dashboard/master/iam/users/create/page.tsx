@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import UserCreatePageClient from "./page-client";
 
 export const metadata: Metadata = {
-  title: "YukMainDnD - Create user",
+  title: "Create user",
 };
 
 export default function UserCreatePage() {

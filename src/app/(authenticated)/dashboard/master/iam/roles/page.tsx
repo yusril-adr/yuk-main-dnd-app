@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import RolesPageClient from "./page-client";
 
 export const metadata: Metadata = {
-  title: "YukMainDnD - Roles",
+  title: "Roles",
 };
 
 export default function RolesPage() {

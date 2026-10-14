@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import EventsPageClient from "./page-client";
 
 export const metadata: Metadata = {
-  title: "YukMainDnD - Events",
+  title: "Events",
 };
 
 export default function EventsPage() {
