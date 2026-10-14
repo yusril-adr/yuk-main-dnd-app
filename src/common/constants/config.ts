@@ -15,6 +15,11 @@ const CONFIG = {
       AUTH: {
         ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "auth"],
         ME: () => [...CONFIG.QUERY_KEY.MAIN_API.AUTH.ALL(), "me"],
+        ME_EXPERIENCE_POINTS: () => [
+          ...CONFIG.QUERY_KEY.MAIN_API.AUTH.ME(),
+          "experience-points",
+        ],
+        ME_POINTS: () => [...CONFIG.QUERY_KEY.MAIN_API.AUTH.ME(), "points"],
       },
       USER: {
         ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "public-user"],

@@ -58,7 +58,7 @@ import { useAddUserPoints } from "./_hooks/use-add-user-points";
 import { useGetUserExperiencePointPagination } from "./_hooks/use-get-user-experience-point-pagination";
 import { useGetUserPointPagination } from "./_hooks/use-get-user-point-pagination";
 import type { TUserBalanceLogListFilter } from "./_types/user-balance-log-list-props";
-import { formatCompactBalance } from "./_utils/format-compact-balance";
+import { formatCompactBalance } from "@/utils/format-number";
 import { toUserBalanceLogPayload } from "./_utils/user-balance-log-payload";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | undefined;

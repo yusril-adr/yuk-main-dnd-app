@@ -9,6 +9,7 @@ import {
   User,
   UserRoundCog,
   UserRoundKey,
+  HandCoins,
 } from "lucide-react";
 import {
   SidebarMenu,
@@ -126,6 +127,10 @@ export function AvatarSidebar() {
               <DropdownMenuItem render={<Link href="/profile" />}>
                 <User />
                 Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem render={<Link href="/balances" />}>
+                <HandCoins />
+                Balances
               </DropdownMenuItem>
               <DropdownMenuItem render={<Link href="/settings" />}>
                 <UserRoundCog />

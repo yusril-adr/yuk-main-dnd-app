@@ -10,6 +10,7 @@ import {
   BookOpen,
   ChessKnight,
   UserRoundKey,
+  HandCoins,
   ShieldCogCorner,
   UserRoundCog,
 } from "lucide-react";
@@ -94,6 +95,10 @@ export function AvatarDropdown() {
           <DropdownMenuItem render={<Link href="/profile" />}>
             <User />
             Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem render={<Link href="/balances" />}>
+            <HandCoins />
+            Balances
           </DropdownMenuItem>
           <DropdownMenuItem render={<Link href="/settings" />}>
             <UserRoundCog />
