@@ -42,6 +42,17 @@ const CONFIG = {
           ],
         },
       },
+      BOARD: {
+        STORY: {
+          ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "board-story"],
+          MEMBER: {
+            ALL: () => [
+              ...CONFIG.QUERY_KEY.MAIN_API.BOARD.STORY.ALL(),
+              "board-story-member",
+            ],
+          },
+        },
+      },
       MASTER: {
         IAM: {
           USER: {

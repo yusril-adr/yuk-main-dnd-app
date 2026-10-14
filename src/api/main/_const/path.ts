@@ -28,6 +28,15 @@ const MAIN_API_PATH = {
     JOINED_STORIES: (identifier: string) =>
       `/api/v1/users/${encodeURIComponent(identifier)}/joined-stories`,
   },
+  BOARD: {
+    STORY: {
+      // Player board: stories the logged-in user is a member of
+      DEFAULT: "/api/v1/board/stories",
+      // Detail and members 404 unless the caller is a member
+      DETAIL: (id: string) => `/api/v1/board/stories/${id}`,
+      MEMBERS: (id: string) => `/api/v1/board/stories/${id}/members`,
+    },
+  },
   FILE: {
     UPLOAD: "/api/v1/files/upload",
   },
