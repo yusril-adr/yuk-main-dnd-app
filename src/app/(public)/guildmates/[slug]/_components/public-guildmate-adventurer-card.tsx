@@ -2,7 +2,7 @@ import { Crown, Sword } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 import { Badge } from "@/app/_components/ui/badge";
-import { Card } from "@/app/_components/ui/card";
+import { Card, CardContent } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
 import dayjs from "@/libs/dayjs";
 import PublicGuildmateAvatar from "@/app/(public)/guildmates/_components/public-guildmate-avatar";
@@ -28,7 +28,7 @@ export default function PublicGuildmateAdventurerCard({
       data-print-face="front"
       className="@container aspect-[5/7] w-full max-w-[380px] gap-0 rounded-lg border-4 border-double border-primary/60 bg-card p-1.5 py-1.5 shadow-sm ring-0"
     >
-      <div className="flex h-full flex-col justify-between rounded-sm border border-primary/30 px-[4cqw] py-[3.5cqw]">
+      <CardContent className="flex h-full flex-col justify-between rounded-sm border border-primary/30 px-[4cqw] py-[3.5cqw]">
         <div className="flex items-center justify-between text-[3.4cqw] font-semibold tracking-[0.15em] text-primary uppercase">
           <span>Adventurer&apos;s Guild</span>
           <span className="tabular-nums">
@@ -37,13 +37,11 @@ export default function PublicGuildmateAdventurerCard({
         </div>
 
         <div className="flex justify-center">
-          <div className="rounded-md border-2 border-primary/50 p-[1.2cqw]">
-            <PublicGuildmateAvatar
-              name={guildmate.display_name}
-              avatarUrl={guildmate.avatar_url}
-              className="size-[40cqw] rounded-sm after:rounded-sm [&_img]:rounded-sm"
-            />
-          </div>
+          <PublicGuildmateAvatar
+            name={guildmate.display_name}
+            avatarUrl={guildmate.avatar_url}
+            className="size-[42.4cqw] rounded-md border-2 border-primary/50 p-[1.2cqw] after:hidden [&_img]:rounded-sm"
+          />
         </div>
 
         <div className="flex min-w-0 flex-col items-center text-center">
@@ -106,7 +104,9 @@ export default function PublicGuildmateAdventurerCard({
           </span>
         </div>
 
-        <p className="border-t border-primary/30 pt-[3cqw] text-center text-[3.8cqw] text-foreground">
+        <Separator className="bg-primary/30" />
+
+        <p className="-mt-[2cqw] text-center text-[3.8cqw] text-foreground">
           Guild member since{" "}
           <span className="font-semibold text-foreground">
             {dayjs(guildmate.created_at).format(
@@ -114,7 +114,7 @@ export default function PublicGuildmateAdventurerCard({
             )}
           </span>
         </p>
-      </div>
+      </CardContent>
     </Card>
   );
 }

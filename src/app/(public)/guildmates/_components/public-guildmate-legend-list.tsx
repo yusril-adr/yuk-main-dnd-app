@@ -2,9 +2,11 @@ import Link from "next/link";
 import { User } from "lucide-react";
 import { cn } from "cn";
 
+import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
 import { Badge } from "@/app/_components/ui/badge";
 import {
   Item,
+  ItemActions,
   ItemContent,
   ItemDescription,
   ItemMedia,
@@ -39,14 +41,16 @@ export default function PublicGuildmateLegendList({
                 className="border-dashed bg-muted/10"
               >
                 <ItemMedia className="relative">
-                  <div
+                  <Avatar
                     className={cn(
-                      "flex size-11 items-center justify-center rounded-full border border-dashed bg-muted text-muted-foreground opacity-60 ring-2 ring-offset-2 ring-offset-card",
+                      "size-11 opacity-60 ring-2 ring-offset-2 ring-offset-card",
                       style.ring,
                     )}
                   >
-                    <User aria-hidden className="size-1/2" />
-                  </div>
+                    <AvatarFallback className="border border-dashed text-muted-foreground">
+                      <User aria-hidden className="size-1/2" />
+                    </AvatarFallback>
+                  </Avatar>
                   <Badge
                     className={cn(
                       "absolute -right-2 -bottom-1 border-0 px-1 text-[11px] font-bold opacity-70",
@@ -64,7 +68,9 @@ export default function PublicGuildmateLegendList({
                     Awaiting a {isDm ? "master" : "hero"}
                   </ItemDescription>
                 </ItemContent>
-                <span className="shrink-0 text-base text-foreground/50">—</span>
+                <ItemActions className="text-base text-foreground/50">
+                  —
+                </ItemActions>
               </Item>
             </li>
           );
@@ -107,12 +113,12 @@ export default function PublicGuildmateLegendList({
                   {formatExp(isDm ? user.dm_exp : user.player_exp)} XP total
                 </ItemDescription>
               </ItemContent>
-              <div className="flex shrink-0 flex-col items-end">
+              <ItemActions className="flex-col items-end gap-0">
                 <span className="font-heading text-base font-semibold text-primary">
                   +{formatExp(gainedExp)} XP
                 </span>
                 <span className="text-xs text-foreground/80">this month</span>
-              </div>
+              </ItemActions>
             </Item>
           </li>
         );

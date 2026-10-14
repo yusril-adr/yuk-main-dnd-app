@@ -7,6 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+} from "@/app/_components/ui/empty";
 import PublicGuildmateLegendList from "./public-guildmate-legend-list";
 import PublicGuildmateLegendPodium from "./public-guildmate-legend-podium";
 import PublicGuildmateLegendSkeleton from "./public-guildmate-legend-skeleton";
@@ -51,15 +57,16 @@ export default function PublicGuildmateLegendBoard({
                 <Else>
                   <If condition={entries.length === 0}>
                     <Then>
-                      <div className="flex flex-col items-center gap-2 rounded-md border border-dashed bg-muted/30 px-4 py-10 text-center">
-                        <Feather
-                          aria-hidden
-                          className="size-6 text-muted-foreground"
-                        />
-                        <p className="text-sm text-muted-foreground italic">
-                          {PUBLIC_GUILDMATE_LEGEND_EMPTY_TEXT}
-                        </p>
-                      </div>
+                      <Empty className="gap-2 rounded-md border bg-muted/30 px-4 py-10">
+                        <EmptyHeader>
+                          <EmptyMedia className="mb-0 text-muted-foreground">
+                            <Feather aria-hidden className="size-6" />
+                          </EmptyMedia>
+                          <EmptyDescription className="italic">
+                            {PUBLIC_GUILDMATE_LEGEND_EMPTY_TEXT}
+                          </EmptyDescription>
+                        </EmptyHeader>
+                      </Empty>
                     </Then>
                     <Else>
                       <div className="sm:hidden">
