@@ -1,10 +1,7 @@
 import type { TNavSidebar } from "@/app/(authenticated)/dashboard/_types/nav-sidebar";
 import {
   CalendarDays,
-  ClockFading,
-  Coins,
   Gauge,
-  Medal,
   Scale,
   ShieldKeyhole,
   ShieldUser,
@@ -40,22 +37,6 @@ const NAV_ROUTES: TNavSidebar[] = [
         title: "Goods",
         icon: Scale,
         path: "/dashboard/goods",
-      },
-      {
-        title: "Point Logs",
-        icon: ClockFading,
-        children: [
-          {
-            title: "Experience Points",
-            icon: Medal,
-            path: "/dashboard/logs/experience-points",
-          },
-          {
-            title: "Gold Pieces",
-            icon: Coins,
-            path: "/dashboard/logs/gold-pieces",
-          },
-        ],
       },
     ],
   },
