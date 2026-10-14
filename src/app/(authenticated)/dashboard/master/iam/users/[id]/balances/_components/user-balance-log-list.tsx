@@ -12,7 +12,7 @@ import {
 
 import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
-import { Card, CardDescription } from "@/app/_components/ui/card";
+import { Card } from "@/app/_components/ui/card";
 import {
   Empty,
   EmptyContent,
@@ -57,14 +57,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/app/_components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/_components/ui/select";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import dayjs from "@/libs/dayjs";
 import { generatePages } from "@/utils/table-helper";
@@ -72,14 +64,6 @@ import { generatePages } from "@/utils/table-helper";
 import type { TUserBalanceLogListProps } from "../_types/user-balance-log-list-props";
 
 const DISABLED = "pointer-events-none opacity-50";
-
-const PAGE_SIZE_OPTIONS = [
-  { label: "5 / page", value: 5 },
-  { label: "10 / page", value: 10 },
-  { label: "20 / page", value: 20 },
-  { label: "50 / page", value: 50 },
-  { label: "100 / page", value: 100 },
-];
 
 export default function UserBalanceLogList<TType extends number>({
   data,
@@ -95,7 +79,6 @@ export default function UserBalanceLogList<TType extends number>({
   typeIcons,
   isExpense,
   onPageChange,
-  onPageSizeChange,
   onSearchChange,
   onFilterApply,
 }: TUserBalanceLogListProps<TType>) {
@@ -112,9 +95,6 @@ export default function UserBalanceLogList<TType extends number>({
     [queryTable.page, pageCount],
   );
 
-  const dataStartIndex = (queryTable.page - 1) * queryTable.pageSize;
-  const indexStart = rowCount === 0 ? 0 : dataStartIndex + 1;
-  const indexEnd = Math.min(dataStartIndex + data.length, rowCount);
   const isFirstPage = queryTable.page === 1;
   const isLastPage = queryTable.page >= pageCount;
   const isFiltered = !!queryTable.search || queryTable.type != null;
@@ -338,71 +318,43 @@ export default function UserBalanceLogList<TType extends number>({
       )}
 
       {!isLoading && !isError && rowCount > 0 && (
-        <Card
-          size="sm"
-          className="flex-col items-center justify-between gap-3 px-3 sm:flex-row sm:px-4"
-        >
-          <CardDescription>
-            Showing {indexStart}–{indexEnd} of {rowCount}
-          </CardDescription>
-          <div className="flex flex-col items-center gap-2 sm:flex-row">
-            <Pagination aria-label="Ledger pages" className="mx-0 w-auto">
-              <PaginationContent className="flex-wrap justify-center">
-                <PaginationItem>
-                  <PaginationPrevious
+        <Card size="sm" className="items-center px-3 sm:px-4">
+          <Pagination aria-label="Ledger pages" className="mx-0 w-auto">
+            <PaginationContent className="flex-wrap justify-center">
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  text=""
+                  aria-label="Previous page"
+                  aria-disabled={isFirstPage}
+                  className={isFirstPage ? DISABLED : undefined}
+                  onClick={go(queryTable.page - 1)}
+                />
+              </PaginationItem>
+              {pages.map((page) => (
+                <PaginationItem key={page}>
+                  <PaginationLink
                     href="#"
-                    text=""
-                    aria-label="Previous page"
-                    aria-disabled={isFirstPage}
-                    className={isFirstPage ? DISABLED : undefined}
-                    onClick={go(queryTable.page - 1)}
-                  />
+                    size="icon-sm"
+                    isActive={page === queryTable.page}
+                    onClick={go(page)}
+                  >
+                    {page}
+                  </PaginationLink>
                 </PaginationItem>
-                {pages.map((page) => (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      href="#"
-                      size="icon-sm"
-                      isActive={page === queryTable.page}
-                      onClick={go(page)}
-                    >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-                <PaginationItem>
-                  <PaginationNext
-                    href="#"
-                    text=""
-                    aria-label="Next page"
-                    aria-disabled={isLastPage}
-                    className={isLastPage ? DISABLED : undefined}
-                    onClick={go(queryTable.page + 1)}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-            <Select
-              items={PAGE_SIZE_OPTIONS}
-              value={Number(queryTable.pageSize)}
-              onValueChange={(val) =>
-                onPageSizeChange(val || queryTable.pageSize)
-              }
-            >
-              <SelectTrigger aria-label="Entries per page" className="w-28">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {PAGE_SIZE_OPTIONS.map((item) => (
-                    <SelectItem key={item.value} value={item.value.toString()}>
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+              ))}
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  text=""
+                  aria-label="Next page"
+                  aria-disabled={isLastPage}
+                  className={isLastPage ? DISABLED : undefined}
+                  onClick={go(queryTable.page + 1)}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         </Card>
       )}
     </div>

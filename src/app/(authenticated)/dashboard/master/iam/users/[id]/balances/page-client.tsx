@@ -84,6 +84,8 @@ const POINT_LOG_TYPE_ICONS: Record<UserPointLogTypeEnum, LucideIcon> = {
   [UserPointLogTypeEnum.EXPENSE]: ArrowUpRight,
 };
 
+const LOG_PAGE_SIZE = 10;
+
 export default function UserBalancesPageClient() {
   const { id } = useParams();
   const router = useRouter();
@@ -92,7 +94,6 @@ export default function UserBalancesPageClient() {
 
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
-    pageSize: parseAsInteger.withDefault(10),
     search: parseAsString.withDefault(""),
     tab: parseAsStringEnum<UserBalanceTabEnum>(
       Object.values(UserBalanceTabEnum),
@@ -113,7 +114,7 @@ export default function UserBalancesPageClient() {
   const canViewPoints = !!user && user.action_list.is_can_view_balances;
   const canCreatePoints = !!user && user.action_list.is_can_create_balances;
   const payload = useMemo(
-    () => toUserBalanceLogPayload(queryStates),
+    () => toUserBalanceLogPayload({ ...queryStates, pageSize: LOG_PAGE_SIZE }),
     [queryStates],
   );
   const logsEnabled = canViewPoints && userQuery.isSuccess;
@@ -205,13 +206,6 @@ export default function UserBalancesPageClient() {
     [setQueryStates],
   );
 
-  const onPageSizeChange = useCallback(
-    (pageSize: number) => {
-      setQueryStates({ pageSize, page: 1 });
-    },
-    [setQueryStates],
-  );
-
   const onExpFilterApply = useCallback(
     (filter: TUserBalanceLogListFilter<UserExpLogTypeEnum>) => {
       setQueryStates({
@@ -253,7 +247,7 @@ export default function UserBalancesPageClient() {
 
   const queryTable = {
     page: queryStates.page,
-    pageSize: queryStates.pageSize,
+    pageSize: LOG_PAGE_SIZE,
     search: queryStates.search,
     type: queryStates.type,
   };
@@ -369,7 +363,6 @@ export default function UserBalancesPageClient() {
               typeLabels={USER_EXP_LOG_TYPE_LABEL}
               typeIcons={EXP_LOG_TYPE_ICONS}
               onPageChange={onPageChange}
-              onPageSizeChange={onPageSizeChange}
               onSearchChange={onSearchChange}
               onFilterApply={onExpFilterApply}
             />
@@ -393,7 +386,6 @@ export default function UserBalancesPageClient() {
               typeIcons={POINT_LOG_TYPE_ICONS}
               isExpense={(type) => type === UserPointLogTypeEnum.EXPENSE}
               onPageChange={onPageChange}
-              onPageSizeChange={onPageSizeChange}
               onSearchChange={onSearchChange}
               onFilterApply={onPointFilterApply}
             />

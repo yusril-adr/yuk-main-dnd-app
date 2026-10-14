@@ -29,7 +29,6 @@ export type TUserBalanceLogListProps<TType extends number> = {
   typeIcons: Record<TType, LucideIcon>;
   isExpense?: (type: TType) => boolean;
   onPageChange: (page: number) => void;
-  onPageSizeChange: (pageSize: number) => void;
   onSearchChange: (value: string) => void;
   onFilterApply: (filter: TUserBalanceLogListFilter<TType>) => void;
 };
