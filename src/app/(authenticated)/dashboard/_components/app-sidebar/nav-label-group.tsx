@@ -1,3 +1,4 @@
+import { Badge } from "@/app/_components/ui/badge";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Else, If, Then } from "react-if";
@@ -6,6 +7,7 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/app/_components/ui/sidebar";
@@ -36,6 +38,13 @@ export function NavLabelGroup({ item }: { item: TNavSidebar }) {
                   {child.icon && <child.icon />}
                   <span>{child.title}</span>
                 </SidebarMenuButton>
+                {child.badge && (
+                  <SidebarMenuBadge>
+                    <Badge variant="outline" className="h-5 px-1.5 text-[10px]">
+                      {child.badge}
+                    </Badge>
+                  </SidebarMenuBadge>
+                )}
               </Else>
             </If>
           </SidebarMenuItem>
