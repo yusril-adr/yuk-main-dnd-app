@@ -22,7 +22,11 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/app/_components/ui/item";
-import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
+import {
+  getGuildmateHref,
+  getInitials,
+  makeDefaultAvatarUrl,
+} from "@/utils/user-helper";
 import { getRichTextPlainText } from "@/utils/rich-text";
 
 import PublicStoryBanner from "./public-story-banner";
@@ -150,7 +154,7 @@ export default function PublicStoryCard({
                 </ItemDescription>
                 <ItemTitle className="block w-full truncate font-heading text-sm text-foreground">
                   <Link
-                    href={`/guildmates/${encodeURIComponent(creator?.username?.trim() || creator?.id || "")}`}
+                    href={getGuildmateHref(creator!)}
                     className="underline-offset-4 hover:text-primary hover:underline"
                   >
                     {creator?.display_name}

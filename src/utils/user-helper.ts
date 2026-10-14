@@ -16,5 +16,5 @@ export function getGuildmateHref(user: {
   username?: string | null;
   id: string;
 }) {
-  return `/guildmates/${user.username?.trim() || user.id}`;
+  return `/guildmates/${encodeURIComponent(user.username?.trim() || user.id)}`;
 }

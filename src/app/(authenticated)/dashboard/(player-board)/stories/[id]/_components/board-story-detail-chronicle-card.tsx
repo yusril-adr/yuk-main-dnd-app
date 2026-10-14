@@ -6,7 +6,11 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/app/_components/ui/avatar";
-import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
+import {
+  getGuildmateHref,
+  getInitials,
+  makeDefaultAvatarUrl,
+} from "@/utils/user-helper";
 import dayjs from "@/libs/dayjs";
 
 import BoardStoryDetailSectionCard from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-section-card";
@@ -46,7 +50,7 @@ export default function BoardStoryDetailChronicleCard({
               </Avatar>
               {/* The board creator has no username; guildmate pages accept the id */}
               <Link
-                href={`/guildmates/${encodeURIComponent(creator.id)}`}
+                href={getGuildmateHref(creator)}
                 className="min-w-0 truncate text-primary underline-offset-4 hover:underline"
               >
                 {creator.display_name}

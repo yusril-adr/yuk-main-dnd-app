@@ -7,7 +7,11 @@ import {
 } from "@/app/_components/ui/avatar";
 import { Badge } from "@/app/_components/ui/badge";
 import { STORY_MEMBER_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-member-status-label";
-import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
+import {
+  getGuildmateHref,
+  getInitials,
+  makeDefaultAvatarUrl,
+} from "@/utils/user-helper";
 
 import type { TBoardStoryDetailMemberRowProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_types/board-story-detail-components-props";
 
@@ -39,13 +43,12 @@ export default function BoardStoryDetailMemberRow({
   }
 
   const statusLabel = STORY_MEMBER_STATUS_LABEL[member.status];
-  const guildmateSlug = member.user.username?.trim() || member.user.id;
 
   return (
     <span className="flex min-w-0 items-center gap-2">
       {avatar}
       <Link
-        href={`/guildmates/${encodeURIComponent(guildmateSlug)}`}
+        href={getGuildmateHref(member.user)}
         className="min-w-0 truncate text-primary underline-offset-4 hover:underline"
       >
         {member.user.display_name}
