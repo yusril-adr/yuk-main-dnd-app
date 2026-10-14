@@ -1,6 +1,5 @@
 import type { LucideIcon } from "lucide-react";
 
-import type { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import type { TPublicStoryPaginationResponse } from "@/api/main/modules/stories/types/public-story-pagination-response";
 import type { TPublicUserPaginationResponse } from "@/api/main/modules/users/types/public-user-pagination-response";
 
@@ -12,12 +11,12 @@ export type THomeSectionHeaderProps = {
   linkLabel?: string;
 };
 
-export type THomeStoriesSectionProps = {
-  id: string;
-  status: StoryStatusEnum.PUBLISHED | StoryStatusEnum.COMPLETED;
-  title: string;
-  description: string;
-  emptyText: string;
+export type THomeBandProps = {
+  id?: string;
+  labelledBy?: string;
+  muted?: boolean;
+  className?: string;
+  children: React.ReactNode;
 };
 
 export type THomeStoryCardProps = {

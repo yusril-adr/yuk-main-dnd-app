@@ -9,7 +9,7 @@ import { Skeleton } from "@/app/_components/ui/skeleton";
 
 export default function HomeStoryCardSkeleton() {
   return (
-    <Card size="sm" className="gap-3 pt-0">
+    <Card className="gap-3 pt-0">
       <AspectRatio ratio={16 / 10} className="border-b">
         <Skeleton className="absolute inset-0 rounded-none" />
       </AspectRatio>

@@ -24,7 +24,7 @@ export default function HomeGuildSlide({ photo }: THomeGuildSlideProps) {
               alt={photo.alt}
               fill
               loading="lazy"
-              sizes="(min-width: 1280px) 1200px, 100vw"
+              sizes="(min-width: 1024px) 1024px, 100vw"
               className="object-cover"
               style={{ objectPosition: photo.objectPosition ?? "center" }}
             />

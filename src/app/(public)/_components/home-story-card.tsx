@@ -21,10 +21,7 @@ import type { THomeStoryCardProps } from "@/app/(public)/_types/home-components-
 // The title link is stretched over the card so the whole card is clickable
 export default function HomeStoryCard({ story }: THomeStoryCardProps) {
   return (
-    <Card
-      size="sm"
-      className="group relative h-full gap-3 pt-0 transition-colors hover:ring-primary/50 has-focus-visible:ring-2 has-focus-visible:ring-ring"
-    >
+    <Card className="group relative h-full gap-3 pt-0 transition-colors hover:ring-primary/50 has-focus-visible:ring-2 has-focus-visible:ring-ring">
       <AspectRatio ratio={16 / 10} className="overflow-hidden border-b">
         {story.banner_url ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -50,7 +47,7 @@ export default function HomeStoryCard({ story }: THomeStoryCardProps) {
         <CardTitle
           role="heading"
           aria-level={3}
-          className="line-clamp-2 font-heading text-base group-hover:text-primary group-data-[size=sm]/card:text-base"
+          className="line-clamp-2 font-heading text-xl group-hover:text-primary"
         >
           <Link
             href={getHomeStoryHref(story)}

@@ -1,22 +1,26 @@
 // Stories shown per home section
-export const HOME_STORY_LIMIT = 4;
+export const HOME_STORY_LIMIT = 3;
 
 export const HOME_STORY_DATE_FORMAT = "ddd, D MMM YYYY";
 
-export const HOME_HOW_IT_WORKS_STEPS = [
+// "What is this" pitch; icons are mapped in home-pitch
+export const HOME_PITCH_POINTS = [
   {
-    title: "Join a quest",
+    key: "friends",
+    title: "Play with friends",
     description:
-      "Pick an open quest from the board and claim a seat at the table.",
+      "Pick an open quest, claim a seat and roll dice with a party of fellow adventurers, online or at the table.",
   },
   {
-    title: "Play with your DM",
+    key: "rewards",
+    title: "Earn EXP & rewards",
     description:
-      "Gather with your party and let the Dungeon Master weave the tale.",
+      "Every finished quest grants experience and gold pieces. Level up and climb the monthly legends.",
   },
   {
-    title: "Earn EXP and gold",
+    key: "dm",
+    title: "Become a DM",
     description:
-      "Finish the story to earn experience and gold pieces for your legend.",
+      "Ready to weave your own tale? Run quests for the guild and earn Dungeon Master experience.",
   },
 ] as const;

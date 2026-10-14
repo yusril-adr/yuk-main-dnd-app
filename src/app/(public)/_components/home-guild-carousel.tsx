@@ -12,6 +12,7 @@ import {
   type CarouselApi,
 } from "@/app/_components/ui/carousel";
 
+import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
 import HomeGuildSlide from "@/app/(public)/_components/home-guild-slide";
 import { HOME_GUILD_PHOTOS } from "@/app/(public)/_constants/home-guild-photos";
@@ -31,17 +32,17 @@ export default function HomeGuildCarousel() {
   }, [api]);
 
   return (
-    <section aria-labelledby="our-guild" className="flex flex-col gap-4">
+    <HomeBand labelledBy="life-in-the-guild" muted>
       <HomeSectionHeader
-        id="our-guild"
-        title="Our guild"
+        id="life-in-the-guild"
+        title="Life in the guild"
         description="A circle of friends who roll dice, share tales and get gloriously lost in dungeons together. New faces are always welcome by the hearth."
       />
       <Carousel
         setApi={setApi}
         opts={{ loop: true }}
         aria-label="Guild photos"
-        className="w-full"
+        className="mx-auto w-full max-w-5xl"
       >
         <CarouselContent>
           {HOME_GUILD_PHOTOS.map((photo, index) => (
@@ -57,7 +58,7 @@ export default function HomeGuildCarousel() {
         <CarouselPrevious className="left-2 bg-card/90" />
         <CarouselNext className="right-2 bg-card/90" />
       </Carousel>
-      <div className="flex justify-center gap-1">
+      <div className="-mt-4 flex justify-center gap-1">
         {HOME_GUILD_PHOTOS.map((photo, index) => (
           <Button
             key={photo.alt}
@@ -74,6 +75,6 @@ export default function HomeGuildCarousel() {
           </Button>
         ))}
       </div>
-    </section>
+    </HomeBand>
   );
 }

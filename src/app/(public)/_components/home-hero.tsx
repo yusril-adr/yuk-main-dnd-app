@@ -1,61 +1,92 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { LayoutDashboard, ScrollText, Shield, UserPlus } from "lucide-react";
+import {
+  ArrowRight,
+  LayoutDashboard,
+  ScrollText,
+  UserPlus,
+} from "lucide-react";
 
+import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
-import { Card, CardContent } from "@/app/_components/ui/card";
-import { Separator } from "@/app/_components/ui/separator";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+
+import { HOME_GUILD_PHOTOS } from "@/app/(public)/_constants/home-guild-photos";
+
+// Different from the first carousel slide so the photo is not shown twice in a row
+const HERO_PHOTO = HOME_GUILD_PHOTOS[1] ?? HOME_GUILD_PHOTOS[0];
 
 export default function HomeHero() {
   const { auth } = useAuthContext();
 
   return (
-    <Card className="rounded-md bg-muted/40 p-1.5 shadow-none">
-      <CardContent className="flex flex-col items-center gap-4 rounded-sm border border-dashed border-primary/30 px-4 py-10 text-center sm:px-8 sm:py-16">
-        <Shield aria-hidden className="size-9 text-primary sm:size-11" />
-        <p className="text-xs tracking-[0.25em] text-primary uppercase">
-          Yuk Main DnD
-        </p>
-        <h1 className="font-heading text-3xl leading-tight sm:text-5xl">
-          Gather, adventurer
+    <section
+      aria-labelledby="home-hero-title"
+      className="relative isolate flex min-h-[78svh] w-full items-end overflow-hidden bg-foreground sm:min-h-[82svh] sm:items-center"
+    >
+      {HERO_PHOTO?.src && (
+        <Image
+          src={HERO_PHOTO.src}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="-z-20 object-cover"
+          style={{ objectPosition: HERO_PHOTO.objectPosition ?? "center" }}
+        />
+      )}
+      {/* Flat overlay (no gradient) keeps the text legible on the photo */}
+      <div aria-hidden className="absolute inset-0 -z-10 bg-black/65" />
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-6 px-4 py-16 sm:px-6 sm:py-24 lg:px-10">
+        <Badge
+          variant="outline"
+          className="border-white/40 bg-black/30 tracking-[0.2em] text-white uppercase"
+        >
+          A tabletop RPG guild
+        </Badge>
+        <h1
+          id="home-hero-title"
+          className="max-w-3xl font-heading text-4xl leading-tight text-white sm:text-6xl lg:text-7xl"
+        >
+          Gather your party. Your legend starts here.
         </h1>
-        <Separator className="w-40! bg-primary/40 sm:w-56!" />
-        <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
-          A guild of storytellers and dice-rollers. Find a table, follow your
-          Dungeon Master and write your name into the chronicles.
+        <p className="max-w-xl text-base text-white/85 sm:text-xl">
+          Find a table, follow your Dungeon Master and write your name into the
+          chronicles of YukMainDnD.
         </p>
-        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+        <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
           {auth ? (
             <Button
               size="lg"
+              className="h-12 px-6 text-base"
               render={<Link href="/dashboard" />}
               nativeButton={false}
             >
               <LayoutDashboard /> Open my Board
             </Button>
-          ) : null}
-          <Button
-            size="lg"
-            variant={auth ? "outline" : "default"}
-            render={<Link href="/stories" />}
-            nativeButton={false}
-          >
-            <ScrollText /> Browse Quests
-          </Button>
-          {!auth ? (
+          ) : (
             <Button
               size="lg"
-              variant="outline"
+              className="h-12 px-6 text-base"
               render={<Link href="/login" />}
               nativeButton={false}
             >
-              <UserPlus /> Join the Guild
+              <UserPlus /> Join the guild
             </Button>
-          ) : null}
+          )}
+          <Button
+            size="lg"
+            variant="outline"
+            className="h-12 border-white/60 bg-transparent px-6 text-base text-white hover:bg-white/10 hover:text-white"
+            render={<Link href="/stories" />}
+            nativeButton={false}
+          >
+            <ScrollText /> See quests <ArrowRight />
+          </Button>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </section>
   );
 }

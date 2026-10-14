@@ -1,5 +1,8 @@
 "use client";
 
+import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
+
+import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
 import HomeStoryCard from "@/app/(public)/_components/home-story-card";
 import HomeStoryCardSkeleton from "@/app/(public)/_components/home-story-card-skeleton";
@@ -7,21 +10,14 @@ import HomeEmptyState from "@/app/(public)/_components/home-empty-state";
 import HomeErrorState from "@/app/(public)/_components/home-error-state";
 import { useGetHomeStories } from "@/app/(public)/_hooks/use-get-home-stories";
 import { HOME_STORY_LIMIT } from "@/app/(public)/_constants/home";
-import type { THomeStoriesSectionProps } from "@/app/(public)/_types/home-components-props";
 
-const GRID = "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4";
+const GRID = "grid grid-cols-1 gap-6 md:grid-cols-3";
 
-export default function HomeStoriesSection({
-  id,
-  status,
-  title,
-  description,
-  emptyText,
-}: THomeStoriesSectionProps) {
+export default function HomeStoriesSection() {
   const query = useGetHomeStories({
     page: 1,
     per_page: HOME_STORY_LIMIT,
-    status,
+    status: StoryStatusEnum.PUBLISHED,
   });
   const stories = (query.data?.data?.data?.items ?? []).slice(
     0,
@@ -45,7 +41,9 @@ export default function HomeStoriesSection({
       />
     );
   } else if (stories.length === 0) {
-    content = <HomeEmptyState text={emptyText} />;
+    content = (
+      <HomeEmptyState text="No quests are posted on the board right now. Check back soon." />
+    );
   } else {
     content = (
       <div className={GRID}>
@@ -57,15 +55,15 @@ export default function HomeStoriesSection({
   }
 
   return (
-    <section aria-labelledby={id} className="flex flex-col gap-4">
+    <HomeBand labelledBy="open-quests" muted>
       <HomeSectionHeader
-        id={id}
-        title={title}
-        description={description}
+        id="open-quests"
+        title="Open quests"
+        description="Tables still seeking brave adventurers. Claim your seat before the party sets out."
         linkHref="/stories"
         linkLabel="See all quests"
       />
       {content}
-    </section>
+    </HomeBand>
   );
 }

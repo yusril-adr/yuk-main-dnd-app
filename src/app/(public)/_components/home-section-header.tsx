@@ -13,17 +13,19 @@ export default function HomeSectionHeader({
   linkLabel,
 }: THomeSectionHeaderProps) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-2">
-      <div className="flex flex-col gap-1">
-        <h2 id={id} className="font-heading text-2xl sm:text-3xl">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex max-w-2xl flex-col gap-2">
+        <h2 id={id} className="font-heading text-3xl sm:text-4xl">
           {title}
         </h2>
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <p className="text-base text-muted-foreground sm:text-lg">
+          {description}
+        </p>
       </div>
       {linkHref && (
         <Button
-          variant="ghost"
-          size="sm"
+          variant="outline"
+          className="self-start sm:self-auto"
           render={<Link href={linkHref} />}
           nativeButton={false}
         >
