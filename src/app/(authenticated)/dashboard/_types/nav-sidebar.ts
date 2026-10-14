@@ -11,6 +11,4 @@ export type TNavSidebar = {
   authorizedPermissions?: PermissionEnum[];
   children?: TNavSidebar[];
   variant?: NavSidebarVariantEnum;
-  // Small trailing tag, e.g. "Soon" for placeholder pages
-  badge?: string;
 };
