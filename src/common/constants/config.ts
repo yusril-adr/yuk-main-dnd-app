@@ -23,6 +23,15 @@ const CONFIG = {
           ...CONFIG.QUERY_KEY.MAIN_API.USER.ALL(),
           "top-player",
         ],
+        DETAIL: () => [...CONFIG.QUERY_KEY.MAIN_API.USER.ALL(), "detail"],
+        CREATED_STORIES: () => [
+          ...CONFIG.QUERY_KEY.MAIN_API.USER.ALL(),
+          "created-stories",
+        ],
+        JOINED_STORIES: () => [
+          ...CONFIG.QUERY_KEY.MAIN_API.USER.ALL(),
+          "joined-stories",
+        ],
       },
       STORY: {
         ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "public-story"],

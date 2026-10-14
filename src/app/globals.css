@@ -132,3 +132,67 @@
     @apply font-sans;
   }
 }
+
+/* Print only the guildmate adventurer card faces (data-print-face inside
+   data-print-root) at real trading-card size: front on page 1, back on
+   page 2. Everything else is removed from the flow so nothing else prints. */
+@media print {
+  @page {
+    margin: 10mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  /* Drop everything that is neither an ancestor of the root nor inside it */
+  body:has([data-print-root])
+    *:not([data-print-root], [data-print-root] *, :has([data-print-root])) {
+    display: none !important;
+  }
+  /* Ancestors become plain blocks with no spacing so the card starts at the
+     page's top-left corner */
+  body:has([data-print-root]) :has([data-print-root]) {
+    display: block !important;
+    position: static !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    min-height: 0 !important;
+    max-width: none !important;
+    width: auto !important;
+    background: transparent !important;
+  }
+  body:has([data-print-root]) [data-print-root] {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+  body:has([data-print-root]) [data-print-face] {
+    display: flex !important;
+    width: 63mm !important;
+    height: 88mm !important;
+    max-width: none !important;
+    aspect-ratio: auto !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+    background: #f4ecd8 !important;
+    border: 4px double #8a6a3b !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    /* Fixed parchment palette so dark mode prints the same */
+    --card: #f4ecd8;
+    --foreground: #2b2116;
+    --card-foreground: #2b2116;
+    --primary: #7a5a2b;
+    --muted: #e6d8b8;
+    --border: #8a6a3b;
+    color: #2b2116;
+  }
+  /* Back on its own page, mirrored to the top-right so it lines up with the
+     front (top-left) when printed duplex and flipped on the long edge */
+  body:has([data-print-root]) [data-print-face="back"] {
+    break-before: page;
+    margin-left: auto !important;
+  }
+}

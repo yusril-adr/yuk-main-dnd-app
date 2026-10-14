@@ -20,6 +20,13 @@ const MAIN_API_PATH = {
     DEFAULT: "/api/v1/users",
     TOP_DM_EXPERIENCE: "/api/v1/users/top-dm-experience",
     TOP_PLAYER_EXPERIENCE: "/api/v1/users/top-player-experience",
+    // Detail and story lists accept the username or the user id
+    DETAIL: (identifier: string) =>
+      `/api/v1/users/${encodeURIComponent(identifier)}`,
+    CREATED_STORIES: (identifier: string) =>
+      `/api/v1/users/${encodeURIComponent(identifier)}/created-stories`,
+    JOINED_STORIES: (identifier: string) =>
+      `/api/v1/users/${encodeURIComponent(identifier)}/joined-stories`,
   },
   FILE: {
     UPLOAD: "/api/v1/files/upload",
