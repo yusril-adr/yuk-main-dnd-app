@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { ScrollText } from "lucide-react";
+import { ChevronDown, ScrollText } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
+import { Button } from "@/app/_components/ui/button";
+import { Spinner } from "@/app/_components/ui/spinner";
 import { Tabs, TabsList, TabsTrigger } from "@/app/_components/ui/tabs";
 import PublicStoryCard from "@/app/(public)/stories/_components/public-story-card";
 import PublicStoryCardSkeleton from "@/app/(public)/stories/_components/public-story-card-skeleton";
@@ -19,17 +21,19 @@ export default function PublicGuildmateStoriesSection({
   identifier,
 }: TPublicGuildmateStoriesSectionProps) {
   const [tab, setTab] = useState<TStoryTab>("led");
-  const payload = { page: 1, per_page: PUBLIC_GUILDMATE_STORY_PAGE_SIZE };
   const createdQuery = useGetPublicGuildmateCreatedStories(
     identifier,
-    payload,
+    PUBLIC_GUILDMATE_STORY_PAGE_SIZE,
     { enabled: tab === "led" },
   );
-  const joinedQuery = useGetPublicGuildmateJoinedStories(identifier, payload, {
-    enabled: tab === "joined",
-  });
+  const joinedQuery = useGetPublicGuildmateJoinedStories(
+    identifier,
+    PUBLIC_GUILDMATE_STORY_PAGE_SIZE,
+    { enabled: tab === "joined" },
+  );
   const query = tab === "led" ? createdQuery : joinedQuery;
-  const stories = query.data?.data?.data?.items ?? [];
+  const stories =
+    query.data?.pages.flatMap((page) => page.data?.data?.items ?? []) ?? [];
 
   return (
     <section className="flex w-full flex-col gap-4 print:hidden">
@@ -85,7 +89,31 @@ export default function PublicGuildmateStoriesSection({
                   : stories.map((story) => (
                       <PublicStoryCard key={story.id} story={story} />
                     ))}
+                {query.isFetchingNextPage &&
+                  Array.from({ length: 3 }).map((_, idx) => (
+                    <PublicStoryCardSkeleton key={`next-skeleton-${idx}`} />
+                  ))}
               </div>
+              <If condition={query.hasNextPage && !query.isLoading}>
+                <Then>
+                  <div className="flex justify-center">
+                    <Button
+                      variant="outline"
+                      onClick={() => query.fetchNextPage()}
+                      disabled={query.isFetchingNextPage}
+                    >
+                      <If condition={query.isFetchingNextPage}>
+                        <Then>
+                          <Spinner /> Loading…
+                        </Then>
+                        <Else>
+                          <ChevronDown /> Load more
+                        </Else>
+                      </If>
+                    </Button>
+                  </div>
+                </Then>
+              </If>
             </Else>
           </If>
         </Else>

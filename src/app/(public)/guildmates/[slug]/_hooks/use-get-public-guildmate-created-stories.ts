@@ -1,21 +1,32 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getPublicUserCreatedStoryPagination } from "@/api/main/modules/users";
-import type { TPublicUserStoryPaginationPayload } from "@/api/main/modules/users/types/public-user-story-pagination-payload";
 import CONFIG from "@/common/constants/config";
 
+// Load-more list: each page appends to the previous ones
 export function useGetPublicGuildmateCreatedStories(
   identifier: string,
-  payload: TPublicUserStoryPaginationPayload,
+  perPage: number,
   options?: { enabled?: boolean },
 ) {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: [
       CONFIG.QUERY_KEY.MAIN_API.USER.CREATED_STORIES(),
       identifier,
-      payload,
+      perPage,
     ],
-    queryFn: () => getPublicUserCreatedStoryPagination(identifier, payload),
+    queryFn: ({ pageParam }) =>
+      getPublicUserCreatedStoryPagination(identifier, {
+        page: pageParam,
+        per_page: perPage,
+      }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      const meta = lastPage.data.data.meta;
+      return meta.current_page < meta.total_page
+        ? meta.current_page + 1
+        : undefined;
+    },
     enabled: (options?.enabled ?? true) && !!identifier,
   });
 }
