@@ -55,14 +55,14 @@ export default function BoardStoryDetailSkeleton() {
     <div className="flex flex-col gap-6">
       <Card className="gap-0 overflow-hidden py-0">
         <Skeleton className="h-48 w-full rounded-none sm:h-56 lg:h-64" />
-        <div className="flex flex-col gap-3 border-t p-6">
+        <CardHeader className="gap-3 border-t py-6">
           <Skeleton className="h-8 w-2/3" />
           <div className="flex gap-2">
             <Skeleton className="h-5 w-20 rounded-md" />
             <Skeleton className="h-5 w-20 rounded-md" />
             <Skeleton className="h-4 w-28" />
           </div>
-        </div>
+        </CardHeader>
       </Card>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <QuestCardSkeleton className="max-lg:hidden border-2 border-primary/15 lg:col-span-2 lg:self-start" />

@@ -2,7 +2,12 @@ import { Swords } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 import { Badge } from "@/app/_components/ui/badge";
-import { Card } from "@/app/_components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/app/_components/ui/card";
 import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 
 import BoardStoryStatusBadge from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-status-badge";
@@ -39,21 +44,23 @@ export default function BoardStoryDetailHero({
         </Else>
       </If>
 
-      <div className="flex flex-col gap-2 border-t p-6">
-        <h2 className="font-heading text-2xl font-medium leading-tight break-words sm:text-3xl">
+      <CardHeader className="gap-2 border-t py-6">
+        <CardTitle
+          role="heading"
+          aria-level={2}
+          className="font-heading text-2xl font-medium leading-tight break-words sm:text-3xl"
+        >
           {story.title}
-        </h2>
-        <div className="flex flex-wrap items-center gap-2">
+        </CardTitle>
+        <CardDescription className="flex flex-wrap items-center gap-2">
           <BoardStoryStatusBadge status={story.status} />
           <Badge variant="outline" className="gap-1 [&>svg]:size-3">
             <TypeIcon />
             {STORY_TYPE_LABEL[story.type]}
           </Badge>
-          <span className="font-mono text-xs text-muted-foreground">
-            /{story.slug}
-          </span>
-        </div>
-      </div>
+          <span className="font-mono text-xs">/{story.slug}</span>
+        </CardDescription>
+      </CardHeader>
     </Card>
   );
 }

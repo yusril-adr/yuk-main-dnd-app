@@ -1,6 +1,11 @@
 import { Scroll } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+} from "@/app/_components/ui/empty";
 import RichTextContent from "@/app/_components/rich-text-content";
 
 import BoardStoryDetailCopyDescriptionButton from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-copy-description-button";
@@ -32,9 +37,13 @@ export default function BoardStoryDetailQuestCard({
           />
         </Then>
         <Else>
-          <p className="italic text-muted-foreground">
-            No description has been written for this quest yet.
-          </p>
+          <Empty className="p-6">
+            <EmptyHeader>
+              <EmptyDescription className="italic">
+                No description has been written for this quest yet.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </Else>
       </If>
     </BoardStoryDetailSectionCard>
