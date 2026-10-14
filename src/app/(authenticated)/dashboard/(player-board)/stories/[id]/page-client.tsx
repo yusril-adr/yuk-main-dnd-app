@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { notFound, useParams } from "next/navigation";
 import { Case, Default, Switch } from "react-if";
 
+import { Button } from "@/app/_components/ui/button";
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 
@@ -43,9 +44,15 @@ export default function BoardStoryDetailPageClient() {
         />
 
         <div className="flex items-center mt-4 mb-6 gap-x-2">
-          <Link href="/dashboard/stories" aria-label="Back to My Stories">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Back to My Stories"
+            render={<Link href="/dashboard/stories" />}
+            nativeButton={false}
+          >
             <ArrowLeft />
-          </Link>
+          </Button>
           <h1 className="font-heading text-2xl">Story Detail</h1>
         </div>
 

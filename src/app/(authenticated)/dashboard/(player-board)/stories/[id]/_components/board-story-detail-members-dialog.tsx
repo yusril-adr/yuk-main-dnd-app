@@ -6,6 +6,12 @@ import { Else, If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
 import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+} from "@/app/_components/ui/empty";
+import { ItemGroup } from "@/app/_components/ui/item";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -128,30 +134,37 @@ export default function BoardStoryDetailMembersDialog({
             <Else>
               <If condition={query.isError && items.length === 0}>
                 <Then>
-                  <p className="italic text-muted-foreground">
-                    Couldn&apos;t load party members.
-                  </p>
+                  <Empty className="p-4">
+                    <EmptyHeader>
+                      <EmptyDescription className="italic">
+                        Couldn&apos;t load party members.
+                      </EmptyDescription>
+                    </EmptyHeader>
+                  </Empty>
                 </Then>
                 <Else>
                   <If condition={items.length === 0}>
                     <Then>
-                      <p className="italic text-muted-foreground">
-                        {isSearching
-                          ? "No adventurers match this search."
-                          : "No adventurers have joined this party yet."}
-                      </p>
+                      <Empty className="p-4">
+                        <EmptyHeader>
+                          <EmptyDescription className="italic">
+                            {isSearching
+                              ? "No adventurers match this search."
+                              : "No adventurers have joined this party yet."}
+                          </EmptyDescription>
+                        </EmptyHeader>
+                      </Empty>
                     </Then>
                     <Else>
-                      <ul className="flex flex-col gap-3">
+                      <ItemGroup className="gap-3">
                         {items.map((member) => (
-                          <li key={member.id}>
-                            <BoardStoryDetailMemberRow
-                              member={member}
-                              variant="detail"
-                            />
-                          </li>
+                          <BoardStoryDetailMemberRow
+                            key={member.id}
+                            member={member}
+                            variant="detail"
+                          />
                         ))}
-                      </ul>
+                      </ItemGroup>
                     </Else>
                   </If>
                 </Else>

@@ -4,7 +4,14 @@ import { useState } from "react";
 import { UserRoundGroup } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
+import { AvatarGroup } from "@/app/_components/ui/avatar";
 import { Button } from "@/app/_components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+} from "@/app/_components/ui/empty";
 
 import BoardStoryDetailMemberRow from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-member-row";
 import BoardStoryDetailMembersCardSkeleton from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-members-card-skeleton";
@@ -35,36 +42,45 @@ export default function BoardStoryDetailMembersCard({
           <BoardStoryDetailSectionCard icon={UserRoundGroup} title="Party">
             <If condition={query.isError}>
               <Then>
-                <p className="italic text-muted-foreground">
-                  Couldn&apos;t load party members.
-                </p>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => query.refetch()}
-                >
-                  Try again
-                </Button>
+                <Empty className="gap-3 p-4">
+                  <EmptyHeader>
+                    <EmptyDescription className="italic">
+                      Couldn&apos;t load party members.
+                    </EmptyDescription>
+                  </EmptyHeader>
+                  <EmptyContent>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => query.refetch()}
+                    >
+                      Try again
+                    </Button>
+                  </EmptyContent>
+                </Empty>
               </Then>
               <Else>
                 <If condition={items.length === 0}>
                   <Then>
-                    <p className="italic text-muted-foreground">
-                      No adventurers have joined this party yet.
-                    </p>
+                    <Empty className="p-4">
+                      <EmptyHeader>
+                        <EmptyDescription className="italic">
+                          No adventurers have joined this party yet.
+                        </EmptyDescription>
+                      </EmptyHeader>
+                    </Empty>
                   </Then>
                   <Else>
-                    <ul className="flex flex-wrap gap-2">
+                    <AvatarGroup className="flex-wrap">
                       {items.map((member) => (
-                        <li key={member.id}>
-                          <BoardStoryDetailMemberRow
-                            member={member}
-                            variant="avatar"
-                          />
-                        </li>
+                        <BoardStoryDetailMemberRow
+                          key={member.id}
+                          member={member}
+                          variant="avatar"
+                        />
                       ))}
-                    </ul>
+                    </AvatarGroup>
                     <Button
                       type="button"
                       variant="outline"

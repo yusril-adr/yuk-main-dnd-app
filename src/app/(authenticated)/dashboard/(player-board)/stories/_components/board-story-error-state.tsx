@@ -1,6 +1,14 @@
 import { TriangleAlert } from "lucide-react";
 
 import { Button } from "@/app/_components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/app/_components/ui/empty";
 
 import type { TBoardStoryErrorStateProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/_types/board-story-components-props";
 
@@ -9,18 +17,24 @@ export default function BoardStoryErrorState({
   onRetry,
 }: TBoardStoryErrorStateProps) {
   return (
-    <div
+    <Empty
       role="alert"
-      className="flex flex-col items-center gap-3 rounded-xl border bg-card px-6 py-12 text-center"
+      className="rounded-xl border border-solid bg-card px-6 py-12"
     >
-      <TriangleAlert className="size-10 text-destructive" />
-      <h2 className="font-heading text-xl">{title}</h2>
-      <p className="max-w-sm text-sm text-muted-foreground">
-        Something went wrong on the way. Please try again.
-      </p>
-      <Button variant="outline" onClick={onRetry}>
-        Try again
-      </Button>
-    </div>
+      <EmptyHeader>
+        <EmptyMedia className="text-destructive">
+          <TriangleAlert className="size-10" />
+        </EmptyMedia>
+        <EmptyTitle className="font-heading text-xl">{title}</EmptyTitle>
+        <EmptyDescription>
+          Something went wrong on the way. Please try again.
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button variant="outline" onClick={onRetry}>
+          Try again
+        </Button>
+      </EmptyContent>
+    </Empty>
   );
 }

@@ -6,6 +6,13 @@ import {
   AvatarImage,
 } from "@/app/_components/ui/avatar";
 import { Badge } from "@/app/_components/ui/badge";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemMedia,
+  ItemTitle,
+} from "@/app/_components/ui/item";
 import { STORY_MEMBER_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-member-status-label";
 import {
   getGuildmateHref,
@@ -20,7 +27,7 @@ export default function BoardStoryDetailMemberRow({
   variant,
 }: TBoardStoryDetailMemberRowProps) {
   const avatar = (
-    <Avatar className="size-7">
+    <Avatar className="size-7" title={member.user.display_name}>
       <AvatarImage
         src={
           member.user.avatar_url ??
@@ -34,30 +41,30 @@ export default function BoardStoryDetailMemberRow({
     </Avatar>
   );
 
-  if (variant === "avatar") {
-    return (
-      <span className="flex items-center" title={member.user.display_name}>
-        {avatar}
-      </span>
-    );
-  }
+  if (variant === "avatar") return avatar;
 
   const statusLabel = STORY_MEMBER_STATUS_LABEL[member.status];
 
   return (
-    <span className="flex min-w-0 items-center gap-2">
-      {avatar}
-      <Link
-        href={getGuildmateHref(member.user)}
-        className="min-w-0 truncate text-primary underline-offset-4 hover:underline"
-      >
-        {member.user.display_name}
-      </Link>
+    <Item role="listitem" size="xs" className="flex-nowrap gap-2 p-0">
+      <ItemMedia>{avatar}</ItemMedia>
+      <ItemContent className="min-w-0">
+        <ItemTitle className="w-full font-normal">
+          <Link
+            href={getGuildmateHref(member.user)}
+            className="min-w-0 truncate text-primary underline-offset-4 hover:underline"
+          >
+            {member.user.display_name}
+          </Link>
+        </ItemTitle>
+      </ItemContent>
       {statusLabel && (
-        <Badge variant="outline" className="ms-auto shrink-0">
-          {statusLabel}
-        </Badge>
+        <ItemActions>
+          <Badge variant="outline" className="shrink-0">
+            {statusLabel}
+          </Badge>
+        </ItemActions>
       )}
-    </span>
+    </Item>
   );
 }

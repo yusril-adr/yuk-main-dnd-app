@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { CalendarDays, Crown, Users } from "lucide-react";
 
+import { AspectRatio } from "@/app/_components/ui/aspect-ratio";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/app/_components/ui/card";
 import dayjs from "@/libs/dayjs";
 
 import BoardStoryBanner from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-banner";
@@ -13,25 +21,38 @@ import {
 } from "@/app/(authenticated)/dashboard/(player-board)/stories/_utils/board-story-helper";
 import type { TBoardStoryCardProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/_types/board-story-components-props";
 
+// The title link is stretched over the whole card (after:inset-0), so the
+// card stays one click target without wrapping block content in <a>
 export default function BoardStoryCard({ story }: TBoardStoryCardProps) {
   return (
-    <Link
-      href={getBoardStoryHref(story.id)}
-      className="group flex flex-col overflow-hidden rounded-xl border bg-card transition-colors hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    <Card
+      size="sm"
+      className="group relative gap-3 pt-0 transition-colors hover:ring-primary/50 has-focus-visible:ring-2 has-focus-visible:ring-ring"
     >
-      <div className="relative aspect-16/10 w-full overflow-hidden border-b">
+      <AspectRatio ratio={16 / 10} className="overflow-hidden border-b">
         <BoardStoryBanner bannerUrl={story.banner_url} title={story.title} />
         <BoardStoryStatusBadge
           status={story.status}
           className="absolute top-2 left-2 bg-card"
         />
-      </div>
+      </AspectRatio>
 
-      <div className="flex flex-1 flex-col gap-3 p-4">
-        <h2 className="line-clamp-2 font-heading text-lg leading-snug group-hover:text-primary">
-          {story.title}
-        </h2>
+      <CardHeader>
+        <CardTitle
+          role="heading"
+          aria-level={2}
+          className="line-clamp-2 font-heading text-lg leading-snug group-hover:text-primary group-data-[size=sm]/card:text-lg"
+        >
+          <Link
+            href={getBoardStoryHref(story.id)}
+            className="outline-none after:absolute after:inset-0"
+          >
+            {story.title}
+          </Link>
+        </CardTitle>
+      </CardHeader>
 
+      <CardContent>
         <dl className="flex flex-col gap-1.5 text-sm text-foreground/80">
           <div className="flex items-center gap-2">
             <Crown className="size-4 shrink-0 text-primary" />
@@ -50,16 +71,16 @@ export default function BoardStoryCard({ story }: TBoardStoryCardProps) {
             </dd>
           </div>
         </dl>
+      </CardContent>
 
-        <div className="mt-auto flex items-center justify-between gap-2 border-t pt-3">
-          <BoardStoryMemberStatusBadge memberStatus={story.member_status} />
-          <span className="flex items-center gap-1.5 text-sm text-foreground/80">
-            <Users className="size-4 text-primary" />
-            <span className="sr-only">Members</span>
-            {formatBoardStoryMembers(story.joined_members, story.max_members)}
-          </span>
-        </div>
-      </div>
-    </Link>
+      <CardFooter className="mt-auto justify-between gap-2 border-t">
+        <BoardStoryMemberStatusBadge memberStatus={story.member_status} />
+        <span className="flex items-center gap-1.5 text-sm text-foreground/80">
+          <Users className="size-4 text-primary" />
+          <span className="sr-only">Members</span>
+          {formatBoardStoryMembers(story.joined_members, story.max_members)}
+        </span>
+      </CardFooter>
+    </Card>
   );
 }

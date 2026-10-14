@@ -1,5 +1,13 @@
 import { Else, If, Then } from "react-if";
 
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@/app/_components/ui/item";
+
 import type { TBoardStoryDetailInfoRowProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_types/board-story-detail-components-props";
 
 export default function BoardStoryDetailInfoRow({
@@ -9,21 +17,23 @@ export default function BoardStoryDetailInfoRow({
   emptyText,
 }: TBoardStoryDetailInfoRowProps) {
   return (
-    <div className="flex gap-3">
-      <Icon className="mt-0.5 size-5 shrink-0 text-primary/70" />
-      <div className="min-w-0 flex-1">
-        <p className="text-xs uppercase tracking-wider text-muted-foreground">
+    <Item size="xs" className="flex-nowrap items-start gap-3 p-0">
+      <ItemMedia className="mt-0.5 text-primary/70">
+        <Icon className="size-5" />
+      </ItemMedia>
+      <ItemContent className="min-w-0 gap-0.5">
+        <ItemDescription className="text-xs tracking-wider uppercase">
           {label}
-        </p>
-        <div className="mt-0.5 whitespace-pre-line break-words">
+        </ItemDescription>
+        <ItemTitle className="w-full text-base font-normal break-words whitespace-pre-line">
           <If condition={!!value}>
             <Then>{value}</Then>
             <Else>
-              <span className="italic text-muted-foreground">{emptyText}</span>
+              <span className="text-muted-foreground italic">{emptyText}</span>
             </Else>
           </If>
-        </div>
-      </div>
-    </div>
+        </ItemTitle>
+      </ItemContent>
+    </Item>
   );
 }
