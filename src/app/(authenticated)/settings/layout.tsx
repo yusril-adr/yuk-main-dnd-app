@@ -1,6 +1,6 @@
 "use client";
 
-import AppSidebarLayout from "../_components/layout/app-sidebar-layout";
+import AppSidebarLayout from "../dashboard/_components/layout/app-sidebar-layout";
 
 export default function SettingLayout({
   children,

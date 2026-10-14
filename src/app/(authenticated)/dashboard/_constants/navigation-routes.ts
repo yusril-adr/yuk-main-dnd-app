@@ -1,4 +1,4 @@
-import type { TNavSidebar } from "@/app/(authenticated)/_types/nav-sidebar";
+import type { TNavSidebar } from "@/app/(authenticated)/dashboard/_types/nav-sidebar";
 import {
   CalendarDays,
   ClockFading,
@@ -13,7 +13,7 @@ import {
   UserShield,
 } from "lucide-react";
 import { PermissionEnum } from "@/common/enums/permission";
-import { NavSidebarVariantEnum } from "@/app/(authenticated)/_enums/nav-sidebar-variant";
+import { NavSidebarVariantEnum } from "@/app/(authenticated)/dashboard/_enums/nav-sidebar-variant";
 
 const NAV_ROUTES: TNavSidebar[] = [
   {
