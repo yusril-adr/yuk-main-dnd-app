@@ -1,19 +1,26 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { Fragment, useCallback, useMemo, useState } from "react";
 import type { ChangeEvent, SubmitEvent } from "react";
 import {
-  ChevronLeft,
-  ChevronRight,
   Funnel,
+  ScrollText,
   Search,
+  TriangleAlert,
   type LucideIcon,
 } from "lucide-react";
-import { Else, If, Then } from "react-if";
 
 import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
-import { ButtonGroup } from "@/app/_components/ui/button-group";
+import { Card } from "@/app/_components/ui/card";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/app/_components/ui/empty";
 import {
   Combobox,
   ComboboxContent,
@@ -30,42 +37,40 @@ import {
 } from "@/app/_components/ui/input-group";
 import {
   Item,
+  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
-  ItemMedia,
+  ItemSeparator,
   ItemTitle,
 } from "@/app/_components/ui/item";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/app/_components/ui/pagination";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/app/_components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/_components/ui/select";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import dayjs from "@/libs/dayjs";
 import { generatePages } from "@/utils/table-helper";
 
 import type { TUserBalanceLogListProps } from "../_types/user-balance-log-list-props";
 
-const PAGE_SIZE_OPTIONS = [
-  { label: "5 / page", value: 5 },
-  { label: "10 / page", value: 10 },
-  { label: "20 / page", value: 20 },
-  { label: "50 / page", value: 50 },
-  { label: "100 / page", value: 100 },
-];
+const DISABLED = "pointer-events-none opacity-50";
 
 export default function UserBalanceLogList<TType extends number>({
   data,
   isLoading,
+  isError,
+  unit,
+  onRetry,
   pageCount,
   rowCount,
   queryTable,
@@ -74,7 +79,6 @@ export default function UserBalanceLogList<TType extends number>({
   typeIcons,
   isExpense,
   onPageChange,
-  onPageSizeChange,
   onSearchChange,
   onFilterApply,
 }: TUserBalanceLogListProps<TType>) {
@@ -91,11 +95,15 @@ export default function UserBalanceLogList<TType extends number>({
     [queryTable.page, pageCount],
   );
 
-  const dataStartIndex = (queryTable.page - 1) * queryTable.pageSize;
-  const indexStart = rowCount === 0 ? 0 : dataStartIndex + 1;
-  const indexEnd = Math.min(dataStartIndex + data.length, rowCount);
   const isFirstPage = queryTable.page === 1;
-  const isLastPage = queryTable.page === pageCount;
+  const isLastPage = queryTable.page >= pageCount;
+  const isFiltered = !!queryTable.search || queryTable.type != null;
+
+  const go = (target: number) => (event: React.MouseEvent) => {
+    event.preventDefault();
+    if (target >= 1 && target <= pageCount && target !== queryTable.page)
+      onPageChange(target);
+  };
 
   const onFilterSubmit = useCallback(
     (event: SubmitEvent<HTMLFormElement>) => {
@@ -120,12 +128,19 @@ export default function UserBalanceLogList<TType extends number>({
   );
 
   return (
-    <>
-      <div className="flex items-center justify-between gap-2 mb-6">
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center">
         <Popover>
-          <PopoverTrigger render={<Button variant="outline" />}>
+          <PopoverTrigger
+            render={<Button variant="outline" className="h-10 self-start" />}
+          >
             <Funnel />
             Filter
+            {queryTable.type != null && (
+              <Badge variant="secondary" className="ms-1">
+                1
+              </Badge>
+            )}
           </PopoverTrigger>
           <PopoverContent align="start">
             <form
@@ -172,138 +187,176 @@ export default function UserBalanceLogList<TType extends number>({
             </form>
           </PopoverContent>
         </Popover>
-        <InputGroup>
-          <InputGroupInput
-            placeholder="Type minimum 3 characters to search ..."
-            onChange={onSearchInputChange}
-            defaultValue={queryTable.search}
-          />
+        <InputGroup className="h-10 bg-card sm:flex-1">
           <InputGroupAddon>
             <Search />
           </InputGroupAddon>
+          <InputGroupInput
+            aria-label="Search descriptions"
+            placeholder="Search descriptions (min. 3 characters)…"
+            onChange={onSearchInputChange}
+            defaultValue={queryTable.search}
+          />
         </InputGroup>
       </div>
 
-      <ItemGroup>
-        {isLoading &&
-          Array.from({ length: queryTable.pageSize }).map((_, index) => (
-            <Item key={index} variant="outline" size="sm">
-              <Skeleton className="size-8 rounded-md" />
-              <ItemContent>
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-5 w-16 rounded-md" />
-                <Skeleton className="h-3 w-48" />
-                <Skeleton className="h-3 w-36" />
-              </ItemContent>
-            </Item>
-          ))}
-
-        {!isLoading &&
-          data.map((row) => {
-            const TypeIcon: LucideIcon | undefined =
-              typeIcons[row.type as TType];
-            const expense = isExpense?.(row.type as TType) ?? false;
-            return (
-              <Item key={row.id} variant="outline" size="sm">
-                {TypeIcon ? (
-                  <ItemMedia variant="icon">
-                    <TypeIcon className="size-4" />
-                  </ItemMedia>
-                ) : null}
-                <ItemContent>
-                  <ItemTitle>
-                    <span className={expense ? "text-destructive" : undefined}>
-                      {expense ? "(-) " : "+ "}
-                      {row.amount.toLocaleString()}
-                    </span>
-                  </ItemTitle>
-                  <Badge
-                    variant={expense ? "destructive" : "secondary"}
-                    className={expense ? "self-start text-white" : "self-start"}
-                  >
-                    {typeLabels[row.type as TType] ?? String(row.type)}
-                  </Badge>
-                  <ItemDescription>
-                    <If
-                      condition={
-                        row.description != null && row.description !== ""
-                      }
-                    >
-                      <Then>{row.description}</Then>
-                      <Else>
-                        <span className="text-muted-foreground">-</span>
-                      </Else>
-                    </If>
-                  </ItemDescription>
-                  <ItemDescription>
-                    {dayjs(row.created_at).format("YYYY-MM-DD HH:mm:ss")}
-                  </ItemDescription>
-                </ItemContent>
-              </Item>
-            );
-          })}
-      </ItemGroup>
-
-      {!isLoading && (
-        <div className="flex flex-col md:flex-row justify-end items-center gap-2 mt-6">
-          <span>
-            {indexStart} - {indexEnd} of {rowCount} items
-          </span>
-
-          <ButtonGroup>
-            <Button
-              variant="ghost"
-              size="icon"
-              disabled={isFirstPage}
-              onClick={() => onPageChange(queryTable.page - 1)}
-            >
-              <ChevronLeft />
+      {!isLoading && isError ? (
+        <Empty role="alert" className="border bg-card">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <TriangleAlert className="text-destructive" />
+            </EmptyMedia>
+            <EmptyTitle className="font-heading text-xl">
+              Could not load the ledger
+            </EmptyTitle>
+            <EmptyDescription>
+              Something went wrong on the way. Please try again.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button variant="outline" onClick={onRetry}>
+              Try again
             </Button>
-
-            {pages.map((page) => (
-              <Button
-                key={page}
-                variant="ghost"
-                size="icon"
-                disabled={page === queryTable.page}
-                onClick={() => onPageChange(page)}
-              >
-                {page}
+          </EmptyContent>
+        </Empty>
+      ) : !isLoading && data.length === 0 ? (
+        <Empty className="border bg-card">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <ScrollText />
+            </EmptyMedia>
+            <EmptyTitle className="font-heading text-xl">
+              {isFiltered ? "No entries match" : "No entries yet"}
+            </EmptyTitle>
+            <EmptyDescription>
+              {isFiltered
+                ? "Try another search or clear the filter."
+                : "No balance has been recorded for this user yet."}
+            </EmptyDescription>
+          </EmptyHeader>
+          {isFiltered && queryTable.type != null && (
+            <EmptyContent>
+              <Button variant="outline" onClick={onFilterClear}>
+                Clear filter
               </Button>
-            ))}
-
-            <Button
-              variant="ghost"
-              size="icon"
-              disabled={isLastPage}
-              onClick={() => onPageChange(queryTable.page + 1)}
-            >
-              <ChevronRight />
-            </Button>
-          </ButtonGroup>
-
-          <Select
-            items={PAGE_SIZE_OPTIONS}
-            value={Number(queryTable.pageSize)}
-            onValueChange={(val) =>
-              onPageSizeChange(val || queryTable.pageSize)
-            }
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {PAGE_SIZE_OPTIONS.map((item) => (
-                  <SelectItem key={item.value} value={item.value.toString()}>
-                    {item.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+            </EmptyContent>
+          )}
+        </Empty>
+      ) : (
+        <Card size="sm" className="py-0">
+          <ItemGroup className="gap-0">
+            {isLoading
+              ? Array.from({ length: queryTable.pageSize }).map((_, index) => (
+                  <Fragment key={index}>
+                    {index > 0 && <ItemSeparator className="my-0" />}
+                    <Item role="listitem">
+                      <ItemContent>
+                        <Skeleton className="h-4 w-32" />
+                        <Skeleton className="h-3 w-48" />
+                      </ItemContent>
+                      <ItemActions>
+                        <Skeleton className="h-5 w-16" />
+                      </ItemActions>
+                    </Item>
+                  </Fragment>
+                ))
+              : data.map((row, index) => {
+                  const TypeIcon: LucideIcon | undefined =
+                    typeIcons[row.type as TType];
+                  const expense = isExpense?.(row.type as TType) ?? false;
+                  return (
+                    <Fragment key={row.id}>
+                      {index > 0 && <ItemSeparator className="my-0" />}
+                      <Item
+                        role="listitem"
+                        className="items-start sm:items-center"
+                      >
+                        <ItemContent className="min-w-0">
+                          <ItemTitle className="flex-wrap">
+                            <Badge
+                              variant="secondary"
+                              className="gap-1 [&>svg]:size-3"
+                            >
+                              {TypeIcon && <TypeIcon aria-hidden />}
+                              {typeLabels[row.type as TType] ??
+                                String(row.type)}
+                            </Badge>
+                            <time
+                              dateTime={row.created_at}
+                              className="text-xs font-normal text-muted-foreground"
+                            >
+                              {dayjs(row.created_at).format(
+                                "YYYY-MM-DD HH:mm:ss",
+                              )}
+                            </time>
+                          </ItemTitle>
+                          <ItemDescription className="line-clamp-2">
+                            {row.description || "—"}
+                          </ItemDescription>
+                        </ItemContent>
+                        <ItemActions className="font-heading text-base tabular-nums">
+                          <span
+                            className={
+                              expense
+                                ? "text-destructive"
+                                : "text-emerald-700 dark:text-emerald-400"
+                            }
+                          >
+                            {expense ? "−" : "+"}
+                            {row.amount.toLocaleString()}
+                          </span>
+                          <ItemDescription className="text-xs">
+                            {unit}
+                          </ItemDescription>
+                        </ItemActions>
+                      </Item>
+                    </Fragment>
+                  );
+                })}
+          </ItemGroup>
+        </Card>
       )}
-    </>
+
+      {!isLoading && !isError && rowCount > 0 && (
+        <Card size="sm" className="items-center px-3 sm:px-4">
+          <Pagination aria-label="Ledger pages" className="mx-0 w-auto">
+            <PaginationContent className="flex-wrap justify-center">
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  text=""
+                  aria-label="Previous page"
+                  aria-disabled={isFirstPage}
+                  className={isFirstPage ? DISABLED : undefined}
+                  onClick={go(queryTable.page - 1)}
+                />
+              </PaginationItem>
+              {pages.map((page) => (
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    href="#"
+                    size="icon-sm"
+                    isActive={page === queryTable.page}
+                    onClick={go(page)}
+                  >
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  text=""
+                  aria-label="Next page"
+                  aria-disabled={isLastPage}
+                  className={isLastPage ? DISABLED : undefined}
+                  onClick={go(queryTable.page + 1)}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </Card>
+      )}
+    </div>
   );
 }

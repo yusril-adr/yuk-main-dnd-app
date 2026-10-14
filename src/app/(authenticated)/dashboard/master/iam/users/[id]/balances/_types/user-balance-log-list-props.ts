@@ -18,6 +18,9 @@ export type TUserBalanceLogListFilter<TType extends number> = {
 export type TUserBalanceLogListProps<TType extends number> = {
   data: TUserBalanceLogRow[];
   isLoading: boolean;
+  isError: boolean;
+  unit: string;
+  onRetry: () => void;
   pageCount: number;
   rowCount: number;
   queryTable: TUserBalanceLogQuery;
@@ -26,7 +29,6 @@ export type TUserBalanceLogListProps<TType extends number> = {
   typeIcons: Record<TType, LucideIcon>;
   isExpense?: (type: TType) => boolean;
   onPageChange: (page: number) => void;
-  onPageSizeChange: (pageSize: number) => void;
   onSearchChange: (value: string) => void;
   onFilterApply: (filter: TUserBalanceLogListFilter<TType>) => void;
 };
