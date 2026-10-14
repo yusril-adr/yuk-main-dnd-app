@@ -6,7 +6,11 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/app/_components/ui/avatar";
-import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
+import {
+  getGuildmateHref,
+  getInitials,
+  makeDefaultAvatarUrl,
+} from "@/utils/user-helper";
 import dayjs from "@/libs/dayjs";
 
 import StoryDetailSectionCard from "./story-detail-section-card";
@@ -45,7 +49,7 @@ export default function StoryDetailChronicleCard({
                 </AvatarFallback>
               </Avatar>
               <Link
-                href={`/guildmates/${encodeURIComponent(creator?.username?.trim() || creator?.id || "")}`}
+                href={getGuildmateHref(creator)}
                 className="min-w-0 truncate text-primary underline-offset-4 hover:underline"
               >
                 {creator?.display_name}

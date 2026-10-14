@@ -12,10 +12,8 @@ import {
 } from "@/app/_components/ui/item";
 import PublicGuildmateAvatar from "./public-guildmate-avatar";
 import { PUBLIC_GUILDMATE_LEGEND_RANK_STYLE } from "@/app/(public)/guildmates/_constants/public-guildmate-legend-rank";
-import {
-  formatExp,
-  getGuildmateHref,
-} from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
+import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
+import { getGuildmateHref } from "@/utils/user-helper";
 import type { TPublicGuildmateLegendViewProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 // Phones: a plain ranked list, 1 to 3 top to bottom

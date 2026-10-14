@@ -16,7 +16,7 @@ import {
 } from "@/app/_components/ui/card";
 import { cn } from "@/utils/cn";
 import dayjs from "@/libs/dayjs";
-import { makeDefaultAvatarUrl } from "@/utils/user-helper";
+import { getGuildmateHref, makeDefaultAvatarUrl } from "@/utils/user-helper";
 import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
 
 import PublicStoryJoinActions from "./public-story-join-actions";
@@ -142,7 +142,7 @@ export default function PublicStoryDetailSummary({
                 Dungeon Master
               </span>
               <Link
-                href={`/guildmates/${encodeURIComponent(creator?.username?.trim() || creator?.id || "")}`}
+                href={getGuildmateHref(creator!)}
                 className="truncate font-medium underline-offset-4 hover:text-primary hover:underline"
               >
                 {creator?.display_name}

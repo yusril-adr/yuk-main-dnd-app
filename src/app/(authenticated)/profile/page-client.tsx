@@ -1,13 +1,19 @@
 "use client";
 
-import ComingSoonContent from "@/app/_components/coming-soon-content";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import GlobalLoader from "@/app/_components/global-loader";
+import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { getGuildmateHref } from "@/utils/user-helper";
 
+// Profile lives on the public guildmate page, so /profile only redirects there
 export default function ProfilePageClient() {
-  return (
-    <div className="w-full flex justify-center h-full">
-      <main className="w-full max-w-7xl flex flex-col px-10 pb-10 gap-2">
-        <ComingSoonContent />
-      </main>
-    </div>
-  );
+  const { auth } = useAuthContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (auth) router.replace(getGuildmateHref(auth));
+  }, [auth, router]);
+
+  return <GlobalLoader />;
 }

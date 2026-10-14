@@ -17,7 +17,11 @@ import {
 } from "@/app/_components/ui/item";
 import { cn } from "@/utils/cn";
 import dayjs from "@/libs/dayjs";
-import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
+import {
+  getGuildmateHref,
+  getInitials,
+  makeDefaultAvatarUrl,
+} from "@/utils/user-helper";
 import { StoryMemberStatusEnum } from "@/api/main/modules/master/stories/enums/story-member-status";
 
 import {
@@ -30,8 +34,6 @@ export default function PublicStoryPartyMember({
   member,
 }: TPublicStoryPartyMemberProps) {
   const { user } = member;
-  const guildmateSlug = user.username?.trim() || user.id;
-
   return (
     <Item
       role="listitem"
@@ -56,7 +58,7 @@ export default function PublicStoryPartyMember({
       <ItemContent className="min-w-0 gap-0">
         <ItemTitle className="block w-full truncate text-base text-foreground">
           <Link
-            href={`/guildmates/${encodeURIComponent(guildmateSlug)}`}
+            href={getGuildmateHref(user)}
             className="underline-offset-4 hover:text-primary hover:underline"
           >
             {user.display_name}

@@ -10,3 +10,11 @@ export function getInitials(name: string) {
     .toUpperCase()
     .slice(0, 2);
 }
+
+// Guildmate page accepts the username or falls back to the id
+export function getGuildmateHref(user: {
+  username?: string | null;
+  id: string;
+}) {
+  return `/guildmates/${encodeURIComponent(user.username?.trim() || user.id)}`;
+}

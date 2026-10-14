@@ -11,10 +11,8 @@ import {
 } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
 import PublicGuildmateAvatar from "./public-guildmate-avatar";
-import {
-  formatExp,
-  getGuildmateHref,
-} from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
+import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
+import { getGuildmateHref } from "@/utils/user-helper";
 import type { TPublicGuildmateCardProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 export default function PublicGuildmateCard({

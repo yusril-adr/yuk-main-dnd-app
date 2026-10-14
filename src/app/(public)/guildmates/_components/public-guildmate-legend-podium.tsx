@@ -8,10 +8,8 @@ import {
   PUBLIC_GUILDMATE_LEGEND_RANK_STYLE,
   PUBLIC_GUILDMATE_PODIUM_ORDER,
 } from "@/app/(public)/guildmates/_constants/public-guildmate-legend-rank";
-import {
-  formatExp,
-  getGuildmateHref,
-} from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
+import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
+import { getGuildmateHref } from "@/utils/user-helper";
 import type { TPublicGuildmateLegendViewProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 // sm and up: 2nd left, 1st center and raised, 3rd right
