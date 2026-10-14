@@ -1,4 +1,5 @@
-import { Card } from "@/app/_components/ui/card";
+import { Card, CardContent } from "@/app/_components/ui/card";
+import { Separator } from "@/app/_components/ui/separator";
 import type { TPublicGuildmateAdventurerCardBackProps } from "@/app/(public)/guildmates/[slug]/_types/public-guildmate-detail-components-props";
 
 // Print-only back face (hidden on screen); same frame as the front
@@ -11,7 +12,7 @@ export default function PublicGuildmateAdventurerCardBack({
       aria-hidden
       className="@container hidden aspect-[5/7] w-full max-w-[380px] gap-0 rounded-lg border-4 border-double border-primary/60 bg-card p-1.5 py-1.5 shadow-none ring-0"
     >
-      <div className="flex h-full flex-col items-center justify-between rounded-sm border border-primary/30 px-[4cqw] py-[5cqw] text-center">
+      <CardContent className="flex h-full flex-col items-center justify-between rounded-sm border border-primary/30 px-[4cqw] py-[5cqw] text-center">
         <span className="text-[3.4cqw] font-semibold tracking-[0.2em] text-primary uppercase">
           Adventurer&apos;s Guild
         </span>
@@ -36,7 +37,7 @@ export default function PublicGuildmateAdventurerCardBack({
           <span className="font-heading text-[9cqw] leading-none">
             YukMainDnD
           </span>
-          <span className="h-px w-[30cqw] bg-primary/50" />
+          <Separator className="w-[30cqw]! bg-primary/50" />
           <span className="text-[3.8cqw] text-foreground/85 italic">
             Roll bold, play fair, tell good tales.
           </span>
@@ -45,7 +46,7 @@ export default function PublicGuildmateAdventurerCardBack({
         <span className="text-[3.4cqw] font-semibold tracking-[0.15em] text-primary uppercase tabular-nums">
           No. {cardNumber}
         </span>
-      </div>
+      </CardContent>
     </Card>
   );
 }

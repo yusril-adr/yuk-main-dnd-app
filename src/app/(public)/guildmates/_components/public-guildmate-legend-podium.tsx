@@ -2,6 +2,7 @@ import Link from "next/link";
 import { User } from "lucide-react";
 import { cn } from "cn";
 
+import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
 import { Badge } from "@/app/_components/ui/badge";
 import PublicGuildmateAvatar from "./public-guildmate-avatar";
 import {
@@ -31,15 +32,17 @@ export default function PublicGuildmateLegendPodium({
               className="flex min-w-0 flex-col items-center gap-2 text-center"
             >
               <div className="relative">
-                <div
+                <Avatar
                   className={cn(
-                    "flex items-center justify-center rounded-full border border-dashed bg-muted text-muted-foreground ring-2 ring-offset-2 ring-offset-card opacity-60",
+                    "opacity-60 ring-2 ring-offset-2 ring-offset-card",
                     style.ring,
                     rank === 1 ? "size-16 lg:size-20" : "size-12 lg:size-14",
                   )}
                 >
-                  <User aria-hidden className="size-1/2" />
-                </div>
+                  <AvatarFallback className="border border-dashed text-muted-foreground">
+                    <User aria-hidden className="size-1/2" />
+                  </AvatarFallback>
+                </Avatar>
                 <Badge
                   className={cn(
                     "absolute -bottom-2 left-1/2 -translate-x-1/2 border-0 px-1.5 text-[11px] font-bold opacity-70",

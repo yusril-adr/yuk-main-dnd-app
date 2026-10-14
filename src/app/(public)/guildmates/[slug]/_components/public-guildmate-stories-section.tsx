@@ -5,6 +5,11 @@ import { ChevronDown, ScrollText } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+} from "@/app/_components/ui/empty";
 import { Spinner } from "@/app/_components/ui/spinner";
 import { Tabs, TabsList, TabsTrigger } from "@/app/_components/ui/tabs";
 import PublicStoryCard from "@/app/(public)/stories/_components/public-story-card";
@@ -72,11 +77,15 @@ export default function PublicGuildmateStoriesSection({
         <Else>
           <If condition={!query.isLoading && stories.length === 0}>
             <Then>
-              <p className="rounded-md border border-dashed border-primary/30 px-4 py-10 text-center text-sm text-muted-foreground italic">
-                {tab === "led"
-                  ? "No quests led yet. Their first tale awaits."
-                  : "No quests joined yet. The road is still open."}
-              </p>
+              <Empty className="rounded-md border border-primary/30 px-4 py-10">
+                <EmptyHeader>
+                  <EmptyDescription className="italic">
+                    {tab === "led"
+                      ? "No quests led yet. Their first tale awaits."
+                      : "No quests joined yet. The road is still open."}
+                  </EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             </Then>
             <Else>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
