@@ -16,6 +16,14 @@ const CONFIG = {
         ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "auth"],
         ME: () => [...CONFIG.QUERY_KEY.MAIN_API.AUTH.ALL(), "me"],
       },
+      USER: {
+        ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "public-user"],
+        TOP_DM: () => [...CONFIG.QUERY_KEY.MAIN_API.USER.ALL(), "top-dm"],
+        TOP_PLAYER: () => [
+          ...CONFIG.QUERY_KEY.MAIN_API.USER.ALL(),
+          "top-player",
+        ],
+      },
       STORY: {
         ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "public-story"],
         MEMBER: {
