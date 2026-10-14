@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { Coins, EllipsisVertical, Eye, Pencil, Trash } from "lucide-react";
+import { HandCoins, EllipsisVertical, Eye, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -124,7 +124,7 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
                         />
                       }
                     >
-                      <Coins />
+                      <HandCoins />
                       Balances
                     </DropdownMenuItem>
                   )}

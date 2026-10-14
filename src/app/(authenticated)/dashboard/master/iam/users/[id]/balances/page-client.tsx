@@ -11,7 +11,7 @@ import {
   BookOpen,
   ChessKnight,
   Coins,
-  Medal,
+  Sparkles,
   Plus,
   type LucideIcon,
 } from "lucide-react";
@@ -21,24 +21,15 @@ import {
   parseAsString,
   parseAsStringEnum,
 } from "nuqs";
-import { Else, If, Then } from "react-if";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { Button } from "@/app/_components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/app/_components/ui/dialog";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/app/_components/ui/tabs";
-import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useGetUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-by-id";
 import { UserExpLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type";
 import { USER_EXP_LOG_TYPE_LABEL } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type-label";
@@ -50,6 +41,7 @@ import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import CONFIG from "@/common/constants/config";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import AddUserExperiencePointsDialog from "./_components/add-user-experience-points-dialog";
+import UserBalanceStatCard from "./_components/user-balance-stat-card";
 import AddUserPointsDialog from "./_components/add-user-points-dialog";
 import UserBalanceLogList from "./_components/user-balance-log-list";
 import { UserBalanceTabEnum } from "./_enums/user-balance-tab";
@@ -58,7 +50,6 @@ import { useAddUserPoints } from "./_hooks/use-add-user-points";
 import { useGetUserExperiencePointPagination } from "./_hooks/use-get-user-experience-point-pagination";
 import { useGetUserPointPagination } from "./_hooks/use-get-user-point-pagination";
 import type { TUserBalanceLogListFilter } from "./_types/user-balance-log-list-props";
-import { formatCompactBalance } from "@/utils/format-number";
 import { toUserBalanceLogPayload } from "./_utils/user-balance-log-payload";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | undefined;
@@ -92,64 +83,6 @@ const POINT_LOG_TYPE_ICONS: Record<UserPointLogTypeEnum, LucideIcon> = {
   [UserPointLogTypeEnum.INCOME]: ArrowDownLeft,
   [UserPointLogTypeEnum.EXPENSE]: ArrowUpRight,
 };
-
-function StatBlock({
-  label,
-  value,
-}: {
-  label: string;
-  value: number | null | undefined;
-}) {
-  const [open, setOpen] = useState(false);
-
-  if (value == null || !Number.isFinite(value)) {
-    return (
-      <div className="flex flex-col items-center gap-1">
-        <span className="text-xs text-muted-foreground tracking-wider uppercase">
-          {label}
-        </span>
-        <span className="text-lg font-heading font-medium">-</span>
-      </div>
-    );
-  }
-
-  const exact = value.toLocaleString();
-  const compact = formatCompactBalance(value);
-  const abbreviated = compact !== exact;
-
-  return (
-    <div className="flex flex-col items-center gap-1">
-      <span className="text-xs text-muted-foreground tracking-wider uppercase">
-        {label}
-      </span>
-      {abbreviated ? (
-        <button
-          type="button"
-          className="text-lg font-heading font-medium cursor-pointer underline decoration-dotted underline-offset-4"
-          aria-label={`Show exact ${label}`}
-          onClick={() => setOpen(true)}
-        >
-          {compact}
-        </button>
-      ) : (
-        <span className="text-lg font-heading font-medium">{exact}</span>
-      )}
-      {abbreviated && (
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{label}</DialogTitle>
-              <DialogDescription className="sr-only">
-                Exact {label}
-              </DialogDescription>
-            </DialogHeader>
-            <p className="text-lg font-heading font-medium">{exact}</p>
-          </DialogContent>
-        </Dialog>
-      )}
-    </div>
-  );
-}
 
 export default function UserBalancesPageClient() {
   const { id } = useParams();
@@ -327,14 +260,27 @@ export default function UserBalancesPageClient() {
 
   return (
     <div className="w-full flex justify-center min-w-0">
-      <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
+      <main className="w-full max-w-5xl flex flex-col px-4 pb-10 sm:px-6 lg:px-10">
         <AppBreadcrumb items={breadcrumbItems} />
-        <div className="flex items-center justify-between mt-4 mb-6 gap-2">
-          <div className="flex items-center gap-x-2 min-w-0">
-            <Link href={`/dashboard/master/iam/users/${userId}`}>
+        <div className="mt-4 mb-6 flex items-center justify-between gap-2">
+          <div className="flex min-w-0 items-center gap-x-2">
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label="Back to user"
+              render={<Link href={`/dashboard/master/iam/users/${userId}`} />}
+              nativeButton={false}
+            >
               <ArrowLeft />
-            </Link>
-            <h1 className="font-heading text-2xl">Balances</h1>
+            </Button>
+            <div className="flex min-w-0 flex-col">
+              <h1 className="font-heading text-2xl">Balances</h1>
+              {user?.display_name && (
+                <p className="truncate text-sm text-muted-foreground">
+                  Ledger of {user.display_name}
+                </p>
+              )}
+            </div>
           </div>
           {canCreatePoints && (
             <Button
@@ -366,45 +312,46 @@ export default function UserBalancesPageClient() {
           )}
         </div>
 
-        <If condition={userQuery.isLoading}>
-          <Then>
-            <div className="grid grid-cols-3 gap-6 w-full mb-6">
-              {Array.from({ length: 3 }).map((_, index) => (
-                <div key={index} className="flex flex-col items-center gap-1">
-                  <Skeleton className="h-3 w-16" />
-                  <Skeleton className="h-6 w-10" />
-                </div>
-              ))}
-            </div>
-          </Then>
-          <Else>
-            <div className="grid grid-cols-3 gap-6 w-full mb-6">
-              <StatBlock label="Player EXP" value={user?.player_exp} />
-              <StatBlock label="DM EXP" value={user?.dm_exp} />
-              <StatBlock label="Gold Pieces" value={user?.points} />
-            </div>
-          </Else>
-        </If>
+        <section
+          aria-label="Current balances"
+          className="mb-6 grid w-full grid-cols-3 gap-2 sm:gap-4"
+        >
+          <UserBalanceStatCard
+            label="Player EXP"
+            unit="EXP"
+            icon={ChessKnight}
+            value={user?.player_exp}
+            isLoading={userQuery.isLoading}
+          />
+          <UserBalanceStatCard
+            label="DM EXP"
+            unit="EXP"
+            icon={BookOpen}
+            value={user?.dm_exp}
+            isLoading={userQuery.isLoading}
+          />
+          <UserBalanceStatCard
+            label="Gold Pieces"
+            unit="GP"
+            icon={Coins}
+            value={user?.points}
+            isLoading={userQuery.isLoading}
+          />
+        </section>
 
         <Tabs
-          className="w-full min-w-0"
+          className="w-full min-w-0 gap-3"
           value={queryStates.tab}
           onValueChange={onTabChange}
         >
-          <TabsList className="w-full">
-            <TabsTrigger
-              className="min-w-0"
-              value={UserBalanceTabEnum.EXPERIENCE_POINTS}
-            >
-              <Medal className="size-4 shrink-0" />
-              <span className="min-w-0 truncate">Experience Points</span>
+          <TabsList className="w-full sm:w-fit">
+            <TabsTrigger value={UserBalanceTabEnum.EXPERIENCE_POINTS}>
+              <Sparkles />
+              Experience Points
             </TabsTrigger>
-            <TabsTrigger
-              className="min-w-0"
-              value={UserBalanceTabEnum.GOLD_PIECES}
-            >
-              <Coins className="size-4 shrink-0" />
-              <span className="min-w-0 truncate">Gold Pieces</span>
+            <TabsTrigger value={UserBalanceTabEnum.GOLD_PIECES}>
+              <Coins />
+              Gold Pieces
             </TabsTrigger>
           </TabsList>
           <TabsContent value={UserBalanceTabEnum.EXPERIENCE_POINTS}>
@@ -412,6 +359,9 @@ export default function UserBalancesPageClient() {
               key={queryStates.tab}
               data={expItems}
               isLoading={expQuery.isLoading || expQuery.isFetching}
+              isError={expQuery.isError}
+              unit="EXP"
+              onRetry={() => expQuery.refetch()}
               pageCount={expMeta?.total_page || 1}
               rowCount={expMeta?.total_all_data || 0}
               queryTable={queryTable}
@@ -429,6 +379,9 @@ export default function UserBalancesPageClient() {
               key={queryStates.tab}
               data={pointItems}
               isLoading={pointQuery.isLoading || pointQuery.isFetching}
+              isError={pointQuery.isError}
+              unit="GP"
+              onRetry={() => pointQuery.refetch()}
               pageCount={pointMeta?.total_page || 1}
               rowCount={pointMeta?.total_all_data || 0}
               queryTable={queryTable}

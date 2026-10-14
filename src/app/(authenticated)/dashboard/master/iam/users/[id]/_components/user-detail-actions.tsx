@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Coins, EllipsisVertical, Pencil, Trash } from "lucide-react";
+import { HandCoins, EllipsisVertical, Pencil, Trash } from "lucide-react";
 import { If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
@@ -34,7 +34,7 @@ export default function UserDetailActions({
               nativeButton={false}
               render={<Link href={balancesHref} />}
             >
-              <Coins /> Balances
+              <HandCoins /> Balances
             </Button>
           </Then>
         </If>
@@ -74,7 +74,7 @@ export default function UserDetailActions({
               <If condition={canViewBalances}>
                 <Then>
                   <DropdownMenuItem render={<Link href={balancesHref} />}>
-                    <Coins />
+                    <HandCoins />
                     Balances
                   </DropdownMenuItem>
                 </Then>
