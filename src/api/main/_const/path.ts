@@ -2,6 +2,8 @@ const MAIN_API_PATH = {
   AUTH: {
     LOGIN: "/api/v1/auth/login",
     ME: "/api/v1/auth/me",
+    ME_EXPERIENCE_POINTS: "/api/v1/auth/me/experience-points",
+    ME_POINTS: "/api/v1/auth/me/points",
     SWITCH_ROLE: "/api/v1/auth/switch-role",
     PROFILE: "/api/v1/auth/profile",
     PASSWORD: "/api/v1/auth/password",
