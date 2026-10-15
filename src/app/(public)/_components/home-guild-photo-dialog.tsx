@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
 import {
   Dialog,
@@ -72,9 +73,9 @@ export default function HomeGuildPhotoDialog({
                   >
                     <ChevronLeft />
                   </Button>
-                  <span className="text-xs text-muted-foreground tabular-nums">
+                  <Badge variant="outline" className="tabular-nums">
                     {position + 1} / {viewable.length}
-                  </span>
+                  </Badge>
                   <Button
                     variant="outline"
                     size="icon-sm"
