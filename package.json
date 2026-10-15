@@ -29,6 +29,7 @@
     "date-fns": "^4.4.0",
     "dayjs": "^1.11.21",
     "dompurify": "^3.4.16",
+    "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.55.0",
     "marked": "^17.0.6",
