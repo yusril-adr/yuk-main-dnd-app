@@ -36,9 +36,9 @@ export default function HomePitch() {
             <Item
               key={point.key}
               role="listitem"
-              className="flex-col items-start gap-4 p-0"
+              className="flex-col flex-nowrap items-start gap-4 p-0"
             >
-              <ItemHeader className="justify-start gap-3">
+              <ItemHeader className="basis-auto justify-start gap-3">
                 {/* Avatar keeps a fixed, centred square that never shrinks */}
                 <Avatar
                   data-pitch-icon
@@ -52,7 +52,7 @@ export default function HomePitch() {
                   Step {index + 1}
                 </Badge>
               </ItemHeader>
-              <ItemContent className="gap-2">
+              <ItemContent className="w-full gap-2">
                 <ItemTitle
                   role="heading"
                   aria-level={3}
