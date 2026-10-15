@@ -36,9 +36,9 @@ export default function HomePitch() {
             <Item
               key={point.key}
               role="listitem"
-              className="flex-col flex-nowrap items-start gap-4 p-0"
+              className="flex-col flex-nowrap items-center gap-4 p-0 text-center lg:items-start lg:text-left"
             >
-              <ItemHeader className="w-full basis-auto flex-col flex-nowrap items-start justify-start gap-2 lg:flex-row lg:items-center lg:gap-3">
+              <ItemHeader className="w-full basis-auto flex-col flex-nowrap items-center justify-center gap-2 lg:flex-row lg:justify-start lg:gap-3">
                 {/* Avatar keeps a fixed, centred square that never shrinks */}
                 <Avatar
                   data-pitch-icon
@@ -52,7 +52,7 @@ export default function HomePitch() {
                   Step {index + 1}
                 </Badge>
               </ItemHeader>
-              <ItemContent className="w-full gap-2">
+              <ItemContent className="w-full items-center gap-2 lg:items-start">
                 <ItemTitle
                   role="heading"
                   aria-level={3}
