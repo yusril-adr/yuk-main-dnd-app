@@ -38,7 +38,7 @@ export default function HomePitch() {
               role="listitem"
               className="flex-col flex-nowrap items-start gap-4 p-0"
             >
-              <ItemHeader className="basis-auto justify-start gap-3">
+              <ItemHeader className="w-full basis-auto flex-row flex-nowrap items-center justify-start gap-3">
                 {/* Avatar keeps a fixed, centred square that never shrinks */}
                 <Avatar
                   data-pitch-icon
