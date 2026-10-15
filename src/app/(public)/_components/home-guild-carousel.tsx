@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { cn } from "@/utils/cn";
 import { Button } from "@/app/_components/ui/button";
 import {
   Carousel,
@@ -12,6 +13,7 @@ import {
   type CarouselApi,
 } from "@/app/_components/ui/carousel";
 
+import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
 import HomeGuildSlide from "@/app/(public)/_components/home-guild-slide";
 import { HOME_GUILD_PHOTOS } from "@/app/(public)/_constants/home-guild-photos";
@@ -31,10 +33,10 @@ export default function HomeGuildCarousel() {
   }, [api]);
 
   return (
-    <section aria-labelledby="our-guild" className="flex flex-col gap-4">
+    <HomeBand labelledBy="life-in-the-guild" muted>
       <HomeSectionHeader
-        id="our-guild"
-        title="Our guild"
+        id="life-in-the-guild"
+        title="Life in the guild"
         description="A circle of friends who roll dice, share tales and get gloriously lost in dungeons together. New faces are always welcome by the hearth."
       />
       <Carousel
@@ -57,23 +59,23 @@ export default function HomeGuildCarousel() {
         <CarouselPrevious className="left-2 bg-card/90" />
         <CarouselNext className="right-2 bg-card/90" />
       </Carousel>
-      <div className="flex justify-center gap-1">
+      <div className="-mt-2 flex justify-center gap-3">
         {HOME_GUILD_PHOTOS.map((photo, index) => (
           <Button
             key={photo.alt}
             variant="ghost"
-            size="icon-sm"
             aria-label={`Show photo ${index + 1}`}
             aria-current={current === index}
             onClick={() => api?.scrollTo(index)}
-            className="group/dot hover:bg-transparent aria-expanded:bg-transparent"
-          >
-            <span
-              className={`h-2 rounded-full transition-all ${current === index ? "w-5 bg-primary" : "w-2 bg-muted-foreground/40 group-hover/dot:bg-muted-foreground"}`}
-            />
-          </Button>
+            className={cn(
+              "relative h-2 min-w-0 rounded-full p-0 transition-all after:absolute after:-inset-3",
+              current === index
+                ? "w-5 bg-primary hover:bg-primary"
+                : "w-2 bg-muted-foreground/40 hover:bg-muted-foreground",
+            )}
+          />
         ))}
       </div>
-    </section>
+    </HomeBand>
   );
 }

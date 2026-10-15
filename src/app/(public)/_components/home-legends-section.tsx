@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { Crown, Sword } from "lucide-react";
 
+import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
 import HomeLegendBoard from "@/app/(public)/_components/home-legend-board";
 import {
@@ -30,15 +31,15 @@ export default function HomeLegendsSection() {
   }));
 
   return (
-    <section aria-labelledby="legends" className="flex flex-col gap-4">
+    <HomeBand labelledBy="legends">
       <HomeSectionHeader
         id="legends"
         title="Legends of the month"
-        description={`Most EXP gained in ${monthLabel}.`}
+        description={`The adventurers and Dungeon Masters who gained the most EXP in ${monthLabel}.`}
         linkHref="/guildmates"
-        linkLabel="Meet the guild"
+        linkLabel="See all guildmates"
       />
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <HomeLegendBoard
           title="Heroes"
           icon={Sword}
@@ -58,6 +59,6 @@ export default function HomeLegendsSection() {
           onRetry={() => dmsQuery.refetch()}
         />
       </div>
-    </section>
+    </HomeBand>
   );
 }

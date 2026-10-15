@@ -2,6 +2,12 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/app/_components/ui/button";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+} from "@/app/_components/ui/item";
 
 import type { THomeSectionHeaderProps } from "@/app/(public)/_types/home-components-props";
 
@@ -13,23 +19,26 @@ export default function HomeSectionHeader({
   linkLabel,
 }: THomeSectionHeaderProps) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-2">
-      <div className="flex flex-col gap-1">
-        <h2 id={id} className="font-heading text-2xl sm:text-3xl">
+    <Item className="flex-col items-start gap-4 p-0 sm:flex-row sm:items-end sm:justify-between">
+      <ItemContent className="max-w-2xl gap-2">
+        <h2 id={id} className="font-heading text-3xl sm:text-4xl">
           {title}
         </h2>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </div>
+        <ItemDescription className="line-clamp-none text-base sm:text-lg">
+          {description}
+        </ItemDescription>
+      </ItemContent>
       {linkHref && (
-        <Button
-          variant="ghost"
-          size="sm"
-          render={<Link href={linkHref} />}
-          nativeButton={false}
-        >
-          {linkLabel} <ArrowRight />
-        </Button>
+        <ItemActions>
+          <Button
+            variant="outline"
+            render={<Link href={linkHref} />}
+            nativeButton={false}
+          >
+            {linkLabel} <ArrowRight />
+          </Button>
+        </ItemActions>
       )}
-    </div>
+    </Item>
   );
 }
