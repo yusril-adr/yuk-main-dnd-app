@@ -107,8 +107,8 @@ export default function PublicGuildmateLegendPodium({
                 {user.display_name}
               </Link>
               <span className="text-xs font-medium text-foreground/80">
-                {isDm ? "DM" : "Player"} Lv{" "}
-                {isDm ? user.dm_level : user.player_level}
+                {formatExp(isDm ? user.dm_exp : user.player_exp)}{" "}
+                {isDm ? "DM" : "Player"} XP
               </span>
             </div>
             <div
@@ -122,9 +122,6 @@ export default function PublicGuildmateLegendPodium({
               </span>
               <span className="text-xs leading-tight text-foreground/80">
                 this month
-              </span>
-              <span className="hidden text-xs leading-tight text-foreground/70 lg:block">
-                {formatExp(isDm ? user.dm_exp : user.player_exp)} total
               </span>
             </div>
           </li>

@@ -4,7 +4,12 @@ import { useCallback, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import { parseAsArrayOf, parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
+import {
+  parseAsArrayOf,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+} from "nuqs";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
@@ -37,8 +42,6 @@ export default function UsersPageClient() {
         "display_name",
         "username",
         "email",
-        "dm_level",
-        "player_level",
         "dm_exp",
         "player_exp",
         "created_at",
@@ -46,9 +49,9 @@ export default function UsersPageClient() {
       ] as const,
       "Users",
     ).withDefault("updated_at"),
-    order: parseAsStringEnum<OrderKeyEnum>(Object.values(OrderKeyEnum)).withDefault(
-      OrderKeyEnum.DESC,
-    ),
+    order: parseAsStringEnum<OrderKeyEnum>(
+      Object.values(OrderKeyEnum),
+    ).withDefault(OrderKeyEnum.DESC),
     roleIds: parseAsArrayOf(parseAsString).withDefault([]),
   });
 
@@ -59,7 +62,8 @@ export default function UsersPageClient() {
       search: queryStates.search,
       sort_by: queryStates.sortBy ?? undefined,
       order: queryStates.order ?? undefined,
-      role_ids: queryStates.roleIds.length > 0 ? queryStates.roleIds : undefined,
+      role_ids:
+        queryStates.roleIds.length > 0 ? queryStates.roleIds : undefined,
     }),
     [queryStates],
   );

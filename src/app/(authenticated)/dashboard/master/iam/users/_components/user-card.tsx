@@ -18,6 +18,8 @@ import {
   AvatarImage,
 } from "@/app/_components/ui/avatar";
 import { Badge } from "@/app/_components/ui/badge";
+import { ItemGroup } from "@/app/_components/ui/item";
+import UserStatItem from "@/app/(authenticated)/dashboard/master/iam/users/_components/user-stat-item";
 import { Button } from "@/app/_components/ui/button";
 import {
   DropdownMenu,
@@ -156,20 +158,20 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
         </CardHeader>
 
         <CardContent>
-          <div className="mt-3 grid grid-cols-3 gap-2 text-center text-sm">
-            <div>
-              <p className="text-muted-foreground">Player</p>
-              <p className="font-medium">Lv.{user.player_level}</p>
-            </div>
-            <div>
-              <p className="text-muted-foreground">DM</p>
-              <p className="font-medium">Lv.{user.dm_level}</p>
-            </div>
-            <div>
-              <p className="text-muted-foreground">Gold Pieces</p>
-              <p className="font-medium">{user.points}</p>
-            </div>
-          </div>
+          <ItemGroup className="mt-3 grid grid-cols-3 gap-2">
+            <UserStatItem
+              label="Player XP"
+              value={(user.player_exp ?? 0).toLocaleString()}
+            />
+            <UserStatItem
+              label="DM XP"
+              value={(user.dm_exp ?? 0).toLocaleString()}
+            />
+            <UserStatItem
+              label="Gold"
+              value={(user.points ?? 0).toLocaleString()}
+            />
+          </ItemGroup>
         </CardContent>
 
         <CardFooter className="border-t pt-3">

@@ -42,12 +42,10 @@ export default function UserCreatePageClient() {
     [avatarUploadMutation],
   );
 
-  const roleItems = (rolesQuery.data?.data?.data?.items ?? []).map(
-    (role) => ({
-      value: role.id,
-      label: role.name,
-    }),
-  );
+  const roleItems = (rolesQuery.data?.data?.data?.items ?? []).map((role) => ({
+    value: role.id,
+    label: role.name,
+  }));
 
   return (
     <div className="w-full flex justify-center">

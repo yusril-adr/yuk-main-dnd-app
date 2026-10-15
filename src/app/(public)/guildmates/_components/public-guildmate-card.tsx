@@ -9,6 +9,14 @@ import {
   CardFooter,
   CardTitle,
 } from "@/app/_components/ui/card";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from "@/app/_components/ui/item";
 import { Separator } from "@/app/_components/ui/separator";
 import PublicGuildmateAvatar from "./public-guildmate-avatar";
 import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
@@ -65,24 +73,41 @@ export default function PublicGuildmateCard({
 
       <CardFooter className="mt-auto flex-col items-stretch gap-1.5 px-4 pt-0">
         <Separator className="mb-1.5" />
-        <div className="flex items-center gap-2 text-sm">
-          <Crown aria-hidden className="size-4 shrink-0 text-primary" />
-          <span className="text-foreground/80">
-            <span className="font-medium text-foreground">
-              DM Lv {guildmate.dm_level}
-            </span>{" "}
-            · {formatExp(guildmate.dm_exp)} XP
-          </span>
-        </div>
-        <div className="flex items-center gap-2 text-sm">
-          <Sword aria-hidden className="size-4 shrink-0 text-primary" />
-          <span className="text-foreground/80">
-            <span className="font-medium text-foreground">
-              Player Lv {guildmate.player_level}
-            </span>{" "}
-            · {formatExp(guildmate.player_exp)} XP
-          </span>
-        </div>
+        <ItemGroup className="gap-1">
+          {[
+            {
+              key: "dm",
+              icon: Crown,
+              label: "Dungeon Master",
+              exp: guildmate.dm_exp,
+            },
+            {
+              key: "player",
+              icon: Sword,
+              label: "Player",
+              exp: guildmate.player_exp,
+            },
+          ].map(({ key, icon: Icon, label, exp }) => (
+            <Item key={key} size="xs" className="p-0">
+              <ItemMedia className="text-primary">
+                <Icon aria-hidden className="size-4" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle className="font-normal text-foreground/80">
+                  {label}
+                </ItemTitle>
+              </ItemContent>
+              <ItemActions>
+                <Badge
+                  variant="secondary"
+                  className="rounded-sm font-semibold tabular-nums"
+                >
+                  {formatExp(exp)} XP
+                </Badge>
+              </ItemActions>
+            </Item>
+          ))}
+        </ItemGroup>
       </CardFooter>
     </Card>
   );

@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "*githubusercontent.com", // Replace with your image provider's domain
+        hostname: "**.githubusercontent.com", // Replace with your image provider's domain
         pathname: "/**", // Matches all paths under the domain
       },
     ],

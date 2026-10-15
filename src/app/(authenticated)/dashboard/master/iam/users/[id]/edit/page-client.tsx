@@ -63,15 +63,16 @@ export default function UserEditPageClient() {
     [avatarUploadMutation],
   );
 
-  const roleItems = (rolesQuery.data?.data?.data?.items ?? []).map(
-    (role) => ({
-      value: role.id,
-      label: role.name,
-    }),
-  );
+  const roleItems = (rolesQuery.data?.data?.data?.items ?? []).map((role) => ({
+    value: role.id,
+    label: role.name,
+  }));
 
   useEffect(() => {
-    if (getDataQuery.isError && getDataQuery.error instanceof MainAPINotFoundError) {
+    if (
+      getDataQuery.isError &&
+      getDataQuery.error instanceof MainAPINotFoundError
+    ) {
       router.push("/dashboard/master/iam/users");
     }
   }, [getDataQuery.error, getDataQuery.isError, router]);
@@ -88,7 +89,12 @@ export default function UserEditPageClient() {
   const breadcrumbItems = [
     { name: "Users", link: "/dashboard/master/iam/users" },
     ...(!getDataQuery.isLoading
-      ? [{ name: user?.display_name ?? "Detail", link: `/dashboard/master/iam/users/${userId}` }]
+      ? [
+          {
+            name: user?.display_name ?? "Detail",
+            link: `/dashboard/master/iam/users/${userId}`,
+          },
+        ]
       : []),
     { name: "Edit" },
   ];
