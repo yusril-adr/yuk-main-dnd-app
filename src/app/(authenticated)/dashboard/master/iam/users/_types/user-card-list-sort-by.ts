@@ -5,8 +5,6 @@ export type TUserCardListSortBy = Extract<
   | "display_name"
   | "username"
   | "email"
-  | "dm_level"
-  | "player_level"
   | "dm_exp"
   | "player_exp"
   | "created_at"

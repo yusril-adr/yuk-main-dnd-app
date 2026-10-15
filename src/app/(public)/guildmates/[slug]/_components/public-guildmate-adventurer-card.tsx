@@ -84,14 +84,12 @@ export default function PublicGuildmateAdventurerCard({
           <PublicGuildmateStatRow
             icon={Crown}
             label="DM"
-            level={guildmate.dm_level}
             exp={guildmate.dm_exp}
             share={getExpShare(guildmate.dm_exp, totalExp)}
           />
           <PublicGuildmateStatRow
             icon={Sword}
             label="Hero"
-            level={guildmate.player_level}
             exp={guildmate.player_exp}
             share={getExpShare(guildmate.player_exp, totalExp)}
           />

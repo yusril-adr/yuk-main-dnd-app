@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { getPublicUserByIdentifierOnServer } from "@/api/main/modules/users/server";
 import { getGuildmateHref } from "@/utils/user-helper";
+import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
 import { getRichTextPlainText } from "@/utils/rich-text";
 import { makePageMetadata, toMetaDescription } from "@/utils/seo-helper";
 
@@ -20,12 +21,12 @@ export async function generateMetadata({
   if (!user) {
     return makePageMetadata({
       title: `Adventurer ${identifier}`,
-      description: `Adventurer card of ${identifier}: levels, EXP and quest log in the YukMainDnD guild.`,
+      description: `Adventurer card of ${identifier}: DM and player XP and quest log in the YukMainDnD guild.`,
       path: getGuildmateHref({ id: identifier }),
     });
   }
 
-  const fallback = `${user.display_name}: Player level ${user.player_level}, DM level ${user.dm_level} in the YukMainDnD guild. See their adventurer card and quest log.`;
+  const fallback = `${user.display_name}: ${formatExp(user.player_exp)} player XP and ${formatExp(user.dm_exp)} DM XP in the YukMainDnD guild. See their adventurer card and quest log.`;
 
   return makePageMetadata({
     title: `Adventurer ${user.display_name}`,

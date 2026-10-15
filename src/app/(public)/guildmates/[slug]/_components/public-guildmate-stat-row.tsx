@@ -6,7 +6,6 @@ import type { TPublicGuildmateStatRowProps } from "@/app/(public)/guildmates/[sl
 export default function PublicGuildmateStatRow({
   icon: Icon,
   label,
-  level,
   exp,
   share,
 }: TPublicGuildmateStatRowProps) {
@@ -16,7 +15,6 @@ export default function PublicGuildmateStatRow({
         <span className="flex items-center gap-[1.5cqw] font-heading text-[4.8cqw] leading-none">
           <Icon aria-hidden className="size-[4.8cqw] shrink-0 text-primary" />
           {label}
-          <span className="text-primary">Lv {level}</span>
         </span>
         <span className="text-[4.2cqw] leading-none font-semibold text-foreground tabular-nums">
           {formatExp(exp)} XP

@@ -17,6 +17,8 @@ import {
 import { Badge } from "@/app/_components/ui/badge";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { Separator } from "@/app/_components/ui/separator";
+import { ItemGroup } from "@/app/_components/ui/item";
+import UserStatItem from "@/app/(authenticated)/dashboard/master/iam/users/_components/user-stat-item";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -47,23 +49,6 @@ function DetailRow({
     <div className="flex justify-between items-baseline gap-4 py-2">
       <span className="text-muted-foreground text-sm shrink-0">{label}</span>
       <span className="text-sm font-medium text-right">{value}</span>
-    </div>
-  );
-}
-
-function StatBlock({
-  label,
-  value,
-}: {
-  label: string;
-  value: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col items-center gap-1">
-      <span className="text-xs text-muted-foreground tracking-wider uppercase">
-        {label}
-      </span>
-      <span className="text-lg font-heading font-medium">{value}</span>
     </div>
   );
 }
@@ -220,27 +205,30 @@ export default function UserDetailPageClient() {
               {/* Stats row */}
               <If condition={userQuery.isLoading}>
                 <Then>
-                  <div className="grid grid-cols-3 gap-6 w-full">
+                  <div className="grid w-full grid-cols-3 gap-2 sm:gap-4">
                     {Array.from({ length: 3 }).map((_, i) => (
-                      <div key={i} className="flex flex-col items-center gap-1">
-                        <Skeleton className="h-3 w-16" />
-                        <Skeleton className="h-6 w-10" />
-                      </div>
+                      <Skeleton key={i} className="h-14 w-full rounded-md" />
                     ))}
                   </div>
                 </Then>
                 <Else>
-                  <div className="grid grid-cols-3 gap-6 w-full">
-                    <StatBlock
-                      label="Player"
-                      value={`Lv.${user?.player_level}`}
+                  <ItemGroup className="grid w-full grid-cols-3 gap-2 sm:gap-4">
+                    <UserStatItem
+                      size="lg"
+                      label="Player XP"
+                      value={(user?.player_exp ?? 0).toLocaleString()}
                     />
-                    <StatBlock label="DM" value={`Lv.${user?.dm_level}`} />
-                    <StatBlock
+                    <UserStatItem
+                      size="lg"
+                      label="DM XP"
+                      value={(user?.dm_exp ?? 0).toLocaleString()}
+                    />
+                    <UserStatItem
+                      size="lg"
                       label="Gold"
-                      value={user?.points?.toLocaleString()}
+                      value={(user?.points ?? 0).toLocaleString()}
                     />
-                  </div>
+                  </ItemGroup>
                 </Else>
               </If>
 

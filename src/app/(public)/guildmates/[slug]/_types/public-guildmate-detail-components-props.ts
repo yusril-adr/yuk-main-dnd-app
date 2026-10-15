@@ -9,7 +9,6 @@ export type TPublicGuildmateAdventurerCardProps = {
 export type TPublicGuildmateStatRowProps = {
   icon: LucideIcon;
   label: string;
-  level: number;
   exp: number;
   share: number;
 };

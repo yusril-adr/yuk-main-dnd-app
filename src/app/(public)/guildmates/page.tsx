@@ -8,7 +8,7 @@ import GuildMatesPageClient from "./page-client";
 export const metadata: Metadata = makePageMetadata({
   title: "Guildmates",
   description:
-    "Meet the adventurers and Dungeon Masters of the YukMainDnD guild and see their levels and EXP.",
+    "Meet the adventurers and Dungeon Masters of the YukMainDnD guild and see the XP they have earned.",
   path: "/guildmates",
 });
 
