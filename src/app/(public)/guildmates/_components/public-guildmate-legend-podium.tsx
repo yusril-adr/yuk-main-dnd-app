@@ -45,11 +45,13 @@ export default function PublicGuildmateLegendPodium({
                 </Avatar>
                 <Badge
                   className={cn(
-                    "absolute -bottom-2 left-1/2 -translate-x-1/2 border-0 px-1.5 text-[11px] font-bold opacity-70",
+                    "absolute -bottom-2 left-1/2 size-5 -translate-x-1/2 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-[11px] leading-none font-bold lining-nums proportional-nums opacity-70",
                     style.badge,
+                    rank === 1 && "pl-px",
                   )}
+                  aria-label={`${style.label} place`}
                 >
-                  {style.label}
+                  {rank}
                 </Badge>
               </div>
               <div className="mt-1 flex w-full min-w-0 flex-col gap-0.5">
@@ -92,11 +94,13 @@ export default function PublicGuildmateLegendPodium({
               />
               <Badge
                 className={cn(
-                  "absolute -bottom-2 left-1/2 -translate-x-1/2 border-0 px-1.5 text-[11px] font-bold",
+                  "absolute -bottom-2 left-1/2 size-5 -translate-x-1/2 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-[11px] leading-none font-bold lining-nums proportional-nums",
                   style.badge,
+                  rank === 1 && "pl-px",
                 )}
+                aria-label={`${style.label} place`}
               >
-                {style.label}
+                {rank}
               </Badge>
             </div>
             <div className="mt-1 flex w-full min-w-0 flex-col gap-0.5">

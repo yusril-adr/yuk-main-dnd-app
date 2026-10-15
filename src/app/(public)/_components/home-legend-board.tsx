@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { cn } from "@/utils/cn";
+
 import {
   Avatar,
   AvatarFallback,
@@ -84,7 +86,13 @@ export default function HomeLegendBoard({
                   {getInitials(user.display_name)}
                 </AvatarFallback>
               </Avatar>
-              <Badge className="absolute -right-1.5 -bottom-1 size-5 justify-center rounded-full p-0 text-[10px] leading-none tabular-nums">
+              <Badge
+                className={cn(
+                  "absolute -right-1.5 -bottom-1 size-5 shrink-0 justify-center rounded-full border-0 p-0 text-[10px] leading-none lining-nums proportional-nums",
+                  // "1" has a wide left side bearing; nudge it optically
+                  index === 0 && "pl-px",
+                )}
+              >
                 {index + 1}
               </Badge>
             </ItemMedia>
