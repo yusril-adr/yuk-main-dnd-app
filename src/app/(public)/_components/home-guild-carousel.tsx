@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Autoplay from "embla-carousel-autoplay";
 
 import { cn } from "@/utils/cn";
 import { Button } from "@/app/_components/ui/button";
@@ -21,6 +22,10 @@ import { HOME_GUILD_PHOTOS } from "@/app/(public)/_constants/home-guild-photos";
 export default function HomeGuildCarousel() {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  // Pauses while hovered or after the user navigates
+  const [plugins] = useState(() => [
+    Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }),
+  ]);
 
   useEffect(() => {
     if (!api) return;
@@ -42,8 +47,9 @@ export default function HomeGuildCarousel() {
       <Carousel
         setApi={setApi}
         opts={{ loop: true }}
+        plugins={plugins}
         aria-label="Guild photos"
-        className="w-full"
+        className="w-full px-12 sm:px-16"
       >
         <CarouselContent>
           {HOME_GUILD_PHOTOS.map((photo, index) => (
@@ -55,9 +61,9 @@ export default function HomeGuildCarousel() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        {/* Arrows sit inside the slide so they never overflow on mobile */}
-        <CarouselPrevious className="left-2 bg-card/90" />
-        <CarouselNext className="right-2 bg-card/90" />
+        {/* Arrows sit in the side padding, beside the photo */}
+        <CarouselPrevious className="left-0 sm:left-2 sm:size-10" />
+        <CarouselNext className="right-0 sm:right-2 sm:size-10" />
       </Carousel>
       <div className="-mt-2 flex justify-center gap-3">
         {HOME_GUILD_PHOTOS.map((photo, index) => (
