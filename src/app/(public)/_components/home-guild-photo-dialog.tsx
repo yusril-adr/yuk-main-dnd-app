@@ -1,16 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { Badge } from "@/app/_components/ui/badge";
-import { Button } from "@/app/_components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
 } from "@/app/_components/ui/dialog";
+import { Item, ItemActions, ItemContent } from "@/app/_components/ui/item";
+
+import HomeGuildPhotoPagination from "@/app/(public)/_components/home-guild-photo-pagination";
 
 import type { THomeGuildPhotoDialogProps } from "@/app/(public)/_types/home-components-props";
 
@@ -59,34 +59,27 @@ export default function HomeGuildPhotoDialog({
               sizes="(min-width: 1024px) 1024px, 94vw"
               className="h-auto max-h-[78svh] w-auto max-w-full rounded-md object-contain sm:max-h-[85svh]"
             />
-            <div className="flex items-center justify-between gap-2 pe-1">
-              <DialogDescription className="min-w-0 truncate ps-1">
-                {photo.caption ?? photo.alt}
-              </DialogDescription>
+            <Item
+              size="xs"
+              className="flex-col items-stretch gap-2 p-0 px-1 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <ItemContent className="min-w-0">
+                <DialogDescription className="text-center sm:truncate sm:text-start">
+                  {photo.caption ?? photo.alt}
+                </DialogDescription>
+              </ItemContent>
               {viewable.length > 1 && (
-                <div className="flex shrink-0 items-center gap-1">
-                  <Button
-                    variant="outline"
-                    size="icon-sm"
-                    aria-label="Previous photo"
-                    onClick={() => step(-1)}
-                  >
-                    <ChevronLeft />
-                  </Button>
-                  <Badge variant="outline" className="tabular-nums">
-                    {position + 1} / {viewable.length}
-                  </Badge>
-                  <Button
-                    variant="outline"
-                    size="icon-sm"
-                    aria-label="Next photo"
-                    onClick={() => step(1)}
-                  >
-                    <ChevronRight />
-                  </Button>
-                </div>
+                <ItemActions className="justify-center">
+                  <HomeGuildPhotoPagination
+                    page={position + 1}
+                    pageCount={viewable.length}
+                    onPageChange={(page) =>
+                      onOpenIndexChange(viewable[page - 1])
+                    }
+                  />
+                </ItemActions>
               )}
-            </div>
+            </Item>
           </>
         )}
       </DialogContent>

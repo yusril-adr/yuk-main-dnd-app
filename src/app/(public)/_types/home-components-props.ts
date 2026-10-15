@@ -68,3 +68,10 @@ export type THomeGuildPhotoDialogProps = {
   openIndex: number | null;
   onOpenIndexChange: (index: number | null) => void;
 };
+
+export type THomeGuildPhotoPaginationProps = {
+  // 1-based position among viewable photos
+  page: number;
+  pageCount: number;
+  onPageChange: (page: number) => void;
+};
