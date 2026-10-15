@@ -35,7 +35,6 @@ import type { THomeLegendBoardProps } from "@/app/(public)/_types/home-component
 export default function HomeLegendBoard({
   title,
   icon: Icon,
-  levelLabel,
   entries,
   isLoading,
   isError,
@@ -70,7 +69,7 @@ export default function HomeLegendBoard({
   } else {
     content = (
       <ItemGroup className="gap-2">
-        {entries.map(({ user, gainedExp, level }, index) => (
+        {entries.map(({ user, gainedExp }, index) => (
           <Item key={user.id} variant="outline" size="sm" role="listitem">
             <ItemMedia className="relative">
               <Avatar className="size-10">
@@ -85,7 +84,7 @@ export default function HomeLegendBoard({
                   {getInitials(user.display_name)}
                 </AvatarFallback>
               </Avatar>
-              <Badge className="absolute -right-1.5 -bottom-1 h-4 min-w-4 px-1 text-[10px]">
+              <Badge className="absolute -right-1.5 -bottom-1 size-5 justify-center rounded-full p-0 text-[10px] leading-none tabular-nums">
                 {index + 1}
               </Badge>
             </ItemMedia>
@@ -98,9 +97,11 @@ export default function HomeLegendBoard({
                   {user.display_name}
                 </Link>
               </ItemTitle>
-              <ItemDescription>
-                {levelLabel} Lv {level}
-              </ItemDescription>
+              {user.username ? (
+                <ItemDescription className="truncate">
+                  @{user.username}
+                </ItemDescription>
+              ) : null}
             </ItemContent>
             <ItemActions className="font-heading text-primary tabular-nums">
               +{gainedExp.toLocaleString("en-US")} XP

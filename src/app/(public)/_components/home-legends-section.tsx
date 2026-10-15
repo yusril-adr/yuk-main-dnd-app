@@ -22,12 +22,10 @@ export default function HomeLegendsSection() {
     .map((user) => ({
       user,
       gainedExp: user.gained_player_exp,
-      level: user.player_level,
     }));
   const dms = (dmsQuery.data?.data?.data ?? []).slice(0, 3).map((user) => ({
     user,
     gainedExp: user.gained_dm_exp,
-    level: user.dm_level,
   }));
 
   return (
@@ -43,7 +41,6 @@ export default function HomeLegendsSection() {
         <HomeLegendBoard
           title="Heroes"
           icon={Sword}
-          levelLabel="Player"
           entries={players}
           isLoading={playersQuery.isPending}
           isError={playersQuery.isError}
@@ -52,7 +49,6 @@ export default function HomeLegendsSection() {
         <HomeLegendBoard
           title="Dungeon Masters"
           icon={Crown}
-          levelLabel="DM"
           entries={dms}
           isLoading={dmsQuery.isPending}
           isError={dmsQuery.isError}

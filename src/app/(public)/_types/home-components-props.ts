@@ -26,13 +26,11 @@ export type THomeStoryCardProps = {
 export type THomeLegendEntry = {
   user: TPublicUserPaginationResponse;
   gainedExp: number;
-  level: number;
 };
 
 export type THomeLegendBoardProps = {
   title: string;
   icon: LucideIcon;
-  levelLabel: string;
   entries: THomeLegendEntry[];
   isLoading: boolean;
   isError: boolean;
