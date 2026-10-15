@@ -1,9 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { XIcon } from "lucide-react";
 
+import { Button } from "@/app/_components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogTitle,
@@ -40,7 +43,8 @@ export default function HomeGuildPhotoDialog({
       }}
     >
       <DialogContent
-        className="w-auto max-w-[94vw] gap-3 p-2 sm:max-w-5xl sm:p-3"
+        showCloseButton={false}
+        className="w-full max-w-[94vw] gap-3 p-2 sm:max-w-5xl sm:p-3"
         onKeyDown={(event) => {
           if (event.key === "ArrowLeft") step(-1);
           if (event.key === "ArrowRight") step(1);
@@ -57,8 +61,21 @@ export default function HomeGuildPhotoDialog({
               width={1600}
               height={1200}
               sizes="(min-width: 1024px) 1024px, 94vw"
-              className="h-auto max-h-[78svh] w-auto max-w-full rounded-md object-contain sm:max-h-[85svh]"
+              className="h-auto max-h-[75svh] w-full rounded-md object-contain sm:max-h-[80svh]"
             />
+            {/* Own close button with a dark backing so it stays visible on light photos */}
+            <DialogClose
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Close"
+                  className="absolute top-3 right-3 rounded-full bg-black/45 text-white hover:bg-black/65 hover:text-white sm:top-4 sm:right-4"
+                />
+              }
+            >
+              <XIcon />
+            </DialogClose>
             <Item
               size="xs"
               className="flex-col items-stretch gap-2 p-0 px-1 sm:flex-row sm:items-center sm:justify-between"
