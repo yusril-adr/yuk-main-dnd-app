@@ -17,15 +17,28 @@ import {
 import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
 import HomeGuildSlide from "@/app/(public)/_components/home-guild-slide";
+import HomeGuildPhotoDialog from "@/app/(public)/_components/home-guild-photo-dialog";
 import { HOME_GUILD_PHOTOS } from "@/app/(public)/_constants/home-guild-photos";
 
 export default function HomeGuildCarousel() {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
   // Pauses while hovered or after the user navigates
   const [plugins] = useState(() => [
     Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }),
   ]);
+
+  // Hold autoplay while the enlarged photo is open, resume when it closes
+  const handleOpenIndexChange = (index: number | null) => {
+    setOpenIndex(index);
+    const autoplay = plugins[0];
+    if (index === null) {
+      autoplay.play();
+    } else {
+      autoplay.stop();
+    }
+  };
 
   useEffect(() => {
     if (!api) return;
@@ -57,7 +70,10 @@ export default function HomeGuildCarousel() {
               key={photo.alt}
               aria-label={`${index + 1} of ${HOME_GUILD_PHOTOS.length}`}
             >
-              <HomeGuildSlide photo={photo} />
+              <HomeGuildSlide
+                photo={photo}
+                onOpen={() => handleOpenIndexChange(index)}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -82,6 +98,11 @@ export default function HomeGuildCarousel() {
           />
         ))}
       </div>
+      <HomeGuildPhotoDialog
+        photos={HOME_GUILD_PHOTOS}
+        openIndex={openIndex}
+        onOpenIndexChange={handleOpenIndexChange}
+      />
     </HomeBand>
   );
 }
