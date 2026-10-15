@@ -5,7 +5,7 @@ export const HOME_GUILD_PHOTOS: THomeGuildPhoto[] = [
   {
     src: "/images/guild/guild-photo-1.webp",
     alt: "Yuk Main DnD guild members smiling together at a session night",
-    caption: "Our first session night",
+    caption: "One of our fun session night",
     objectPosition: "50% 30%",
   },
   {
@@ -16,7 +16,7 @@ export const HOME_GUILD_PHOTOS: THomeGuildPhoto[] = [
   {
     src: "/images/guild/guild-photo-4.webp",
     alt: "Yuk Main DnD guild members smiling around a table after a meetup",
-    caption: "Guild meetup",
+    caption: "After session smile",
     objectPosition: "50% 5%",
   },
 ];

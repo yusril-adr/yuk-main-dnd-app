@@ -58,4 +58,20 @@ export type THomeGuildPhoto = {
 
 export type THomeGuildSlideProps = {
   photo: THomeGuildPhoto;
+  // Opens the enlarged view; only photos with a src are clickable
+  onOpen?: () => void;
+};
+
+export type THomeGuildPhotoDialogProps = {
+  photos: THomeGuildPhoto[];
+  // Index into photos, null when closed
+  openIndex: number | null;
+  onOpenIndexChange: (index: number | null) => void;
+};
+
+export type THomeGuildPhotoPaginationProps = {
+  // 1-based position among viewable photos
+  page: number;
+  pageCount: number;
+  onPageChange: (page: number) => void;
 };
