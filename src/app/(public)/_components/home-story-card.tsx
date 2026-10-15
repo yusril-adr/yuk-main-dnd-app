@@ -4,6 +4,13 @@ import { CalendarDays, Crown, ScrollText, Users } from "lucide-react";
 import { AspectRatio } from "@/app/_components/ui/aspect-ratio";
 import { Badge } from "@/app/_components/ui/badge";
 import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+} from "@/app/_components/ui/item";
+import {
   Card,
   CardContent,
   CardFooter,
@@ -57,25 +64,41 @@ export default function HomeStoryCard({ story }: THomeStoryCardProps) {
           </Link>
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-1.5 text-sm text-muted-foreground">
-        <span className="flex items-center gap-2 truncate">
-          <Crown aria-hidden className="size-4 shrink-0 text-primary" />
-          {story.created_by?.display_name ?? "Unknown DM"}
-        </span>
-        <span className="flex items-center gap-2">
-          <CalendarDays aria-hidden className="size-4 shrink-0 text-primary" />
-          {story.start_at
-            ? dayjs(story.start_at).format(HOME_STORY_DATE_FORMAT)
-            : "Date to be announced"}
-        </span>
+      <CardContent>
+        <ItemGroup className="gap-1.5">
+          <Item size="xs" className="p-0">
+            <ItemMedia className="text-primary">
+              <Crown aria-hidden className="size-4" />
+            </ItemMedia>
+            <ItemContent className="min-w-0">
+              <ItemDescription className="truncate">
+                {story.created_by?.display_name ?? "Unknown DM"}
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+          <Item size="xs" className="p-0">
+            <ItemMedia className="text-primary">
+              <CalendarDays aria-hidden className="size-4" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemDescription>
+                {story.start_at
+                  ? dayjs(story.start_at).format(HOME_STORY_DATE_FORMAT)
+                  : "Date to be announced"}
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardContent>
-      <CardFooter className="mt-auto justify-between gap-2 border-t text-sm text-muted-foreground">
-        <span className="truncate">{story.game_system || "Any system"}</span>
-        <span className="flex shrink-0 items-center gap-1.5">
-          <Users aria-hidden className="size-4 text-primary" />
+      <CardFooter className="mt-auto justify-between gap-2 border-t">
+        <Badge variant="outline" className="max-w-[60%] truncate">
+          {story.game_system || "Any system"}
+        </Badge>
+        <Badge variant="secondary" className="shrink-0 gap-1.5">
+          <Users aria-hidden className="size-3.5" />
           {story.joined_members}{" "}
           {story.joined_members === 1 ? "member" : "members"}
-        </span>
+        </Badge>
       </CardFooter>
     </Card>
   );

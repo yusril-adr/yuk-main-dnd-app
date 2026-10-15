@@ -11,6 +11,7 @@ import {
 
 import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
+import { ItemDescription } from "@/app/_components/ui/item";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 
 import { HOME_GUILD_PHOTOS } from "@/app/(public)/_constants/home-guild-photos";
@@ -52,10 +53,10 @@ export default function HomeHero() {
         >
           Gather your party. Your legend starts here.
         </h1>
-        <p className="max-w-xl text-base text-white/85 sm:text-xl">
+        <ItemDescription className="line-clamp-none max-w-xl text-base text-white/85 sm:text-xl">
           Find a table, follow your Dungeon Master and write your name into the
           chronicles of YukMainDnD.
-        </p>
+        </ItemDescription>
         <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
           {auth ? (
             <Button

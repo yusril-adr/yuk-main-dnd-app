@@ -1,11 +1,13 @@
 import { Crown, Sparkles, Users, type LucideIcon } from "lucide-react";
 
 import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/app/_components/ui/card";
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from "@/app/_components/ui/item";
 import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
 import { Badge } from "@/app/_components/ui/badge";
 
@@ -27,43 +29,45 @@ export default function HomePitch() {
         title="What is YukMainDnD?"
         description="A guild for Dungeons & Dragons and other tabletop RPGs. Join quests, meet guildmates and track your adventures in one place."
       />
-      <ol className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-6 lg:gap-10">
+      <ItemGroup className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-6 lg:gap-10">
         {HOME_PITCH_POINTS.map((point, index) => {
           const Icon = ICONS[point.key];
           return (
-            <li key={point.key}>
-              <Card className="h-full bg-transparent py-0 shadow-none ring-0">
-                <CardHeader className="gap-4 px-0">
-                  <div className="flex items-center gap-3">
-                    {/* Avatar keeps a fixed, centred square that never shrinks in the flex row */}
-                    <Avatar
-                      data-pitch-icon
-                      className="size-12 shrink-0 border border-primary/40 after:hidden md:size-14"
-                    >
-                      <AvatarFallback className="bg-primary/10 text-primary">
-                        <Icon aria-hidden className="size-6 md:size-7" />
-                      </AvatarFallback>
-                    </Avatar>
-                    <Badge variant="secondary" className="shrink-0">
-                      Step {index + 1}
-                    </Badge>
-                  </div>
-                  <CardTitle
-                    role="heading"
-                    aria-level={3}
-                    className="font-heading text-2xl"
-                  >
-                    {point.title}
-                  </CardTitle>
-                  <CardDescription className="text-base">
-                    {point.description}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            </li>
+            <Item
+              key={point.key}
+              role="listitem"
+              className="flex-col items-start gap-4 p-0"
+            >
+              <ItemHeader className="justify-start gap-3">
+                {/* Avatar keeps a fixed, centred square that never shrinks */}
+                <Avatar
+                  data-pitch-icon
+                  className="size-12 shrink-0 border border-primary/40 after:hidden md:size-14"
+                >
+                  <AvatarFallback className="bg-primary/10 text-primary">
+                    <Icon aria-hidden className="size-6 md:size-7" />
+                  </AvatarFallback>
+                </Avatar>
+                <Badge variant="secondary" className="shrink-0">
+                  Step {index + 1}
+                </Badge>
+              </ItemHeader>
+              <ItemContent className="gap-2">
+                <ItemTitle
+                  role="heading"
+                  aria-level={3}
+                  className="line-clamp-none font-heading text-2xl font-normal"
+                >
+                  {point.title}
+                </ItemTitle>
+                <ItemDescription className="line-clamp-none text-base">
+                  {point.description}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
           );
         })}
-      </ol>
+      </ItemGroup>
     </HomeBand>
   );
 }

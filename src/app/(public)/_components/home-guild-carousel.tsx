@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { cn } from "@/utils/cn";
 import { Button } from "@/app/_components/ui/button";
 import {
   Carousel,
@@ -42,7 +43,7 @@ export default function HomeGuildCarousel() {
         setApi={setApi}
         opts={{ loop: true }}
         aria-label="Guild photos"
-        className="mx-auto w-full max-w-5xl"
+        className="w-full"
       >
         <CarouselContent>
           {HOME_GUILD_PHOTOS.map((photo, index) => (
@@ -58,21 +59,21 @@ export default function HomeGuildCarousel() {
         <CarouselPrevious className="left-2 bg-card/90" />
         <CarouselNext className="right-2 bg-card/90" />
       </Carousel>
-      <div className="-mt-4 flex justify-center gap-1">
+      <div className="-mt-2 flex justify-center gap-3">
         {HOME_GUILD_PHOTOS.map((photo, index) => (
           <Button
             key={photo.alt}
             variant="ghost"
-            size="icon-sm"
             aria-label={`Show photo ${index + 1}`}
             aria-current={current === index}
             onClick={() => api?.scrollTo(index)}
-            className="group/dot hover:bg-transparent aria-expanded:bg-transparent"
-          >
-            <span
-              className={`h-2 rounded-full transition-all ${current === index ? "w-5 bg-primary" : "w-2 bg-muted-foreground/40 group-hover/dot:bg-muted-foreground"}`}
-            />
-          </Button>
+            className={cn(
+              "relative h-2 min-w-0 rounded-full p-0 transition-all after:absolute after:-inset-3",
+              current === index
+                ? "w-5 bg-primary hover:bg-primary"
+                : "w-2 bg-muted-foreground/40 hover:bg-muted-foreground",
+            )}
+          />
         ))}
       </div>
     </HomeBand>
