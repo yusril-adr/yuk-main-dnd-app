@@ -21,7 +21,7 @@ const ASSETS_DIR = join(process.cwd(), "src/assets");
 
 export default async function Image() {
   const [crestSvg, photo, headingFont, bodyFont] = await Promise.all([
-    readFile(join(ASSETS_DIR, "YMDND2.svg"), "utf8"),
+    readFile(join(ASSETS_DIR, "logo/YMDND2.svg"), "utf8"),
     readFile(join(ASSETS_DIR, "og/guild-photo-og.jpg")),
     readFile(join(ASSETS_DIR, "og/eczar-semibold-latin.ttf")),
     readFile(join(ASSETS_DIR, "og/alegreya-sans-medium-latin.ttf")),

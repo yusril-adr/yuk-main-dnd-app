@@ -10,7 +10,10 @@ export default function PublicFooter() {
   const year = new Date().getFullYear();
 
   return (
-    // Turns red when the page ends with the home call-to-action band, so the two read as one block
+    // On the home page the footer turns red and drops its Separator so it blends into the final CTA band.
+    // Pure CSS, no pathname: `group-has-[#final-cta]/public:*` compiles to `.group\/public:has(#final-cta) ...`,
+    // matching only when the page inside the `group/public` wrapper (public layout) contains #final-cta.
+    // That id lives in home-final-cta.tsx; renaming it silently brings back the parchment footer on home.
     <footer className="mt-auto w-full group-has-[#final-cta]/public:bg-primary group-has-[#final-cta]/public:text-primary-foreground">
       <Separator className="group-has-[#final-cta]/public:hidden" />
       <p className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-center gap-x-1 px-4 py-3 text-center text-[11px] leading-none text-muted-foreground group-has-[#final-cta]/public:text-primary-foreground/70 sm:px-10">

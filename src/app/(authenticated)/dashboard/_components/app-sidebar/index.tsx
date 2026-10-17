@@ -14,7 +14,7 @@ import NAV_ROUTES from "@/app/(authenticated)/dashboard/_constants/navigation-ro
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { AvatarSidebar } from "./avatar-sidebar";
 import Link from "next/link";
-import YmdndLogo from "@/assets/YMDND1.svg";
+import YmdndLogo from "@/assets/logo/YMDND1.svg";
 
 export function AppSidebar() {
   const { auth } = useAuthContext();
