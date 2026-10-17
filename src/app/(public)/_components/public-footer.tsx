@@ -10,9 +10,10 @@ export default function PublicFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-auto w-full">
-      <Separator />
-      <p className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-center gap-x-1 px-4 py-3 text-center text-[11px] leading-none text-muted-foreground sm:px-10">
+    // Turns red when the page ends with the home call-to-action band, so the two read as one block
+    <footer className="mt-auto w-full group-has-[#final-cta]/public:bg-primary group-has-[#final-cta]/public:text-primary-foreground">
+      <Separator className="group-has-[#final-cta]/public:hidden" />
+      <p className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-center gap-x-1 px-4 py-3 text-center text-[11px] leading-none text-muted-foreground group-has-[#final-cta]/public:text-primary-foreground/70 sm:px-10">
         <span>© {year} YukMainDnD</span>
         <span aria-hidden>·</span>
         <span>
@@ -20,7 +21,7 @@ export default function PublicFooter() {
           <Button
             variant="link"
             nativeButton={false}
-            className="h-auto gap-0.5 p-0 text-[11px] leading-none"
+            className="h-auto gap-0.5 p-0 text-[11px] leading-none group-has-[#final-cta]/public:text-primary-foreground"
             render={
               <a href={CREDIT_URL} target="_blank" rel="noopener noreferrer" />
             }
