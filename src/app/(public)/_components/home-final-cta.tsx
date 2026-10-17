@@ -23,6 +23,7 @@ export default function HomeFinalCta() {
       <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-10">
         <Item className="flex-col items-start gap-6 p-0 sm:flex-row sm:items-center sm:justify-between">
           <ItemContent className="gap-2">
+            {/* `final-cta` is also the hook PublicFooter uses to turn red on home; keep the id in sync */}
             <h2 id="final-cta" className="font-heading text-3xl sm:text-4xl">
               Ready for your first quest?
             </h2>
