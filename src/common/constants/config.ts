@@ -1,6 +1,5 @@
 const CONFIG = {
   MAIN_API_BASE_URL: process.env.NEXT_PUBLIC_MAIN_API_BASE_URL,
-  REQUESTOR_API_BASE_URL: process.env.NEXT_PUBLIC_REQUESTOR_API_BASE_URL,
 
   SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
 

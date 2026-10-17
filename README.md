@@ -48,12 +48,12 @@ npm run lint
 
 ## Available scripts
 
-| Script            | What it does                          |
-| ----------------- | ------------------------------------- |
-| `npm run dev`     | Start the Next.js dev server (Turbopack) |
-| `npm run build`   | Produce a standalone production build |
-| `npm run start`   | Serve the production build            |
-| `npm run lint`    | Run ESLint across the project         |
+| Script          | What it does                             |
+| --------------- | ---------------------------------------- |
+| `npm run dev`   | Start the Next.js dev server (Turbopack) |
+| `npm run build` | Produce a standalone production build    |
+| `npm run start` | Serve the production build               |
+| `npm run lint`  | Run ESLint across the project            |
 
 ## Project layout
 
@@ -106,7 +106,6 @@ The `@/` alias resolves to `src/` (configured in `tsconfig.json`).
 ```bash
 docker build \
   --build-arg NEXT_PUBLIC_MAIN_API_BASE_URL=https://api.example.com \
-  --build-arg NEXT_PUBLIC_REQUESTOR_API_BASE_URL=https://requestor-api.example.com \
   -t requestor-next .
 docker run --rm -p 3000:3000 requestor-next
 ```
