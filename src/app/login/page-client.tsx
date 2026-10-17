@@ -49,13 +49,6 @@ export default function LoginPageClient() {
           {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler />}
         </div>
 
-        <LoginForm
-          onSubmitPayload={loginMutate}
-          mutationError={loginError}
-          isPending={loginIsPending}
-          isPaused={loginIsPaused}
-        />
-
         <div className="hidden lg:flex lg:w-1/2 h-full min-h-screen justify-center items-center bg-primary">
           <YmdndLogo
             className="w-[405px] max-w-[80%] h-auto text-primary-foreground"
@@ -64,6 +57,13 @@ export default function LoginPageClient() {
             alt="Yuk Main DnD logo"
           />
         </div>
+
+        <LoginForm
+          onSubmitPayload={loginMutate}
+          mutationError={loginError}
+          isPending={loginIsPending}
+          isPaused={loginIsPaused}
+        />
       </main>
     </div>
   );
