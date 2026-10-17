@@ -20,14 +20,14 @@ export default function HomeGuildSlide({
 }: THomeGuildSlideProps) {
   return (
     <Card className="gap-0 border border-primary/40 bg-card p-1 ring-0 sm:p-1.5">
-      <CardContent className="overflow-hidden rounded-md border border-primary/20 p-0">
+      <CardContent className="overflow-hidden rounded-[calc(var(--radius-xl)-5px)] border border-primary/20 p-0 sm:rounded-[calc(var(--radius-xl)-7px)]">
         <AspectRatio ratio={16 / 9}>
           {photo.src ? (
             <Button
               variant="ghost"
               onClick={onOpen}
               aria-label={`Enlarge photo: ${photo.caption ?? photo.alt}`}
-              className="absolute inset-0 size-full cursor-zoom-in rounded-none p-0 hover:bg-transparent focus-visible:ring-inset"
+              className="absolute inset-0 size-full cursor-zoom-in rounded-none border-0 p-0 hover:bg-transparent focus-visible:ring-inset"
             >
               <Image
                 src={photo.src}
