@@ -44,18 +44,9 @@ export default function LoginPageClient() {
 
   return (
     <div className="w-full flex justify-center items-center">
-      <main className="flex w-full h-[calc(100vh-32px)] max-w-7xl px-10 relative">
+      <main className="flex w-full h-full min-h-[calc(100vh-32px)] px-10 lg:px-0 relative">
         <div className="absolute right-0 top-0 pt-4">
           {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler />}
-        </div>
-
-        <div className="hidden lg:flex lg:w-1/2 h-screen justify-center items-center">
-          <Image
-            width={1270}
-            height={841}
-            src="https://raw.githubusercontent.com/SAWARATSUKI/KawaiiLogos/main/Next.js/png/Next.js.png"
-            alt="Next logo"
-          />
         </div>
 
         <LoginForm
@@ -64,6 +55,15 @@ export default function LoginPageClient() {
           isPending={loginIsPending}
           isPaused={loginIsPaused}
         />
+
+        <div className="hidden lg:flex lg:w-1/2 h-full min-h-screen justify-center items-center bg-[rgb(145,33,23)]">
+          <Image
+            width={1081}
+            height={1081}
+            src="/images/logo-lore-friendly.jpeg"
+            alt="Yuk Main DnD logo"
+          />
+        </div>
       </main>
     </div>
   );
