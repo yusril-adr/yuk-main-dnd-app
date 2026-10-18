@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./docs/logo.png" width="200" alt="YukMainDnD logo" />
+</p>
+
 # YukMainDnD
 
 Web app for the YukMainDnD tabletop RPG guild. Visitors can browse quests and guildmates.
