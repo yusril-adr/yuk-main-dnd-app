@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./docs/logo.png" width="200" alt="YukMainDnD logo" />
+  <a href="https://yukmaindnd.vercel.app" target="_blank"><img src="./docs/logo.png" width="200" alt="YukMainDnD logo" /></a>
 </p>
 
 # YukMainDnD
