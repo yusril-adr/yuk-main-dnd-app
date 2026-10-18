@@ -1,17 +1,31 @@
-import { useMemo } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 
 import dayjs from "@/libs/dayjs";
 
-// The API ranks by UTC calendar dates: first day of this month to today
+// The day never changes mid-visit in a way worth re-rendering for
+const subscribe = () => () => {};
+
+// Today's UTC date ("YYYY-MM-DD"): the range and month label below are both
+// derived from it, so they can't disagree around midnight
+const getTodayKey = () => dayjs.utc().format("YYYY-MM-DD");
+
+// The API ranks by UTC calendar dates: first day of this month to today.
+// /guildmates is prerendered at build time, so the server snapshot is null
+// (no date baked into the HTML) and today is read on the client after
+// hydration, avoiding a mismatch.
 export function useCurrentMonthRange() {
+  const todayKey = useSyncExternalStore(subscribe, getTodayKey, () => null);
+
   return useMemo(() => {
-    const now = dayjs.utc();
+    if (!todayKey) return null;
+    const today = dayjs.utc(todayKey);
     return {
       payload: {
-        start_date: now.startOf("month").format("YYYY-MM-DD"),
-        end_date: now.format("YYYY-MM-DD"),
+        start_date: today.startOf("month").format("YYYY-MM-DD"),
+        end_date: today.format("YYYY-MM-DD"),
       },
-      monthLabel: now.format("MMMM YYYY"),
+      monthName: today.format("MMMM"),
+      monthLabel: today.format("MMMM YYYY"),
     };
-  }, []);
+  }, [todayKey]);
 }

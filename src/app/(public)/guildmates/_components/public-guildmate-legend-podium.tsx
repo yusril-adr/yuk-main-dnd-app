@@ -125,7 +125,7 @@ export default function PublicGuildmateLegendPodium({
                 +{formatExp(entry.gainedExp)} XP
               </span>
               <span className="text-xs leading-tight text-foreground/80">
-                this month
+                so far
               </span>
             </div>
           </li>

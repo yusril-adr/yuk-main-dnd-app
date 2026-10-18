@@ -37,6 +37,7 @@ import type { THomeLegendBoardProps } from "@/app/(public)/_types/home-component
 export default function HomeLegendBoard({
   title,
   icon: Icon,
+  monthName,
   entries,
   isLoading,
   isError,
@@ -66,7 +67,9 @@ export default function HomeLegendBoard({
     );
   } else if (entries.length === 0) {
     content = (
-      <HomeEmptyState text="No legends yet this month. The tavern awaits." />
+      <HomeEmptyState
+        text={`No legends in ${monthName ?? "the previous month"}. The tavern awaits.`}
+      />
     );
   } else {
     content = (
@@ -111,8 +114,13 @@ export default function HomeLegendBoard({
                 </ItemDescription>
               ) : null}
             </ItemContent>
-            <ItemActions className="font-heading text-primary tabular-nums">
-              +{gainedExp.toLocaleString("en-US")} XP
+            <ItemActions className="flex-col items-end gap-0 text-right">
+              <span className="font-heading text-primary tabular-nums">
+                +{gainedExp.toLocaleString("en-US")} XP
+              </span>
+              <span className="text-xs text-muted-foreground">
+                in {monthName}
+              </span>
             </ItemActions>
           </Item>
         ))}
