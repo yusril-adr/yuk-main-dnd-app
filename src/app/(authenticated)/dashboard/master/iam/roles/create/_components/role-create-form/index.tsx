@@ -82,8 +82,9 @@ export default function RoleCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="name">Name</FieldLabel>
+                  <FieldLabel required htmlFor="name">Name</FieldLabel>
                   <Input
+                    aria-required
                     id="name"
                     placeholder="Input role name"
                     disabled={isFormDisabled}

@@ -232,8 +232,9 @@ export default function UserCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <FieldLabel required htmlFor="email">Email</FieldLabel>
                   <Input
+                    aria-required
                     id="email"
                     type="email"
                     placeholder="Input email"
@@ -271,9 +272,10 @@ export default function UserCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <FieldLabel required htmlFor="password">Password</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
+                      aria-required
                       id="password"
                       type={isShowPassword ? "text" : "password"}
                       placeholder="Input password"
@@ -310,8 +312,9 @@ export default function UserCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="displayName">Display Name</FieldLabel>
+                  <FieldLabel required htmlFor="displayName">Display Name</FieldLabel>
                   <Input
+                    aria-required
                     id="displayName"
                     placeholder="Input display name"
                     disabled={isFormDisabled}
@@ -348,7 +351,7 @@ export default function UserCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Roles</FieldLabel>
+                  <FieldLabel required>Roles</FieldLabel>
                   <Combobox
                     multiple
                     items={roles}
@@ -375,7 +378,7 @@ export default function UserCreateForm({
                           </ComboboxChip>
                         );
                       })}
-                      <ComboboxChipsInput placeholder="Select roles" />
+                      <ComboboxChipsInput aria-required placeholder="Select roles" />
                     </ComboboxChips>
                     <ComboboxContent>
                       <ComboboxEmpty>No roles found.</ComboboxEmpty>

@@ -101,13 +101,13 @@ export function SwitchRoleForm({
             control={control}
             render={({ field, fieldState }) => (
               <Field className="grid gap-2" data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="role">Role</FieldLabel>
+                <FieldLabel required htmlFor="role">Role</FieldLabel>
                 <Select
                   value={field.value}
                   onValueChange={(value) => field.onChange(value ?? "")}
                   disabled={isFormDisabled}
                 >
-                  <SelectTrigger id="role" className="w-full">
+                  <SelectTrigger aria-required id="role" className="w-full">
                     <SelectValue placeholder="Select a role">
                       {(value: string | null) =>
                         roles.find((role) => role.key === value)?.name ??
