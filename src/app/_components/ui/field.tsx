@@ -100,8 +100,14 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
 
 function FieldLabel({
   className,
+  required = false,
+  children,
   ...props
-}: React.ComponentProps<typeof Label>) {
+}: React.ComponentProps<typeof Label> & {
+  // Appends a visual "*". Decorative only: mark the control itself with
+  // aria-required so screen readers announce it
+  required?: boolean
+}) {
   return (
     <Label
       data-slot="field-label"
@@ -111,7 +117,14 @@ function FieldLabel({
         className
       )}
       {...props}
-    />
+    >
+      {children}
+      {required && (
+        <span aria-hidden="true" className="-ms-1 text-destructive">
+          *
+        </span>
+      )}
+    </Label>
   )
 }
 

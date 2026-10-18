@@ -229,8 +229,9 @@ export default function StoryEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="title">Title</FieldLabel>
+                  <FieldLabel required htmlFor="title">Title</FieldLabel>
                   <Input
+                    aria-required
                     id="title"
                     placeholder="Input story title"
                     disabled={isFormDisabled}
@@ -272,7 +273,7 @@ export default function StoryEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="type">Type</FieldLabel>
+                  <FieldLabel required htmlFor="type">Type</FieldLabel>
                   <Combobox
                     id="type"
                     items={Object.values(StoryTypeEnum).filter(
@@ -287,7 +288,7 @@ export default function StoryEditForm({
                     // Same labels as the detail page (e.g. "oneshot" -> "Oneshot")
                     itemToStringLabel={(item) => STORY_TYPE_LABEL[item]}
                   >
-                    <ComboboxInput placeholder="Select type" />
+                    <ComboboxInput aria-required placeholder="Select type" />
                     <ComboboxContent>
                       <ComboboxEmpty>No items found.</ComboboxEmpty>
                       <ComboboxList>
@@ -482,7 +483,7 @@ export default function StoryEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="locationType">Location Type</FieldLabel>
+                  <FieldLabel required htmlFor="locationType">Location Type</FieldLabel>
                   <Combobox
                     id="locationType"
                     items={Object.values(StoryLocationTypeEnum).filter(
@@ -499,7 +500,7 @@ export default function StoryEditForm({
                       STORY_LOCATION_TYPE_LABEL[item as StoryLocationTypeEnum]
                     }
                   >
-                    <ComboboxInput placeholder="Select location type" />
+                    <ComboboxInput aria-required placeholder="Select location type" />
                     <ComboboxContent>
                       <ComboboxEmpty>No items found.</ComboboxEmpty>
                       <ComboboxList>
@@ -527,10 +528,11 @@ export default function StoryEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="locationDetail">
+                  <FieldLabel required htmlFor="locationDetail">
                     Location Detail
                   </FieldLabel>
                   <Textarea
+                    aria-required
                     id="locationDetail"
                     placeholder="e.g. Discord link or venue address"
                     disabled={isFormDisabled}
