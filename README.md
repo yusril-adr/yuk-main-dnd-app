@@ -1,6 +1,6 @@
 # YukMainDnD
 
-Web app for the YukMainDnD tabletop RPG guild. Visitors can browse quests and guildmates. Signed-in members get a player dashboard, and masters manage stories, users and roles. It is a Next.js 16 client for the YukMainDnD API.
+Web app for the YukMainDnD tabletop RPG guild. Visitors can browse quests and guildmates.
 
 ## Route protection
 
