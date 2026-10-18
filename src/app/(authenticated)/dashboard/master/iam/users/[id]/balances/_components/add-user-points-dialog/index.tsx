@@ -136,7 +136,7 @@ export default function AddUserPointsDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel>Type</FieldLabel>
+                  <FieldLabel required>Type</FieldLabel>
                   <div className="grid grid-cols-2 gap-2">
                     {TYPE_OPTIONS.map((option) => (
                       <Button
@@ -168,8 +168,9 @@ export default function AddUserPointsDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="point-amount">Amount</FieldLabel>
+                  <FieldLabel required htmlFor="point-amount">Amount</FieldLabel>
                   <Input
+                    aria-required
                     id="point-amount"
                     type="number"
                     inputMode="numeric"

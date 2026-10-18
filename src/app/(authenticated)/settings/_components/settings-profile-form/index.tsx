@@ -243,8 +243,9 @@ export default function SettingsProfileForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <FieldLabel required htmlFor="email">Email</FieldLabel>
                   <Input
+                    aria-required
                     id="email"
                     type="email"
                     placeholder="Input email"
@@ -286,8 +287,9 @@ export default function SettingsProfileForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="displayName">Display Name</FieldLabel>
+                  <FieldLabel required htmlFor="displayName">Display Name</FieldLabel>
                   <Input
+                    aria-required
                     id="displayName"
                     placeholder="Input display name"
                     disabled={isFormDisabled}

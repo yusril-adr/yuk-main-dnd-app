@@ -123,11 +123,12 @@ export default function SettingsPasswordDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="currentPassword">
+                  <FieldLabel required htmlFor="currentPassword">
                     Current password
                   </FieldLabel>
                   <InputGroup>
                     <InputGroupInput
+                      aria-required
                       id="currentPassword"
                       type={isShowCurrentPassword ? "text" : "password"}
                       placeholder="Current password"
@@ -168,9 +169,10 @@ export default function SettingsPasswordDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="newPassword">New password</FieldLabel>
+                  <FieldLabel required htmlFor="newPassword">New password</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
+                      aria-required
                       id="newPassword"
                       type={isShowNewPassword ? "text" : "password"}
                       placeholder="New password"
@@ -213,11 +215,12 @@ export default function SettingsPasswordDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="newPasswordConfirmation">
+                  <FieldLabel required htmlFor="newPasswordConfirmation">
                     Confirm new password
                   </FieldLabel>
                   <InputGroup>
                     <InputGroupInput
+                      aria-required
                       id="newPasswordConfirmation"
                       type={isShowConfirmPassword ? "text" : "password"}
                       placeholder="Confirm new password"
