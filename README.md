@@ -2,25 +2,7 @@
 
 Web app for the YukMainDnD tabletop RPG guild. Visitors can browse quests and guildmates. Signed-in members get a player dashboard, and masters manage stories, users and roles. It is a Next.js 16 client for the YukMainDnD API.
 
-## Features
-
-**Public pages**
-
-- **Home** (`/`): landing page with open quests, last month's top heroes and Dungeon Masters, and guild photos.
-- **Quests** (`/stories`, `/stories/<slug>`): browse and filter quests, and view a quest's details.
-- **Guildmates** (`/guildmates`, `/guildmates/<slug>`): the guild roster with this month's legends, and each member's adventurer card with the quests they joined and led.
-- **Events** (`/events`) and **Goods** (`/goods`): placeholder pages ("coming soon").
-- SEO: per-page metadata, `sitemap.xml`, `robots.txt`, and a generated 1200×630 share card (`opengraph-image` / `twitter-image`).
-
-**Signed-in pages**
-
-- **Login** (`/login`) and **Switch role** (`/switch-role`).
-- **Dashboard** (`/dashboard`): player board for the stories you are part of (`/dashboard/stories`). Events and goods are placeholders.
-- **Balances** (`/balances`): your gold and experience balances and their history.
-- **Settings** (`/settings`): edit your profile and change your password. `/profile` redirects to your public guildmate page.
-- **Master** (`/dashboard/master/...`): manage stories (with a rich text editor), users and their balances, roles and permissions. Master events and goods are placeholders.
-
-**Route protection**
+## Route protection
 
 `src/proxy.ts` (the Next 16 proxy, formerly middleware) redirects signed-out visitors from protected routes to `/login?from=...`, and redirects signed-in visitors away from `/login`. Signed-in means an `access_token` cookie is present. The protected route list is generated from the top-level folders in `src/app/(authenticated)/` by `scripts/generate-protected-routes.mjs` into `src/generated/protected-routes.ts` (git-ignored). `dev` and `build` run the script first.
 
