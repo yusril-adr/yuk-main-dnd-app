@@ -2,15 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
+import { parseAsString, useQueryState } from "nuqs";
 
 import CONFIG from "@/common/constants/config";
+import YmdndLogo from "@/assets/logo/YMDND1.svg";
 import { authMe } from "@/api/main/modules/auth/me";
 import { ThemeToggler } from "@/app/_components/theme-toggler";
 import { LoginForm } from "@/app/login/_components/form";
 import { useLogin } from "@/app/login/_hooks/use-login";
-import { parseAsString, useQueryState } from "nuqs";
 
 export default function LoginPageClient() {
   const router = useRouter();
@@ -49,21 +49,21 @@ export default function LoginPageClient() {
           {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler />}
         </div>
 
+        <div className="hidden lg:flex lg:w-1/2 h-full min-h-screen justify-center items-center bg-primary">
+          <YmdndLogo
+            className="w-[405px] max-w-[80%] h-auto text-primary-foreground"
+            role="img"
+            aria-label="Yuk Main DnD logo"
+            alt="Yuk Main DnD logo"
+          />
+        </div>
+
         <LoginForm
           onSubmitPayload={loginMutate}
           mutationError={loginError}
           isPending={loginIsPending}
           isPaused={loginIsPaused}
         />
-
-        <div className="hidden lg:flex lg:w-1/2 h-full min-h-screen justify-center items-center bg-[rgb(145,33,23)]">
-          <Image
-            width={1081}
-            height={1081}
-            src="/images/logo-lore-friendly.jpeg"
-            alt="Yuk Main DnD logo"
-          />
-        </div>
       </main>
     </div>
   );

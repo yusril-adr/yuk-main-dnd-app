@@ -6,7 +6,6 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "@/app/_components/ui/sidebar";
-import { Sword } from "lucide-react";
 import { ThemeToggler } from "@/app/_components/theme-toggler";
 import type { TNavSidebar } from "@/app/(authenticated)/dashboard/_types/nav-sidebar";
 import { NavSidebar } from "./nav-sidebar";
@@ -15,6 +14,7 @@ import NAV_ROUTES from "@/app/(authenticated)/dashboard/_constants/navigation-ro
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { AvatarSidebar } from "./avatar-sidebar";
 import Link from "next/link";
+import YmdndLogo from "@/assets/logo/YMDND1.svg";
 
 export function AppSidebar() {
   const { auth } = useAuthContext();
@@ -54,9 +54,9 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <div className="flex justify-between items-center pl-1.5">
-              <Link href="/" className="flex items-center">
-                <Sword className="mr-2" />
-                <span className="font-heading text-2xl ">YukMainDnD</span>
+              <Link href="/" className="flex items-center gap-2">
+                <YmdndLogo aria-hidden className="size-8 shrink-0 text-primary" />
+                <span className="font-heading text-xl">YukMainDnD</span>
               </Link>
 
               {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler />}

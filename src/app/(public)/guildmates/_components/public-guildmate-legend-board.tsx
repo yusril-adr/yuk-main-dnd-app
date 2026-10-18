@@ -17,13 +17,14 @@ import PublicGuildmateLegendList from "./public-guildmate-legend-list";
 import PublicGuildmateLegendPodium from "./public-guildmate-legend-podium";
 import PublicGuildmateLegendSkeleton from "./public-guildmate-legend-skeleton";
 import PublicGuildmateErrorState from "./public-guildmate-error-state";
-import { PUBLIC_GUILDMATE_LEGEND_EMPTY_TEXT } from "@/app/(public)/guildmates/_constants/public-guildmate-legend-rank";
+import { getPublicGuildmateLegendEmptyText } from "@/app/(public)/guildmates/_constants/public-guildmate-legend-rank";
 import type { TPublicGuildmateLegendBoardProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 export default function PublicGuildmateLegendBoard({
   kind,
   title,
   icon: Icon,
+  monthName,
   entries,
   isLoading,
   isError,
@@ -63,7 +64,7 @@ export default function PublicGuildmateLegendBoard({
                             <Feather aria-hidden className="size-6" />
                           </EmptyMedia>
                           <EmptyDescription className="italic">
-                            {PUBLIC_GUILDMATE_LEGEND_EMPTY_TEXT}
+                            {getPublicGuildmateLegendEmptyText(monthName)}
                           </EmptyDescription>
                         </EmptyHeader>
                       </Empty>

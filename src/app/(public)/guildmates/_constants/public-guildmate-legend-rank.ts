@@ -26,5 +26,5 @@ export const PUBLIC_GUILDMATE_LEGEND_RANK_STYLE: Record<
 // Podium visual order: 2nd left, 1st center, 3rd right
 export const PUBLIC_GUILDMATE_PODIUM_ORDER = [2, 1, 3];
 
-export const PUBLIC_GUILDMATE_LEGEND_EMPTY_TEXT =
-  "No legends yet this month. The tavern awaits.";
+export const getPublicGuildmateLegendEmptyText = (monthName: string | null) =>
+  `No legends yet ${monthName ? `in ${monthName}` : "this month"}. The tavern awaits.`;

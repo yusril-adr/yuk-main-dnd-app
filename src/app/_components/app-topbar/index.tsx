@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Sword } from "lucide-react";
+import { Menu } from "lucide-react";
+
+import YmdndLogo from "@/assets/logo/YMDND1.svg";
 
 import { Button } from "@/app/_components/ui/button";
 import { Skeleton } from "@/app/_components/ui/skeleton";
@@ -31,7 +33,7 @@ export function AppTopBar() {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-10 mx-auto">
         <Link href="/" className="flex items-center gap-2">
-          <Sword className="size-6 text-primary" />
+          <YmdndLogo aria-hidden className="size-8 shrink-0 text-primary" />
           <span className="font-heading text-xl">YukMainDnD</span>
         </Link>
 

@@ -3,7 +3,6 @@ import { Alegreya_Sans, DM_Mono, Eczar } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/utils/cn";
 import {
-  DEFAULT_OG_IMAGE,
   SITE_DESCRIPTION,
   SITE_NAME,
   SITE_URL,
@@ -32,6 +31,8 @@ export const metadata: Metadata = {
   title: { default: SITE_NAME, template: `%s | ${SITE_NAME}` },
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
+  authors: [{ name: "Yonaka", url: "https://yusril-adr.github.io" }],
+  creator: "Yonaka",
   icons: { icon: "/favicon.ico" },
   openGraph: {
     type: "website",
@@ -40,13 +41,11 @@ export const metadata: Metadata = {
     url: "/",
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
-    images: [DEFAULT_OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
-    images: [DEFAULT_OG_IMAGE.url],
   },
   robots: {
     index: true,

@@ -1,5 +1,12 @@
 import type { NextConfig } from "next";
 
+const svgLoader = {
+  loader: "@svgr/webpack",
+  options: {
+    svgo: false,
+  },
+};
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -11,6 +18,21 @@ const nextConfig: NextConfig = {
     ],
   },
   allowedDevOrigins: ["192.168.110.93"],
+  turbopack: {
+    rules: {
+      "*.svg": {
+        loaders: [svgLoader],
+        as: "*.js",
+      },
+    },
+  },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      use: [svgLoader],
+    });
+    return config;
+  },
 };
 
 export default nextConfig;

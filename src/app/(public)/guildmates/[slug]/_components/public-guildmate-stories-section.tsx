@@ -12,8 +12,8 @@ import {
 } from "@/app/_components/ui/empty";
 import { Spinner } from "@/app/_components/ui/spinner";
 import { Tabs, TabsList, TabsTrigger } from "@/app/_components/ui/tabs";
-import PublicStoryCard from "@/app/(public)/stories/_components/public-story-card";
-import PublicStoryCardSkeleton from "@/app/(public)/stories/_components/public-story-card-skeleton";
+import PublicGuildmateStoryCard from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-story-card";
+import PublicGuildmateStoryCardSkeleton from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-story-card-skeleton";
 import PublicGuildmateErrorState from "@/app/(public)/guildmates/_components/public-guildmate-error-state";
 import { useGetPublicGuildmateCreatedStories } from "@/app/(public)/guildmates/[slug]/_hooks/use-get-public-guildmate-created-stories";
 import { useGetPublicGuildmateJoinedStories } from "@/app/(public)/guildmates/[slug]/_hooks/use-get-public-guildmate-joined-stories";
@@ -25,7 +25,7 @@ type TStoryTab = "led" | "joined";
 export default function PublicGuildmateStoriesSection({
   identifier,
 }: TPublicGuildmateStoriesSectionProps) {
-  const [tab, setTab] = useState<TStoryTab>("led");
+  const [tab, setTab] = useState<TStoryTab>("joined");
   const createdQuery = useGetPublicGuildmateCreatedStories(
     identifier,
     PUBLIC_GUILDMATE_STORY_PAGE_SIZE,
@@ -50,16 +50,16 @@ export default function PublicGuildmateStoriesSection({
         <Tabs value={tab} onValueChange={(value) => setTab(value as TStoryTab)}>
           <TabsList>
             <TabsTrigger
-              value="led"
-              className="text-foreground/90 data-active:text-foreground dark:text-foreground/90 dark:data-active:text-foreground"
-            >
-              Quests led
-            </TabsTrigger>
-            <TabsTrigger
               value="joined"
               className="text-foreground/90 data-active:text-foreground dark:text-foreground/90 dark:data-active:text-foreground"
             >
               Quests joined
+            </TabsTrigger>
+            <TabsTrigger
+              value="led"
+              className="text-foreground/90 data-active:text-foreground dark:text-foreground/90 dark:data-active:text-foreground"
+            >
+              Quests led
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -93,14 +93,14 @@ export default function PublicGuildmateStoriesSection({
                   ? Array.from({
                       length: PUBLIC_GUILDMATE_STORY_PAGE_SIZE,
                     }).map((_, idx) => (
-                      <PublicStoryCardSkeleton key={`skeleton-${idx}`} />
+                      <PublicGuildmateStoryCardSkeleton key={`skeleton-${idx}`} />
                     ))
                   : stories.map((story) => (
-                      <PublicStoryCard key={story.id} story={story} />
+                      <PublicGuildmateStoryCard key={story.id} story={story} />
                     ))}
                 {query.isFetchingNextPage &&
                   Array.from({ length: 3 }).map((_, idx) => (
-                    <PublicStoryCardSkeleton key={`next-skeleton-${idx}`} />
+                    <PublicGuildmateStoryCardSkeleton key={`next-skeleton-${idx}`} />
                   ))}
               </div>
               <If condition={query.hasNextPage && !query.isLoading}>

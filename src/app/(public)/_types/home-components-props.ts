@@ -31,6 +31,8 @@ export type THomeLegendEntry = {
 export type THomeLegendBoardProps = {
   title: string;
   icon: LucideIcon;
+  // Ranked month in English, e.g. "September"; null before hydration
+  monthName: string | null;
   entries: THomeLegendEntry[];
   isLoading: boolean;
   isError: boolean;

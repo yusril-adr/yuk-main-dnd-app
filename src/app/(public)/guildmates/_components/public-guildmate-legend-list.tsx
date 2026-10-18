@@ -118,7 +118,7 @@ export default function PublicGuildmateLegendList({
                 <span className="font-heading text-base font-semibold text-primary">
                   +{formatExp(gainedExp)} XP
                 </span>
-                <span className="text-xs text-foreground/80">this month</span>
+                <span className="text-xs text-foreground/80">so far</span>
               </ItemActions>
             </Item>
           </li>

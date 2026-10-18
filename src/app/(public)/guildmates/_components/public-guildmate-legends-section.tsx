@@ -9,27 +9,29 @@ import {
 import PublicGuildmateLegendBoard from "./public-guildmate-legend-board";
 import type { TPublicGuildmateLegendsSectionProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
-const DM_TITLE = "Dungeon Masters of the Month";
-const PLAYER_TITLE = "Heroes of the Month";
-
 export default function PublicGuildmateLegendsSection({
+  monthName,
   monthLabel,
   dmBoard,
   playerBoard,
 }: TPublicGuildmateLegendsSectionProps) {
+  // Generic wording until the client knows the month (prerendered page)
+  const period = monthName ?? "the Month";
   const dm = (
     <PublicGuildmateLegendBoard
       kind="dm"
-      title={DM_TITLE}
+      title={`Dungeon Masters of ${period}`}
       icon={Crown}
+      monthName={monthName}
       {...dmBoard}
     />
   );
   const player = (
     <PublicGuildmateLegendBoard
       kind="player"
-      title={PLAYER_TITLE}
+      title={`Heroes of ${period}`}
       icon={Sword}
+      monthName={monthName}
       {...playerBoard}
     />
   );
@@ -38,9 +40,9 @@ export default function PublicGuildmateLegendsSection({
     <section aria-labelledby="legends-heading" className="flex flex-col gap-4">
       <div className="flex flex-col items-center gap-1 text-center">
         <h2 id="legends-heading" className="font-heading text-2xl sm:text-3xl">
-          Legends of the Month
+          Legends of {period}
         </h2>
-        <p className="text-xs tracking-[0.2em] text-primary uppercase">
+        <p className="min-h-4 text-xs tracking-[0.2em] text-primary uppercase">
           {monthLabel}
         </p>
       </div>
