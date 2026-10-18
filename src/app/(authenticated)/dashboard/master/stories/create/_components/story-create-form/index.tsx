@@ -41,6 +41,7 @@ import { toCamelCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
 import StoryCreateFormActions from "./story-create-form-actions";
+import StoryCreateXpGuidePopover from "./story-create-xp-guide-popover";
 import RichTextEditor from "@/app/_components/rich-text-editor";
 import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 import { toStoryRewardPayload } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
@@ -334,7 +335,10 @@ export default function StoryCreateForm({
                 control={control}
                 render={({ field, fieldState }) => (
                   <Field className="grid" data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="expAwarded">XP Awarded</FieldLabel>
+                    <div className="flex items-center gap-1">
+                      <FieldLabel htmlFor="expAwarded">XP Awarded</FieldLabel>
+                      <StoryCreateXpGuidePopover />
+                    </div>
                     <Input
                       id="expAwarded"
                       type="number"
