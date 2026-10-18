@@ -23,9 +23,12 @@ export default function GuildMatesPageClient() {
     search: parseAsString.withDefault(""),
   });
 
-  const { payload: monthPayload, monthLabel } = useCurrentMonthRange();
-  const topDmQuery = useGetTopDmExperience(monthPayload);
-  const topPlayerQuery = useGetTopPlayerExperience(monthPayload);
+  // null on the server/first paint; boards show their skeleton until then
+  const monthRange = useCurrentMonthRange();
+  const topDmQuery = useGetTopDmExperience(monthRange?.payload ?? null);
+  const topPlayerQuery = useGetTopPlayerExperience(
+    monthRange?.payload ?? null,
+  );
 
   const dmEntries: TPublicGuildmateLegendEntry[] = useMemo(
     () =>
@@ -103,16 +106,17 @@ export default function GuildMatesPageClient() {
         />
 
         <PublicGuildmateLegendsSection
-          monthLabel={monthLabel}
+          monthName={monthRange?.monthName ?? null}
+          monthLabel={monthRange?.monthLabel ?? null}
           dmBoard={{
             entries: dmEntries,
-            isLoading: topDmQuery.isLoading,
+            isLoading: topDmQuery.isPending,
             isError: topDmQuery.isError,
             onRetry: () => topDmQuery.refetch(),
           }}
           playerBoard={{
             entries: playerEntries,
-            isLoading: topPlayerQuery.isLoading,
+            isLoading: topPlayerQuery.isPending,
             isError: topPlayerQuery.isError,
             onRetry: () => topPlayerQuery.refetch(),
           }}

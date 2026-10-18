@@ -14,6 +14,8 @@ export type TPublicGuildmateLegendBoardProps = {
   kind: TPublicGuildmateLegendKind;
   title: string;
   icon: LucideIcon;
+  // Current UTC month in English, e.g. "October"; null before hydration
+  monthName: string | null;
   entries: TPublicGuildmateLegendEntry[];
   isLoading: boolean;
   isError: boolean;
@@ -26,11 +28,15 @@ export type TPublicGuildmateLegendViewProps = {
 };
 
 export type TPublicGuildmateLegendsSectionProps = {
-  monthLabel: string;
-  dmBoard: Omit<TPublicGuildmateLegendBoardProps, "kind" | "title" | "icon">;
+  monthName: string | null;
+  monthLabel: string | null;
+  dmBoard: Omit<
+    TPublicGuildmateLegendBoardProps,
+    "kind" | "title" | "icon" | "monthName"
+  >;
   playerBoard: Omit<
     TPublicGuildmateLegendBoardProps,
-    "kind" | "title" | "icon"
+    "kind" | "title" | "icon" | "monthName"
   >;
 };
 

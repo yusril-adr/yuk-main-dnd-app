@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import { Crown, Sword } from "lucide-react";
 
 import HomeBand from "@/app/(public)/_components/home-band";
@@ -10,12 +9,14 @@ import {
   useGetHomeTopDms,
   useGetHomeTopPlayers,
 } from "@/app/(public)/_hooks/use-get-home-top-experience";
-import { getHomeMonthRange } from "@/app/(public)/_utils/home-helper";
+import { useHomePreviousMonthRange } from "@/app/(public)/_hooks/use-home-previous-month-range";
 
 export default function HomeLegendsSection() {
-  const { payload, monthLabel } = useMemo(() => getHomeMonthRange(), []);
-  const playersQuery = useGetHomeTopPlayers(payload);
-  const dmsQuery = useGetHomeTopDms(payload);
+  // null on the server/first paint; boards show their skeleton until then
+  const range = useHomePreviousMonthRange();
+  const monthName = range?.monthName ?? null;
+  const playersQuery = useGetHomeTopPlayers(range?.payload ?? null);
+  const dmsQuery = useGetHomeTopDms(range?.payload ?? null);
 
   const players = (playersQuery.data?.data?.data ?? [])
     .slice(0, 3)
@@ -32,8 +33,8 @@ export default function HomeLegendsSection() {
     <HomeBand labelledBy="legends">
       <HomeSectionHeader
         id="legends"
-        title="Legends of the month"
-        description={`The adventurers and Dungeon Masters who gained the most EXP in ${monthLabel}.`}
+        title={monthName ? `Legends of ${monthName}` : "Last month's legends"}
+        description={`The adventurers and Dungeon Masters who gained the most EXP in ${range?.monthLabel ?? "the previous month"}.`}
         linkHref="/guildmates"
         linkLabel="See all guildmates"
       />
@@ -41,6 +42,7 @@ export default function HomeLegendsSection() {
         <HomeLegendBoard
           title="Heroes"
           icon={Sword}
+          monthName={monthName}
           entries={players}
           isLoading={playersQuery.isPending}
           isError={playersQuery.isError}
@@ -49,6 +51,7 @@ export default function HomeLegendsSection() {
         <HomeLegendBoard
           title="Dungeon Masters"
           icon={Crown}
+          monthName={monthName}
           entries={dms}
           isLoading={dmsQuery.isPending}
           isError={dmsQuery.isError}
