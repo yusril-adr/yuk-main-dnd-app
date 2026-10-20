@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { CalendarDays, Coins, Gamepad2, Sparkles, Trophy } from "lucide-react";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { If, Then } from "react-if";
 
 import {
@@ -17,7 +17,8 @@ import {
 import { cn } from "@/utils/cn";
 import dayjs from "@/libs/dayjs";
 import { getGuildmateHref, makeDefaultAvatarUrl } from "@/utils/user-helper";
-import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
+import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
+import { Link } from "@/i18n/navigation";
 
 import PublicStoryJoinActions from "./public-story-join-actions";
 import PublicStoryDetailInfoRow from "./public-story-detail-info-row";
@@ -26,9 +27,6 @@ import { PUBLIC_STORY_LOCATION_TYPE_ICON } from "@/app/[locale]/(public)/stories
 import { PUBLIC_STORY_START_AT_FORMAT } from "@/app/[locale]/(public)/stories/[slug]/_constants/public-story-detail-date-format";
 import type { TPublicStoryDetailProps } from "@/app/[locale]/(public)/stories/[slug]/_types/public-story-detail-components-props";
 
-function formatReward(value: number, unit: "XP" | "GP") {
-  return value > 0 ? `${value.toLocaleString("en-US")} ${unit}` : null;
-}
 
 // Sticky on desktop (see the page grid), stacked above the content on mobile
 export default function PublicStoryDetailSummary({
@@ -37,13 +35,19 @@ export default function PublicStoryDetailSummary({
 }: TPublicStoryDetailProps) {
   const creator = story.created_by;
   const LocationIcon = PUBLIC_STORY_LOCATION_TYPE_ICON[story.location_type];
+  const t = useTranslations("storyDetail.summary");
+  const tBadge = useTranslations("stories.badge");
+  const locale = useLocale();
+  const format = useFormatter();
+  const formatReward = (value: number, unit: "XP" | "GP") =>
+    value > 0 ? `${format.number(value)} ${unit}` : null;
   const exp = formatReward(story.exp_awarded, "XP");
   const gold = formatReward(story.point_awarded, "GP");
 
   return (
     <Card
       role="complementary"
-      aria-label="Story summary"
+      aria-label={t("label")}
       className={cn(
         "gap-5 pt-0 [--card-spacing:--spacing(5)] sm:gap-6 sm:[--card-spacing:--spacing(6)]",
         className,
@@ -51,39 +55,47 @@ export default function PublicStoryDetailSummary({
     >
       <CardHeader className="gap-2 border-b bg-muted/40 pt-(--card-spacing)">
         <PublicStoryStatusBadge status={story.status} className="w-fit" />
-        <CardTitle className="text-lg sm:text-xl">The Quest Scroll</CardTitle>
+        <CardTitle className="text-lg sm:text-xl">
+          {t("title")}
+        </CardTitle>
       </CardHeader>
 
       <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
         <PublicStoryDetailInfoRow
           icon={CalendarDays}
-          label="Starts"
+          label={t("starts")}
           value={
             story.start_at
-              ? dayjs(story.start_at).format(PUBLIC_STORY_START_AT_FORMAT)
-              : "To be announced"
+              ? dayjs(story.start_at)
+                  .locale(locale)
+                  .format(PUBLIC_STORY_START_AT_FORMAT)
+              : t("tba")
           }
         />
         <PublicStoryDetailInfoRow
           icon={Trophy}
-          label="Player slots"
+          label={t("slots")}
           // Not a join cap: anyone may join; past this many, they join as viewers
           value={
             story.max_members
-              ? `Only ${story.max_members} ${story.max_members === 1 ? "hero" : "heroes"} can play. Once full, you can still join as a viewer.`
-              : "No limit set"
+              ? t("slotsValue", { count: story.max_members })
+              : t("noLimit")
           }
         />
         <PublicStoryDetailInfoRow
           icon={LocationIcon}
-          label={`Location · ${STORY_LOCATION_TYPE_LABEL[story.location_type]}`}
+          label={t("location", {
+            type: tBadge(
+              `location.${StoryLocationTypeEnum[story.location_type] as keyof typeof StoryLocationTypeEnum}`,
+            ),
+          })}
           value={story.location_detail}
         />
         <If condition={!!story.game_system}>
           <Then>
             <PublicStoryDetailInfoRow
               icon={Gamepad2}
-              label="Game system"
+              label={t("gameSystem")}
               value={story.game_system}
             />
           </Then>
@@ -99,7 +111,7 @@ export default function PublicStoryDetailSummary({
                   <Sparkles className="size-4 text-primary" />
                   <span className="font-heading text-lg">{exp}</span>
                   <span className="text-[11px] text-muted-foreground uppercase">
-                    Experience
+                    {t("experience")}
                   </span>
                 </div>
               </Then>
@@ -110,7 +122,7 @@ export default function PublicStoryDetailSummary({
                   <Coins className="size-4 text-accent-foreground" />
                   <span className="font-heading text-lg">{gold}</span>
                   <span className="text-[11px] text-muted-foreground uppercase">
-                    Gold
+                    {t("gold")}
                   </span>
                 </div>
               </Then>
@@ -139,7 +151,7 @@ export default function PublicStoryDetailSummary({
             </Avatar>
             <div className="flex min-w-0 flex-col">
               <span className="text-xs text-muted-foreground">
-                Dungeon Master
+                {t("dm")}
               </span>
               <Link
                 href={getGuildmateHref(creator!)}

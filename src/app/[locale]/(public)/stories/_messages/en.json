@@ -1,0 +1,66 @@
+{
+  "stories": {
+    "meta": {
+      "title": "Stories",
+      "description": "Browse open and completed tabletop RPG stories, see who runs them and claim a seat at the table."
+    },
+    "hero": {
+      "kicker": "The Quest Board",
+      "title": "Seek thy next adventure",
+      "description": "Oneshots and campaigns posted by the guild. Pick a story, join the party, and roll for initiative.",
+      "total": "<num>{total}</num> {count, plural, one {story} other {stories}} pinned to the board"
+    },
+    "filters": {
+      "searchPlaceholder": "Search stories by title (min. 3 characters)…",
+      "trigger": "Filters",
+      "status": "Status",
+      "location": "Location",
+      "allStatuses": "All statuses",
+      "anywhere": "Anywhere",
+      "allTypes": "All",
+      "clear": "Clear",
+      "apply": "Apply"
+    },
+    "card": {
+      "noDescription": "The tale is yet to be written…",
+      "dateTbp": "Date to be proclaimed",
+      "joined": "{count} joined",
+      "rewardSlots": "{count, plural, one {Only # hero can play, others join as viewers} other {Only # heroes can play, others join as viewers}}",
+      "noLimit": "No player limit set",
+      "dm": "Dungeon Master"
+    },
+    "badge": {
+      "recruiting": "Recruiting",
+      "status": {
+        "DRAFT": "Draft",
+        "PUBLISHED": "Published",
+        "ARCHIVED": "Archived",
+        "CANCELLED": "Cancelled",
+        "COMPLETED": "Completed"
+      },
+      "type": {
+        "ONESHOT": "Oneshot",
+        "CAMPAIGN": "Campaign"
+      },
+      "location": {
+        "ONLINE": "Online",
+        "OFFLINE": "Offline"
+      }
+    },
+    "empty": {
+      "title": "No stories found",
+      "filtered": "No tale matches your search. Try different keywords or clear the filters.",
+      "unfiltered": "The quest board is empty for now. Return soon, adventurer.",
+      "reset": "Clear search & filters"
+    },
+    "error": {
+      "title": "The scrolls could not be fetched",
+      "description": "Something went wrong while loading stories. Please try again."
+    },
+    "pagination": {
+      "summary": "Showing <b>{start}–{end}</b> of <b>{total}</b> stories",
+      "previous": "Previous page",
+      "next": "Next page"
+    }
+  }
+}

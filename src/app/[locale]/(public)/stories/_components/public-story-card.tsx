@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { CalendarDays, Crown, Trophy, Users } from "lucide-react";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Else, If, Then } from "react-if";
 
 import {
@@ -28,6 +28,7 @@ import {
   makeDefaultAvatarUrl,
 } from "@/utils/user-helper";
 import { getRichTextPlainText } from "@/utils/rich-text";
+import { Link } from "@/i18n/navigation";
 
 import PublicStoryBanner from "./public-story-banner";
 import PublicStoryStatusBadge from "./public-story-status-badge";
@@ -40,6 +41,9 @@ export default function PublicStoryCard({
   story,
   priority = false,
 }: TPublicStoryCardProps) {
+  const t = useTranslations("stories.card");
+  const locale = useLocale();
+  const format = useFormatter();
   // Plain text from rich text HTML; "" when empty or only images
   const descriptionText = getRichTextPlainText(story.description);
   // max_members is the number of reward slots, not a join cap: anyone can
@@ -95,7 +99,7 @@ export default function PublicStoryCard({
           <If condition={!!descriptionText}>
             <Then>{descriptionText}</Then>
             <Else>
-              <span className="italic">The tale is yet to be written…</span>
+              <span className="italic">{t("noDescription")}</span>
             </Else>
           </If>
         </CardDescription>
@@ -106,12 +110,14 @@ export default function PublicStoryCard({
           <span className="flex items-center gap-1.5 [&>svg]:size-3.5">
             <CalendarDays />
             {story.start_at
-              ? dayjs(story.start_at).format(PUBLIC_STORY_CARD_DATE_FORMAT)
-              : "Date to be proclaimed"}
+              ? dayjs(story.start_at)
+                  .locale(locale)
+                  .format(PUBLIC_STORY_CARD_DATE_FORMAT)
+              : t("dateTbp")}
           </span>
           <span className="flex items-center gap-1.5 font-medium text-foreground [&>svg]:size-3.5">
             <Users />
-            {story.joined_members} joined
+            {t("joined", { count: format.number(story.joined_members) })}
           </span>
         </div>
 
@@ -120,8 +126,8 @@ export default function PublicStoryCard({
         <span className="flex items-center gap-1.5 text-xs text-foreground/80 [&>svg]:size-3.5 [&>svg]:text-primary">
           <Trophy />
           {rewardSlots
-            ? `Only ${rewardSlots} ${rewardSlots === 1 ? "hero" : "heroes"} can play, others join as viewers`
-            : "No player limit set"}
+            ? t("rewardSlots", { count: rewardSlots })
+            : t("noLimit")}
         </span>
 
         <If condition={!!creator}>
@@ -150,7 +156,7 @@ export default function PublicStoryCard({
               <ItemContent className="min-w-0 gap-0">
                 <ItemDescription className="flex items-center gap-1 text-[10px] font-medium tracking-widest text-primary uppercase [&>svg]:size-3">
                   <Crown />
-                  Dungeon Master
+                  {t("dm")}
                 </ItemDescription>
                 <ItemTitle className="block w-full truncate font-heading text-sm text-foreground">
                   <Link

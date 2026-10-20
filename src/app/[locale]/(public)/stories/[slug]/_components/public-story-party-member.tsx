@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 
 import {
   Avatar,
@@ -23,16 +23,16 @@ import {
   makeDefaultAvatarUrl,
 } from "@/utils/user-helper";
 import { StoryMemberStatusEnum } from "@/api/main/modules/master/stories/enums/story-member-status";
+import { Link } from "@/i18n/navigation";
 
-import {
-  PUBLIC_STORY_MEMBER_STATUS_BADGE_VARIANT,
-  PUBLIC_STORY_MEMBER_STATUS_LABEL,
-} from "@/app/[locale]/(public)/stories/[slug]/_constants/public-story-member";
+import { PUBLIC_STORY_MEMBER_STATUS_BADGE_VARIANT } from "@/app/[locale]/(public)/stories/[slug]/_constants/public-story-member";
 import type { TPublicStoryPartyMemberProps } from "@/app/[locale]/(public)/stories/[slug]/_types/public-story-detail-components-props";
 
 export default function PublicStoryPartyMember({
   member,
 }: TPublicStoryPartyMemberProps) {
+  const t = useTranslations("storyDetail.member");
+  const locale = useLocale();
   const { user } = member;
   return (
     <Item
@@ -66,7 +66,9 @@ export default function PublicStoryPartyMember({
         </ItemTitle>
         <ItemDescription className="truncate text-foreground/75">
           {user.username ? `@${user.username} · ` : ""}
-          Joined {dayjs(member.created_at).format("D MMM YYYY")}
+          {t("joined", {
+            date: dayjs(member.created_at).locale(locale).format("D MMM YYYY"),
+          })}
         </ItemDescription>
       </ItemContent>
 
@@ -79,7 +81,9 @@ export default function PublicStoryPartyMember({
               "border-destructive/50 text-destructive",
           )}
         >
-          {PUBLIC_STORY_MEMBER_STATUS_LABEL[member.status]}
+          {t(
+            `status.${StoryMemberStatusEnum[member.status] as keyof typeof StoryMemberStatusEnum}`,
+          )}
         </Badge>
       </ItemActions>
     </Item>

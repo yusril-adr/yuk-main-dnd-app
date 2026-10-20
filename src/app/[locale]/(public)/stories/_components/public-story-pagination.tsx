@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useFormatter, useTranslations } from "next-intl";
 
 import { Button } from "@/app/_components/ui/button";
 import { generatePages } from "@/utils/table-helper";
@@ -14,6 +15,8 @@ export default function PublicStoryPagination({
   itemCount,
   onPageChange,
 }: TPublicStoryPaginationProps) {
+  const t = useTranslations("stories.pagination");
+  const format = useFormatter();
   const pages = useMemo(
     () => generatePages({ currentPage: page, totalPages: pageCount }),
     [page, pageCount],
@@ -25,12 +28,14 @@ export default function PublicStoryPagination({
   return (
     <div className="flex flex-col-reverse items-center justify-between gap-3 rounded-2xl border bg-card px-3 py-3 sm:flex-row sm:px-4">
       <span className="text-xs text-muted-foreground sm:text-sm">
-        Showing{" "}
-        <span className="font-medium text-foreground">
-          {indexStart}–{indexEnd}
-        </span>{" "}
-        of <span className="font-medium text-foreground">{rowCount}</span>{" "}
-        stories
+        {t.rich("summary", {
+          start: format.number(indexStart),
+          end: format.number(indexEnd),
+          total: format.number(rowCount),
+          b: (chunks) => (
+            <span className="font-medium text-foreground">{chunks}</span>
+          ),
+        })}
       </span>
 
       <div className="flex flex-wrap items-center justify-center gap-0.5 sm:gap-1">
@@ -38,7 +43,7 @@ export default function PublicStoryPagination({
           variant="ghost"
           size="icon-sm"
           className="rounded-full"
-          aria-label="Previous page"
+          aria-label={t("previous")}
           disabled={page <= 1}
           onClick={() => onPageChange(page - 1)}
         >
@@ -60,7 +65,7 @@ export default function PublicStoryPagination({
           variant="ghost"
           size="icon-sm"
           className="rounded-full"
-          aria-label="Next page"
+          aria-label={t("next")}
           disabled={page >= pageCount}
           onClick={() => onPageChange(page + 1)}
         >

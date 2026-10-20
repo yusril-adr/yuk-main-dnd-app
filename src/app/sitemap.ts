@@ -23,7 +23,12 @@ const PUBLIC_ROUTES: {
   localized?: boolean;
 }[] = [
   { path: "/", changeFrequency: "daily", priority: 1, localized: true },
-  { path: "/stories", changeFrequency: "daily", priority: 0.9 },
+  {
+    path: "/stories",
+    changeFrequency: "daily",
+    priority: 0.9,
+    localized: true,
+  },
   {
     path: "/guildmates",
     changeFrequency: "weekly",
@@ -95,12 +100,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ? localizedEntries(path, { lastModified, changeFrequency, priority })
         : [{ url: toUrl(path), lastModified, changeFrequency, priority }],
     ),
-    ...stories.map((story) => ({
-      url: `${SITE_URL}/stories/${encodeURIComponent(story.slug || story.id)}`,
-      lastModified,
-      changeFrequency: "weekly" as const,
-      priority: 0.7,
-    })),
+    ...stories.flatMap((story) =>
+      localizedEntries(
+        `/stories/${encodeURIComponent(story.slug || story.id)}`,
+        { lastModified, changeFrequency: "weekly", priority: 0.7 },
+      ),
+    ),
     ...users.flatMap((user) =>
       localizedEntries(getGuildmateHref(user), {
         lastModified,

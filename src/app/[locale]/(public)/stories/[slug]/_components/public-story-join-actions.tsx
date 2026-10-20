@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { DoorOpen, LogIn, Swords } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Else, If, Then } from "react-if";
 
@@ -36,6 +37,7 @@ import type { TPublicStoryDetailProps } from "@/app/[locale]/(public)/stories/[s
 export default function PublicStoryJoinActions({
   story,
 }: TPublicStoryDetailProps) {
+  const t = useTranslations("storyDetail.join");
   const pathname = usePathname();
   const queryClient = useQueryClient();
   const { auth, authQuery } = useAuthContext();
@@ -53,7 +55,7 @@ export default function PublicStoryJoinActions({
     // 404 is not toasted by the interceptor (story gone or not a member)
     if (error instanceof MainAPINotFoundError) {
       toast.dismiss();
-      toast.error(error.message || "This story could not be found");
+      toast.error(error.message || t("notFound"));
     }
     // 400 / 401 / 409 are toasted by the interceptor. A 401 also logs out,
     // which turns this button into "Log in to join". Either way, resync.
@@ -103,10 +105,10 @@ export default function PublicStoryJoinActions({
   const loginHref = `/login?from=${encodeURIComponent(pathname)}`;
 
   const hint = showLogin
-    ? "Log in to enlist in this story."
+    ? t("hintLogin")
     : canLeave
-      ? "Thou art enlisted in this story."
-      : "Anyone may join. The Dungeon Master rewards the bravest at the end.";
+      ? t("hintMember")
+      : t("hintOpen");
 
   const action = (
     <If condition={showLogin}>
@@ -117,7 +119,7 @@ export default function PublicStoryJoinActions({
           render={<Link href={loginHref} />}
           nativeButton={false}
         >
-          <LogIn /> Join the party
+          <LogIn /> {t("join")}
         </Button>
       </Then>
       <Else>
@@ -131,7 +133,7 @@ export default function PublicStoryJoinActions({
               onClick={() => setIsLeaveDialogOpen(true)}
             >
               {cancelJoinMutation.isPending ? <Spinner /> : <DoorOpen />}
-              Leave the party
+              {t("leave")}
             </Button>
           </Then>
           <Else>
@@ -142,7 +144,7 @@ export default function PublicStoryJoinActions({
               onClick={onJoinClick}
             >
               {joinMutation.isPending ? <Spinner /> : <Swords />}
-              Join the party
+              {t("join")}
             </Button>
           </Else>
         </If>
@@ -171,14 +173,13 @@ export default function PublicStoryJoinActions({
       <AlertDialog open={isLeaveDialogOpen} onOpenChange={setIsLeaveDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Leave the party?</AlertDialogTitle>
+            <AlertDialogTitle>{t("leaveDialog.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Thou shalt be struck from the roster of &ldquo;{story.title}
-              &rdquo;. Thou may rejoin while the story is still open.
+              {t("leaveDialog.description", { title: story.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="sm:grid sm:grid-cols-2">
-            <AlertDialogCancel>Stay</AlertDialogCancel>
+            <AlertDialogCancel>{t("leaveDialog.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
               disabled={cancelJoinMutation.isPending}
@@ -187,7 +188,7 @@ export default function PublicStoryJoinActions({
                 setIsLeaveDialogOpen(false);
               }}
             >
-              Leave the party
+              {t("leaveDialog.confirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -196,16 +197,16 @@ export default function PublicStoryJoinActions({
       <AlertDialog open={isFullDialogOpen} onOpenChange={setIsFullDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>The party is full</AlertDialogTitle>
+            <AlertDialogTitle>{t("fullDialog.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              All {story.max_members} player slots of &ldquo;{story.title}
-              &rdquo; are taken. Thou may still join, but as a viewer. Speak
-              with the Dungeon Master to learn whether thou can be a substitute
-              player.
+              {t("fullDialog.description", {
+                count: story.max_members ?? 0,
+                title: story.title,
+              })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="sm:grid sm:grid-cols-2">
-            <AlertDialogCancel>Not now</AlertDialogCancel>
+            <AlertDialogCancel>{t("fullDialog.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               disabled={joinMutation.isPending}
               onClick={() => {
@@ -213,7 +214,7 @@ export default function PublicStoryJoinActions({
                 setIsFullDialogOpen(false);
               }}
             >
-              Join as viewer
+              {t("fullDialog.confirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

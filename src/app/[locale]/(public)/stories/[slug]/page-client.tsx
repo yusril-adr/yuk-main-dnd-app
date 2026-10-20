@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { History, Scroll } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { notFound, useParams } from "next/navigation";
 import { Else, If, Then } from "react-if";
 
@@ -24,6 +25,8 @@ export default function PublicStoryDetailPageClient() {
   const { slug } = useParams();
   const storyIdentifier = slug as string;
   const { auth } = useAuthContext();
+  const t = useTranslations("storyDetail");
+  const locale = useLocale();
   // Keyed by viewer so action_list refetches after login/logout
   const storyQuery = useGetPublicStoryByIdentifier(storyIdentifier, {
     userId: auth?.id,
@@ -60,7 +63,7 @@ export default function PublicStoryDetailPageClient() {
                     />
 
                     <div className="flex  flex-col gap-6 sm:gap-8 lg:col-span-2">
-                      <PublicStoryDetailSection icon={Scroll} title="The Tale">
+                      <PublicStoryDetailSection icon={Scroll} title={t("tale.title")}>
                         <If condition={!!story.description}>
                           <Then>
                             <RichTextContent
@@ -70,8 +73,7 @@ export default function PublicStoryDetailPageClient() {
                           </Then>
                           <Else>
                             <p className="italic text-muted-foreground">
-                              No description has been written for this story
-                              yet.
+                              {t("tale.empty")}
                             </p>
                           </Else>
                         </If>
@@ -84,27 +86,27 @@ export default function PublicStoryDetailPageClient() {
 
                       <PublicStoryDetailSection
                         icon={History}
-                        title="Chronicle"
+                        title={t("chronicle.title")}
                       >
                         <dl className="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
                           <div className="flex flex-col gap-1 rounded-sm border border-dashed bg-muted/40 p-4">
                             <dt className="text-xs text-muted-foreground uppercase">
-                              Posted
+                              {t("chronicle.posted")}
                             </dt>
                             <dd className="font-medium">
-                              {dayjs(story.created_at).format(
-                                PUBLIC_STORY_DETAIL_DATE_FORMAT,
-                              )}
+                              {dayjs(story.created_at)
+                                .locale(locale)
+                                .format(PUBLIC_STORY_DETAIL_DATE_FORMAT)}
                             </dd>
                           </div>
                           <div className="flex flex-col gap-1 rounded-sm border border-dashed bg-muted/40 p-4">
                             <dt className="text-xs text-muted-foreground uppercase">
-                              Last updated
+                              {t("chronicle.updated")}
                             </dt>
                             <dd className="font-medium">
-                              {dayjs(story.updated_at).format(
-                                PUBLIC_STORY_DETAIL_DATE_FORMAT,
-                              )}
+                              {dayjs(story.updated_at)
+                                .locale(locale)
+                                .format(PUBLIC_STORY_DETAIL_DATE_FORMAT)}
                             </dd>
                           </div>
                         </dl>
@@ -119,8 +121,8 @@ export default function PublicStoryDetailPageClient() {
                 <Then>
                   <div className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
                     <PublicStoryErrorState
-                      title="This tale could not be loaded"
-                      description="Something went wrong while loading the story. Please try again."
+                      title={t("error.title")}
+                      description={t("error.description")}
                       onRetry={() => storyQuery.refetch()}
                     />
                   </div>

@@ -1,21 +1,47 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import { NextIntlClientProvider, type Locale } from "next-intl";
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from "next-intl/server";
 
+import { pickMessages } from "@/i18n/pick-messages";
 import { makePageMetadata } from "@/utils/seo-helper";
 
 import StoriesPageClient from "./page-client";
 
-export const metadata: Metadata = makePageMetadata({
-  title: "Stories",
-  description:
-    "Browse open and completed tabletop RPG stories, see who runs them and claim a seat at the table.",
-  path: "/stories",
-});
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/stories">): Promise<Metadata> {
+  const locale = (await params).locale as Locale;
+  const t = await getTranslations({ locale, namespace: "stories.meta" });
+  const tSite = await getTranslations({ locale, namespace: "common.site" });
 
-export default function StoriesPage() {
+  return makePageMetadata({
+    title: t("title"),
+    description: t("description"),
+    path: "/stories",
+    locale,
+    localized: true,
+    defaultImageAlt: tSite("ogAlt"),
+  });
+}
+
+export default async function StoriesPage({
+  params,
+}: PageProps<"/[locale]/stories">) {
+  setRequestLocale((await params).locale as Locale);
+  const messages = await getMessages();
+
   return (
-    <Suspense>
-      <StoriesPageClient />
-    </Suspense>
+    <NextIntlClientProvider
+      messages={pickMessages(messages, ["stories", "common"])}
+    >
+      <Suspense>
+        <StoriesPageClient />
+      </Suspense>
+    </NextIntlClientProvider>
   );
 }
