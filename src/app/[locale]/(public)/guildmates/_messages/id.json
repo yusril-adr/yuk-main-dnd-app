@@ -11,9 +11,9 @@
       "total": "<num>{total}</num> Guildmates sudah bergabung di guild"
     },
     "legends": {
-      "title": "Legenda Bulan {month}",
-      "dmTitle": "Dungeon Masters di Bulan {month}",
-      "heroTitle": "Heroes di Bulan {month}",
+      "title": "Papan Legenda {month}",
+      "dmTitle": "Papan Dungeon Master {month}",
+      "heroTitle": "Papan Heroes {month}",
       "monthFallback": "Ini",
       "tabDms": "Dungeon Masters",
       "tabHeroes": "Heroes",
