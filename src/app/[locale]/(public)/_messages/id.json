@@ -1,7 +1,7 @@
 {
   "home": {
     "meta": {
-      "description": "Temukan Quest D&D dan tabletop RPG yang masih buka, kenalan dengan para Legends guild, dan ikuti kisah YukMainDnD."
+      "description": "Temukan Stories D&D dan tabletop RPG yang masih buka, kenalan dengan para Legends guild, dan ikuti kisah YukMainDnD."
     },
     "hero": {
       "badge": "Guild tabletop RPG",
@@ -9,33 +9,33 @@
       "description": "Cari meja, ikuti Dungeon Master-mu, dan ukir namamu di kisah YukMainDnD.",
       "openBoard": "Buka Board-ku",
       "join": "Gabung ke Guild",
-      "seeQuests": "Lihat Quest"
+      "seeQuests": "Lihat Stories"
     },
     "pitch": {
       "title": "Apa itu YukMainDnD?",
-      "description": "Guild untuk Dungeons & Dragons dan tabletop RPG lainnya. Ikut Quest, kenalan dengan Guildmates, dan catat petualanganmu di satu tempat.",
+      "description": "Guild untuk Dungeons & Dragons dan tabletop RPG lainnya. Ikut Stories, kenalan dengan Guildmates, dan catat petualanganmu di satu tempat.",
       "step": "Langkah {step}",
       "points": {
         "friends": {
           "title": "Main bareng teman",
-          "description": "Pilih Quest yang masih buka, amankan kursimu, lalu lempar dadu bareng party sesama petualang, online maupun langsung di meja."
+          "description": "Pilih Story yang masih buka, amankan kursimu, lalu lempar dadu bareng party sesama petualang, online maupun langsung di meja."
         },
         "rewards": {
           "title": "Dapatkan EXP & hadiah",
-          "description": "Setiap Quest yang selesai memberi EXP dan Gold. Naik level dan panjat papan Legends bulanan."
+          "description": "Setiap Story yang selesai memberi EXP dan Gold. Naik level dan panjat papan Legends bulanan."
         },
         "dm": {
           "title": "Jadi DM",
-          "description": "Siap merajut kisahmu sendiri? Jalankan Quest untuk guild dan kumpulkan EXP Dungeon Master."
+          "description": "Siap merajut kisahmu sendiri? Jalankan Story untuk guild dan kumpulkan EXP Dungeon Master."
         }
       }
     },
     "stories": {
-      "title": "Quest yang masih buka",
+      "title": "Stories yang masih buka",
       "description": "Meja yang masih mencari petualang pemberani. Amankan kursimu sebelum party berangkat.",
-      "seeAll": "Lihat semua Quest",
-      "error": "Papan Quest tidak bisa dibaca.",
-      "empty": "Belum ada Quest di papan saat ini. Cek lagi nanti, ya."
+      "seeAll": "Lihat semua Stories",
+      "error": "Papan Stories tidak bisa dibaca.",
+      "empty": "Belum ada Story di papan saat ini. Cek lagi nanti, ya."
     },
     "storyCard": {
       "unknownDm": "DM tidak diketahui",
@@ -94,9 +94,9 @@
       }
     },
     "finalCta": {
-      "title": "Siap untuk Quest pertamamu?",
+      "title": "Siap untuk Story pertamamu?",
       "description": "Tavern-nya hangat dan ada kursi yang menunggumu.",
-      "findQuest": "Cari Quest",
+      "findQuest": "Cari Story",
       "join": "Gabung ke Guild"
     }
   },

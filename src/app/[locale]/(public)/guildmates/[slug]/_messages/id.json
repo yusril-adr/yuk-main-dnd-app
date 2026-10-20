@@ -2,8 +2,8 @@
   "guildmateDetail": {
     "meta": {
       "title": "Petualang {name}",
-      "unknownDescription": "Kartu petualang {name}: XP DM dan Player serta Quest Log di guild YukMainDnD.",
-      "description": "{name}: {playerXp} Player XP dan {dmXp} DM XP di guild YukMainDnD. Lihat kartu petualang dan Quest Log-nya.",
+      "unknownDescription": "Kartu petualang {name}: XP DM dan Player serta Story Log di guild YukMainDnD.",
+      "description": "{name}: {playerXp} Player XP dan {dmXp} DM XP di guild YukMainDnD. Lihat kartu petualang dan Story Log-nya.",
       "avatarAlt": "Avatar {name}"
     },
     "back": "Daftar guild",
@@ -26,13 +26,13 @@
       "print": "Cetak kartu"
     },
     "stories": {
-      "title": "Quest Log",
-      "joined": "Quest diikuti",
-      "led": "Quest dipimpin",
-      "errorTitle": "Quest Log gagal dimuat",
-      "errorDescription": "Ada yang salah saat memuat Quest. Coba lagi, ya.",
-      "emptyLed": "Belum pernah memimpin Quest. Kisah pertamanya masih menunggu.",
-      "emptyJoined": "Belum pernah ikut Quest. Jalannya masih terbuka.",
+      "title": "Story Log",
+      "joined": "Stories diikuti",
+      "led": "Stories dipimpin",
+      "errorTitle": "Story Log gagal dimuat",
+      "errorDescription": "Ada yang salah saat memuat Stories. Coba lagi, ya.",
+      "emptyLed": "Belum pernah memimpin Story. Kisah pertamanya masih menunggu.",
+      "emptyJoined": "Belum pernah ikut Story. Jalannya masih terbuka.",
       "loading": "Memuat…",
       "loadMore": "Muat lagi"
     },

@@ -7,7 +7,7 @@
     "hero": {
       "kicker": "Aula Guild",
       "title": "Kenalan dengan sesama petualang",
-      "description": "Para Dungeon Master dan Heroes di guild. Beri hormat pada Legends bulan ini, lalu cari teman untuk Quest berikutnya.",
+      "description": "Para Dungeon Master dan Heroes di guild. Beri hormat pada Legends bulan ini, lalu cari teman untuk Story berikutnya.",
       "total": "<num>{total}</num> Guildmates sudah bergabung di guild"
     },
     "legends": {
