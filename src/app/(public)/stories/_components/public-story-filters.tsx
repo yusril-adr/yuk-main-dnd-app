@@ -135,7 +135,7 @@ export default function PublicStoryFilters({
             <Search />
           </InputGroupAddon>
           <InputGroupInput
-            placeholder="Search quests by title (min. 3 characters)…"
+            placeholder="Search stories by title (min. 3 characters)…"
             onChange={(event) => handleSearchChange(event.target.value)}
             defaultValue={queryTable.search}
           />

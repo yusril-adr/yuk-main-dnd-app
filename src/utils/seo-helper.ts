@@ -5,7 +5,7 @@ import CONFIG from "@/common/constants/config";
 export const SITE_NAME = "YukMainDnD";
 
 export const SITE_DESCRIPTION =
-  "A tabletop RPG guild: join quests, meet guildmates and track your adventures.";
+  "A tabletop RPG guild: join stories, meet guildmates and track your adventures.";
 
 export const SITE_URL = CONFIG.SITE_URL.replace(/\/+$/, "");
 

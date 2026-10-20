@@ -14,7 +14,7 @@ export default function StoryDetailQuestCard({
   return (
     <StoryDetailSectionCard
       icon={Scroll}
-      title="Quest Details"
+      title="Story Details"
       className={className}
       action={
         story.description ? (
@@ -31,7 +31,7 @@ export default function StoryDetailQuestCard({
         </Then>
         <Else>
           <p className="italic text-muted-foreground">
-            No description has been written for this quest yet.
+            No description has been written for this story yet.
           </p>
         </Else>
       </If>

@@ -19,7 +19,7 @@ export default function BoardStoryDetailQuestCard({
   return (
     <BoardStoryDetailSectionCard
       icon={Scroll}
-      title="Quest Details"
+      title="Story Details"
       className={className}
       action={
         story.description ? (
@@ -40,7 +40,7 @@ export default function BoardStoryDetailQuestCard({
           <Empty className="p-6">
             <EmptyHeader>
               <EmptyDescription className="italic">
-                No description has been written for this quest yet.
+                No description has been written for this story yet.
               </EmptyDescription>
             </EmptyHeader>
           </Empty>
