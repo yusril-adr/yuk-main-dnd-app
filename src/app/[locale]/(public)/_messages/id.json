@@ -48,8 +48,8 @@
       }
     },
     "legends": {
-      "title": "The Legends di Bulan {month}",
-      "titleFallback": "The Legends di Bulan Lalu",
+      "title": "Legenda Bulan {month}",
+      "titleFallback": "Legenda Bulan Lalu",
       "description": "Para petualang dan Dungeon Master dengan EXP terbanyak di {period}.",
       "periodFallback": "bulan lalu",
       "seeAll": "Lihat semua Guildmates",
