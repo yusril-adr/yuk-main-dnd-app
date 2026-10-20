@@ -84,7 +84,7 @@ export default function HomeHero() {
             render={<Link href="/stories" />}
             nativeButton={false}
           >
-            <ScrollText /> See quests <ArrowRight />
+            <ScrollText /> See stories <ArrowRight />
           </Button>
         </div>
       </div>

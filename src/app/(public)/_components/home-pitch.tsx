@@ -27,7 +27,7 @@ export default function HomePitch() {
       <HomeSectionHeader
         id="what-is-this"
         title="What is YukMainDnD?"
-        description="A guild for Dungeons & Dragons and other tabletop RPGs. Join quests, meet guildmates and track your adventures in one place."
+        description="A guild for Dungeons & Dragons and other tabletop RPGs. Join stories, meet guildmates and track your adventures in one place."
       />
       <ItemGroup className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-6 lg:gap-10">
         {HOME_PITCH_POINTS.map((point, index) => {

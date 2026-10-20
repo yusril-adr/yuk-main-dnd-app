@@ -257,7 +257,7 @@ export default function StoryEditForm({
                     value={field.value ?? ""}
                     onChange={field.onChange}
                     onBlur={field.onBlur}
-                    placeholder="Describe the quest: the hook, the setting, what players should expect..."
+                    placeholder="Describe the story: the hook, the setting, what players should expect..."
                     maxLength={STORY_DESCRIPTION_MAX_LENGTH}
                     disabled={isFormDisabled}
                     isInvalid={fieldState.invalid}

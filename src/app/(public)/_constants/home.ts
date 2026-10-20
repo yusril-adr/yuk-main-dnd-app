@@ -9,18 +9,18 @@ export const HOME_PITCH_POINTS = [
     key: "friends",
     title: "Play with friends",
     description:
-      "Pick an open quest, claim a seat and roll dice with a party of fellow adventurers, online or at the table.",
+      "Pick an open story, claim a seat and roll dice with a party of fellow adventurers, online or at the table.",
   },
   {
     key: "rewards",
     title: "Earn EXP & rewards",
     description:
-      "Every finished quest grants experience and gold pieces. Level up and climb the monthly legends.",
+      "Every finished story grants experience and gold pieces. Level up and climb the monthly legends.",
   },
   {
     key: "dm",
     title: "Become a DM",
     description:
-      "Ready to weave your own tale? Run quests for the guild and earn Dungeon Master experience.",
+      "Ready to weave your own tale? Run stories for the guild and earn Dungeon Master experience.",
   },
 ] as const;

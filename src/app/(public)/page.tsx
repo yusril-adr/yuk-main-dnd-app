@@ -6,7 +6,7 @@ import HomePageClient from "./page-client";
 
 export const metadata: Metadata = makePageMetadata({
   description:
-    "Find open D&D and tabletop RPG quests, meet the guild's legends and follow the chronicles of YukMainDnD.",
+    "Find open D&D and tabletop RPG stories, meet the guild's legends and follow the chronicles of YukMainDnD.",
   path: "/",
 });
 

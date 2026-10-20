@@ -70,7 +70,7 @@ export default function PublicStoryDetailPageClient() {
                           </Then>
                           <Else>
                             <p className="italic text-muted-foreground">
-                              No description has been written for this quest
+                              No description has been written for this story
                               yet.
                             </p>
                           </Else>

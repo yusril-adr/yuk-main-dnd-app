@@ -43,7 +43,7 @@ export default function PublicStoryDetailSummary({
   return (
     <Card
       role="complementary"
-      aria-label="Quest summary"
+      aria-label="Story summary"
       className={cn(
         "gap-5 pt-0 [--card-spacing:--spacing(5)] sm:gap-6 sm:[--card-spacing:--spacing(6)]",
         className,

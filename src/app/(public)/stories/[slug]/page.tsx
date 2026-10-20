@@ -7,7 +7,7 @@ import { makePageMetadata, toMetaDescription } from "@/utils/seo-helper";
 import PublicStoryDetailPageClient from "./page-client";
 
 const FALLBACK_DESCRIPTION =
-  "Quest details, party and Dungeon Master on YukMainDnD.";
+  "Story details, party and Dungeon Master on YukMainDnD.";
 
 export async function generateMetadata({
   params,
@@ -21,7 +21,7 @@ export async function generateMetadata({
   // API down or story not public: generic quest metadata on the requested URL
   if (!story) {
     return makePageMetadata({
-      title: "Quest",
+      title: "Story",
       description: FALLBACK_DESCRIPTION,
       path: `/stories/${encodeURIComponent(identifier)}`,
     });

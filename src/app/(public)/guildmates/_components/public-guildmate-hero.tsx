@@ -23,7 +23,7 @@ export default function PublicGuildmateHero({
         <Separator className="w-40! bg-primary/40 sm:w-56!" />
         <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
           Dungeon masters and heroes of the guild. Honor this month&apos;s
-          legends, then find a companion for your next quest.
+          legends, then find a companion for your next story.
         </p>
         <If condition={totalGuildmates !== null}>
           <Then>
