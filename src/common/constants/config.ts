@@ -10,6 +10,8 @@ const CONFIG = {
     ACCESS_TOKEN_KEY: "access_token",
   },
 
+  REACT_QUERY_STALE_IN_MS: 1000 * 30, // 30 seconds
+
   QUERY_KEY: {
     MAIN_API: {
       ALL: () => ["main"],
@@ -74,18 +76,6 @@ const CONFIG = {
         STORY: {
           ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "story"],
         },
-      },
-    },
-    REQUESTOR_API: {
-      ALL: () => ["requestor"],
-      USER: {
-        ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "user"],
-      },
-      REQUEST: {
-        ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "request"],
-      },
-      AUDIT_LOG: {
-        ALL: () => [...CONFIG.QUERY_KEY.REQUESTOR_API.ALL(), "audit-log"],
       },
     },
   },
