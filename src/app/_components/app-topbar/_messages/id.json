@@ -1,0 +1,36 @@
+{
+  "appTopbar": {
+    "nav": {
+      "guildmates": "Guildmates",
+      "stories": "Quest",
+      "events": "Event",
+      "goods": "Barang"
+    },
+    "dashboard": "Dashboard",
+    "login": "Masuk",
+    "menu": "Menu",
+    "openMenu": "Buka menu",
+    "navigationMenu": "Menu navigasi",
+    "avatar": {
+      "stats": "Statistik",
+      "dmXp": "{xp} XP - DM",
+      "playerXp": "{xp} XP - Player",
+      "gold": "{gp} GP",
+      "roleNotSet": "Belum diatur",
+      "menu": "Menu",
+      "switchRole": "Ganti Role",
+      "profile": "Profil",
+      "balances": "Saldo",
+      "settings": "Pengaturan",
+      "logout": "Keluar"
+    },
+    "language": {
+      "label": "Bahasa",
+      "change": "Ganti bahasa, saat ini: {language}",
+      "names": {
+        "en": "English",
+        "id": "Bahasa Indonesia"
+      }
+    }
+  }
+}

@@ -1,0 +1,383 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { useParams, useRouter, notFound } from "next/navigation";
+import { If, Then, Else } from "react-if";
+import { useQueryClient } from "@tanstack/react-query";
+
+import AppBreadcrumb from "@/app/_components/app-breadcrumb";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/app/_components/ui/alert-dialog";
+import CONFIG from "@/common/constants/config";
+import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import type { TStoryPaginationResponse } from "@/api/main/modules/master/stories/types/story-pagination-response";
+
+import { useDeleteStoryById } from "@/app/[locale]/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-by-id";
+import { useGetStoryById } from "@/app/[locale]/(authenticated)/dashboard/master/stories/_hooks/use-get-story-by-id";
+import { useArchiveStoryById } from "@/app/[locale]/(authenticated)/dashboard/master/stories/_hooks/use-archive-story-by-id";
+import { useUnarchiveStoryById } from "@/app/[locale]/(authenticated)/dashboard/master/stories/_hooks/use-unarchive-story-by-id";
+import { usePublishStoryById } from "@/app/[locale]/(authenticated)/dashboard/master/stories/_hooks/use-publish-story-by-id";
+import { useCancelStoryById } from "@/app/[locale]/(authenticated)/dashboard/master/stories/_hooks/use-cancel-story-by-id";
+import StoryDetailHero from "@/app/[locale]/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-hero";
+import StoryDetailQuestCard from "@/app/[locale]/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-quest-card";
+import StoryDetailAdventureCard from "@/app/[locale]/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-adventure-card";
+import StoryDetailChronicleCard from "@/app/[locale]/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-chronicle-card";
+import StoryDetailMembersCard from "@/app/[locale]/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-members-card";
+import StoryDetailSkeleton from "@/app/[locale]/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-skeleton";
+import StoryDetailActions from "@/app/[locale]/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-actions";
+import StoryCompleteDialog from "@/app/[locale]/(authenticated)/dashboard/master/stories/_components/story-complete-dialog";
+
+export default function StoryDetailPageClient() {
+  const { id } = useParams();
+  const router = useRouter();
+  const storyId = id as string;
+  const queryClient = useQueryClient();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false);
+  const [isUnarchiveDialogOpen, setIsUnarchiveDialogOpen] = useState(false);
+  const [isPublishDialogOpen, setIsPublishDialogOpen] = useState(false);
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [isCompleteDialogOpen, setIsCompleteDialogOpen] = useState(false);
+  const storyQuery = useGetStoryById(storyId);
+  const story = storyQuery.data?.data?.data;
+  const canEdit = !!story && story.action_list.is_can_update;
+  const canPublish = !!story && story.action_list.is_can_publish;
+  const canComplete = !!story && story.action_list.is_can_complete;
+  const canArchive = !!story && story.action_list.is_can_archive;
+  const canUnarchive = !!story && story.action_list.is_can_unarchive;
+  const canCancel = !!story && story.action_list.is_can_cancel;
+  const canDelete = !!story && story.action_list.is_can_delete;
+  const canAddMembers = !!story && story.action_list.is_can_add_members;
+  const canRemoveMembers =
+    !!story && story.action_list.is_can_remove_members;
+  const hasStoryActions =
+    canEdit ||
+    canPublish ||
+    canComplete ||
+    canArchive ||
+    canUnarchive ||
+    canCancel ||
+    canDelete;
+  const deleteStoryMutation = useDeleteStoryById({
+    onError: (mutationError) => {
+      if (mutationError instanceof MainAPINotFoundError) {
+        router.push("/dashboard/master/stories");
+      }
+    },
+    onSuccess: () => {
+      router.push("/dashboard/master/stories");
+    },
+  });
+
+  const archiveStoryMutation = useArchiveStoryById({
+    onError: (mutationError) => {
+      if (mutationError instanceof MainAPINotFoundError) {
+        router.push("/dashboard/master/stories");
+      }
+    },
+    onSuccess: () => {
+      // Refreshes the list and this detail query (its key starts with STORY.ALL())
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
+      });
+    },
+  });
+
+  const unarchiveStoryMutation = useUnarchiveStoryById({
+    onError: (mutationError) => {
+      if (mutationError instanceof MainAPINotFoundError) {
+        router.push("/dashboard/master/stories");
+      }
+    },
+    onSuccess: () => {
+      // Refreshes the list and this detail query (its key starts with STORY.ALL())
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
+      });
+    },
+  });
+
+  const publishStoryMutation = usePublishStoryById({
+    onError: (mutationError) => {
+      if (mutationError instanceof MainAPINotFoundError) {
+        router.push("/dashboard/master/stories");
+      }
+    },
+    onSuccess: () => {
+      // Refreshes the list and this detail query (its key starts with STORY.ALL())
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
+      });
+    },
+  });
+
+  const cancelStoryMutation = useCancelStoryById({
+    onError: (mutationError) => {
+      if (mutationError instanceof MainAPINotFoundError) {
+        router.push("/dashboard/master/stories");
+      }
+    },
+    onSuccess: () => {
+      // Refreshes the list and this detail query (its key starts with STORY.ALL())
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL()],
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (
+      storyQuery.isError &&
+      storyQuery.error instanceof MainAPINotFoundError
+    ) {
+      notFound();
+    }
+  }, [storyQuery.error, storyQuery.isError, router]);
+
+  const breadcrumbItems = useMemo(
+    () => [
+      { name: "Stories", link: "/dashboard/master/stories" },
+      { name: story?.title ?? "Detail" },
+    ],
+    [story?.title],
+  );
+
+  const onPublishHandler = () => {
+    publishStoryMutation.mutate(storyId);
+    setIsPublishDialogOpen(false);
+  };
+
+  const onArchiveHandler = () => {
+    archiveStoryMutation.mutate(storyId);
+    setIsArchiveDialogOpen(false);
+  };
+
+  const onUnarchiveHandler = () => {
+    unarchiveStoryMutation.mutate(storyId);
+    setIsUnarchiveDialogOpen(false);
+  };
+
+  const onCancelHandler = () => {
+    cancelStoryMutation.mutate(storyId);
+    setIsCancelDialogOpen(false);
+  };
+
+  const onDeleteHandler = () => {
+    deleteStoryMutation.mutate(storyId);
+    setIsDeleteDialogOpen(false);
+  };
+
+  return (
+    <div className="w-full flex justify-center">
+      <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
+        <AppBreadcrumb items={breadcrumbItems} />
+
+        <div className="flex items-center mt-4 mb-6 gap-x-2">
+          <Link href="/dashboard/master/stories">
+            <ArrowLeft />
+          </Link>
+          <h1 className="font-heading text-2xl">Story Detail</h1>
+          <If condition={hasStoryActions}>
+            <Then>
+              <StoryDetailActions
+                storyId={storyId}
+                canEdit={canEdit}
+                canPublish={canPublish}
+                canComplete={canComplete}
+                canArchive={canArchive}
+                canUnarchive={canUnarchive}
+                canCancel={canCancel}
+                canDelete={canDelete}
+                isPublishPending={publishStoryMutation.isPending}
+                isArchivePending={archiveStoryMutation.isPending}
+                isUnarchivePending={unarchiveStoryMutation.isPending}
+                isCancelPending={cancelStoryMutation.isPending}
+                onPublishClick={() => setIsPublishDialogOpen(true)}
+                onCompleteClick={() => setIsCompleteDialogOpen(true)}
+                onArchiveClick={() => setIsArchiveDialogOpen(true)}
+                onUnarchiveClick={() => setIsUnarchiveDialogOpen(true)}
+                onCancelClick={() => setIsCancelDialogOpen(true)}
+                onDeleteClick={() => setIsDeleteDialogOpen(true)}
+              />
+            </Then>
+          </If>
+        </div>
+
+        <If condition={storyQuery.isLoading}>
+          <Then>
+            <StoryDetailSkeleton />
+          </Then>
+          <Else>
+            <If condition={!!story}>
+              <Then>
+                <div className="flex flex-col gap-6">
+                  <StoryDetailHero story={story as TStoryPaginationResponse} />
+                  <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                    <StoryDetailQuestCard
+                      story={story as TStoryPaginationResponse}
+                      className="max-lg:hidden lg:col-span-2 lg:self-start"
+                    />
+                    <div className="flex flex-col gap-6">
+                      <StoryDetailAdventureCard
+                        story={story as TStoryPaginationResponse}
+                      />
+                      <StoryDetailChronicleCard
+                        story={story as TStoryPaginationResponse}
+                      />
+                      <StoryDetailMembersCard
+                        storyId={storyId}
+                        canAddMembers={canAddMembers}
+                        canRemoveMembers={canRemoveMembers}
+                      />
+                    </div>
+                    <StoryDetailQuestCard
+                      story={story as TStoryPaginationResponse}
+                      className="lg:hidden"
+                    />
+                  </div>
+                </div>
+              </Then>
+            </If>
+          </Else>
+        </If>
+
+        <AlertDialog
+          open={isPublishDialogOpen}
+          onOpenChange={setIsPublishDialogOpen}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Publish story?</AlertDialogTitle>
+              <AlertDialogDescription>
+                The story will be marked as published.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                disabled={publishStoryMutation.isPending}
+                onClick={onPublishHandler}
+              >
+                Publish
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog
+          open={isArchiveDialogOpen}
+          onOpenChange={setIsArchiveDialogOpen}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Archive story?</AlertDialogTitle>
+              <AlertDialogDescription>
+                The story will be marked as archived. You can unarchive it later
+                to restore its previous status.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                disabled={archiveStoryMutation.isPending}
+                onClick={onArchiveHandler}
+              >
+                Archive
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog
+          open={isUnarchiveDialogOpen}
+          onOpenChange={setIsUnarchiveDialogOpen}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Unarchive story?</AlertDialogTitle>
+              <AlertDialogDescription>
+                The story will go back to the status it had before it was
+                archived (Draft or Published).
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                disabled={unarchiveStoryMutation.isPending}
+                onClick={onUnarchiveHandler}
+              >
+                Unarchive
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog
+          open={isCancelDialogOpen}
+          onOpenChange={setIsCancelDialogOpen}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Cancel story?</AlertDialogTitle>
+              <AlertDialogDescription>
+                The story will be marked as cancelled. This cannot be undone.
+                The story cannot be edited, and members cannot be added or
+                removed.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                variant="destructive"
+                disabled={cancelStoryMutation.isPending}
+                onClick={onCancelHandler}
+              >
+                Cancel story
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog
+          open={isDeleteDialogOpen}
+          onOpenChange={setIsDeleteDialogOpen}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete story?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. The story will be removed from the
+                system.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                variant="destructive"
+                disabled={deleteStoryMutation.isPending}
+                onClick={onDeleteHandler}
+              >
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+        <StoryCompleteDialog
+          storyId={storyId}
+          open={isCompleteDialogOpen}
+          onOpenChange={setIsCompleteDialogOpen}
+        />
+      </main>
+    </div>
+  );
+}

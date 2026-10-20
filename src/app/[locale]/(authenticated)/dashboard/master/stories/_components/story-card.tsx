@@ -1,0 +1,392 @@
+import { useCallback, useState } from "react";
+import {
+  Archive,
+  ArchiveRestore,
+  Ban,
+  EllipsisVertical,
+  Eye,
+  Pencil,
+  Send,
+  Trash,
+} from "lucide-react";
+import Link from "next/link";
+import { Else, If, Then } from "react-if";
+
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/app/_components/ui/card";
+import { Badge } from "@/app/_components/ui/badge";
+import { Button } from "@/app/_components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/app/_components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/app/_components/ui/alert-dialog";
+import { getRichTextPlainText } from "@/utils/rich-text";
+import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
+import { formatStoryReward } from "@/app/[locale]/(authenticated)/dashboard/master/stories/_utils/story-reward";
+
+import StoryCardBanner from "./story-card-banner";
+import StoryStatusBadge from "./story-status-badge";
+import type { TStoryCardProps } from "@/app/[locale]/(authenticated)/dashboard/master/stories/_types/story-card-props";
+
+export default function StoryCard({
+  story,
+  onArchive,
+  onUnarchive,
+  onPublish,
+  onCancel,
+  onDelete,
+}: TStoryCardProps) {
+  const canEditStory = story.action_list.is_can_update;
+  const canDeleteStoryAction = story.action_list.is_can_delete && !!onDelete;
+  const canArchiveStory = story.action_list.is_can_archive && !!onArchive;
+  const canUnarchiveStory = story.action_list.is_can_unarchive && !!onUnarchive;
+  const canPublishStory = story.action_list.is_can_publish && !!onPublish;
+  const canCancelStory = story.action_list.is_can_cancel && !!onCancel;
+  // Plain text from rich text HTML (or an old plain-text value); "" when the
+  // description is empty or only has images
+  const descriptionText = getRichTextPlainText(story.description);
+  // Reward badges only for rewards above 0
+  const expReward = formatStoryReward(story.exp_awarded, "XP");
+  const goldReward = formatStoryReward(story.point_awarded, "GP");
+  const [confirmArchiveId, setConfirmArchiveId] = useState<string | null>(null);
+  const [confirmPublishId, setConfirmPublishId] = useState<string | null>(null);
+  const [confirmUnarchiveId, setConfirmUnarchiveId] = useState<string | null>(
+    null,
+  );
+  const [confirmCancelId, setConfirmCancelId] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+
+  const onArchiveConfirm = useCallback(() => {
+    if (confirmArchiveId && onArchive) {
+      onArchive(confirmArchiveId);
+    }
+    setConfirmArchiveId(null);
+  }, [confirmArchiveId, onArchive]);
+
+  const onPublishConfirm = useCallback(() => {
+    if (confirmPublishId && onPublish) {
+      onPublish(confirmPublishId);
+    }
+    setConfirmPublishId(null);
+  }, [confirmPublishId, onPublish]);
+
+  const onUnarchiveConfirm = useCallback(() => {
+    if (confirmUnarchiveId && onUnarchive) {
+      onUnarchive(confirmUnarchiveId);
+    }
+    setConfirmUnarchiveId(null);
+  }, [confirmUnarchiveId, onUnarchive]);
+
+  const onCancelConfirm = useCallback(() => {
+    if (confirmCancelId && onCancel) {
+      onCancel(confirmCancelId);
+    }
+    setConfirmCancelId(null);
+  }, [confirmCancelId, onCancel]);
+
+  const onDeleteConfirm = useCallback(() => {
+    if (confirmDeleteId && onDelete) {
+      onDelete(confirmDeleteId);
+    }
+    setConfirmDeleteId(null);
+  }, [confirmDeleteId, onDelete]);
+
+  return (
+    <>
+      {/* pt-0: the banner sits flush with the top edge of the card.
+          gap-2 keeps the title close to the description. Cards in a grid row
+          stretch to the tallest one, so the footer is pinned to the bottom with
+          mt-auto; pb-2 on the content keeps a minimum gap above it. */}
+      <Card className="gap-2 pt-0">
+        <div className="relative">
+          {/* Fixed 16:10 crop like the public story cards, so every card is
+              the same size (the form preview keeps the natural ratio) */}
+          <StoryCardBanner
+            bannerUrl={story.banner_url}
+            title={story.title}
+            imageClassName="aspect-[16/10] max-h-none object-cover"
+            placeholderClassName="aspect-[16/10]"
+          />
+
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  aria-label="Story actions"
+                  // Plain ghost like the other ⋯ buttons; the drop shadow keeps the
+                  // icon visible on light or busy banner images
+                  className="absolute top-2 right-2 [&_svg]:drop-shadow-sm"
+                >
+                  <EllipsisVertical />
+                </Button>
+              }
+            />
+            <DropdownMenuContent align="end">
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  render={
+                    <Link href={`/dashboard/master/stories/${story.id}`} />
+                  }
+                >
+                  <Eye />
+                  View
+                </DropdownMenuItem>
+                {canEditStory && (
+                  <DropdownMenuItem
+                    render={
+                      <Link
+                        href={`/dashboard/master/stories/${story.id}/edit`}
+                      />
+                    }
+                  >
+                    <Pencil />
+                    Edit
+                  </DropdownMenuItem>
+                )}
+                <If condition={canPublishStory}>
+                  <Then>
+                    <DropdownMenuItem
+                      onClick={() => setConfirmPublishId(story.id)}
+                    >
+                      <Send />
+                      Publish
+                    </DropdownMenuItem>
+                  </Then>
+                </If>
+                <If condition={canArchiveStory}>
+                  <Then>
+                    <DropdownMenuItem
+                      onClick={() => setConfirmArchiveId(story.id)}
+                    >
+                      <Archive />
+                      Archive
+                    </DropdownMenuItem>
+                  </Then>
+                </If>
+                <If condition={canUnarchiveStory}>
+                  <Then>
+                    <DropdownMenuItem
+                      onClick={() => setConfirmUnarchiveId(story.id)}
+                    >
+                      <ArchiveRestore />
+                      Unarchive
+                    </DropdownMenuItem>
+                  </Then>
+                </If>
+                <If condition={canCancelStory}>
+                  <Then>
+                    <DropdownMenuItem
+                      variant="destructive"
+                      onClick={() => setConfirmCancelId(story.id)}
+                    >
+                      <Ban />
+                      Cancel
+                    </DropdownMenuItem>
+                  </Then>
+                </If>
+                {canDeleteStoryAction && (
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onClick={() => setConfirmDeleteId(story.id)}
+                  >
+                    <Trash />
+                    Delete
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        <CardHeader className="pt-2">
+          <CardTitle className="min-w-0 truncate">
+            <Button
+              variant="link"
+              className="p-0 h-auto text-base"
+              render={<Link href={`/dashboard/master/stories/${story.id}`} />}
+              nativeButton={false}
+            >
+              {story.title}
+            </Button>
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent className="pb-2">
+          {/* min-h-15 = 3 lines of text-sm, keeps cards in the same row equal height */}
+          <p className="line-clamp-3 min-h-15 text-muted-foreground">
+            <If condition={!!descriptionText}>
+              <Then>{descriptionText}</Then>
+              <Else>No description.</Else>
+            </If>
+          </p>
+        </CardContent>
+
+        <CardFooter className="mt-auto border-t pt-3">
+          {/* Status / type on the left, rewards on the right (wraps on narrow cards) */}
+          <div className="flex w-full flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <StoryStatusBadge status={story.status} />
+              <Badge variant="outline">{STORY_TYPE_LABEL[story.type]}</Badge>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <If condition={!!expReward}>
+                <Then>
+                  <Badge variant="outline">{expReward}</Badge>
+                </Then>
+              </If>
+              <If condition={!!goldReward}>
+                <Then>
+                  <Badge variant="outline">{goldReward}</Badge>
+                </Then>
+              </If>
+            </div>
+          </div>
+        </CardFooter>
+      </Card>
+
+      <AlertDialog
+        open={confirmPublishId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setConfirmPublishId(null);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Publish story?</AlertDialogTitle>
+            <AlertDialogDescription>
+              The story will be marked as published.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={onPublishConfirm}>
+              Publish
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        open={confirmArchiveId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setConfirmArchiveId(null);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Archive story?</AlertDialogTitle>
+            <AlertDialogDescription>
+              The story will be marked as archived. You can unarchive it later
+              to restore its previous status.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={onArchiveConfirm}>
+              Archive
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        open={confirmUnarchiveId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setConfirmUnarchiveId(null);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Unarchive story?</AlertDialogTitle>
+            <AlertDialogDescription>
+              The story will go back to the status it had before it was archived
+              (Draft or Published).
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={onUnarchiveConfirm}>
+              Unarchive
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        open={confirmCancelId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setConfirmCancelId(null);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Cancel story?</AlertDialogTitle>
+            <AlertDialogDescription>
+              The story will be marked as cancelled. This cannot be undone. The
+              story cannot be edited, and members cannot be added or removed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={onCancelConfirm}>
+              Cancel story
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        open={confirmDeleteId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setConfirmDeleteId(null);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete story?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. The story will be removed from the
+              system.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={onDeleteConfirm}>
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
+}

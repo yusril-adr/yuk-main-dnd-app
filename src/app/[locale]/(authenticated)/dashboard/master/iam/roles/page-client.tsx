@@ -1,0 +1,220 @@
+"use client";
+
+import { useCallback, useEffect, useMemo } from "react";
+import { Plus } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
+import { useQueryClient } from "@tanstack/react-query";
+
+import AppBreadcrumb from "@/app/_components/app-breadcrumb";
+import { Button } from "@/app/_components/ui/button";
+import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { useFilter } from "@/app/_hooks/use-filter";
+import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
+import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
+import { OrderKeyEnum } from "@/common/enums/order-key";
+import { PermissionEnum } from "@/common/enums/permission";
+import CONFIG from "@/common/constants/config";
+import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import type { TRolePaginationPayload } from "@/api/main/modules/master/iam/roles/types/role-pagination-payload";
+
+import RoleTable from "@/app/[locale]/(authenticated)/dashboard/master/iam/roles/_components/role-table";
+import type { TRoleTableSortBy } from "@/app/[locale]/(authenticated)/dashboard/master/iam/roles/_types/role-table-sort-by";
+import type { TRoleTableFilterValues } from "@/app/[locale]/(authenticated)/dashboard/master/iam/roles/_types/role-table-props";
+import { RoleShowInPublicFilterEnum } from "@/app/[locale]/(authenticated)/dashboard/master/iam/roles/_enums/role-show-in-public-filter";
+import { useGetRolePagination } from "@/app/[locale]/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-role-pagination";
+import { useDeleteRoleById } from "@/app/[locale]/(authenticated)/dashboard/master/iam/roles/_hooks/use-delete-role-by-id";
+
+let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
+
+export default function RolesPageClient() {
+  const router = useRouter();
+  const { auth } = useAuthContext();
+  const queryClient = useQueryClient();
+  const [queryStates, setQueryStates] = useCamelCaseQueryStates({
+    page: parseAsInteger.withDefault(1),
+    pageSize: parseAsInteger.withDefault(10),
+    search: parseAsString.withDefault(""),
+    sortBy: createSortByParser(
+      [
+        "id",
+        "name",
+        "description",
+        "is_show_in_public",
+        "created_at",
+        "updated_at",
+      ] as const,
+      "Roles",
+    ),
+    order: parseAsStringEnum<OrderKeyEnum>(Object.values(OrderKeyEnum)),
+    isShowInPublic: parseAsStringEnum<RoleShowInPublicFilterEnum>(
+      Object.values(RoleShowInPublicFilterEnum),
+    ),
+  });
+
+  const { control, handleSubmit, reset } = useForm<TRoleTableFilterValues>({
+    defaultValues: {
+      isShowInPublic: queryStates.isShowInPublic || null,
+    },
+  });
+
+  const { onFilterReset, onFilterSubmit, columnFilters } =
+    useFilter<TRoleTableFilterValues>(
+      ["isShowInPublic"],
+      queryStates,
+      setQueryStates,
+      reset,
+    );
+
+  const queryStatesIntoPayload: TRolePaginationPayload = useMemo(
+    () => ({
+      page: queryStates.page,
+      per_page: queryStates.pageSize,
+      search: queryStates.search,
+      sort_by: queryStates.sortBy ?? undefined,
+      order: queryStates.order ?? undefined,
+      // URL stores the filter as "true"/"false"; API expects a boolean (undefined = all)
+      is_show_in_public: queryStates.isShowInPublic
+        ? queryStates.isShowInPublic === RoleShowInPublicFilterEnum.YES
+        : undefined,
+    }),
+    [queryStates],
+  );
+
+  const {
+    data: responseData,
+    isLoading,
+    isError,
+    error,
+  } = useGetRolePagination(queryStatesIntoPayload);
+  const { mutate: deleteRoleMutate } = useDeleteRoleById({
+    onError: (mutationError) => {
+      if (mutationError instanceof MainAPINotFoundError) {
+        router.push("/dashboard/master/iam/roles");
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.IAM.ROLE.ALL()],
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (isError && error instanceof MainAPINotFoundError) {
+      router.push("/dashboard/master/iam/roles");
+    }
+  }, [error, isError, router]);
+
+  const onSearchChange = useCallback(
+    (value: string) => {
+      if (value && value.length < 3) {
+        return;
+      }
+
+      if (debounceSearchTimeoutId) {
+        clearTimeout(debounceSearchTimeoutId);
+      }
+
+      debounceSearchTimeoutId = setTimeout(() => {
+        setQueryStates({ search: value, page: 1 });
+      }, 300);
+    },
+    [setQueryStates],
+  );
+
+  const applySorting = useCallback(
+    (key: string) => {
+      if (queryStates.sortBy === key) {
+        let desiredOrder: OrderKeyEnum | null = null;
+        let desiredKey: TRoleTableSortBy | null = key as TRoleTableSortBy;
+
+        switch (queryStates.order) {
+          case OrderKeyEnum.ASC:
+            desiredOrder = OrderKeyEnum.DESC;
+            break;
+          case OrderKeyEnum.DESC:
+            desiredKey = null;
+            break;
+          default:
+            desiredOrder = OrderKeyEnum.ASC;
+            break;
+        }
+
+        setQueryStates({
+          order: desiredOrder,
+          sortBy: desiredKey,
+          page: 1,
+        });
+      } else {
+        setQueryStates({
+          sortBy: key as TRoleTableSortBy,
+          order: OrderKeyEnum.ASC,
+          page: 1,
+        });
+      }
+    },
+    [queryStates.order, queryStates.sortBy, setQueryStates],
+  );
+
+  const handlePageChange = useCallback(
+    (page: number) => {
+      setQueryStates({ page });
+    },
+    [setQueryStates],
+  );
+
+  const handlePageSizeChange = useCallback(
+    (pageSize: number) => {
+      setQueryStates({ pageSize, page: 1 });
+    },
+    [setQueryStates],
+  );
+
+  const canCreateRoles = auth?.permissions.includes(
+    PermissionEnum.ROLES_CREATE,
+  );
+
+  return (
+    <div className="w-full flex justify-center min-w-0">
+      <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
+        <AppBreadcrumb items={[{ name: "Roles" }]} />
+
+        <div className="flex justify-between items-center mt-4 mb-6">
+          <h1 className="font-heading text-2xl">Roles</h1>
+          {canCreateRoles && (
+            <Button
+              render={<Link href="/dashboard/master/iam/roles/create" />}
+              nativeButton={false}
+            >
+              <Plus /> Add Role
+            </Button>
+          )}
+        </div>
+
+        <RoleTable
+          data={responseData?.data?.data?.items ?? []}
+          isLoading={isLoading}
+          pageCount={responseData?.data?.data?.meta?.total_page || 1}
+          rowCount={responseData?.data?.data?.meta?.total_all_data || 0}
+          queryTable={queryStates}
+          columnFilters={columnFilters}
+          onActionHandler={{
+            onPageChange: handlePageChange,
+            onPageSizeChange: handlePageSizeChange,
+            onSortingChange: applySorting,
+            onSearchChange,
+            onDeleteRole: deleteRoleMutate,
+            onFilterForm: {
+              filterControl: control,
+              onFilterSubmit: handleSubmit(onFilterSubmit),
+              onFilterReset,
+            },
+          }}
+        />
+      </main>
+    </div>
+  );
+}

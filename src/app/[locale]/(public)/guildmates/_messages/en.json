@@ -1,0 +1,65 @@
+{
+  "guildmates": {
+    "meta": {
+      "title": "Guildmates",
+      "description": "Meet the adventurers and Dungeon Masters of the YukMainDnD guild and see the XP they have earned."
+    },
+    "hero": {
+      "kicker": "The Guild Hall",
+      "title": "Meet thy fellow adventurers",
+      "description": "Dungeon masters and heroes of the guild. Honor this month's legends, then find a companion for your next quest.",
+      "total": "<num>{total}</num> {count, plural, one {guildmate} other {guildmates}} sworn to the guild"
+    },
+    "legends": {
+      "title": "Legends of {month}",
+      "dmTitle": "Dungeon Masters of {month}",
+      "heroTitle": "Heroes of {month}",
+      "monthFallback": "the Month",
+      "tabDms": "Dungeon Masters",
+      "tabHeroes": "Heroes",
+      "errorTitle": "The legends are lost to the mist",
+      "errorDescription": "We could not read this board. Please try again.",
+      "emptyMonth": "No legends yet in {month}. The tavern awaits.",
+      "emptyFallback": "No legends yet this month. The tavern awaits.",
+      "unclaimed": "Unclaimed",
+      "awaitingMaster": "Awaiting a master",
+      "awaitingHero": "Awaiting a hero",
+      "dmXpTotal": "{xp} DM XP total",
+      "playerXpTotal": "{xp} Player XP total",
+      "dmXp": "{xp} DM XP",
+      "playerXp": "{xp} Player XP",
+      "gainedXp": "+{xp} XP",
+      "soFar": "so far",
+      "place": "{rank, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} place"
+    },
+    "roll": {
+      "title": "The Guild Roll",
+      "description": "Every adventurer sworn to the guild."
+    },
+    "search": {
+      "placeholder": "Search by name or username (min. 3 characters)…",
+      "label": "Search guildmates"
+    },
+    "empty": {
+      "title": "No guildmates found",
+      "filtered": "No adventurer answers to that name. Try different keywords.",
+      "unfiltered": "The guild hall stands empty for now. Return soon, adventurer.",
+      "clear": "Clear search"
+    },
+    "error": {
+      "title": "The guild roll could not be fetched",
+      "description": "Something went wrong while loading guildmates. Please try again."
+    },
+    "card": {
+      "dm": "Dungeon Master",
+      "player": "Player",
+      "xp": "{xp} XP"
+    },
+    "pagination": {
+      "showing": "Showing {start}–{end} of {total} guildmates",
+      "label": "Guildmates pages",
+      "previous": "Previous page",
+      "next": "Next page"
+    }
+  }
+}

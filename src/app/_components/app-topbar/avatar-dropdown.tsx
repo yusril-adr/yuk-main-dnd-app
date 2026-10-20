@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import {
   ChevronDown,
   ChevronUp,
@@ -36,6 +37,7 @@ import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 
 export function AvatarDropdown() {
   const { auth } = useAuthContext();
+  const t = useTranslations("appTopbar.avatar");
 
   if (!auth) return null;
 
@@ -64,49 +66,49 @@ export function AvatarDropdown() {
 
       <DropdownMenuContent align="start" sideOffset={4}>
         <DropdownMenuGroup>
-          <DropdownMenuLabel>Stats</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("stats")}</DropdownMenuLabel>
           <DropdownMenuItem disabled className="items-center">
             <BookOpen />
-            {auth.dm_exp} XP - DM
+            {t("dmXp", { xp: String(auth.dm_exp) })}
           </DropdownMenuItem>
           <DropdownMenuItem disabled className="items-center">
             <ChessKnight />
-            {auth.player_exp} XP - Player
+            {t("playerXp", { xp: String(auth.player_exp) })}
           </DropdownMenuItem>
           <DropdownMenuItem disabled className="items-center">
             <Coins />
-            {auth.points} GP
+            {t("gold", { gp: String(auth.points) })}
           </DropdownMenuItem>
 
           <DropdownMenuItem disabled className="items-center">
             <ShieldCogCorner />
-            {auth.selected_role?.name ?? "Not set"}
+            {auth.selected_role?.name ?? t("roleNotSet")}
           </DropdownMenuItem>
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup>
-          <DropdownMenuLabel>Menu</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("menu")}</DropdownMenuLabel>
           <DropdownMenuItem render={<Link href="/switch-role" />}>
             <UserRoundKey />
-            Switch Role
+            {t("switchRole")}
           </DropdownMenuItem>
           <DropdownMenuItem render={<Link href="/profile" />}>
             <User />
-            Profile
+            {t("profile")}
           </DropdownMenuItem>
           <DropdownMenuItem render={<Link href="/balances" />}>
             <HandCoins />
-            Balances
+            {t("balances")}
           </DropdownMenuItem>
           <DropdownMenuItem render={<Link href="/settings" />}>
             <UserRoundCog />
-            Settings
+            {t("settings")}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={logout}>
             <LogOut />
-            Log out
+            {t("logout")}
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

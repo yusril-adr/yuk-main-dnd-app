@@ -1,0 +1,55 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+
+import AppBreadcrumb from "@/app/_components/app-breadcrumb";
+import CONFIG from "@/common/constants/config";
+import RoleCreateForm from "./_components/role-create-form";
+import { useCreateRole } from "@/app/[locale]/(authenticated)/dashboard/master/iam/roles/_hooks/use-create-role";
+import { useGetPermissionOptions } from "@/app/[locale]/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-permission-options";
+
+export default function RoleCreatePageClient() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const permissionsQuery = useGetPermissionOptions();
+  const createRoleMutation = useCreateRole({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.IAM.ROLE.ALL()],
+      });
+      router.push("/dashboard/master/iam/roles");
+    },
+  });
+
+  return (
+    <div className="w-full flex justify-center">
+      <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
+        <AppBreadcrumb
+          items={[
+            { name: "Roles", link: "/dashboard/master/iam/roles" },
+            { name: "Create" },
+          ]}
+        />
+
+        <div className="flex items-center mt-4 mb-6 gap-x-2">
+          <Link href="/dashboard/master/iam/roles">
+            <ArrowLeft />
+          </Link>
+          <h1 className="font-heading text-2xl">Create Role</h1>
+        </div>
+
+        <RoleCreateForm
+          permissions={permissionsQuery.data?.data?.data?.items ?? []}
+          isPermissionsLoading={permissionsQuery.isLoading}
+          onSubmitPayload={createRoleMutation.mutate}
+          mutationError={createRoleMutation.error}
+          isPending={createRoleMutation.isPending}
+          isPaused={createRoleMutation.isPaused}
+        />
+      </main>
+    </div>
+  );
+}

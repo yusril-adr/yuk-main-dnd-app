@@ -1,0 +1,21 @@
+"use client";
+
+import HomeHero from "@/app/[locale]/(public)/_components/home-hero";
+import HomePitch from "@/app/[locale]/(public)/_components/home-pitch";
+import HomeStoriesSection from "@/app/[locale]/(public)/_components/home-stories-section";
+import HomeLegendsSection from "@/app/[locale]/(public)/_components/home-legends-section";
+import HomeGuildCarousel from "@/app/[locale]/(public)/_components/home-guild-carousel";
+import HomeFinalCta from "@/app/[locale]/(public)/_components/home-final-cta";
+
+export default function HomePageClient() {
+  return (
+    <main className="flex w-full min-w-0 flex-col">
+      <HomeHero />
+      <HomePitch />
+      <HomeStoriesSection />
+      <HomeLegendsSection />
+      <HomeGuildCarousel />
+      <HomeFinalCta />
+    </main>
+  );
+}

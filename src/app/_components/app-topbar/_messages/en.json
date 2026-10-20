@@ -1,0 +1,36 @@
+{
+  "appTopbar": {
+    "nav": {
+      "guildmates": "Guildmates",
+      "stories": "Stories",
+      "events": "Events",
+      "goods": "Goods"
+    },
+    "dashboard": "Dashboard",
+    "login": "Log in",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "navigationMenu": "Navigation menu",
+    "avatar": {
+      "stats": "Stats",
+      "dmXp": "{xp} XP - DM",
+      "playerXp": "{xp} XP - Player",
+      "gold": "{gp} GP",
+      "roleNotSet": "Not set",
+      "menu": "Menu",
+      "switchRole": "Switch Role",
+      "profile": "Profile",
+      "balances": "Balances",
+      "settings": "Settings",
+      "logout": "Log out"
+    },
+    "language": {
+      "label": "Language",
+      "change": "Change language, current: {language}",
+      "names": {
+        "en": "English",
+        "id": "Bahasa Indonesia"
+      }
+    }
+  }
+}

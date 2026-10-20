@@ -4,6 +4,8 @@ import { getPublicStoryPaginationOnServer } from "@/api/main/modules/stories/ser
 import { getPublicUserPaginationOnServer } from "@/api/main/modules/users/server";
 import { getGuildmateHref } from "@/utils/user-helper";
 import { SITE_URL } from "@/utils/seo-helper";
+import { routing } from "@/i18n/routing";
+import { getLocalizedPath } from "@/i18n/localized-path";
 
 // Rebuilt at most hourly; dynamic entries are skipped if the API is unreachable
 export const revalidate = 3600;
@@ -11,17 +13,53 @@ export const revalidate = 3600;
 const SITEMAP_PER_PAGE = 100;
 const SITEMAP_MAX_PAGES = 20;
 
+type TChangeFrequency = "daily" | "weekly" | "monthly";
+
 const PUBLIC_ROUTES: {
   path: string;
-  changeFrequency: "daily" | "weekly" | "monthly";
+  changeFrequency: TChangeFrequency;
   priority: number;
+  // Translated: listed once per locale with hreflang alternates
+  localized?: boolean;
 }[] = [
-  { path: "", changeFrequency: "daily", priority: 1 },
+  { path: "/", changeFrequency: "daily", priority: 1, localized: true },
   { path: "/stories", changeFrequency: "daily", priority: 0.9 },
-  { path: "/guildmates", changeFrequency: "weekly", priority: 0.8 },
+  {
+    path: "/guildmates",
+    changeFrequency: "weekly",
+    priority: 0.8,
+    localized: true,
+  },
   { path: "/events", changeFrequency: "monthly", priority: 0.5 },
   { path: "/goods", changeFrequency: "monthly", priority: 0.5 },
 ];
+
+// Absolute URL; the root stays without a trailing slash
+const toUrl = (path: string) => `${SITE_URL}${path === "/" ? "" : path}`;
+
+// One entry per locale, each listing every language version
+function localizedEntries(
+  path: string,
+  entry: {
+    lastModified: Date;
+    changeFrequency: TChangeFrequency;
+    priority: number;
+  },
+): MetadataRoute.Sitemap {
+  const alternates = {
+    languages: Object.fromEntries(
+      routing.locales.map((locale) => [
+        locale,
+        toUrl(getLocalizedPath(path, locale)),
+      ]),
+    ),
+  };
+  return routing.locales.map((locale) => ({
+    url: toUrl(getLocalizedPath(path, locale)),
+    ...entry,
+    alternates,
+  }));
+}
 
 // Walks every page; stops on the first failure and keeps what was collected
 async function collectAll<T>(
@@ -52,23 +90,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   return [
-    ...PUBLIC_ROUTES.map(({ path, changeFrequency, priority }) => ({
-      url: `${SITE_URL}${path}`,
-      lastModified,
-      changeFrequency,
-      priority,
-    })),
+    ...PUBLIC_ROUTES.flatMap(({ path, changeFrequency, priority, localized }) =>
+      localized
+        ? localizedEntries(path, { lastModified, changeFrequency, priority })
+        : [{ url: toUrl(path), lastModified, changeFrequency, priority }],
+    ),
     ...stories.map((story) => ({
       url: `${SITE_URL}/stories/${encodeURIComponent(story.slug || story.id)}`,
       lastModified,
       changeFrequency: "weekly" as const,
       priority: 0.7,
     })),
-    ...users.map((user) => ({
-      url: `${SITE_URL}${getGuildmateHref(user)}`,
-      lastModified,
-      changeFrequency: "weekly" as const,
-      priority: 0.6,
-    })),
+    ...users.flatMap((user) =>
+      localizedEntries(getGuildmateHref(user), {
+        lastModified,
+        changeFrequency: "weekly",
+        priority: 0.6,
+      }),
+    ),
   ];
 }

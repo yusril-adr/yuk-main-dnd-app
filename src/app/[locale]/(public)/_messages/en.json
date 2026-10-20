@@ -1,0 +1,107 @@
+{
+  "home": {
+    "meta": {
+      "description": "Find open D&D and tabletop RPG quests, meet the guild's legends and follow the chronicles of YukMainDnD."
+    },
+    "hero": {
+      "badge": "A tabletop RPG guild",
+      "title": "Gather your party. Your legend starts here.",
+      "description": "Find a table, follow your Dungeon Master and write your name into the chronicles of YukMainDnD.",
+      "openBoard": "Open my Board",
+      "join": "Join the guild",
+      "seeQuests": "See quests"
+    },
+    "pitch": {
+      "title": "What is YukMainDnD?",
+      "description": "A guild for Dungeons & Dragons and other tabletop RPGs. Join quests, meet guildmates and track your adventures in one place.",
+      "step": "Step {step}",
+      "points": {
+        "friends": {
+          "title": "Play with friends",
+          "description": "Pick an open quest, claim a seat and roll dice with a party of fellow adventurers, online or at the table."
+        },
+        "rewards": {
+          "title": "Earn EXP & rewards",
+          "description": "Every finished quest grants experience and gold pieces. Level up and climb the monthly legends."
+        },
+        "dm": {
+          "title": "Become a DM",
+          "description": "Ready to weave your own tale? Run quests for the guild and earn Dungeon Master experience."
+        }
+      }
+    },
+    "stories": {
+      "title": "Open quests",
+      "description": "Tables still seeking brave adventurers. Claim your seat before the party sets out.",
+      "seeAll": "See all quests",
+      "error": "The quest board could not be read.",
+      "empty": "No quests are posted on the board right now. Check back soon."
+    },
+    "storyCard": {
+      "unknownDm": "Unknown DM",
+      "dateTba": "Date to be announced",
+      "anySystem": "Any system",
+      "members": "{count, plural, one {# member} other {# members}}",
+      "type": {
+        "ONESHOT": "Oneshot",
+        "CAMPAIGN": "Campaign"
+      }
+    },
+    "legends": {
+      "title": "Legends of {month}",
+      "titleFallback": "Last month's legends",
+      "description": "The adventurers and Dungeon Masters who gained the most EXP in {period}.",
+      "periodFallback": "the previous month",
+      "seeAll": "See all guildmates",
+      "heroes": "Heroes",
+      "dms": "Dungeon Masters",
+      "error": "The legends are lost to the mist.",
+      "empty": "No legends in {period}. The tavern awaits.",
+      "gainedXp": "+{xp} XP",
+      "inMonth": "in {month}"
+    },
+    "guild": {
+      "title": "Life in the guild",
+      "description": "A circle of friends who roll dice, share tales and get gloriously lost in dungeons together. New faces are always welcome by the hearth.",
+      "carouselLabel": "Guild photos",
+      "slideLabel": "{index} of {total}",
+      "showPhoto": "Show photo {index}",
+      "photoFallback": "Guild photo",
+      "close": "Close",
+      "enlarge": "Enlarge photo: {caption}",
+      "comingSoon": "Guild photo coming soon",
+      "previousSlide": "Previous slide",
+      "nextSlide": "Next slide",
+      "pagination": {
+        "label": "Guild photos",
+        "previous": "Previous photo",
+        "next": "Next photo",
+        "photo": "Photo {index}"
+      },
+      "photos": {
+        "sessionNight": {
+          "alt": "Yuk Main DnD guild members smiling together at a session night",
+          "caption": "One of our fun session night"
+        },
+        "heroesAtTable": {
+          "alt": "Yuk Main DnD guild members in costume around the game table, one raising a toy sword",
+          "caption": "Heroes at the table"
+        },
+        "afterSession": {
+          "alt": "Yuk Main DnD guild members smiling around a table after a meetup",
+          "caption": "After session smile"
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Ready for your first quest?",
+      "description": "The tavern is warm and a seat is waiting for you.",
+      "findQuest": "Find a quest",
+      "join": "Join the guild"
+    }
+  },
+  "publicFooter": {
+    "craftedBy": "Crafted by",
+    "newTab": "(opens in a new tab)"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "common": {
+    "site": {
+      "description": "A tabletop RPG guild: join quests, meet guildmates and track your adventures.",
+      "ogAlt": "YukMainDnD crest beside a photo of the guild: Gather your party. Your legend starts here."
+    },
+    "og": {
+      "kicker": "A TABLETOP RPG GUILD",
+      "tagline": "Gather your party. Your legend starts here."
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "The page you are looking for does not exist.",
+      "cta": "Go to Home"
+    },
+    "actions": {
+      "tryAgain": "Try again"
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "guildmates": {
+    "meta": {
+      "title": "Guildmates",
+      "description": "Kenalan dengan para petualang dan Dungeon Master di guild YukMainDnD, dan lihat XP yang sudah mereka kumpulkan."
+    },
+    "hero": {
+      "kicker": "Aula Guild",
+      "title": "Kenalan dengan sesama petualang",
+      "description": "Para Dungeon Master dan Heroes di guild. Beri hormat pada Legends bulan ini, lalu cari teman untuk Quest berikutnya.",
+      "total": "<num>{total}</num> Guildmates sudah bergabung di guild"
+    },
+    "legends": {
+      "title": "Legends Bulan {month}",
+      "dmTitle": "Dungeon Masters Bulan {month}",
+      "heroTitle": "Heroes Bulan {month}",
+      "monthFallback": "Ini",
+      "tabDms": "Dungeon Masters",
+      "tabHeroes": "Heroes",
+      "errorTitle": "Para Legends hilang ditelan kabut",
+      "errorDescription": "Papan ini gagal dibaca. Coba lagi, ya.",
+      "emptyMonth": "Belum ada Legends di bulan {month}. Tavern menunggumu.",
+      "emptyFallback": "Belum ada Legends bulan ini. Tavern menunggumu.",
+      "unclaimed": "Belum diklaim",
+      "awaitingMaster": "Menanti seorang master",
+      "awaitingHero": "Menanti seorang hero",
+      "dmXpTotal": "Total {xp} DM XP",
+      "playerXpTotal": "Total {xp} Player XP",
+      "dmXp": "{xp} DM XP",
+      "playerXp": "{xp} Player XP",
+      "gainedXp": "+{xp} XP",
+      "soFar": "sejauh ini",
+      "place": "Peringkat {rank}"
+    },
+    "roll": {
+      "title": "Daftar Anggota Guild",
+      "description": "Semua petualang yang sudah bergabung di guild."
+    },
+    "search": {
+      "placeholder": "Cari nama atau username (min. 3 karakter)…",
+      "label": "Cari Guildmates"
+    },
+    "empty": {
+      "title": "Guildmates tidak ditemukan",
+      "filtered": "Tidak ada petualang dengan nama itu. Coba kata kunci lain.",
+      "unfiltered": "Aula guild masih kosong. Mampir lagi nanti, petualang.",
+      "clear": "Hapus pencarian"
+    },
+    "error": {
+      "title": "Daftar guild gagal dimuat",
+      "description": "Ada yang salah saat memuat Guildmates. Coba lagi, ya."
+    },
+    "card": {
+      "dm": "Dungeon Master",
+      "player": "Player",
+      "xp": "{xp} XP"
+    },
+    "pagination": {
+      "showing": "Menampilkan {start}–{end} dari {total} Guildmates",
+      "label": "Halaman Guildmates",
+      "previous": "Halaman sebelumnya",
+      "next": "Halaman berikutnya"
+    }
+  }
+}

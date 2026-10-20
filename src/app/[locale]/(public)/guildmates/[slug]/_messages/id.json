@@ -1,0 +1,64 @@
+{
+  "guildmateDetail": {
+    "meta": {
+      "title": "Petualang {name}",
+      "unknownDescription": "Kartu petualang {name}: XP DM dan Player serta Quest Log di guild YukMainDnD.",
+      "description": "{name}: {playerXp} Player XP dan {dmXp} DM XP di guild YukMainDnD. Lihat kartu petualang dan Quest Log-nya.",
+      "avatarAlt": "Avatar {name}"
+    },
+    "back": "Daftar guild",
+    "tale": "Kisah Sang Petualang",
+    "error": {
+      "title": "Petualang ini gagal dipanggil",
+      "description": "Ada yang salah saat memuat Guildmate ini. Coba lagi, ya."
+    },
+    "card": {
+      "guild": "Guild Petualang",
+      "number": "No. {number}",
+      "wandering": "Petualang pengembara",
+      "dm": "DM",
+      "hero": "Hero",
+      "statXp": "{xp} XP",
+      "shareLabel": "Porsi {label} dari total XP",
+      "totalXp": "Total XP",
+      "memberSince": "Anggota guild sejak",
+      "motto": "Lempar dadu dengan berani, main jujur, ceritakan kisah seru.",
+      "print": "Cetak kartu"
+    },
+    "stories": {
+      "title": "Quest Log",
+      "joined": "Quest diikuti",
+      "led": "Quest dipimpin",
+      "errorTitle": "Quest Log gagal dimuat",
+      "errorDescription": "Ada yang salah saat memuat Quest. Coba lagi, ya.",
+      "emptyLed": "Belum pernah memimpin Quest. Kisah pertamanya masih menunggu.",
+      "emptyJoined": "Belum pernah ikut Quest. Jalannya masih terbuka.",
+      "loading": "Memuat…",
+      "loadMore": "Muat lagi"
+    },
+    "storyCard": {
+      "noDescription": "Kisahnya belum ditulis…",
+      "dateTbp": "Tanggal akan diumumkan",
+      "joined": "{count} bergabung",
+      "rewardSlots": "Hanya {count} hero yang bisa main, sisanya ikut sebagai penonton",
+      "noLimit": "Tidak ada batas pemain",
+      "dm": "Dungeon Master",
+      "recruiting": "Buka rekrutmen",
+      "status": {
+        "DRAFT": "Draf",
+        "PUBLISHED": "Dipublikasikan",
+        "ARCHIVED": "Diarsipkan",
+        "CANCELLED": "Dibatalkan",
+        "COMPLETED": "Selesai"
+      },
+      "type": {
+        "ONESHOT": "Oneshot",
+        "CAMPAIGN": "Campaign"
+      },
+      "location": {
+        "ONLINE": "Online",
+        "OFFLINE": "Offline"
+      }
+    }
+  }
+}

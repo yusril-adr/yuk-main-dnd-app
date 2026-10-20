@@ -1,0 +1,64 @@
+{
+  "guildmateDetail": {
+    "meta": {
+      "title": "Adventurer {name}",
+      "unknownDescription": "Adventurer card of {name}: DM and player XP and quest log in the YukMainDnD guild.",
+      "description": "{name}: {playerXp} player XP and {dmXp} DM XP in the YukMainDnD guild. See their adventurer card and quest log.",
+      "avatarAlt": "{name} avatar"
+    },
+    "back": "Guild roll",
+    "tale": "The Adventurer's Tale",
+    "error": {
+      "title": "This adventurer could not be summoned",
+      "description": "Something went wrong while loading this guildmate. Please try again."
+    },
+    "card": {
+      "guild": "Adventurer's Guild",
+      "number": "No. {number}",
+      "wandering": "Wandering adventurer",
+      "dm": "DM",
+      "hero": "Hero",
+      "statXp": "{xp} XP",
+      "shareLabel": "{label} share of total XP",
+      "totalXp": "Total XP",
+      "memberSince": "Guild member since",
+      "motto": "Roll bold, play fair, tell good tales.",
+      "print": "Print card"
+    },
+    "stories": {
+      "title": "Quest Log",
+      "joined": "Quests joined",
+      "led": "Quests led",
+      "errorTitle": "The quest log could not be fetched",
+      "errorDescription": "Something went wrong while loading stories. Please try again.",
+      "emptyLed": "No quests led yet. Their first tale awaits.",
+      "emptyJoined": "No quests joined yet. The road is still open.",
+      "loading": "Loading…",
+      "loadMore": "Load more"
+    },
+    "storyCard": {
+      "noDescription": "The tale is yet to be written…",
+      "dateTbp": "Date to be proclaimed",
+      "joined": "{count} joined",
+      "rewardSlots": "{count, plural, one {Only # hero can play, others join as viewers} other {Only # heroes can play, others join as viewers}}",
+      "noLimit": "No player limit set",
+      "dm": "Dungeon Master",
+      "recruiting": "Recruiting",
+      "status": {
+        "DRAFT": "Draft",
+        "PUBLISHED": "Published",
+        "ARCHIVED": "Archived",
+        "CANCELLED": "Cancelled",
+        "COMPLETED": "Completed"
+      },
+      "type": {
+        "ONESHOT": "Oneshot",
+        "CAMPAIGN": "Campaign"
+      },
+      "location": {
+        "ONLINE": "Online",
+        "OFFLINE": "Offline"
+      }
+    }
+  }
+}

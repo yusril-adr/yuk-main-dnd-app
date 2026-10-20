@@ -1,0 +1,107 @@
+{
+  "home": {
+    "meta": {
+      "description": "Temukan Quest D&D dan tabletop RPG yang masih buka, kenalan dengan para Legends guild, dan ikuti kisah YukMainDnD."
+    },
+    "hero": {
+      "badge": "Guild tabletop RPG",
+      "title": "Kumpulkan party-mu. Legendamu dimulai di sini.",
+      "description": "Cari meja, ikuti Dungeon Master-mu, dan ukir namamu di kisah YukMainDnD.",
+      "openBoard": "Buka Board-ku",
+      "join": "Gabung ke Guild",
+      "seeQuests": "Lihat Quest"
+    },
+    "pitch": {
+      "title": "Apa itu YukMainDnD?",
+      "description": "Guild untuk Dungeons & Dragons dan tabletop RPG lainnya. Ikut Quest, kenalan dengan Guildmates, dan catat petualanganmu di satu tempat.",
+      "step": "Langkah {step}",
+      "points": {
+        "friends": {
+          "title": "Main bareng teman",
+          "description": "Pilih Quest yang masih buka, amankan kursimu, lalu lempar dadu bareng party sesama petualang, online maupun langsung di meja."
+        },
+        "rewards": {
+          "title": "Dapatkan EXP & hadiah",
+          "description": "Setiap Quest yang selesai memberi EXP dan Gold. Naik level dan panjat papan Legends bulanan."
+        },
+        "dm": {
+          "title": "Jadi DM",
+          "description": "Siap merajut kisahmu sendiri? Jalankan Quest untuk guild dan kumpulkan EXP Dungeon Master."
+        }
+      }
+    },
+    "stories": {
+      "title": "Quest yang masih buka",
+      "description": "Meja yang masih mencari petualang pemberani. Amankan kursimu sebelum party berangkat.",
+      "seeAll": "Lihat semua Quest",
+      "error": "Papan Quest tidak bisa dibaca.",
+      "empty": "Belum ada Quest di papan saat ini. Cek lagi nanti, ya."
+    },
+    "storyCard": {
+      "unknownDm": "DM tidak diketahui",
+      "dateTba": "Tanggal menyusul",
+      "anySystem": "Sistem apa saja",
+      "members": "{count} anggota",
+      "type": {
+        "ONESHOT": "Oneshot",
+        "CAMPAIGN": "Campaign"
+      }
+    },
+    "legends": {
+      "title": "Legends Bulan {month}",
+      "titleFallback": "Legends bulan lalu",
+      "description": "Para petualang dan Dungeon Master dengan EXP terbanyak di {period}.",
+      "periodFallback": "bulan lalu",
+      "seeAll": "Lihat semua Guildmates",
+      "heroes": "Heroes",
+      "dms": "Dungeon Masters",
+      "error": "Para Legends hilang ditelan kabut.",
+      "empty": "Belum ada Legends di {period}. Tavern menunggumu.",
+      "gainedXp": "+{xp} XP",
+      "inMonth": "di bulan {month}"
+    },
+    "guild": {
+      "title": "Kehidupan di guild",
+      "description": "Lingkaran teman yang lempar dadu, berbagi cerita, dan seru-seruan tersesat di dungeon bareng. Wajah baru selalu disambut hangat di dekat perapian.",
+      "carouselLabel": "Foto guild",
+      "slideLabel": "{index} dari {total}",
+      "showPhoto": "Tampilkan foto {index}",
+      "photoFallback": "Foto guild",
+      "close": "Tutup",
+      "enlarge": "Perbesar foto: {caption}",
+      "comingSoon": "Foto guild segera hadir",
+      "previousSlide": "Slide sebelumnya",
+      "nextSlide": "Slide berikutnya",
+      "pagination": {
+        "label": "Foto guild",
+        "previous": "Foto sebelumnya",
+        "next": "Foto berikutnya",
+        "photo": "Foto {index}"
+      },
+      "photos": {
+        "sessionNight": {
+          "alt": "Anggota guild Yuk Main DnD tersenyum bersama di malam sesi",
+          "caption": "Salah satu malam sesi seru kami"
+        },
+        "heroesAtTable": {
+          "alt": "Anggota guild Yuk Main DnD berkostum di sekitar meja permainan, salah satunya mengangkat pedang mainan",
+          "caption": "Para Heroes di meja"
+        },
+        "afterSession": {
+          "alt": "Anggota guild Yuk Main DnD tersenyum di sekitar meja setelah kumpul",
+          "caption": "Senyum setelah sesi"
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Siap untuk Quest pertamamu?",
+      "description": "Tavern-nya hangat dan ada kursi yang menunggumu.",
+      "findQuest": "Cari Quest",
+      "join": "Gabung ke Guild"
+    }
+  },
+  "publicFooter": {
+    "craftedBy": "Dibuat oleh",
+    "newTab": "(terbuka di tab baru)"
+  }
+}

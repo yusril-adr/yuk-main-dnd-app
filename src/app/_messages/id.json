@@ -1,0 +1,20 @@
+{
+  "common": {
+    "site": {
+      "description": "Guild tabletop RPG: ikut Quest, kenalan dengan Guildmates, dan catat petualanganmu.",
+      "ogAlt": "Lambang YukMainDnD di samping foto guild: Kumpulkan party-mu. Mulai legendamu."
+    },
+    "og": {
+      "kicker": "GUILD TABLETOP RPG",
+      "tagline": "Kumpulkan party-mu. Mulai legendamu."
+    },
+    "notFound": {
+      "title": "Halaman tidak ditemukan",
+      "description": "Halaman yang kamu cari tidak ada.",
+      "cta": "Kembali ke Beranda"
+    },
+    "actions": {
+      "tryAgain": "Coba lagi"
+    }
+  }
+}
