@@ -4,8 +4,8 @@ import { hasLocale } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { renderOgCard } from "@/app/_utils/og-card";
 
-// Share card for the non-default locales (/og/id); English keeps the root
-// /opengraph-image. Prerendered at build time.
+// Share card for the non-default locales (e.g. /og/id); the default locale
+// keeps the root /opengraph-image. Prerendered at build time.
 export const dynamic = "force-static";
 export const dynamicParams = false;
 

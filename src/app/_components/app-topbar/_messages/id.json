@@ -2,9 +2,9 @@
   "appTopbar": {
     "nav": {
       "guildmates": "Guildmates",
-      "stories": "Quest",
+      "stories": "Stories",
       "events": "Event",
-      "goods": "Barang"
+      "goods": "Goods"
     },
     "dashboard": "Dashboard",
     "login": "Masuk",

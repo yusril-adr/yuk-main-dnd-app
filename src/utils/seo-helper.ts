@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import CONFIG from "@/common/constants/config";
 import { OG_LOCALE, routing, type TAppLocale } from "@/i18n/routing";
+import { DEFAULT_MESSAGES } from "@/i18n/default-messages";
 import {
   getLanguageAlternates,
   getLocalizedPath,
@@ -13,12 +14,11 @@ export const SITE_URL = CONFIG.SITE_URL.replace(/\/+$/, "");
 
 export const OG_IMAGE_SIZE = { width: 1200, height: 630 };
 
-// English alt for the static metadata route export; pages use the
-// translated common.site.ogAlt
-export const OG_IMAGE_ALT =
-  "YukMainDnD crest beside a photo of the guild: Gather your party. Your legend starts here.";
+// Share card alt in the default locale, for the static metadata route
+// export and untranslated pages; translated pages pass common.site.ogAlt
+export const OG_IMAGE_ALT = DEFAULT_MESSAGES.common.site.ogAlt;
 
-// English: src/app/opengraph-image.tsx (the root default). Other locales:
+// Default locale: src/app/opengraph-image.tsx (the root default). Others:
 // src/app/og/[locale]/route.tsx. Child pages repeat it because their
 // openGraph/twitter objects replace the parent's
 export function getDefaultOgImage(locale: TAppLocale, alt: string) {
@@ -48,7 +48,7 @@ export function makePageMetadata({
   image?: { url: string; alt: string } | null;
   locale?: TAppLocale;
   // The page is translated: add hreflang alternates for every locale.
-  // Untranslated pages keep the English canonical
+  // Untranslated pages keep the default-locale canonical
   localized?: boolean;
   // Translated alt (common.site.ogAlt) for the fallback share card
   defaultImageAlt?: string;

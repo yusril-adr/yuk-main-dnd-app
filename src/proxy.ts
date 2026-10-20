@@ -5,15 +5,19 @@ import createMiddleware from "next-intl/middleware";
 import { protectedRoutes } from "@/generated/protected-routes";
 import { LOCALE_COOKIE, routing } from "@/i18n/routing";
 
-// Public pages: English unprefixed, Indonesian under /id (cookie and
-// Accept-Language can redirect "/" to "/id")
+// Public pages: the default locale unprefixed, the others under /<locale>.
+// With I18N_CONFIG.localeDetection the cookie and Accept-Language can
+// redirect, e.g. "/" to "/id"
 const handlePublicI18n = createMiddleware(routing);
 // Signed-in area and /login: never prefixed; the locale comes from the
-// NEXT_LOCALE cookie, then Accept-Language, then English, and the request is
-// rewritten internally to app/[locale]/...
+// NEXT_LOCALE cookie, then Accept-Language, then the default locale, and the
+// request is rewritten internally to app/[locale]/... Detection stays on
+// here even when public redirects are off: it only rewrites, and without it
+// next-intl would ignore the cookie.
 const handleUnprefixedI18n = createMiddleware({
   ...routing,
   localePrefix: "never",
+  localeDetection: true,
 });
 
 // "/id/dashboard" -> { locale: "id", path: "/dashboard" }
