@@ -1,7 +1,7 @@
 {
   "home": {
     "meta": {
-      "description": "Find open D&D and tabletop RPG quests, meet the guild's legends and follow the chronicles of YukMainDnD."
+      "description": "Find open D&D and tabletop RPG stories, meet the guild's legends and follow the chronicles of YukMainDnD."
     },
     "hero": {
       "badge": "A tabletop RPG guild",
@@ -9,33 +9,33 @@
       "description": "Find a table, follow your Dungeon Master and write your name into the chronicles of YukMainDnD.",
       "openBoard": "Open my Board",
       "join": "Join the guild",
-      "seeQuests": "See quests"
+      "seeQuests": "See stories"
     },
     "pitch": {
       "title": "What is YukMainDnD?",
-      "description": "A guild for Dungeons & Dragons and other tabletop RPGs. Join quests, meet guildmates and track your adventures in one place.",
+      "description": "A guild for Dungeons & Dragons and other tabletop RPGs. Join stories, meet guildmates and track your adventures in one place.",
       "step": "Step {step}",
       "points": {
         "friends": {
           "title": "Play with friends",
-          "description": "Pick an open quest, claim a seat and roll dice with a party of fellow adventurers, online or at the table."
+          "description": "Pick an open story, claim a seat and roll dice with a party of fellow adventurers, online or at the table."
         },
         "rewards": {
           "title": "Earn EXP & rewards",
-          "description": "Every finished quest grants experience and gold pieces. Level up and climb the monthly legends."
+          "description": "Every finished story grants experience and gold pieces. Level up and climb the monthly legends."
         },
         "dm": {
           "title": "Become a DM",
-          "description": "Ready to weave your own tale? Run quests for the guild and earn Dungeon Master experience."
+          "description": "Ready to weave your own tale? Run stories for the guild and earn Dungeon Master experience."
         }
       }
     },
     "stories": {
-      "title": "Open quests",
+      "title": "Open stories",
       "description": "Tables still seeking brave adventurers. Claim your seat before the party sets out.",
-      "seeAll": "See all quests",
+      "seeAll": "See all stories",
       "error": "The quest board could not be read.",
-      "empty": "No quests are posted on the board right now. Check back soon."
+      "empty": "No stories are posted on the board right now. Check back soon."
     },
     "storyCard": {
       "unknownDm": "Unknown DM",
@@ -94,9 +94,9 @@
       }
     },
     "finalCta": {
-      "title": "Ready for your first quest?",
+      "title": "Ready for your first story?",
       "description": "The tavern is warm and a seat is waiting for you.",
-      "findQuest": "Find a quest",
+      "findQuest": "Find a story",
       "join": "Join the guild"
     }
   },

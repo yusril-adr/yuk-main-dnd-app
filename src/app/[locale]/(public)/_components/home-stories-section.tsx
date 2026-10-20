@@ -58,9 +58,9 @@ export default function HomeStoriesSection() {
   }
 
   return (
-    <HomeBand labelledBy="open-quests" muted>
+    <HomeBand labelledBy="open-stories" muted>
       <HomeSectionHeader
-        id="open-quests"
+        id="open-stories"
         title={t("title")}
         description={t("description")}
         linkHref="/stories"

@@ -27,12 +27,12 @@
     },
     "stories": {
       "title": "Quest Log",
-      "joined": "Quests joined",
-      "led": "Quests led",
+      "joined": "Stories joined",
+      "led": "Stories led",
       "errorTitle": "The quest log could not be fetched",
       "errorDescription": "Something went wrong while loading stories. Please try again.",
-      "emptyLed": "No quests led yet. Their first tale awaits.",
-      "emptyJoined": "No quests joined yet. The road is still open.",
+      "emptyLed": "No stories led yet. Their first tale awaits.",
+      "emptyJoined": "No stories joined yet. The road is still open.",
       "loading": "Loading…",
       "loadMore": "Load more"
     },

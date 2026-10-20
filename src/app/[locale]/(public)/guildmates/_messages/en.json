@@ -7,7 +7,7 @@
     "hero": {
       "kicker": "The Guild Hall",
       "title": "Meet thy fellow adventurers",
-      "description": "Dungeon masters and heroes of the guild. Honor this month's legends, then find a companion for your next quest.",
+      "description": "Dungeon masters and heroes of the guild. Honor this month's legends, then find a companion for your next story.",
       "total": "<num>{total}</num> {count, plural, one {guildmate} other {guildmates}} sworn to the guild"
     },
     "legends": {
