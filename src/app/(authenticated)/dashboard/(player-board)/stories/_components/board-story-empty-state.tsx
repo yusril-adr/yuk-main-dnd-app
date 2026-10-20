@@ -29,7 +29,7 @@ export default function BoardStoryEmptyState({
         <EmptyDescription>
           {isFiltered
             ? "Try another title or loosen the filters."
-            : "Join a quest from the stories board and it will show up here."}
+            : "Join a story from the stories board and it will show up here."}
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>

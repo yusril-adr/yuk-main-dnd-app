@@ -42,7 +42,7 @@ export default function HomeStoriesSection() {
     );
   } else if (stories.length === 0) {
     content = (
-      <HomeEmptyState text="No quests are posted on the board right now. Check back soon." />
+      <HomeEmptyState text="No stories are posted on the board right now. Check back soon." />
     );
   } else {
     content = (
@@ -55,13 +55,13 @@ export default function HomeStoriesSection() {
   }
 
   return (
-    <HomeBand labelledBy="open-quests" muted>
+    <HomeBand labelledBy="open-stories" muted>
       <HomeSectionHeader
-        id="open-quests"
-        title="Open quests"
+        id="open-stories"
+        title="Open stories"
         description="Tables still seeking brave adventurers. Claim your seat before the party sets out."
         linkHref="/stories"
-        linkLabel="See all quests"
+        linkLabel="See all stories"
       />
       {content}
     </HomeBand>

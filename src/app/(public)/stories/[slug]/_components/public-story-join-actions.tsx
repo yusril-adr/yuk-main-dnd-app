@@ -53,7 +53,7 @@ export default function PublicStoryJoinActions({
     // 404 is not toasted by the interceptor (story gone or not a member)
     if (error instanceof MainAPINotFoundError) {
       toast.dismiss();
-      toast.error(error.message || "This quest could not be found");
+      toast.error(error.message || "This story could not be found");
     }
     // 400 / 401 / 409 are toasted by the interceptor. A 401 also logs out,
     // which turns this button into "Log in to join". Either way, resync.
@@ -103,9 +103,9 @@ export default function PublicStoryJoinActions({
   const loginHref = `/login?from=${encodeURIComponent(pathname)}`;
 
   const hint = showLogin
-    ? "Log in to enlist in this quest."
+    ? "Log in to enlist in this story."
     : canLeave
-      ? "Thou art enlisted in this quest."
+      ? "Thou art enlisted in this story."
       : "Anyone may join. The Dungeon Master rewards the bravest at the end.";
 
   const action = (
@@ -174,7 +174,7 @@ export default function PublicStoryJoinActions({
             <AlertDialogTitle>Leave the party?</AlertDialogTitle>
             <AlertDialogDescription>
               Thou shalt be struck from the roster of &ldquo;{story.title}
-              &rdquo;. Thou may rejoin while the quest is still open.
+              &rdquo;. Thou may rejoin while the story is still open.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="sm:grid sm:grid-cols-2">

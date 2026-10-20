@@ -6,9 +6,9 @@ import { makePageMetadata } from "@/utils/seo-helper";
 import StoriesPageClient from "./page-client";
 
 export const metadata: Metadata = makePageMetadata({
-  title: "Quests",
+  title: "Stories",
   description:
-    "Browse open and completed tabletop RPG quests, see who runs them and claim a seat at the table.",
+    "Browse open and completed tabletop RPG stories, see who runs them and claim a seat at the table.",
   path: "/stories",
 });
 

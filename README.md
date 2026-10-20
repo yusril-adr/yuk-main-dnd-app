@@ -4,7 +4,7 @@
 
 # YukMainDnD
 
-Web app for the YukMainDnD tabletop RPG guild. Visitors can browse quests and guildmates.
+Web app for the YukMainDnD tabletop RPG guild. Visitors can browse stories and guildmates.
 
 ## Route protection
 

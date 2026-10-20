@@ -25,7 +25,7 @@ export default function HomeFinalCta() {
           <ItemContent className="gap-2">
             {/* `final-cta` is also the hook PublicFooter uses to turn red on home; keep the id in sync */}
             <h2 id="final-cta" className="font-heading text-3xl sm:text-4xl">
-              Ready for your first quest?
+              Ready for your first story?
             </h2>
             <ItemDescription className="line-clamp-none text-base text-primary-foreground/80 sm:text-lg">
               The tavern is warm and a seat is waiting for you.
@@ -40,7 +40,7 @@ export default function HomeFinalCta() {
               nativeButton={false}
             >
               {auth ? <LayoutDashboard /> : <UserPlus />}
-              {auth ? "Find a quest" : "Join the guild"}
+              {auth ? "Find a story" : "Join the guild"}
             </Button>
           </ItemActions>
         </Item>

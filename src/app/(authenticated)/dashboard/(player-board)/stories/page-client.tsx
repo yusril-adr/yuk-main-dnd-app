@@ -92,7 +92,7 @@ export default function StoriesPageClient() {
         <div className="mt-4 mb-6 flex flex-col gap-1">
           <h1 className="font-heading text-2xl">My Stories</h1>
           <p className="text-sm text-muted-foreground">
-            Quests you have joined, as a player or a viewer.
+            Stories you have joined, as a player or a viewer.
           </p>
         </div>
 

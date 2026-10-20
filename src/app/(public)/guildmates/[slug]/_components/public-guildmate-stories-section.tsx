@@ -53,13 +53,13 @@ export default function PublicGuildmateStoriesSection({
               value="joined"
               className="text-foreground/90 data-active:text-foreground dark:text-foreground/90 dark:data-active:text-foreground"
             >
-              Quests joined
+              Stories joined
             </TabsTrigger>
             <TabsTrigger
               value="led"
               className="text-foreground/90 data-active:text-foreground dark:text-foreground/90 dark:data-active:text-foreground"
             >
-              Quests led
+              Stories led
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -81,8 +81,8 @@ export default function PublicGuildmateStoriesSection({
                 <EmptyHeader>
                   <EmptyDescription className="italic">
                     {tab === "led"
-                      ? "No quests led yet. Their first tale awaits."
-                      : "No quests joined yet. The road is still open."}
+                      ? "No stories led yet. Their first tale awaits."
+                      : "No stories joined yet. The road is still open."}
                   </EmptyDescription>
                 </EmptyHeader>
               </Empty>

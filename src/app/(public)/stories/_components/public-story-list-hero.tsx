@@ -21,7 +21,7 @@ export default function PublicStoryListHero({
         </h1>
         <Separator className="w-40! bg-primary/40 sm:w-56!" />
         <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
-          Oneshots and campaigns posted by the guild. Pick a quest, join the
+          Oneshots and campaigns posted by the guild. Pick a story, join the
           party, and roll for initiative.
         </p>
         <If condition={totalStories !== null}>
@@ -30,7 +30,7 @@ export default function PublicStoryListHero({
               <span className="font-heading text-xl text-foreground">
                 {totalStories}
               </span>{" "}
-              {totalStories === 1 ? "quest" : "quests"} pinned to the board
+              {totalStories === 1 ? "story" : "stories"} pinned to the board
             </p>
           </Then>
         </If>

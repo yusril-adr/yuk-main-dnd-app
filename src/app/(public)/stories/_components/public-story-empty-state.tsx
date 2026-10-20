@@ -15,7 +15,7 @@ export default function PublicStoryEmptyState({
         <ScrollText />
       </div>
       <div className="flex max-w-sm flex-col gap-1">
-        <h3 className="font-heading text-lg sm:text-xl">No quests found</h3>
+        <h3 className="font-heading text-lg sm:text-xl">No stories found</h3>
         <p className="text-sm text-muted-foreground">
           {isFiltered
             ? "No tale matches your search. Try different keywords or clear the filters."
