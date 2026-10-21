@@ -112,7 +112,7 @@ export default function PublicGuildmateLegendPodium({
               </Link>
               <span className="text-xs font-medium text-foreground/80">
                 {formatExp(isDm ? user.dm_exp : user.player_exp)}{" "}
-                {isDm ? "DM" : "Player"} XP
+                {isDm ? "DM" : "Player"} EXP
               </span>
             </div>
             <div
@@ -122,7 +122,7 @@ export default function PublicGuildmateLegendPodium({
               )}
             >
               <span className="font-heading text-base leading-tight font-semibold text-primary lg:text-lg">
-                +{formatExp(entry.gainedExp)} XP
+                +{formatExp(entry.gainedExp)} EXP
               </span>
               <span className="text-xs leading-tight text-foreground/80">
                 so far

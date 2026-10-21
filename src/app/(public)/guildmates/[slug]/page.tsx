@@ -21,12 +21,12 @@ export async function generateMetadata({
   if (!user) {
     return makePageMetadata({
       title: `Adventurer ${identifier}`,
-      description: `Adventurer card of ${identifier}: DM and player XP and quest log in the YukMainDnD guild.`,
+      description: `Adventurer card of ${identifier}: DM and player EXP and quest log in the YukMainDnD guild.`,
       path: getGuildmateHref({ id: identifier }),
     });
   }
 
-  const fallback = `${user.display_name}: ${formatExp(user.player_exp)} player XP and ${formatExp(user.dm_exp)} DM XP in the YukMainDnD guild. See their adventurer card and quest log.`;
+  const fallback = `${user.display_name}: ${formatExp(user.player_exp)} player EXP and ${formatExp(user.dm_exp)} DM EXP in the YukMainDnD guild. See their adventurer card and quest log.`;
 
   return makePageMetadata({
     title: `Adventurer ${user.display_name}`,

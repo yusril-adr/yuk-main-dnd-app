@@ -116,7 +116,7 @@ export default function HomeLegendBoard({
             </ItemContent>
             <ItemActions className="flex-col items-end gap-0 text-right">
               <span className="font-heading text-primary tabular-nums">
-                +{gainedExp.toLocaleString("en-US")} XP
+                +{gainedExp.toLocaleString("en-US")} EXP
               </span>
               <span className="text-xs text-muted-foreground">
                 in {monthName}

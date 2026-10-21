@@ -3,10 +3,10 @@ export function toStoryRewardPayload(value: string): number {
   return value ? Number(value) : 0;
 }
 
-// 1250 -> "1,250 XP"; null for 0 so the detail row shows its empty text
+// 1250 -> "1,250 EXP"; null for 0 so the detail row shows its empty text
 export function formatStoryReward(
   value: number,
-  unit: "XP" | "GP",
+  unit: "EXP" | "GP",
 ): string | null {
   return value > 0 ? `${value.toLocaleString("en-US")} ${unit}` : null;
 }

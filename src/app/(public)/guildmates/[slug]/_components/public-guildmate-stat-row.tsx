@@ -17,12 +17,12 @@ export default function PublicGuildmateStatRow({
           {label}
         </span>
         <span className="text-[4.2cqw] leading-none font-semibold text-foreground tabular-nums">
-          {formatExp(exp)} XP
+          {formatExp(exp)} EXP
         </span>
       </div>
       <Progress
         value={share}
-        aria-label={`${label} share of total XP`}
+        aria-label={`${label} share of total EXP`}
         className="gap-0 [&_[data-slot=progress-indicator]]:bg-primary [&_[data-slot=progress-track]]:h-[2cqw] [&_[data-slot=progress-track]]:rounded-sm [&_[data-slot=progress-track]]:overflow-hidden [&_[data-slot=progress-track]]:bg-primary/15"
       />
     </div>
