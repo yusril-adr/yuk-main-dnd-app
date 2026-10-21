@@ -2,7 +2,7 @@
   "guildmates": {
     "meta": {
       "title": "Guildmates",
-      "description": "Kenalan dengan para petualang dan Dungeon Master di guild YukMainDnD, dan lihat XP yang sudah mereka kumpulkan."
+      "description": "Kenalan dengan para petualang dan Dungeon Master di guild YukMainDnD, dan lihat EXP yang sudah mereka kumpulkan."
     },
     "hero": {
       "kicker": "Aula Guild",
@@ -24,11 +24,11 @@
       "unclaimed": "Belum diklaim",
       "awaitingMaster": "Menanti seorang master",
       "awaitingHero": "Menanti seorang hero",
-      "dmXpTotal": "Total {xp} DM XP",
-      "playerXpTotal": "Total {xp} Player XP",
-      "dmXp": "{xp} DM XP",
-      "playerXp": "{xp} Player XP",
-      "gainedXp": "+{xp} XP",
+      "dmXpTotal": "Total {xp} DM EXP",
+      "playerXpTotal": "Total {xp} Player EXP",
+      "dmXp": "{xp} DM EXP",
+      "playerXp": "{xp} Player EXP",
+      "gainedXp": "+{xp} EXP",
       "soFar": "sejauh ini",
       "place": "Peringkat {rank}"
     },
@@ -53,7 +53,7 @@
     "card": {
       "dm": "Dungeon Master",
       "player": "Player",
-      "xp": "{xp} XP"
+      "xp": "{xp} EXP"
     },
     "pagination": {
       "showing": "Menampilkan {start}–{end} dari {total} Guildmates",

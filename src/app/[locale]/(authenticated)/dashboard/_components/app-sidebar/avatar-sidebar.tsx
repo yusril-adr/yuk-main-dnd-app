@@ -100,11 +100,11 @@ export function AvatarSidebar() {
               <DropdownMenuLabel>Stats</DropdownMenuLabel>
               <DropdownMenuItem disabled className="items-center">
                 <BookOpen />
-                {auth?.dm_exp} XP - DM
+                {auth?.dm_exp} EXP - DM
               </DropdownMenuItem>
               <DropdownMenuItem disabled className="items-center">
                 <ChessKnight />
-                {auth?.player_exp} XP - Player
+                {auth?.player_exp} EXP - Player
               </DropdownMenuItem>
               <DropdownMenuItem disabled className="items-center">
                 <Coins />

@@ -39,9 +39,9 @@ export default function PublicStoryDetailSummary({
   const tBadge = useTranslations("stories.badge");
   const locale = useLocale();
   const format = useFormatter();
-  const formatReward = (value: number, unit: "XP" | "GP") =>
+  const formatReward = (value: number, unit: "EXP" | "GP") =>
     value > 0 ? `${format.number(value)} ${unit}` : null;
-  const exp = formatReward(story.exp_awarded, "XP");
+  const exp = formatReward(story.exp_awarded, "EXP");
   const gold = formatReward(story.point_awarded, "GP");
 
   return (

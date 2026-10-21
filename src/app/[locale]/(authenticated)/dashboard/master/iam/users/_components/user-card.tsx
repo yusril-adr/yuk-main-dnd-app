@@ -160,11 +160,11 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
         <CardContent>
           <ItemGroup className="mt-3 grid grid-cols-3 gap-2">
             <UserStatItem
-              label="Player XP"
+              label="Player EXP"
               value={(user.player_exp ?? 0).toLocaleString()}
             />
             <UserStatItem
-              label="DM XP"
+              label="DM EXP"
               value={(user.dm_exp ?? 0).toLocaleString()}
             />
             <UserStatItem

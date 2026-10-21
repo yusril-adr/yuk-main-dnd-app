@@ -64,7 +64,7 @@ export default function StoryCard({
   // description is empty or only has images
   const descriptionText = getRichTextPlainText(story.description);
   // Reward badges only for rewards above 0
-  const expReward = formatStoryReward(story.exp_awarded, "XP");
+  const expReward = formatStoryReward(story.exp_awarded, "EXP");
   const goldReward = formatStoryReward(story.point_awarded, "GP");
   const [confirmArchiveId, setConfirmArchiveId] = useState<string | null>(null);
   const [confirmPublishId, setConfirmPublishId] = useState<string | null>(null);

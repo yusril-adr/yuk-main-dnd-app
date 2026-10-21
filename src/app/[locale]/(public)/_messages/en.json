@@ -57,7 +57,7 @@
       "dms": "Dungeon Masters",
       "error": "The legends are lost to the mist.",
       "empty": "No legends in {period}. The tavern awaits.",
-      "gainedXp": "+{xp} XP",
+      "gainedXp": "+{xp} EXP",
       "inMonth": "in {month}"
     },
     "guild": {

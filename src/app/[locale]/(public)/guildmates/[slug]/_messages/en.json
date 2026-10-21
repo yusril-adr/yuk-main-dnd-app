@@ -2,8 +2,8 @@
   "guildmateDetail": {
     "meta": {
       "title": "Adventurer {name}",
-      "unknownDescription": "Adventurer card of {name}: DM and player XP and quest log in the YukMainDnD guild.",
-      "description": "{name}: {playerXp} player XP and {dmXp} DM XP in the YukMainDnD guild. See their adventurer card and quest log.",
+      "unknownDescription": "Adventurer card of {name}: DM and player EXP and quest log in the YukMainDnD guild.",
+      "description": "{name}: {playerXp} player EXP and {dmXp} DM EXP in the YukMainDnD guild. See their adventurer card and quest log.",
       "avatarAlt": "{name} avatar"
     },
     "back": "Guild roll",
@@ -18,9 +18,9 @@
       "wandering": "Wandering adventurer",
       "dm": "DM",
       "hero": "Hero",
-      "statXp": "{xp} XP",
-      "shareLabel": "{label} share of total XP",
-      "totalXp": "Total XP",
+      "statXp": "{xp} EXP",
+      "shareLabel": "{label} share of total EXP",
+      "totalXp": "Total EXP",
       "memberSince": "Guild member since",
       "motto": "Roll bold, play fair, tell good tales.",
       "print": "Print card"
