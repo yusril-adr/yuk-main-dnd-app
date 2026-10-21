@@ -336,7 +336,7 @@ export default function StoryCreateForm({
                 render={({ field, fieldState }) => (
                   <Field className="grid" data-invalid={fieldState.invalid}>
                     <div className="flex items-center gap-1">
-                      <FieldLabel htmlFor="expAwarded">XP Awarded</FieldLabel>
+                      <FieldLabel htmlFor="expAwarded">EXP Awarded</FieldLabel>
                       <StoryCreateXpGuidePopover />
                     </div>
                     <Input

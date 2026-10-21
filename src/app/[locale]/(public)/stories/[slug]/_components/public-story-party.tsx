@@ -1,4 +1,5 @@
 import { ChevronDown, RotateCw, Users } from "lucide-react";
+import { useFormatter, useTranslations } from "next-intl";
 import { Else, If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
@@ -17,6 +18,9 @@ export default function PublicStoryParty({
   maxMembers,
   className,
 }: TPublicStoryPartyProps) {
+  const t = useTranslations("storyDetail.party");
+  const tActions = useTranslations("common.actions");
+  const format = useFormatter();
   const membersQuery = useGetPublicStoryMemberPagination(
     storyId,
     PUBLIC_STORY_MEMBER_PER_PAGE,
@@ -30,23 +34,29 @@ export default function PublicStoryParty({
   return (
     <PublicStoryDetailSection
       icon={Users}
-      title="The Party"
+      title={t("title")}
       className={className}
     >
       <If condition={!!meta}>
         <Then>
           <p className="-mt-2 text-sm text-foreground/80">
-            <span className="font-medium text-foreground">{total}</span>{" "}
-            {total === 1 ? "adventurer has" : "adventurers have"} joined
-            {maxMembers ? (
-              <>
-                {" · only "}
-                <span className="font-medium text-foreground">
-                  {maxMembers}
-                </span>{" "}
-                can play, the rest join as viewers
-              </>
-            ) : null}
+            {t.rich("joined", {
+              count: total,
+              total: format.number(total),
+              num: (chunks) => (
+                <span className="font-medium text-foreground">{chunks}</span>
+              ),
+            })}
+            {maxMembers
+              ? t.rich("playable", {
+                  max: format.number(maxMembers),
+                  num: (chunks) => (
+                    <span className="font-medium text-foreground">
+                      {chunks}
+                    </span>
+                  ),
+                })
+              : null}
           </p>
         </Then>
       </If>
@@ -76,14 +86,14 @@ export default function PublicStoryParty({
             <Then>
               <div className="flex flex-col items-center gap-3 rounded-md border border-destructive/40 bg-destructive/5 px-4 py-6 text-center">
                 <p className="text-sm text-foreground">
-                  The party roster could not be read.
+                  {t("error")}
                 </p>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => membersQuery.refetch()}
                 >
-                  <RotateCw /> Try again
+                  <RotateCw /> {tActions("tryAgain")}
                 </Button>
               </div>
             </Then>
@@ -93,10 +103,10 @@ export default function PublicStoryParty({
                   <div className="flex flex-col items-center gap-2 rounded-md border border-dashed bg-muted/40 px-4 py-8 text-center">
                     <Users className="size-6 text-primary" />
                     <p className="font-heading text-lg">
-                      No adventurers have joined yet
+                      {t("emptyTitle")}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      The table awaits its first hero.
+                      {t("emptyDescription")}
                     </p>
                   </div>
                 </Then>
@@ -121,8 +131,10 @@ export default function PublicStoryParty({
                           <ChevronDown />
                         )}
                         {membersQuery.isFetchingNextPage
-                          ? "Summoning adventurers..."
-                          : `Show more adventurers (${total - members.length} more)`}
+                          ? t("loadingMore")
+                          : t("showMore", {
+                              count: format.number(total - members.length),
+                            })}
                       </Button>
                     </Then>
                   </If>

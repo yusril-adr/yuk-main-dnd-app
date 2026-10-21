@@ -6,7 +6,7 @@ import {
 } from "@/app/_components/ui/item";
 import type { TUserStatItemProps } from "@/app/[locale]/(authenticated)/dashboard/master/iam/users/_types/user-stat-item-props";
 
-// Compact label/value tile for XP and gold stats
+// Compact label/value tile for EXP and gold stats
 export default function UserStatItem({
   label,
   value,

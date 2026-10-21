@@ -13,8 +13,8 @@
     "navigationMenu": "Menu navigasi",
     "avatar": {
       "stats": "Statistik",
-      "dmXp": "{xp} XP - DM",
-      "playerXp": "{xp} XP - Player",
+      "dmXp": "{xp} EXP - DM",
+      "playerXp": "{xp} EXP - Player",
       "gold": "{gp} GP",
       "roleNotSet": "Belum diatur",
       "menu": "Menu",

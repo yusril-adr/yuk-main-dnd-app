@@ -1,7 +1,8 @@
-import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { If, Then } from "react-if";
 
+import { Link } from "@/i18n/navigation";
 import PublicStoryBanner from "@/app/[locale]/(public)/stories/_components/public-story-banner";
 import PublicStoryStatusBadge from "@/app/[locale]/(public)/stories/_components/public-story-status-badge";
 import PublicStoryTypeBadge from "@/app/[locale]/(public)/stories/_components/public-story-type-badge";
@@ -12,6 +13,8 @@ import type { TPublicStoryDetailProps } from "@/app/[locale]/(public)/stories/[s
 export default function PublicStoryDetailHero({
   story,
 }: TPublicStoryDetailProps) {
+  const t = useTranslations("storyDetail");
+
   return (
     <section className="relative isolate h-[22rem] w-full overflow-hidden sm:h-[28rem] lg:h-[32rem]">
       <PublicStoryBanner
@@ -29,7 +32,7 @@ export default function PublicStoryDetailHero({
           className="flex w-fit items-center gap-2 rounded-full bg-background/70 px-4 py-2 text-sm font-medium backdrop-blur-md transition-colors hover:bg-background [&>svg]:size-4"
         >
           <ArrowLeft />
-          All stories
+          {t("back")}
         </Link>
 
         <div className="flex max-w-4xl flex-col gap-4">

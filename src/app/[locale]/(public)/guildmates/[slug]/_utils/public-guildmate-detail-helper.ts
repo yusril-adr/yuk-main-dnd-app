@@ -1,5 +1,5 @@
-// Share of the guildmate's total XP earned in one calling (0-100). The API
-// has no level curve, so the bars compare DM vs hero XP instead of showing
+// Share of the guildmate's total EXP earned in one calling (0-100). The API
+// has no level curve, so the bars compare DM vs hero EXP instead of showing
 // progress to the next level.
 export function getExpShare(value: number, total: number) {
   if (!total) return 0;

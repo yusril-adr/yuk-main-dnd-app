@@ -2,8 +2,8 @@
   "guildmateDetail": {
     "meta": {
       "title": "Petualang {name}",
-      "unknownDescription": "Kartu petualang {name}: XP DM dan Player serta Story Log di guild YukMainDnD.",
-      "description": "{name}: {playerXp} Player XP dan {dmXp} DM XP di guild YukMainDnD. Lihat kartu petualang dan Story Log-nya.",
+      "unknownDescription": "Kartu petualang {name}: EXP DM dan Player serta Story Log di guild YukMainDnD.",
+      "description": "{name}: {playerXp} Player EXP dan {dmXp} DM EXP di guild YukMainDnD. Lihat kartu petualang dan Story Log-nya.",
       "avatarAlt": "Avatar {name}"
     },
     "back": "Daftar guild",
@@ -18,9 +18,9 @@
       "wandering": "Petualang pengembara",
       "dm": "DM",
       "hero": "Hero",
-      "statXp": "{xp} XP",
-      "shareLabel": "Porsi {label} dari total XP",
-      "totalXp": "Total XP",
+      "statXp": "{xp} EXP",
+      "shareLabel": "Porsi {label} dari total EXP",
+      "totalXp": "Total EXP",
       "memberSince": "Anggota guild sejak",
       "motto": "Lempar dadu dengan berani, main jujur, ceritakan kisah seru.",
       "print": "Cetak kartu"

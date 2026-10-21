@@ -2,7 +2,7 @@
   "guildmates": {
     "meta": {
       "title": "Guildmates",
-      "description": "Meet the adventurers and Dungeon Masters of the YukMainDnD guild and see the XP they have earned."
+      "description": "Meet the adventurers and Dungeon Masters of the YukMainDnD guild and see the EXP they have earned."
     },
     "hero": {
       "kicker": "The Guild Hall",
@@ -24,11 +24,11 @@
       "unclaimed": "Unclaimed",
       "awaitingMaster": "Awaiting a master",
       "awaitingHero": "Awaiting a hero",
-      "dmXpTotal": "{xp} DM XP total",
-      "playerXpTotal": "{xp} Player XP total",
-      "dmXp": "{xp} DM XP",
-      "playerXp": "{xp} Player XP",
-      "gainedXp": "+{xp} XP",
+      "dmXpTotal": "{xp} DM EXP total",
+      "playerXpTotal": "{xp} Player EXP total",
+      "dmXp": "{xp} DM EXP",
+      "playerXp": "{xp} Player EXP",
+      "gainedXp": "+{xp} EXP",
       "soFar": "so far",
       "place": "{rank, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} place"
     },
@@ -53,7 +53,7 @@
     "card": {
       "dm": "Dungeon Master",
       "player": "Player",
-      "xp": "{xp} XP"
+      "xp": "{xp} EXP"
     },
     "pagination": {
       "showing": "Showing {start}–{end} of {total} guildmates",

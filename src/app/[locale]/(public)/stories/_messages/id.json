@@ -1,0 +1,66 @@
+{
+  "stories": {
+    "meta": {
+      "title": "Stories",
+      "description": "Jelajahi Stories tabletop RPG yang masih buka maupun yang sudah selesai, lihat siapa Dungeon Master-nya, dan amankan kursimu di meja."
+    },
+    "hero": {
+      "kicker": "Papan Stories",
+      "title": "Temukan petualanganmu berikutnya",
+      "description": "Oneshot dan campaign dari guild. Pilih Story, gabung ke Party, lalu lempar dadu inisiatif.",
+      "total": "<num>{total}</num> {count, plural, one {Story} other {Stories}} terpasang di papan"
+    },
+    "filters": {
+      "searchPlaceholder": "Cari Stories berdasarkan judul (min. 3 karakter)…",
+      "trigger": "Filter",
+      "status": "Status",
+      "location": "Lokasi",
+      "allStatuses": "Semua status",
+      "anywhere": "Di mana saja",
+      "allTypes": "Semua",
+      "clear": "Hapus",
+      "apply": "Terapkan"
+    },
+    "card": {
+      "noDescription": "Kisahnya belum ditulis…",
+      "dateTbp": "Tanggal akan diumumkan",
+      "joined": "{count} bergabung",
+      "rewardSlots": "Hanya {count} hero yang bisa main, sisanya ikut sebagai penonton",
+      "noLimit": "Tidak ada batas pemain",
+      "dm": "Dungeon Master"
+    },
+    "badge": {
+      "recruiting": "Buka rekrutmen",
+      "status": {
+        "DRAFT": "Draf",
+        "PUBLISHED": "Dipublikasikan",
+        "ARCHIVED": "Diarsipkan",
+        "CANCELLED": "Dibatalkan",
+        "COMPLETED": "Selesai"
+      },
+      "type": {
+        "ONESHOT": "Oneshot",
+        "CAMPAIGN": "Campaign"
+      },
+      "location": {
+        "ONLINE": "Online",
+        "OFFLINE": "Offline"
+      }
+    },
+    "empty": {
+      "title": "Tidak ada Story yang ditemukan",
+      "filtered": "Belum ada kisah yang cocok dengan pencarianmu. Coba kata kunci lain atau hapus filternya.",
+      "unfiltered": "Papan Stories masih kosong. Mampir lagi nanti, ya, petualang.",
+      "reset": "Hapus pencarian & filter"
+    },
+    "error": {
+      "title": "Gulungan Stories gagal diambil",
+      "description": "Ada yang salah saat memuat Stories. Coba lagi, ya."
+    },
+    "pagination": {
+      "summary": "Menampilkan <b>{start}–{end}</b> dari <b>{total}</b> Stories",
+      "previous": "Halaman sebelumnya",
+      "next": "Halaman berikutnya"
+    }
+  }
+}

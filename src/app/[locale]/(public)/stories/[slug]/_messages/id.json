@@ -1,0 +1,81 @@
+{
+  "storyDetail": {
+    "meta": {
+      "title": "Story",
+      "description": "Detail Story, Party, dan Dungeon Master di YukMainDnD.",
+      "bannerAlt": "Banner {title}"
+    },
+    "back": "Semua Stories",
+    "tale": {
+      "title": "Kisahnya",
+      "empty": "Belum ada deskripsi untuk Story ini."
+    },
+    "chronicle": {
+      "title": "Kronik",
+      "posted": "Diposting",
+      "updated": "Terakhir diperbarui"
+    },
+    "error": {
+      "title": "Story ini gagal dimuat",
+      "description": "Ada yang salah saat memuat Story ini. Coba lagi, ya."
+    },
+    "summary": {
+      "label": "Ringkasan Story",
+      "title": "Gulungan Story",
+      "starts": "Mulai",
+      "tba": "Akan diumumkan",
+      "slots": "Slot pemain",
+      "slotsValue": "Hanya {count} hero yang bisa main. Kalau sudah penuh, kamu tetap bisa ikut sebagai penonton.",
+      "noLimit": "Tidak ada batas",
+      "location": "Lokasi · {type}",
+      "gameSystem": "Sistem game",
+      "experience": "Pengalaman",
+      "gold": "Gold",
+      "dm": "Dungeon Master"
+    },
+    "join": {
+      "notFound": "Story ini tidak ditemukan",
+      "hintLogin": "Masuk dulu untuk ikut Story ini.",
+      "hintMember": "Kamu sudah terdaftar di Story ini.",
+      "hintOpen": "Siapa pun boleh ikut. Di akhir, Dungeon Master akan memberi hadiah untuk yang paling berani.",
+      "join": "Gabung ke Party",
+      "leave": "Keluar dari Party",
+      "leaveDialog": {
+        "title": "Keluar dari Party?",
+        "description": "Namamu akan dicoret dari daftar “{title}”. Kamu masih bisa gabung lagi selama Story-nya masih buka.",
+        "cancel": "Tetap di sini",
+        "confirm": "Keluar dari Party"
+      },
+      "fullDialog": {
+        "title": "Party sudah penuh",
+        "description": "Semua {count} slot pemain di “{title}” sudah terisi. Kamu tetap bisa ikut, tapi sebagai penonton. Ngobrol dengan Dungeon Master untuk tahu apakah kamu bisa jadi pemain cadangan.",
+        "cancel": "Nanti saja",
+        "confirm": "Ikut sebagai penonton"
+      },
+      "toast": {
+        "joining": "Bergabung ke Party...",
+        "joined": "Selamat datang di Party, petualang!",
+        "leaving": "Keluar dari Party...",
+        "left": "Kamu sudah keluar dari Party"
+      }
+    },
+    "party": {
+      "title": "Party",
+      "joined": "<num>{total}</num> petualang sudah bergabung",
+      "playable": " · hanya <num>{max}</num> yang bisa main, sisanya ikut sebagai penonton",
+      "error": "Daftar Party gagal dibaca.",
+      "emptyTitle": "Belum ada petualang yang bergabung",
+      "emptyDescription": "Meja ini masih menunggu hero pertamanya.",
+      "loadingMore": "Memanggil para petualang...",
+      "showMore": "Tampilkan petualang lain ({count} lagi)"
+    },
+    "member": {
+      "joined": "Bergabung {date}",
+      "status": {
+        "REGISTERED": "Terdaftar",
+        "ATTENDED": "Hadir",
+        "VIEWER": "Penonton"
+      }
+    }
+  }
+}

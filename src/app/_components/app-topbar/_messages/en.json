@@ -13,8 +13,8 @@
     "navigationMenu": "Navigation menu",
     "avatar": {
       "stats": "Stats",
-      "dmXp": "{xp} XP - DM",
-      "playerXp": "{xp} XP - Player",
+      "dmXp": "{xp} EXP - DM",
+      "playerXp": "{xp} EXP - Player",
       "gold": "{gp} GP",
       "roleNotSet": "Not set",
       "menu": "Menu",

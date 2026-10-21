@@ -1,0 +1,81 @@
+{
+  "storyDetail": {
+    "meta": {
+      "title": "Story",
+      "description": "Story details, party and Dungeon Master on YukMainDnD.",
+      "bannerAlt": "{title} banner"
+    },
+    "back": "All stories",
+    "tale": {
+      "title": "The Tale",
+      "empty": "No description has been written for this story yet."
+    },
+    "chronicle": {
+      "title": "Chronicle",
+      "posted": "Posted",
+      "updated": "Last updated"
+    },
+    "error": {
+      "title": "This tale could not be loaded",
+      "description": "Something went wrong while loading the story. Please try again."
+    },
+    "summary": {
+      "label": "Story summary",
+      "title": "The Quest Scroll",
+      "starts": "Starts",
+      "tba": "To be announced",
+      "slots": "Player slots",
+      "slotsValue": "{count, plural, one {Only # hero can play. Once full, you can still join as a viewer.} other {Only # heroes can play. Once full, you can still join as a viewer.}}",
+      "noLimit": "No limit set",
+      "location": "Location · {type}",
+      "gameSystem": "Game system",
+      "experience": "Experience",
+      "gold": "Gold",
+      "dm": "Dungeon Master"
+    },
+    "join": {
+      "notFound": "This story could not be found",
+      "hintLogin": "Log in to enlist in this story.",
+      "hintMember": "Thou art enlisted in this story.",
+      "hintOpen": "Anyone may join. The Dungeon Master rewards the bravest at the end.",
+      "join": "Join the party",
+      "leave": "Leave the party",
+      "leaveDialog": {
+        "title": "Leave the party?",
+        "description": "Thou shalt be struck from the roster of “{title}”. Thou may rejoin while the story is still open.",
+        "cancel": "Stay",
+        "confirm": "Leave the party"
+      },
+      "fullDialog": {
+        "title": "The party is full",
+        "description": "All {count} player slots of “{title}” are taken. Thou may still join, but as a viewer. Speak with the Dungeon Master to learn whether thou can be a substitute player.",
+        "cancel": "Not now",
+        "confirm": "Join as viewer"
+      },
+      "toast": {
+        "joining": "Joining the party...",
+        "joined": "Welcome to the party, adventurer!",
+        "leaving": "Leaving the party...",
+        "left": "You have left the party"
+      }
+    },
+    "party": {
+      "title": "The Party",
+      "joined": "<num>{total}</num> {count, plural, one {adventurer has} other {adventurers have}} joined",
+      "playable": " · only <num>{max}</num> can play, the rest join as viewers",
+      "error": "The party roster could not be read.",
+      "emptyTitle": "No adventurers have joined yet",
+      "emptyDescription": "The table awaits its first hero.",
+      "loadingMore": "Summoning adventurers...",
+      "showMore": "Show more adventurers ({count} more)"
+    },
+    "member": {
+      "joined": "Joined {date}",
+      "status": {
+        "REGISTERED": "Enlisted",
+        "ATTENDED": "Attended",
+        "VIEWER": "Viewer"
+      }
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { joinPublicStoryById } from "@/api/main/modules/stories/[id]";
@@ -12,16 +13,18 @@ export function useJoinPublicStory(
     "mutationFn"
   >,
 ) {
+  const t = useTranslations("storyDetail.join.toast");
+
   return useMutation({
     ...options,
     mutationFn: (id: string) => joinPublicStoryById(id),
     onMutate: (...args) => {
-      toast.loading("Joining the party...");
+      toast.loading(t("joining"));
       return options?.onMutate?.(...args);
     },
     onSuccess: (...args) => {
       toast.dismiss();
-      toast.success("Welcome to the party, adventurer!");
+      toast.success(t("joined"));
       options?.onSuccess?.(...args);
     },
   });
