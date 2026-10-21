@@ -18,8 +18,8 @@ import {
 } from "@/app/_components/ui/popover";
 import { STORY_XP_GUIDE } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-xp-guide";
 
-// (?) next to the XP Awarded label. Popover (not tooltip) so it opens on tap.
-// Rendered outside the <label> so tapping it never focuses the XP input
+// (?) next to the EXP Awarded label. Popover (not tooltip) so it opens on tap.
+// Rendered outside the <label> so tapping it never focuses the EXP input
 export default function StoryCreateXpGuidePopover() {
   return (
     <Popover>
@@ -29,8 +29,8 @@ export default function StoryCreateXpGuidePopover() {
             type="button"
             variant="ghost"
             size="icon"
-            aria-label="XP guide"
-            // -my-2 keeps the label row at text height so the XP and Gold
+            aria-label="EXP guide"
+            // -my-2 keeps the label row at text height so the EXP and Gold
             // inputs stay aligned side by side
             className="-my-2 size-8 text-muted-foreground hover:text-foreground"
           />
@@ -62,7 +62,7 @@ export default function StoryCreateXpGuidePopover() {
                 <ItemTitle>{label}</ItemTitle>
               </ItemContent>
               <ItemActions className="font-heading text-primary tabular-nums">
-                {xp} XP
+                {xp} EXP
               </ItemActions>
             </Item>
           ))}

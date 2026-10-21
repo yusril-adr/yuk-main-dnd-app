@@ -215,12 +215,12 @@ export default function UserDetailPageClient() {
                   <ItemGroup className="grid w-full grid-cols-3 gap-2 sm:gap-4">
                     <UserStatItem
                       size="lg"
-                      label="Player XP"
+                      label="Player EXP"
                       value={(user?.player_exp ?? 0).toLocaleString()}
                     />
                     <UserStatItem
                       size="lg"
-                      label="DM XP"
+                      label="DM EXP"
                       value={(user?.dm_exp ?? 0).toLocaleString()}
                     />
                     <UserStatItem

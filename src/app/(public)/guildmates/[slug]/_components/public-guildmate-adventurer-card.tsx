@@ -96,7 +96,7 @@ export default function PublicGuildmateAdventurerCard({
         </div>
 
         <div className="flex items-center justify-center gap-[2cqw] text-[3.8cqw]">
-          <span className="text-foreground/80">Total XP</span>
+          <span className="text-foreground/80">Total EXP</span>
           <span className="font-heading text-[5cqw] leading-none text-primary tabular-nums">
             {formatExp(totalExp)}
           </span>

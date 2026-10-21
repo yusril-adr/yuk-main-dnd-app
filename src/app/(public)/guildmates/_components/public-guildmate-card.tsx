@@ -102,7 +102,7 @@ export default function PublicGuildmateCard({
                   variant="secondary"
                   className="rounded-sm font-semibold tabular-nums"
                 >
-                  {formatExp(exp)} XP
+                  {formatExp(exp)} EXP
                 </Badge>
               </ItemActions>
             </Item>

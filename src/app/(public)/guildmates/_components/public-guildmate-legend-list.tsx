@@ -111,12 +111,12 @@ export default function PublicGuildmateLegendList({
                 </ItemTitle>
                 <ItemDescription className="text-xs text-foreground/80">
                   {formatExp(isDm ? user.dm_exp : user.player_exp)}{" "}
-                  {isDm ? "DM" : "Player"} XP total
+                  {isDm ? "DM" : "Player"} EXP total
                 </ItemDescription>
               </ItemContent>
               <ItemActions className="flex-col items-end gap-0">
                 <span className="font-heading text-base font-semibold text-primary">
-                  +{formatExp(gainedExp)} XP
+                  +{formatExp(gainedExp)} EXP
                 </span>
                 <span className="text-xs text-foreground/80">so far</span>
               </ItemActions>

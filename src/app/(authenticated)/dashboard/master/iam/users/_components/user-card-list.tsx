@@ -56,8 +56,8 @@ const SORT_BY_OPTIONS = [
   { label: "Display Name", value: "display_name" },
   { label: "Username", value: "username" },
   { label: "Email", value: "email" },
-  { label: "DM XP", value: "dm_exp" },
-  { label: "Player XP", value: "player_exp" },
+  { label: "DM EXP", value: "dm_exp" },
+  { label: "Player EXP", value: "player_exp" },
   { label: "Created At", value: "created_at" },
   { label: "Updated At", value: "updated_at" },
 ];
