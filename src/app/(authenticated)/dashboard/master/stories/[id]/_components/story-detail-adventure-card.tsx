@@ -17,10 +17,10 @@ export default function StoryDetailAdventureCard({
   const partySize = story.max_members
     ? `Up to ${story.max_members} ${story.max_members === 1 ? "adventurer" : "adventurers"}`
     : null;
-  // "250 XP · 100 GP"; zero rewards are left out, null when both are 0
+  // "250 EXP · 100 GP"; zero rewards are left out, null when both are 0
   const rewards =
     [
-      formatStoryReward(story.exp_awarded, "XP"),
+      formatStoryReward(story.exp_awarded, "EXP"),
       formatStoryReward(story.point_awarded, "GP"),
     ]
       .filter(Boolean)

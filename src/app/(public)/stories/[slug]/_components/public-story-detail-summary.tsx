@@ -26,7 +26,7 @@ import { PUBLIC_STORY_LOCATION_TYPE_ICON } from "@/app/(public)/stories/_constan
 import { PUBLIC_STORY_START_AT_FORMAT } from "@/app/(public)/stories/[slug]/_constants/public-story-detail-date-format";
 import type { TPublicStoryDetailProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
 
-function formatReward(value: number, unit: "XP" | "GP") {
+function formatReward(value: number, unit: "EXP" | "GP") {
   return value > 0 ? `${value.toLocaleString("en-US")} ${unit}` : null;
 }
 
@@ -37,7 +37,7 @@ export default function PublicStoryDetailSummary({
 }: TPublicStoryDetailProps) {
   const creator = story.created_by;
   const LocationIcon = PUBLIC_STORY_LOCATION_TYPE_ICON[story.location_type];
-  const exp = formatReward(story.exp_awarded, "XP");
+  const exp = formatReward(story.exp_awarded, "EXP");
   const gold = formatReward(story.point_awarded, "GP");
 
   return (
