@@ -54,6 +54,11 @@ function parseAsNumericEnum<T extends Record<string, number | string>>(
   });
 }
 
+// URL value for "any creator". With no created_by in the URL the list defaults
+// to the current user, so clearing the filter needs an explicit value to survive
+// refresh/back. Never sent to the API.
+const CREATED_BY_ALL = "all";
+
 export default function StoriesPageClient() {
   const router = useRouter();
   const { auth } = useAuthContext();
@@ -87,6 +92,16 @@ export default function StoriesPageClient() {
     createdBy: parseAsString,
   });
 
+  // Searching users needs users:view — without it the API returns 403 (error toast),
+  // so the "Created By" filter is hidden and the query is disabled. Only default
+  // to the current user when the filter is visible, so it can be removed.
+  const canViewUsers = !!auth?.permissions.includes(PermissionEnum.USERS_VIEW);
+  const defaultCreatedBy = canViewUsers ? (auth?.id ?? null) : null;
+  const createdBy =
+    queryStates.createdBy === CREATED_BY_ALL
+      ? null
+      : (queryStates.createdBy ?? defaultCreatedBy);
+
   const queryStatesIntoPayload: TStoryPaginationPayload = useMemo(
     () => ({
       page: queryStates.page,
@@ -98,9 +113,9 @@ export default function StoriesPageClient() {
       status: queryStates.status ?? undefined,
       type: queryStates.type ?? undefined,
       location_type: queryStates.locationType ?? undefined,
-      created_by: queryStates.createdBy ?? undefined,
+      created_by: createdBy ?? undefined,
     }),
-    [queryStates],
+    [queryStates, createdBy],
   );
 
   const {
@@ -166,9 +181,6 @@ export default function StoriesPageClient() {
     [responseData],
   );
 
-  // Searching users needs users:view — without it the API returns 403 (error toast),
-  // so the "Created By" filter is hidden and the query is disabled.
-  const canViewUsers = !!auth?.permissions.includes(PermissionEnum.USERS_VIEW);
   const [userSearch, setUserSearch] = useState("");
   const { data: usersData } = useGetUserOptions(userSearch || undefined, {
     enabled: canViewUsers,
@@ -181,15 +193,16 @@ export default function StoriesPageClient() {
 
     // The applied creator may not be in the current user search results. While the
     // filter is active every listed story has that creator, so use its display_name.
-    const creator = stories.find(
-      (story) => story.created_by?.id === queryStates.createdBy,
-    )?.created_by;
+    // Fall back to the logged-in user for the default filter (e.g. empty list).
+    const creator =
+      stories.find((story) => story.created_by?.id === createdBy)?.created_by ??
+      (auth && auth.id === createdBy ? auth : undefined);
     if (creator && !items.some((item) => item.value === creator.id)) {
       items.unshift({ value: creator.id, label: creator.display_name });
     }
 
     return items;
-  }, [usersData, stories, queryStates.createdBy]);
+  }, [usersData, stories, createdBy, auth]);
 
   useEffect(() => {
     if (isError && error instanceof MainAPINotFoundError) {
@@ -206,9 +219,18 @@ export default function StoriesPageClient() {
 
   const onFilterApply = useCallback(
     (filters: TStoryCardListFilters) => {
-      setQueryStates({ ...filters, page: 1 });
+      setQueryStates({
+        ...filters,
+        // Keep the URL clean for the default (current user); mark "any creator"
+        // explicitly so it isn't replaced by the default.
+        createdBy:
+          filters.createdBy === defaultCreatedBy
+            ? null
+            : (filters.createdBy ?? (defaultCreatedBy ? CREATED_BY_ALL : null)),
+        page: 1,
+      });
     },
-    [setQueryStates],
+    [setQueryStates, defaultCreatedBy],
   );
 
   const handlePageChange = useCallback(
@@ -251,9 +273,10 @@ export default function StoriesPageClient() {
           isLoading={isLoading}
           pageCount={responseData?.data?.data?.meta?.total_page || 1}
           rowCount={responseData?.data?.data?.meta?.total_all_data || 0}
-          queryTable={queryStates}
+          queryTable={{ ...queryStates, createdBy }}
           userItems={userItems}
           canFilterByCreator={canViewUsers}
+          defaultCreatedBy={defaultCreatedBy}
           onUserSearchChange={setUserSearch}
           onActionHandler={{
             onPageChange: handlePageChange,
