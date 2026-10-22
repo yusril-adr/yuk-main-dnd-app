@@ -38,6 +38,7 @@ import { useUnarchiveStoryById } from "@/app/(authenticated)/dashboard/master/st
 import { useCancelStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-cancel-story-by-id";
 import { usePublishStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-publish-story-by-id";
 import { useGetUserOptions } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-user-options";
+import { STORY_CREATED_BY_ALL } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-created-by-filter";
 
 function parseAsNumericEnum<T extends Record<string, number | string>>(
   enumObj: T,
@@ -53,11 +54,6 @@ function parseAsNumericEnum<T extends Record<string, number | string>>(
     serialize: (value) => String(value),
   });
 }
-
-// URL value for "any creator". With no created_by in the URL the list defaults
-// to the current user, so clearing the filter needs an explicit value to survive
-// refresh/back. Never sent to the API.
-const CREATED_BY_ALL = "all";
 
 export default function StoriesPageClient() {
   const router = useRouter();
@@ -98,7 +94,7 @@ export default function StoriesPageClient() {
   const canViewUsers = !!auth?.permissions.includes(PermissionEnum.USERS_VIEW);
   const defaultCreatedBy = canViewUsers ? (auth?.id ?? null) : null;
   const createdBy =
-    queryStates.createdBy === CREATED_BY_ALL
+    queryStates.createdBy === STORY_CREATED_BY_ALL
       ? null
       : (queryStates.createdBy ?? defaultCreatedBy);
 
@@ -226,7 +222,7 @@ export default function StoriesPageClient() {
         createdBy:
           filters.createdBy === defaultCreatedBy
             ? null
-            : (filters.createdBy ?? (defaultCreatedBy ? CREATED_BY_ALL : null)),
+            : (filters.createdBy ?? (defaultCreatedBy ? STORY_CREATED_BY_ALL : null)),
         page: 1,
       });
     },
