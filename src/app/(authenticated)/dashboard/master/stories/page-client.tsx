@@ -38,6 +38,7 @@ import { useUnarchiveStoryById } from "@/app/(authenticated)/dashboard/master/st
 import { useCancelStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-cancel-story-by-id";
 import { usePublishStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-publish-story-by-id";
 import { useGetUserOptions } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-user-options";
+import { STORY_CREATED_BY_ALL } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-created-by-filter";
 
 function parseAsNumericEnum<T extends Record<string, number | string>>(
   enumObj: T,
@@ -87,6 +88,16 @@ export default function StoriesPageClient() {
     createdBy: parseAsString,
   });
 
+  // Searching users needs users:view — without it the API returns 403 (error toast),
+  // so the "Created By" filter is hidden and the query is disabled. Only default
+  // to the current user when the filter is visible, so it can be removed.
+  const canViewUsers = !!auth?.permissions.includes(PermissionEnum.USERS_VIEW);
+  const defaultCreatedBy = canViewUsers ? (auth?.id ?? null) : null;
+  const createdBy =
+    queryStates.createdBy === STORY_CREATED_BY_ALL
+      ? null
+      : (queryStates.createdBy ?? defaultCreatedBy);
+
   const queryStatesIntoPayload: TStoryPaginationPayload = useMemo(
     () => ({
       page: queryStates.page,
@@ -98,9 +109,9 @@ export default function StoriesPageClient() {
       status: queryStates.status ?? undefined,
       type: queryStates.type ?? undefined,
       location_type: queryStates.locationType ?? undefined,
-      created_by: queryStates.createdBy ?? undefined,
+      created_by: createdBy ?? undefined,
     }),
-    [queryStates],
+    [queryStates, createdBy],
   );
 
   const {
@@ -166,9 +177,6 @@ export default function StoriesPageClient() {
     [responseData],
   );
 
-  // Searching users needs users:view — without it the API returns 403 (error toast),
-  // so the "Created By" filter is hidden and the query is disabled.
-  const canViewUsers = !!auth?.permissions.includes(PermissionEnum.USERS_VIEW);
   const [userSearch, setUserSearch] = useState("");
   const { data: usersData } = useGetUserOptions(userSearch || undefined, {
     enabled: canViewUsers,
@@ -181,15 +189,16 @@ export default function StoriesPageClient() {
 
     // The applied creator may not be in the current user search results. While the
     // filter is active every listed story has that creator, so use its display_name.
-    const creator = stories.find(
-      (story) => story.created_by?.id === queryStates.createdBy,
-    )?.created_by;
+    // Fall back to the logged-in user for the default filter (e.g. empty list).
+    const creator =
+      stories.find((story) => story.created_by?.id === createdBy)?.created_by ??
+      (auth && auth.id === createdBy ? auth : undefined);
     if (creator && !items.some((item) => item.value === creator.id)) {
       items.unshift({ value: creator.id, label: creator.display_name });
     }
 
     return items;
-  }, [usersData, stories, queryStates.createdBy]);
+  }, [usersData, stories, createdBy, auth]);
 
   useEffect(() => {
     if (isError && error instanceof MainAPINotFoundError) {
@@ -206,9 +215,18 @@ export default function StoriesPageClient() {
 
   const onFilterApply = useCallback(
     (filters: TStoryCardListFilters) => {
-      setQueryStates({ ...filters, page: 1 });
+      setQueryStates({
+        ...filters,
+        // Keep the URL clean for the default (current user); mark "any creator"
+        // explicitly so it isn't replaced by the default.
+        createdBy:
+          filters.createdBy === defaultCreatedBy
+            ? null
+            : (filters.createdBy ?? (defaultCreatedBy ? STORY_CREATED_BY_ALL : null)),
+        page: 1,
+      });
     },
-    [setQueryStates],
+    [setQueryStates, defaultCreatedBy],
   );
 
   const handlePageChange = useCallback(
@@ -251,9 +269,10 @@ export default function StoriesPageClient() {
           isLoading={isLoading}
           pageCount={responseData?.data?.data?.meta?.total_page || 1}
           rowCount={responseData?.data?.data?.meta?.total_all_data || 0}
-          queryTable={queryStates}
+          queryTable={{ ...queryStates, createdBy }}
           userItems={userItems}
           canFilterByCreator={canViewUsers}
+          defaultCreatedBy={defaultCreatedBy}
           onUserSearchChange={setUserSearch}
           onActionHandler={{
             onPageChange: handlePageChange,

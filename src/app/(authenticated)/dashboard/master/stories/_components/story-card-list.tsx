@@ -85,6 +85,7 @@ export default function StoryCardList({
   queryTable,
   userItems,
   canFilterByCreator,
+  defaultCreatedBy,
   onUserSearchChange,
   onActionHandler,
 }: TStoryCardListProps) {
@@ -177,7 +178,7 @@ export default function StoryCardList({
     setFilterStatus(null);
     setFilterType(null);
     setFilterLocationType(null);
-    setFilterCreatedBy(null);
+    setFilterCreatedBy(defaultCreatedBy);
     onUserSearchChange("");
     onActionHandler.onFilterApply({
       sortBy: null,
@@ -185,9 +186,9 @@ export default function StoryCardList({
       status: null,
       type: null,
       locationType: null,
-      createdBy: null,
+      createdBy: defaultCreatedBy,
     });
-  }, [onUserSearchChange, onActionHandler]);
+  }, [defaultCreatedBy, onUserSearchChange, onActionHandler]);
 
   const handleUserSearchChange = useCallback(
     (value: string) => {

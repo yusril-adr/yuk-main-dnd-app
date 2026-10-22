@@ -45,6 +45,8 @@ export type TStoryCardListProps = {
   queryTable: TStoryCardListQueryTable;
   userItems: TStoryCardListUserItem[];
   canFilterByCreator: boolean;
+  /** Creator the list falls back to on "Clear" (the current user, when allowed). */
+  defaultCreatedBy: string | null;
   onUserSearchChange: (value: string) => void;
   onActionHandler: TStoryCardListActionHandler;
 };
