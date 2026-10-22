@@ -10,5 +10,6 @@ export type TStoryPaginationResponse = TStoryEntity & {
     is_can_archive: boolean;
     is_can_unarchive: boolean;
     is_can_delete: boolean;
+    is_can_view_public: boolean;
   };
 };
