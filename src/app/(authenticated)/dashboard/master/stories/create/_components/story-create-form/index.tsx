@@ -69,6 +69,8 @@ export default function StoryCreateForm({
         pointAwarded: "0",
         startAt: "",
         locationDetail: "",
+        locationLink: "",
+        discordChannelLink: "",
       },
     });
 
@@ -173,6 +175,8 @@ export default function StoryCreateForm({
       location_type: data.locationType,
       location_detail: data.locationDetail,
       banner_file_id: data.bannerFileId || undefined,
+      location_link: data.locationLink || undefined,
+      discord_channel_link: data.discordChannelLink || undefined,
     });
   };
 
@@ -512,6 +516,50 @@ export default function StoryCreateForm({
                     aria-required
                     id="locationDetail"
                     placeholder="e.g. Discord link or venue address"
+                    disabled={isFormDisabled}
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="locationLink"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="locationLink">Location Link</FieldLabel>
+                  <Input
+                    id="locationLink"
+                    type="url"
+                    inputMode="url"
+                    placeholder="https://maps.app.goo.gl/..."
+                    disabled={isFormDisabled}
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="discordChannelLink"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="discordChannelLink">
+                    Discord Channel Link
+                  </FieldLabel>
+                  <Input
+                    id="discordChannelLink"
+                    type="url"
+                    inputMode="url"
+                    placeholder="https://discord.gg/..."
                     disabled={isFormDisabled}
                     {...field}
                   />

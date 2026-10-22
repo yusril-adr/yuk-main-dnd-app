@@ -75,6 +75,8 @@ export default function StoryEditForm({
         : "",
       locationType: story?.location_type as StoryLocationTypeEnum,
       locationDetail: story?.location_detail ?? "",
+      locationLink: story?.location_link ?? "",
+      discordChannelLink: story?.discord_channel_link ?? "",
     }),
     [story],
   );
@@ -196,6 +198,8 @@ export default function StoryEditForm({
       location_type: data.locationType,
       location_detail: data.locationDetail,
       banner_file_id: bannerFileId,
+      location_link: data.locationLink || null,
+      discord_channel_link: data.discordChannelLink || null,
     });
   };
 
@@ -539,6 +543,50 @@ export default function StoryEditForm({
                     aria-required
                     id="locationDetail"
                     placeholder="e.g. Discord link or venue address"
+                    disabled={isFormDisabled}
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="locationLink"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="locationLink">Location Link</FieldLabel>
+                  <Input
+                    id="locationLink"
+                    type="url"
+                    inputMode="url"
+                    placeholder="https://maps.app.goo.gl/..."
+                    disabled={isFormDisabled}
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="discordChannelLink"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="discordChannelLink">
+                    Discord Channel Link
+                  </FieldLabel>
+                  <Input
+                    id="discordChannelLink"
+                    type="url"
+                    inputMode="url"
+                    placeholder="https://discord.gg/..."
                     disabled={isFormDisabled}
                     {...field}
                   />

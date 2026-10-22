@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { CalendarDays, Coins, Gamepad2, Sparkles, Trophy } from "lucide-react";
+import {
+  CalendarDays,
+  Coins,
+  Gamepad2,
+  Sparkles,
+  Trophy,
+} from "lucide-react";
+import DiscordIcon from "@/assets/icons/discord.svg";
 import { If, Then } from "react-if";
 
 import {
@@ -21,6 +28,7 @@ import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enu
 
 import PublicStoryJoinActions from "./public-story-join-actions";
 import PublicStoryDetailInfoRow from "./public-story-detail-info-row";
+import PublicStoryDetailExternalLink from "./public-story-detail-external-link";
 import PublicStoryStatusBadge from "@/app/(public)/stories/_components/public-story-status-badge";
 import { PUBLIC_STORY_LOCATION_TYPE_ICON } from "@/app/(public)/stories/_constants/public-story-icons";
 import { PUBLIC_STORY_START_AT_FORMAT } from "@/app/(public)/stories/[slug]/_constants/public-story-detail-date-format";
@@ -77,8 +85,34 @@ export default function PublicStoryDetailSummary({
         <PublicStoryDetailInfoRow
           icon={LocationIcon}
           label={`Location · ${STORY_LOCATION_TYPE_LABEL[story.location_type]}`}
-          value={story.location_detail}
+          value={
+            <span className="flex flex-col items-start gap-1">
+              {story.location_detail}
+              <If condition={!!story.location_link}>
+                <Then>
+                  <PublicStoryDetailExternalLink href={story.location_link!}>
+                    Open location map
+                  </PublicStoryDetailExternalLink>
+                </Then>
+              </If>
+            </span>
+          }
         />
+        <If condition={!!story.discord_channel_link}>
+          <Then>
+            <PublicStoryDetailInfoRow
+              icon={DiscordIcon}
+              label="Discord channel"
+              value={
+                <PublicStoryDetailExternalLink
+                  href={story.discord_channel_link!}
+                >
+                  Open Discord channel
+                </PublicStoryDetailExternalLink>
+              }
+            />
+          </Then>
+        </If>
         <If condition={!!story.game_system}>
           <Then>
             <PublicStoryDetailInfoRow

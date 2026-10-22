@@ -16,5 +16,8 @@ export type TStoryCreatePayload = {
   start_at?: string;
   location_type: StoryLocationTypeEnum;
   location_detail: string;
+  // https only; Discord hosts only for discord_channel_link (max 255)
+  location_link?: string;
+  discord_channel_link?: string;
   banner_file_id?: string;
 };

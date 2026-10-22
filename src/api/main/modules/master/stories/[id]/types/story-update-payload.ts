@@ -7,7 +7,9 @@ type TStoryClearableField =
   | "game_system"
   | "max_members"
   | "start_at"
-  | "banner_file_id";
+  | "banner_file_id"
+  | "location_link"
+  | "discord_channel_link";
 
 export type TStoryUpdatePayload = Partial<
   Omit<TStoryCreatePayload, TStoryClearableField | "status">
