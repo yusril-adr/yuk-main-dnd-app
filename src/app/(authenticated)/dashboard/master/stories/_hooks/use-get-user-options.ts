@@ -5,10 +5,7 @@ import type { TUserOptionsPayload } from "@/api/main/modules/master/iam/users/ty
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import CONFIG from "@/common/constants/config";
 
-export function useGetUserOptions(
-  search?: string,
-  options?: { enabled?: boolean },
-) {
+export function useGetUserOptions(search?: string) {
   const payload: TUserOptionsPayload = {
     page: 1,
     per_page: 10,
@@ -24,6 +21,5 @@ export function useGetUserOptions(
       payload,
     ],
     queryFn: () => getUserOptions(payload),
-    enabled: options?.enabled ?? true,
   });
 }

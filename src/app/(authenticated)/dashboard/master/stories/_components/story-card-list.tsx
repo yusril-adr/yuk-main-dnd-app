@@ -84,7 +84,6 @@ export default function StoryCardList({
   rowCount,
   queryTable,
   userItems,
-  canFilterByCreator,
   defaultCreatedBy,
   onUserSearchChange,
   onActionHandler,
@@ -343,41 +342,37 @@ export default function StoryCardList({
                 </Field>
               </FieldGroup>
 
-              <If condition={canFilterByCreator}>
-                <Then>
-                  <FieldGroup>
-                    <Field className="grid gap-2">
-                      <FieldLabel htmlFor="created-by">Created By</FieldLabel>
-                      <Combobox
-                        id="created-by"
-                        items={userItems}
-                        value={
-                          userItems.find(
-                            (item) => item.value === filterCreatedBy,
-                          ) ?? null
-                        }
-                        onValueChange={(item) =>
-                          setFilterCreatedBy(item?.value ?? null)
-                        }
-                        onInputValueChange={handleUserSearchChange}
-                        itemToStringLabel={(item) => item.label}
-                      >
-                        <ComboboxInput placeholder="Search user" showClear />
-                        <ComboboxContent>
-                          <ComboboxEmpty>No users found.</ComboboxEmpty>
-                          <ComboboxList>
-                            {(item: TStoryCardListUserItem) => (
-                              <ComboboxItem key={item.value} value={item}>
-                                {item.label}
-                              </ComboboxItem>
-                            )}
-                          </ComboboxList>
-                        </ComboboxContent>
-                      </Combobox>
-                    </Field>
-                  </FieldGroup>
-                </Then>
-              </If>
+              <FieldGroup>
+                <Field className="grid gap-2">
+                  <FieldLabel htmlFor="created-by">Created By</FieldLabel>
+                  <Combobox
+                    id="created-by"
+                    items={userItems}
+                    value={
+                      userItems.find(
+                        (item) => item.value === filterCreatedBy,
+                      ) ?? null
+                    }
+                    onValueChange={(item) =>
+                      setFilterCreatedBy(item?.value ?? null)
+                    }
+                    onInputValueChange={handleUserSearchChange}
+                    itemToStringLabel={(item) => item.label}
+                  >
+                    <ComboboxInput placeholder="Search user" showClear />
+                    <ComboboxContent>
+                      <ComboboxEmpty>No users found.</ComboboxEmpty>
+                      <ComboboxList>
+                        {(item: TStoryCardListUserItem) => (
+                          <ComboboxItem key={item.value} value={item}>
+                            {item.label}
+                          </ComboboxItem>
+                        )}
+                      </ComboboxList>
+                    </ComboboxContent>
+                  </Combobox>
+                </Field>
+              </FieldGroup>
 
               <FieldGroup className="mt-2">
                 <Field orientation="horizontal">
