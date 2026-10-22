@@ -3,10 +3,10 @@ import {
   CalendarDays,
   Coins,
   Gamepad2,
-  MessageCircle,
   Sparkles,
   Trophy,
 } from "lucide-react";
+import DiscordIcon from "@/assets/icons/discord.svg";
 import { If, Then } from "react-if";
 
 import {
@@ -101,7 +101,7 @@ export default function PublicStoryDetailSummary({
         <If condition={!!story.discord_channel_link}>
           <Then>
             <PublicStoryDetailInfoRow
-              icon={MessageCircle}
+              icon={DiscordIcon}
               label="Discord channel"
               value={
                 <PublicStoryDetailExternalLink

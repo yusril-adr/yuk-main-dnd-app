@@ -2,10 +2,10 @@ import {
   CalendarClock,
   Dices,
   Map,
-  MessageCircle,
   Trophy,
   Users,
 } from "lucide-react";
+import DiscordIcon from "@/assets/icons/discord.svg";
 import { If, Then } from "react-if";
 
 import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
@@ -88,7 +88,7 @@ export default function StoryDetailAdventureCard({
       <If condition={!!story.discord_channel_link}>
         <Then>
           <StoryDetailInfoRow
-            icon={MessageCircle}
+            icon={DiscordIcon}
             label="Discord Channel"
             value={
               <StoryDetailExternalLink href={story.discord_channel_link!}>

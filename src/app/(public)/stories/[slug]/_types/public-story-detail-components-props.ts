@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { FC, ReactNode, SVGProps } from "react";
 import type { LucideIcon } from "lucide-react";
 
 import type { TPublicStoryMemberPaginationResponse } from "@/api/main/modules/stories/[id]/members/types/public-story-member-pagination-response";
@@ -17,7 +17,8 @@ export type TPublicStoryDetailSectionProps = {
 };
 
 export type TPublicStoryDetailInfoRowProps = {
-  icon: LucideIcon;
+  // Lucide or an SVGR brand icon (e.g. Discord)
+  icon: LucideIcon | FC<SVGProps<SVGSVGElement>>;
   label: string;
   value: ReactNode;
 };

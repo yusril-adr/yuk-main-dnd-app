@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { FC, ReactNode, SVGProps } from "react";
 import type { LucideIcon } from "lucide-react";
 
 import type { TBoardStoryDetailResponse } from "@/api/main/modules/board/stories/[id]/types/board-story-detail-response";
@@ -19,7 +19,8 @@ export type TBoardStoryDetailSectionCardProps = {
 };
 
 export type TBoardStoryDetailInfoRowProps = {
-  icon: LucideIcon;
+  // Lucide or an SVGR brand icon (e.g. Discord)
+  icon: LucideIcon | FC<SVGProps<SVGSVGElement>>;
   label: string;
   value: ReactNode;
   // Shown in muted italics when value is empty
