@@ -6,4 +6,7 @@ import type { TBoardStoryCreator } from "../../types/board-story-creator";
 export type TBoardStoryDetailResponse = Omit<TStoryEntity, "created_by"> & {
   status_before: StoryStatusEnum | null;
   created_by?: TBoardStoryCreator;
+  action_list: {
+    is_can_view_public: boolean;
+  };
 };

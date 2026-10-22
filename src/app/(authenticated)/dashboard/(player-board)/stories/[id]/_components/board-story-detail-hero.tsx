@@ -11,6 +11,7 @@ import {
 import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 
 import BoardStoryStatusBadge from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-status-badge";
+import BoardStoryDetailSlug from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-slug";
 import { BOARD_STORY_TYPE_ICON } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_constants/board-story-detail";
 import type { TBoardStoryDetailCardProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_types/board-story-detail-components-props";
 
@@ -58,7 +59,10 @@ export default function BoardStoryDetailHero({
             <TypeIcon />
             {STORY_TYPE_LABEL[story.type]}
           </Badge>
-          <span className="font-mono text-xs">/{story.slug}</span>
+          <BoardStoryDetailSlug
+            slug={story.slug}
+            isCanViewPublic={story.action_list.is_can_view_public}
+          />
         </CardDescription>
       </CardHeader>
     </Card>

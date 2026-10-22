@@ -4,6 +4,7 @@ import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-
 
 import StoryCardBanner from "@/app/(authenticated)/dashboard/master/stories/_components/story-card-banner";
 import StoryStatusBadge from "@/app/(authenticated)/dashboard/master/stories/_components/story-status-badge";
+import StoryDetailSlug from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-slug";
 import { STORY_TYPE_ICON } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-type-icon";
 import type { TStoryDetailCardProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-card-props";
 
@@ -31,9 +32,10 @@ export default function StoryDetailHero({ story }: TStoryDetailCardProps) {
             <TypeIcon />
             {STORY_TYPE_LABEL[story.type]}
           </Badge>
-          <span className="font-mono text-xs text-muted-foreground">
-            /{story.slug}
-          </span>
+          <StoryDetailSlug
+            slug={story.slug}
+            isCanViewPublic={story.action_list.is_can_view_public}
+          />
         </div>
       </div>
     </Card>

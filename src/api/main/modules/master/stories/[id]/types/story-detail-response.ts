@@ -13,5 +13,6 @@ export type TStoryDetailResponse = TStoryEntity & {
     is_can_complete: boolean;
     is_can_add_members: boolean;
     is_can_remove_members: boolean;
+    is_can_view_public: boolean;
   };
 };
