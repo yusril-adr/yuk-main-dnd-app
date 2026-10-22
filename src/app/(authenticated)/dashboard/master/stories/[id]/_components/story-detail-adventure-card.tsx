@@ -1,10 +1,19 @@
-import { CalendarClock, Dices, Map, Trophy, Users } from "lucide-react";
+import {
+  CalendarClock,
+  Dices,
+  Map,
+  MessageCircle,
+  Trophy,
+  Users,
+} from "lucide-react";
+import { If, Then } from "react-if";
 
 import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
 import dayjs from "@/libs/dayjs";
 
 import StoryDetailSectionCard from "./story-detail-section-card";
 import StoryDetailInfoRow from "./story-detail-info-row";
+import StoryDetailExternalLink from "./story-detail-external-link";
 import { STORY_DETAIL_START_AT_FORMAT } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-detail-date-format";
 import { STORY_LOCATION_TYPE_ICON } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-location-type-icon";
 import { formatStoryReward } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
@@ -62,9 +71,34 @@ export default function StoryDetailAdventureCard({
       <StoryDetailInfoRow
         icon={STORY_LOCATION_TYPE_ICON[story.location_type]}
         label={`Location · ${STORY_LOCATION_TYPE_LABEL[story.location_type]}`}
-        value={story.location_detail}
+        value={
+          <span className="flex w-full flex-col items-start gap-1">
+            {story.location_detail}
+            <If condition={!!story.location_link}>
+              <Then>
+                <StoryDetailExternalLink href={story.location_link!}>
+                  Open location map
+                </StoryDetailExternalLink>
+              </Then>
+            </If>
+          </span>
+        }
         emptyText="-"
       />
+      <If condition={!!story.discord_channel_link}>
+        <Then>
+          <StoryDetailInfoRow
+            icon={MessageCircle}
+            label="Discord Channel"
+            value={
+              <StoryDetailExternalLink href={story.discord_channel_link!}>
+                Open Discord channel
+              </StoryDetailExternalLink>
+            }
+            emptyText="-"
+          />
+        </Then>
+      </If>
     </StoryDetailSectionCard>
   );
 }

@@ -1,10 +1,19 @@
-import { CalendarClock, Dices, Map, Trophy, Users } from "lucide-react";
+import {
+  CalendarClock,
+  Dices,
+  Map,
+  MessageCircle,
+  Trophy,
+  Users,
+} from "lucide-react";
+import { If, Then } from "react-if";
 
 import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
 import dayjs from "@/libs/dayjs";
 
 import BoardStoryDetailSectionCard from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-section-card";
 import BoardStoryDetailInfoRow from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-info-row";
+import BoardStoryDetailExternalLink from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-external-link";
 import { BOARD_STORY_LOCATION_TYPE_ICON } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_constants/board-story-detail";
 import { BOARD_STORY_START_AT_FORMAT } from "@/app/(authenticated)/dashboard/(player-board)/stories/_constants/board-story";
 import { formatBoardStoryReward } from "@/app/(authenticated)/dashboard/(player-board)/stories/_utils/board-story-helper";
@@ -62,9 +71,34 @@ export default function BoardStoryDetailAdventureCard({
       <BoardStoryDetailInfoRow
         icon={BOARD_STORY_LOCATION_TYPE_ICON[story.location_type]}
         label={`Location · ${STORY_LOCATION_TYPE_LABEL[story.location_type]}`}
-        value={story.location_detail}
+        value={
+          <span className="flex w-full flex-col items-start gap-1">
+            {story.location_detail}
+            <If condition={!!story.location_link}>
+              <Then>
+                <BoardStoryDetailExternalLink href={story.location_link!}>
+                  Open location map
+                </BoardStoryDetailExternalLink>
+              </Then>
+            </If>
+          </span>
+        }
         emptyText="-"
       />
+      <If condition={!!story.discord_channel_link}>
+        <Then>
+          <BoardStoryDetailInfoRow
+            icon={MessageCircle}
+            label="Discord Channel"
+            value={
+              <BoardStoryDetailExternalLink href={story.discord_channel_link!}>
+                Open Discord channel
+              </BoardStoryDetailExternalLink>
+            }
+            emptyText="-"
+          />
+        </Then>
+      </If>
     </BoardStoryDetailSectionCard>
   );
 }

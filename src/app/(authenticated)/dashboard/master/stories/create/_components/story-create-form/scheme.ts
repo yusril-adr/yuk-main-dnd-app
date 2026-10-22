@@ -5,6 +5,10 @@ import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/s
 import { countRichTextCharacters } from "@/utils/rich-text";
 import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 import { STORY_REWARD_MAX } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-reward";
+import {
+  storyDiscordChannelLinkSchema,
+  storyLocationLinkSchema,
+} from "@/app/(authenticated)/dashboard/master/stories/_utils/story-link";
 
 // Kept as the raw input string ("" = 0); whole number between 0 and the DB max
 const storyRewardSchema = (label: string) =>
@@ -53,6 +57,9 @@ export const StoryCreateFormSchema = z.object({
   locationDetail: z
     .string("Location detail is required")
     .min(1, "Location detail is required"),
+  // Optional https links ("" = not set)
+  locationLink: storyLocationLinkSchema,
+  discordChannelLink: storyDiscordChannelLinkSchema,
 });
 
 export type TStoryCreateFormSchema = z.infer<typeof StoryCreateFormSchema>;

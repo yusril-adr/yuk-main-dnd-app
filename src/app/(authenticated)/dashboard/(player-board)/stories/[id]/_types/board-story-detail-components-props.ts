@@ -44,3 +44,8 @@ export type TBoardStoryDetailMembersDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
+
+export type TBoardStoryDetailExternalLinkProps = {
+  href: string;
+  children: ReactNode;
+};

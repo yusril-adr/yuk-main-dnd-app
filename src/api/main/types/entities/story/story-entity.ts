@@ -18,6 +18,10 @@ export type TStoryEntity = TBaseEntity & {
   start_at: string | null;
   location_type: StoryLocationTypeEnum;
   location_detail: string;
+  // Optional https links (null when not set); location_link is independent
+  // of location_type
+  location_link: string | null;
+  discord_channel_link: string | null;
   banner_url: string | null;
   created_by?: TUserEntity;
 };

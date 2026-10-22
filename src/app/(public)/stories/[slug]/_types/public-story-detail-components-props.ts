@@ -31,3 +31,8 @@ export type TPublicStoryPartyProps = {
 export type TPublicStoryPartyMemberProps = {
   member: TPublicStoryMemberPaginationResponse;
 };
+
+export type TPublicStoryDetailExternalLinkProps = {
+  href: string;
+  children: ReactNode;
+};
