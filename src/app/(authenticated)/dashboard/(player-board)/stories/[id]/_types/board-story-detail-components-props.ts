@@ -9,6 +9,12 @@ export type TBoardStoryDetailCardProps = {
   className?: string;
 };
 
+export type TBoardStoryDetailSlugProps = {
+  slug: string;
+  // action_list.is_can_view_public: the public story page shows this story
+  isCanViewPublic: boolean;
+};
+
 export type TBoardStoryDetailSectionCardProps = {
   icon: LucideIcon;
   title: string;
