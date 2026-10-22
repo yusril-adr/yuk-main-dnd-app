@@ -88,11 +88,9 @@ export default function StoriesPageClient() {
     createdBy: parseAsString,
   });
 
-  // Searching users needs users:view — without it the API returns 403 (error toast),
-  // so the "Created By" filter is hidden and the query is disabled. Only default
-  // to the current user when the filter is visible, so it can be removed.
-  const canViewUsers = !!auth?.permissions.includes(PermissionEnum.USERS_VIEW);
-  const defaultCreatedBy = canViewUsers ? (auth?.id ?? null) : null;
+  // The list defaults to the current user's stories; the "Created By" filter
+  // (user options need no permission) can switch or clear it.
+  const defaultCreatedBy = auth?.id ?? null;
   const createdBy =
     queryStates.createdBy === STORY_CREATED_BY_ALL
       ? null
@@ -178,9 +176,7 @@ export default function StoriesPageClient() {
   );
 
   const [userSearch, setUserSearch] = useState("");
-  const { data: usersData } = useGetUserOptions(userSearch || undefined, {
-    enabled: canViewUsers,
-  });
+  const { data: usersData } = useGetUserOptions(userSearch || undefined);
 
   const userItems = useMemo(() => {
     const items: TStoryCardListUserItem[] = (
@@ -222,7 +218,8 @@ export default function StoriesPageClient() {
         createdBy:
           filters.createdBy === defaultCreatedBy
             ? null
-            : (filters.createdBy ?? (defaultCreatedBy ? STORY_CREATED_BY_ALL : null)),
+            : (filters.createdBy ??
+              (defaultCreatedBy ? STORY_CREATED_BY_ALL : null)),
         page: 1,
       });
     },
@@ -271,7 +268,6 @@ export default function StoriesPageClient() {
           rowCount={responseData?.data?.data?.meta?.total_all_data || 0}
           queryTable={{ ...queryStates, createdBy }}
           userItems={userItems}
-          canFilterByCreator={canViewUsers}
           defaultCreatedBy={defaultCreatedBy}
           onUserSearchChange={setUserSearch}
           onActionHandler={{
