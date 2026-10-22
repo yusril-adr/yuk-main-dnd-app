@@ -41,4 +41,4 @@ export const storyDiscordChannelLinkSchema = z
     if (!value) return true;
     const url = parseHttpsUrl(value);
     return !!url && STORY_DISCORD_LINK_HOSTS.includes(url.hostname);
-  }, "Discord channel link must be an https link on discord.com or discord.gg");
+  }, "Discord channel link must be an https link on discord.com, discord.gg or discordapp.com");
