@@ -14,7 +14,6 @@ export default function StoryDetailSlug({
         <a
           href={`/stories/${slug}`}
           target="_blank"
-          rel="noopener noreferrer"
           title="View public page"
           className="inline-flex items-center gap-1 rounded-sm font-mono text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
         >
