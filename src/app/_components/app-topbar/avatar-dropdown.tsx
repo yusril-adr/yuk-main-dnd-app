@@ -5,6 +5,8 @@ import {
   ChevronDown,
   ChevronUp,
   Coins,
+  ExternalLink,
+  LibraryBig,
   LogOut,
   User,
   BookOpen,
@@ -31,6 +33,7 @@ import {
   AvatarImage,
 } from "@/app/_components/ui/avatar";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import CONFIG from "@/common/constants/config";
 import { logout } from "@/utils/logout";
 import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 
@@ -103,6 +106,16 @@ export function AvatarDropdown() {
           <DropdownMenuItem render={<Link href="/settings" />}>
             <UserRoundCog />
             Settings
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            render={
+              <a href={CONFIG.MANUAL_URL} target="_blank" rel="noopener noreferrer" />
+            }
+          >
+            <LibraryBig />
+            Manual
+            <ExternalLink aria-hidden className="ml-auto size-3" />
+            <span className="sr-only">(opens in a new tab)</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={logout}>
             <LogOut />

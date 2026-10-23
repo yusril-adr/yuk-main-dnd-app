@@ -4,6 +4,8 @@ import {
   ChessKnight,
   Coins,
   EllipsisVertical,
+  ExternalLink,
+  LibraryBig,
   LogOut,
   ShieldCogCorner,
   User,
@@ -33,6 +35,7 @@ import {
 } from "@/app/_components/ui/avatar";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import CONFIG from "@/common/constants/config";
 import { logout } from "@/utils/logout";
 import { makeDefaultAvatarUrl } from "@/utils/user-helper";
 
@@ -135,6 +138,16 @@ export function AvatarSidebar() {
               <DropdownMenuItem render={<Link href="/settings" />}>
                 <UserRoundCog />
                 Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                render={
+                  <a href={CONFIG.MANUAL_URL} target="_blank" rel="noopener noreferrer" />
+                }
+              >
+                <LibraryBig />
+                Manual
+                <ExternalLink aria-hidden className="ml-auto size-3" />
+                <span className="sr-only">(opens in a new tab)</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
                 <LogOut />

@@ -45,6 +45,7 @@ The app runs at [http://localhost:3000](http://localhost:3000).
 | --- | --- |
 | `NEXT_PUBLIC_MAIN_API_BASE_URL` | Base URL of the YukMainDnD API. |
 | `NEXT_PUBLIC_SITE_URL` | Public URL of this site, used for canonical URLs, the sitemap and share images (`metadataBase`). Defaults to `http://localhost:3000`. |
+| `NEXT_PUBLIC_MANUAL_URL` | URL of the user manual, linked from the home page call to action and the avatar menus. Defaults to `https://yusril-adr.github.io/yuk-main-dnd-manual/`. |
 | `NEXT_PUBLIC_NEXT_IS_USING_THEME_TOGGLER` | Set to `true` to show the light/dark theme toggle (login, switch role and dashboard sidebar). |
 
 `.env.example` currently lists the theme flag as `NEXT_IS_USING_THEME_TOGGLER`, but the code reads `NEXT_PUBLIC_NEXT_IS_USING_THEME_TOGGLER`. Use the `NEXT_PUBLIC_` name.
@@ -118,7 +119,7 @@ docker build \
 docker run --rm -p 3000:3000 yuk-main-dnd-app
 ```
 
-The image is a two-stage build on `node:24-alpine`. It runs `next start` as a non-root `nextjs` user on port `3000`. `NEXT_PUBLIC_*` values are baked in at build time. The Dockerfile only takes `NEXT_PUBLIC_MAIN_API_BASE_URL` as a build arg.
+The image is a two-stage build on `node:24-alpine`. It runs `next start` as a non-root `nextjs` user on port `3000`. `NEXT_PUBLIC_*` values are baked in at build time. The Dockerfile takes `NEXT_PUBLIC_MAIN_API_BASE_URL` and `NEXT_PUBLIC_MANUAL_URL` (optional, falls back to the default) as build args.
 
 ## License
 
