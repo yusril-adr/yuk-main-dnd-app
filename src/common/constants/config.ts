@@ -3,6 +3,10 @@ const CONFIG = {
 
   SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
 
+  MANUAL_URL:
+    process.env.NEXT_PUBLIC_MANUAL_URL ||
+    "https://yusril-adr.github.io/yuk-main-dnd-manual/",
+
   IS_USING_THEME_TOGGLER:
     process.env.NEXT_PUBLIC_NEXT_IS_USING_THEME_TOGGLER === "true",
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutDashboard, UserPlus } from "lucide-react";
+import { ExternalLink, LayoutDashboard, UserPlus } from "lucide-react";
 
 import { Button } from "@/app/_components/ui/button";
 import {
@@ -11,6 +11,7 @@ import {
   ItemDescription,
 } from "@/app/_components/ui/item";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import CONFIG from "@/common/constants/config";
 
 export default function HomeFinalCta() {
   const { auth } = useAuthContext();
@@ -31,7 +32,7 @@ export default function HomeFinalCta() {
               The tavern is warm and a seat is waiting for you.
             </ItemDescription>
           </ItemContent>
-          <ItemActions className="w-full sm:w-auto">
+          <ItemActions className="w-full flex-col sm:w-auto sm:flex-row">
             <Button
               size="lg"
               variant="secondary"
@@ -41,6 +42,23 @@ export default function HomeFinalCta() {
             >
               {auth ? <LayoutDashboard /> : <UserPlus />}
               {auth ? "Find a story" : "Join the guild"}
+            </Button>
+            <Button
+              size="lg"
+              variant="link"
+              className="h-12 w-full px-4 text-base text-primary-foreground focus-visible:border-primary-foreground focus-visible:ring-primary-foreground/60 sm:w-auto"
+              render={
+                <a
+                  href={CONFIG.MANUAL_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                />
+              }
+              nativeButton={false}
+            >
+              New here? Read the manual
+              <ExternalLink aria-hidden />
+              <span className="sr-only">(opens in a new tab)</span>
             </Button>
           </ItemActions>
         </Item>
