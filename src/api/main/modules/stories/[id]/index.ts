@@ -13,8 +13,8 @@ export const getPublicStoryByIdentifier = async (identifier: string) => {
   return response;
 };
 
-// Auth required. 404 unknown/not public; 400 not published or caller is the
-// creator; 409 already a member. Re-joining after cancel restores the row.
+// Auth required. 404 unknown/not public; 400 not published; 409 already a
+// member. The creator can join too. Re-joining after cancel restores the row.
 export const joinPublicStoryById = async (id: string) => {
   const response = await mainAxios.post(MAIN_API_PATH.STORY.JOIN(id));
   return response;

@@ -1,5 +1,6 @@
 import * as z from "zod";
 
+import { UserExpLogDirectionEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-direction";
 import { UserExpLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type";
 
 const amountSchema = z
@@ -12,6 +13,7 @@ const amountSchema = z
 
 export const AddUserExperiencePointsFormSchema = z.object({
   type: z.nativeEnum(UserExpLogTypeEnum, "Type is required"),
+  direction: z.nativeEnum(UserExpLogDirectionEnum, "Direction is required"),
   amount: amountSchema,
   description: z.string(),
 });

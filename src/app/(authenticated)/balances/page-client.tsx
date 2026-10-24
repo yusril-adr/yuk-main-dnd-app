@@ -29,15 +29,27 @@ export default function BalancesPageClient() {
     ),
     page: parseAsInteger.withDefault(1),
     type: parseAsInteger,
+    direction: parseAsInteger,
   });
 
   const onTabChange = useCallback(
-    (tab: TBalanceTab) => setQueryStates({ tab, page: 1, type: null }),
+    (tab: TBalanceTab) =>
+      setQueryStates({ tab, page: 1, type: null, direction: null }),
     [setQueryStates],
   );
 
   const onTypeChange = useCallback(
     (type: number | null) => setQueryStates({ type, page: 1 }),
+    [setQueryStates],
+  );
+
+  const onDirectionChange = useCallback(
+    (direction: number | null) => setQueryStates({ direction, page: 1 }),
+    [setQueryStates],
+  );
+
+  const onFilterReset = useCallback(
+    () => setQueryStates({ type: null, direction: null, page: 1 }),
     [setQueryStates],
   );
 
@@ -52,8 +64,11 @@ export default function BalancesPageClient() {
   const panelProps = {
     page: queryStates.page,
     type: queryStates.type,
+    direction: queryStates.direction,
     onPageChange,
     onTypeChange,
+    onDirectionChange,
+    onFilterReset,
   };
 
   return (

@@ -3,7 +3,7 @@ import type { TAvailableStoryUserSortBy } from "../consts/available-story-user-s
 
 // Omitting order uses the API default asc. Omitting sort_by uses updated_at.
 // search matches username, display_name, and email.
-// The API already excludes the story creator and active members.
+// The API already excludes active members. The story creator is included.
 export type TAvailableStoryUserPaginationPayload =
   TMainApiPaginationPayload & {
     sort_by?: TAvailableStoryUserSortBy;
