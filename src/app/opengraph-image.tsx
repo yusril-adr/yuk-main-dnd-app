@@ -13,7 +13,7 @@ export const contentType = "image/png";
 // Light theme tokens from globals.css (oklch converted to hex for Satori)
 const COLORS = {
   background: "#fcf0dc", // --background oklch(0.96 0.03 81.68)
-  foreground: "#77614d", // --foreground oklch(0.51 0.042 64.9)
+  foreground: "#5d4835", // --foreground oklch(0.42 0.042 64.9)
   primary: "#7f180a", // --primary oklch(0.39 0.14 31.21)
 };
 

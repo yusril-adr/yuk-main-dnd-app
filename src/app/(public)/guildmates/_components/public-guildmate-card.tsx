@@ -62,7 +62,7 @@ export default function PublicGuildmateCard({
               <Badge
                 key={role.id}
                 variant="outline"
-                className="rounded-sm border-primary/30 text-[11px] text-primary"
+                className="rounded-sm border-primary/30 text-xs text-primary"
               >
                 {role.name}
               </Badge>
