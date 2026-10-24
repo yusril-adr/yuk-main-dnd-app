@@ -382,7 +382,10 @@ export default function UserEditForm({
                       {field.value.map((id) => {
                         const role = roles.find((r) => r.value === id);
                         return (
-                          <ComboboxChip key={id}>
+                          <ComboboxChip
+                            key={id}
+                            className="bg-accent text-accent-foreground"
+                          >
                             {role?.label ?? id}
                           </ComboboxChip>
                         );

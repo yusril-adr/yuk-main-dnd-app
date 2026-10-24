@@ -245,7 +245,10 @@ export default function UserCardList({
                       {filterRoleIds.map((id) => {
                         const role = roleItems.find((r) => r.value === id);
                         return (
-                          <ComboboxChip key={id}>
+                          <ComboboxChip
+                            key={id}
+                            className="bg-accent text-accent-foreground"
+                          >
                             {role?.label ?? id}
                           </ComboboxChip>
                         );
