@@ -64,7 +64,6 @@ const SORT_BY_OPTIONS: { label: string; value: TStoryCardListSortBy }[] = [
   { label: "Type", value: "type" },
   { label: "Game System", value: "game_system" },
   { label: "Max Members", value: "max_members" },
-  { label: "EXP Awarded", value: "exp_awarded" },
   { label: "Gold Awarded", value: "point_awarded" },
   { label: "Start At", value: "start_at" },
   { label: "Location", value: "location_type" },
