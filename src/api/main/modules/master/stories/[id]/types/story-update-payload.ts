@@ -1,7 +1,7 @@
 import type { TStoryCreatePayload } from "@/api/main/modules/master/stories/types/story-create-payload";
 
 // Optional columns the API clears when they are sent as null.
-// exp_awarded / point_awarded are NOT NULL in the DB: never send null
+// point_awarded is NOT NULL in the DB: never send null
 type TStoryClearableField =
   | "description"
   | "game_system"
