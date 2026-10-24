@@ -67,7 +67,7 @@ export default function PublicGuildmateStoryCard({
         <div className="absolute inset-x-2 bottom-2 flex flex-col gap-0.5 rounded-lg border bg-background/90 px-3 py-2 sm:inset-x-3 sm:bottom-3">
           <If condition={!!story.game_system}>
             <Then>
-              <span className="truncate text-[11px] font-medium tracking-wider text-muted-foreground uppercase sm:text-xs">
+              <span className="truncate text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 {story.game_system}
               </span>
             </Then>
@@ -148,7 +148,7 @@ export default function PublicGuildmateStoryCard({
                 </Avatar>
               </ItemMedia>
               <ItemContent className="min-w-0 gap-0">
-                <ItemDescription className="flex items-center gap-1 text-[10px] font-medium tracking-widest text-primary uppercase [&>svg]:size-3">
+                <ItemDescription className="flex items-center gap-1 text-xs font-medium tracking-widest text-primary uppercase [&>svg]:size-3">
                   <Crown />
                   Dungeon Master
                 </ItemDescription>

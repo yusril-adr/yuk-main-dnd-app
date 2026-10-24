@@ -250,7 +250,7 @@ export default function PublicStoryFilters({
               <TabsTrigger
                 key={chip.label}
                 value={chip.value != null ? String(chip.value) : ALL}
-                className="rounded-sm px-3 text-foreground/75 data-active:bg-primary data-active:text-primary-foreground data-active:shadow-none sm:px-4"
+                className="rounded-sm px-3 text-muted-foreground data-active:bg-primary data-active:text-primary-foreground data-active:shadow-none data-active:hover:text-primary-foreground sm:px-4"
               >
                 {Icon && <Icon />}
                 {chip.label}

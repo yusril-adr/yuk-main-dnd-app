@@ -132,7 +132,7 @@ export default function PublicStoryDetailSummary({
                 <div className="flex flex-col items-center gap-1 rounded-sm border border-primary/20 bg-primary/5 p-3 text-center">
                   <Sparkles className="size-4 text-primary" />
                   <span className="font-heading text-lg">{exp}</span>
-                  <span className="text-[11px] text-muted-foreground uppercase">
+                  <span className="text-xs text-muted-foreground uppercase">
                     Experience
                   </span>
                 </div>
@@ -143,7 +143,7 @@ export default function PublicStoryDetailSummary({
                 <div className="flex flex-col items-center gap-1 rounded-sm border border-accent/30 bg-accent/10 p-3 text-center">
                   <Coins className="size-4 text-accent-foreground" />
                   <span className="font-heading text-lg">{gold}</span>
-                  <span className="text-[11px] text-muted-foreground uppercase">
+                  <span className="text-xs text-muted-foreground uppercase">
                     Gold
                   </span>
                 </div>

@@ -19,7 +19,7 @@ export default function UserStatItem({
       className="min-w-0 flex-col items-center justify-center gap-0.5 text-center"
     >
       <ItemContent className="items-center gap-0.5">
-        <ItemDescription className="text-[11px] tracking-wider uppercase">
+        <ItemDescription className="text-xs tracking-wider uppercase">
           {label}
         </ItemDescription>
         <ItemTitle

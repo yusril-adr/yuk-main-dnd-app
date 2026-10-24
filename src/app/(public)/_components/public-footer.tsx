@@ -16,7 +16,7 @@ export default function PublicFooter() {
     // That id lives in home-final-cta.tsx; renaming it silently brings back the parchment footer on home.
     <footer className="mt-auto w-full group-has-[#final-cta]/public:bg-primary group-has-[#final-cta]/public:text-primary-foreground">
       <Separator className="group-has-[#final-cta]/public:hidden" />
-      <p className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-center gap-x-1 px-4 py-3 text-center text-[11px] leading-none text-muted-foreground group-has-[#final-cta]/public:text-primary-foreground/70 sm:px-10">
+      <p className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-center gap-x-1 px-4 py-3 text-center text-xs leading-none text-muted-foreground group-has-[#final-cta]/public:text-primary-foreground/70 sm:px-10">
         <span>© {year} YukMainDnD</span>
         <span aria-hidden>·</span>
         <span>
@@ -24,7 +24,7 @@ export default function PublicFooter() {
           <Button
             variant="link"
             nativeButton={false}
-            className="h-auto gap-0.5 p-0 text-[11px] leading-none group-has-[#final-cta]/public:text-primary-foreground"
+            className="h-auto gap-0.5 p-0 text-xs leading-none group-has-[#final-cta]/public:text-primary-foreground"
             render={
               <a href={CREDIT_URL} target="_blank" rel="noopener noreferrer" />
             }
