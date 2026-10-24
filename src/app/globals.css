@@ -50,7 +50,7 @@
 
 :root {
   --background: oklch(0.96 0.03 81.68);
-  --foreground: oklch(0.51 0.042 64.9);
+  --foreground: oklch(0.42 0.042 64.9);
   --card: oklch(0.89 0.04 64.92);
   --card-foreground: var(--foreground);
   --popover: oklch(93.584% 0.03507 81.251);
@@ -60,9 +60,9 @@
   --secondary: oklch(0.81 0.11 63.52);
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(74.05% 0.06645 80.493);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.61 0.19 33.74);
-  --accent-foreground: oklch(0.205 0 0);
+  --muted-foreground: oklch(0.48 0.042 64.9);
+  --accent: oklch(0.81 0.11 63.43);
+  --accent-foreground: var(--foreground);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(from var(--secondary) calc(l - 0.03) c h);
   --input: var(--border);
