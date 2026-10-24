@@ -77,6 +77,8 @@ export default function UserBalanceLogList<TType extends number>({
   typeOptions,
   typeLabels,
   typeIcons,
+  directionOptions,
+  directionLabels,
   isExpense,
   onPageChange,
   onSearchChange,
@@ -84,6 +86,9 @@ export default function UserBalanceLogList<TType extends number>({
 }: TUserBalanceLogListProps<TType>) {
   const [draftType, setDraftType] = useState<TType | null>(
     queryTable.type as TType | null,
+  );
+  const [draftDirection, setDraftDirection] = useState<number | null>(
+    queryTable.direction,
   );
 
   const pages = useMemo(
@@ -97,7 +102,9 @@ export default function UserBalanceLogList<TType extends number>({
 
   const isFirstPage = queryTable.page === 1;
   const isLastPage = queryTable.page >= pageCount;
-  const isFiltered = !!queryTable.search || queryTable.type != null;
+  const activeFilterCount =
+    Number(queryTable.type != null) + Number(queryTable.direction != null);
+  const isFiltered = !!queryTable.search || activeFilterCount > 0;
 
   const go = (target: number) => (event: React.MouseEvent) => {
     event.preventDefault();
@@ -110,14 +117,16 @@ export default function UserBalanceLogList<TType extends number>({
       event.preventDefault();
       onFilterApply({
         type: draftType,
+        direction: draftDirection,
       });
     },
-    [draftType, onFilterApply],
+    [draftType, draftDirection, onFilterApply],
   );
 
   const onFilterClear = useCallback(() => {
     setDraftType(null);
-    onFilterApply({ type: null });
+    setDraftDirection(null);
+    onFilterApply({ type: null, direction: null });
   }, [onFilterApply]);
 
   const onSearchInputChange = useCallback(
@@ -136,9 +145,9 @@ export default function UserBalanceLogList<TType extends number>({
           >
             <Funnel />
             Filter
-            {queryTable.type != null && (
+            {activeFilterCount > 0 && (
               <Badge variant="secondary" className="ms-1">
-                1
+                {activeFilterCount}
               </Badge>
             )}
           </PopoverTrigger>
@@ -170,6 +179,30 @@ export default function UserBalanceLogList<TType extends number>({
                     </ComboboxContent>
                   </Combobox>
                 </Field>
+                {directionOptions && directionLabels && (
+                  <Field className="grid gap-2">
+                    <FieldLabel htmlFor="direction">Direction</FieldLabel>
+                    <Combobox
+                      id="direction"
+                      items={directionOptions}
+                      value={draftDirection}
+                      itemToStringLabel={(item) => directionLabels[item]}
+                      onValueChange={(value) => setDraftDirection(value || null)}
+                    >
+                      <ComboboxInput placeholder="Select direction" showClear />
+                      <ComboboxContent>
+                        <ComboboxEmpty>No items found.</ComboboxEmpty>
+                        <ComboboxList>
+                          {(item) => (
+                            <ComboboxItem key={item} value={item}>
+                              {directionLabels[item as number]}
+                            </ComboboxItem>
+                          )}
+                        </ComboboxList>
+                      </ComboboxContent>
+                    </Combobox>
+                  </Field>
+                )}
               </FieldGroup>
               <FieldGroup className="mt-2">
                 <Field orientation="horizontal">
@@ -234,7 +267,7 @@ export default function UserBalanceLogList<TType extends number>({
                 : "No balance has been recorded for this user yet."}
             </EmptyDescription>
           </EmptyHeader>
-          {isFiltered && queryTable.type != null && (
+          {activeFilterCount > 0 && (
             <EmptyContent>
               <Button variant="outline" onClick={onFilterClear}>
                 Clear filter
@@ -263,7 +296,7 @@ export default function UserBalanceLogList<TType extends number>({
               : data.map((row, index) => {
                   const TypeIcon: LucideIcon | undefined =
                     typeIcons[row.type as TType];
-                  const expense = isExpense?.(row.type as TType) ?? false;
+                  const expense = isExpense?.(row) ?? false;
                   return (
                     <Fragment key={row.id}>
                       {index > 0 && <ItemSeparator className="my-0" />}

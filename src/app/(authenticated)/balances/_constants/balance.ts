@@ -1,3 +1,4 @@
+import { UserExpLogDirectionEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-direction";
 import { UserExpLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type";
 import { UserPointLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/points/enums/user-point-log-type";
 
@@ -22,6 +23,11 @@ export const BALANCE_EXP_TYPE_OPTIONS = [
   UserExpLogTypeEnum.DM,
 ] as const;
 
+export const BALANCE_EXP_DIRECTION_OPTIONS = [
+  UserExpLogDirectionEnum.INCOME,
+  UserExpLogDirectionEnum.EXPENSE,
+] as const;
+
 export const BALANCE_POINT_TYPE_OPTIONS = [
   UserPointLogTypeEnum.INCOME,
   UserPointLogTypeEnum.EXPENSE,
@@ -31,6 +37,14 @@ export const BALANCE_POINT_TYPE_OPTIONS = [
 export const BALANCE_EXP_TYPE_LABEL: Record<UserExpLogTypeEnum, string> = {
   [UserExpLogTypeEnum.PLAYER]: "Player EXP",
   [UserExpLogTypeEnum.DM]: "Dungeon Master EXP",
+};
+
+export const BALANCE_EXP_DIRECTION_LABEL: Record<
+  UserExpLogDirectionEnum,
+  string
+> = {
+  [UserExpLogDirectionEnum.INCOME]: "EXP earned",
+  [UserExpLogDirectionEnum.EXPENSE]: "EXP spent",
 };
 
 export const BALANCE_POINT_TYPE_LABEL: Record<UserPointLogTypeEnum, string> = {

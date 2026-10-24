@@ -2,7 +2,13 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import { BookOpen, ChessKnight, type LucideIcon } from "lucide-react";
+import {
+  ArrowDownLeft,
+  ArrowUpRight,
+  BookOpen,
+  ChessKnight,
+  type LucideIcon,
+} from "lucide-react";
 import { If, Then } from "react-if";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -25,6 +31,8 @@ import {
 import { Input } from "@/app/_components/ui/input";
 import { Spinner } from "@/app/_components/ui/spinner";
 import { Textarea } from "@/app/_components/ui/textarea";
+import { UserExpLogDirectionEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-direction";
+import { USER_EXP_LOG_DIRECTION_LABEL } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-direction-label";
 import { UserExpLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type";
 import { USER_EXP_LOG_TYPE_LABEL } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type-label";
 import MainAPIValidationError from "@/api/main/errors/validation-error";
@@ -54,6 +62,23 @@ const TYPE_OPTIONS: {
   },
 ];
 
+const DIRECTION_OPTIONS: {
+  value: UserExpLogDirectionEnum;
+  label: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    value: UserExpLogDirectionEnum.INCOME,
+    label: USER_EXP_LOG_DIRECTION_LABEL[UserExpLogDirectionEnum.INCOME],
+    icon: ArrowDownLeft,
+  },
+  {
+    value: UserExpLogDirectionEnum.EXPENSE,
+    label: USER_EXP_LOG_DIRECTION_LABEL[UserExpLogDirectionEnum.EXPENSE],
+    icon: ArrowUpRight,
+  },
+];
+
 export default function AddUserExperiencePointsDialog({
   open,
   onOpenChange,
@@ -66,6 +91,7 @@ export default function AddUserExperiencePointsDialog({
       resolver: zodResolver(AddUserExperiencePointsFormSchema),
       defaultValues: {
         type: UserExpLogTypeEnum.PLAYER,
+        direction: UserExpLogDirectionEnum.INCOME,
         amount: "",
         description: "",
       },
@@ -107,6 +133,7 @@ export default function AddUserExperiencePointsDialog({
     const description = data.description.trim();
     onSubmitPayload({
       type: data.type,
+      direction: data.direction,
       amount,
       ...(description ? { description } : {}),
     });
@@ -118,8 +145,8 @@ export default function AddUserExperiencePointsDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Add experience points</AlertDialogTitle>
           <AlertDialogDescription>
-            Credit player EXP or DM EXP. The amount is added and cannot be
-            negative.
+            Pick player EXP or DM EXP. Income adds EXP. Expense subtracts it.
+            The amount stays positive.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -141,6 +168,38 @@ export default function AddUserExperiencePointsDialog({
                   <FieldLabel required>Type</FieldLabel>
                   <div className="grid grid-cols-2 gap-2">
                     {TYPE_OPTIONS.map((option) => (
+                      <Button
+                        key={option.value}
+                        type="button"
+                        variant={
+                          field.value === option.value ? "default" : "outline"
+                        }
+                        aria-pressed={field.value === option.value}
+                        disabled={isPending}
+                        onClick={() => field.onChange(option.value)}
+                      >
+                        <option.icon className="size-4 shrink-0" />
+                        {option.label}
+                      </Button>
+                    ))}
+                  </div>
+                  <If condition={fieldState.invalid}>
+                    <Then>
+                      <FieldError errors={[fieldState.error]} />
+                    </Then>
+                  </If>
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="direction"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel required>Direction</FieldLabel>
+                  <div className="grid grid-cols-2 gap-2">
+                    {DIRECTION_OPTIONS.map((option) => (
                       <Button
                         key={option.value}
                         type="button"
