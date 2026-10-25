@@ -29,6 +29,10 @@ export default function BalanceLogList({
   typeItems,
   typeValue,
   typeAriaLabel,
+  directionItems,
+  directionValue,
+  directionAriaLabel,
+  onDirectionChange,
   emptyTitle,
   emptyDescription,
   onTypeChange,
@@ -64,7 +68,7 @@ export default function BalanceLogList({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex justify-end">
+      <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
         <Select
           items={typeItems}
           value={typeValue}
@@ -86,6 +90,29 @@ export default function BalanceLogList({
             </SelectGroup>
           </SelectContent>
         </Select>
+        {directionItems && onDirectionChange && (
+          <Select
+            items={directionItems}
+            value={directionValue}
+            onValueChange={(value) => onDirectionChange(value as string)}
+          >
+            <SelectTrigger
+              aria-label={directionAriaLabel}
+              className="h-10! w-full bg-card sm:w-52"
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {directionItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        )}
       </div>
 
       {content}
