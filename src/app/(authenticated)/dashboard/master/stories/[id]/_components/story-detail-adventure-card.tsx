@@ -1,5 +1,6 @@
 import {
   CalendarClock,
+  ClipboardList,
   Dices,
   Map,
   Trophy,
@@ -93,6 +94,20 @@ export default function StoryDetailAdventureCard({
             value={
               <StoryDetailExternalLink href={story.discord_channel_link!}>
                 Open Discord channel
+              </StoryDetailExternalLink>
+            }
+            emptyText="-"
+          />
+        </Then>
+      </If>
+      <If condition={!!story.feedback_form_link}>
+        <Then>
+          <StoryDetailInfoRow
+            icon={ClipboardList}
+            label="Feedback Form"
+            value={
+              <StoryDetailExternalLink href={story.feedback_form_link!}>
+                Open feedback form
               </StoryDetailExternalLink>
             }
             emptyText="-"

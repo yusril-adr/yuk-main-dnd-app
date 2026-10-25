@@ -74,6 +74,7 @@ export default function StoryCreateForm({
         locationDetail: "",
         locationLink: "",
         discordChannelLink: "",
+        feedbackFormLink: "",
       },
     });
 
@@ -181,6 +182,7 @@ export default function StoryCreateForm({
       banner_file_id: data.bannerFileId || undefined,
       location_link: data.locationLink || undefined,
       discord_channel_link: data.discordChannelLink || undefined,
+      feedback_form_link: data.feedbackFormLink || undefined,
     });
   };
 
@@ -599,6 +601,29 @@ export default function StoryCreateForm({
                     type="url"
                     inputMode="url"
                     placeholder="https://discord.gg/..."
+                    disabled={isFormDisabled}
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="feedbackFormLink"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="feedbackFormLink">
+                    Feedback Form Link
+                  </FieldLabel>
+                  <Input
+                    id="feedbackFormLink"
+                    type="url"
+                    inputMode="url"
+                    placeholder="https://forms.gle/..."
                     disabled={isFormDisabled}
                     {...field}
                   />

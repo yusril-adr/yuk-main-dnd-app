@@ -9,7 +9,8 @@ type TStoryClearableField =
   | "start_at"
   | "banner_file_id"
   | "location_link"
-  | "discord_channel_link";
+  | "discord_channel_link"
+  | "feedback_form_link";
 
 export type TStoryUpdatePayload = Partial<
   Omit<TStoryCreatePayload, TStoryClearableField | "status">
