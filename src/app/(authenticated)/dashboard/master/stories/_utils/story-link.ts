@@ -42,3 +42,15 @@ export const storyDiscordChannelLinkSchema = z
     const url = parseHttpsUrl(value);
     return !!url && STORY_DISCORD_LINK_HOSTS.includes(url.hostname);
   }, "Discord channel link must be an https link on discord.com, discord.gg or discordapp.com");
+
+export const storyFeedbackFormLinkSchema = z
+  .string()
+  .trim()
+  .max(
+    STORY_LINK_MAX_LENGTH,
+    `Feedback form link must be at most ${STORY_LINK_MAX_LENGTH} characters`,
+  )
+  .refine(
+    (value) => !value || !!parseHttpsUrl(value),
+    "Feedback form link must be an https link",
+  );

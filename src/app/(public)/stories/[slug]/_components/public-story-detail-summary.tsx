@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {
   CalendarDays,
+  ClipboardList,
   Coins,
   Gamepad2,
   Sparkles,
@@ -108,6 +109,21 @@ export default function PublicStoryDetailSummary({
                   href={story.discord_channel_link!}
                 >
                   Open Discord channel
+                </PublicStoryDetailExternalLink>
+              }
+            />
+          </Then>
+        </If>
+        <If condition={!!story.feedback_form_link}>
+          <Then>
+            <PublicStoryDetailInfoRow
+              icon={ClipboardList}
+              label="Feedback form"
+              value={
+                <PublicStoryDetailExternalLink
+                  href={story.feedback_form_link!}
+                >
+                  Open feedback form
                 </PublicStoryDetailExternalLink>
               }
             />

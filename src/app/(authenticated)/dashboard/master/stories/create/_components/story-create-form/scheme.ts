@@ -8,6 +8,7 @@ import { STORY_REWARD_MAX } from "@/app/(authenticated)/dashboard/master/stories
 import {
   storyDiscordChannelLinkSchema,
   storyLocationLinkSchema,
+  storyFeedbackFormLinkSchema,
 } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-link";
 
 // Kept as the raw input string ("" = 0); whole number between 0 and the DB max
@@ -60,6 +61,7 @@ export const StoryCreateFormSchema = z.object({
   // Optional https links ("" = not set)
   locationLink: storyLocationLinkSchema,
   discordChannelLink: storyDiscordChannelLinkSchema,
+  feedbackFormLink: storyFeedbackFormLinkSchema,
 });
 
 export type TStoryCreateFormSchema = z.infer<typeof StoryCreateFormSchema>;
