@@ -48,11 +48,7 @@ export const StoryEditFormSchema = z.object({
   maxMembers: z
     .string()
     .regex(/^([1-9]\d*)?$/, "Max members must be a whole number of at least 1"),
-  // The API needs at least 1 EXP (exp_awarded)
-  expAwarded: storyRewardSchema("Player EXP").refine(
-    (value) => Number(value) >= 1,
-    "Player EXP must be at least 1",
-  ),
+  expAwarded: storyRewardSchema("Player EXP"),
   pointAwarded: storyRewardSchema("Gold awarded"),
   // datetime-local input value ("" = not set)
   startAt: z.string(),
