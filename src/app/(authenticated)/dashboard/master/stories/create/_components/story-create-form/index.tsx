@@ -556,7 +556,7 @@ export default function StoryCreateForm({
                   <Textarea
                     aria-required
                     id="locationDetail"
-                    placeholder="e.g. Discord link or venue address"
+                    placeholder="e.g. Venue name and address"
                     disabled={isFormDisabled}
                     {...field}
                   />

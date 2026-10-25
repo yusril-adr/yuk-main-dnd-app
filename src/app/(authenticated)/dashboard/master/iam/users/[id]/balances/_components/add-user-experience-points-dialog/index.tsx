@@ -237,7 +237,7 @@ export default function AddUserExperiencePointsDialog({
                     inputMode="numeric"
                     min={1}
                     step={1}
-                    placeholder="1"
+                    placeholder="Enter amount"
                     disabled={isPending}
                     className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                     {...field}
