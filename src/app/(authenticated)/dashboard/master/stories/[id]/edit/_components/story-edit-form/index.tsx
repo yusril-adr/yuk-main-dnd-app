@@ -45,6 +45,8 @@ import RichTextEditor from "@/app/_components/rich-text-editor";
 import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 import { toStoryRewardPayload } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
 import { STORY_REWARD_FIELD_CONFIG } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-reward-field";
+import StoryEditXpGuidePopover from "./story-edit-xp-guide-popover";
+import StoryRewardLockedPopover from "@/app/(authenticated)/dashboard/master/stories/_components/story-reward-locked-popover";
 import { StoryEditFormSchema, type TStoryEditFormSchema } from "./scheme";
 import type { TStoryEditFormProps } from "../../_types/story-edit-form-props";
 
@@ -374,7 +376,19 @@ export default function StoryEditForm({
                 control={control}
                 render={({ field, fieldState }) => (
                   <Field className="grid" data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="expAwarded">Player EXP</FieldLabel>
+                    <div className="flex items-center gap-1">
+                      <FieldLabel htmlFor="expAwarded">Player EXP</FieldLabel>
+                      {STORY_REWARD_FIELD_CONFIG.playerExp.isEditable ? (
+                        <StoryEditXpGuidePopover />
+                      ) : (
+                        <StoryRewardLockedPopover
+                          label="Player EXP"
+                          description={
+                            STORY_REWARD_FIELD_CONFIG.playerExp.lockedNote
+                          }
+                        />
+                      )}
+                    </div>
                     <Input
                       id="expAwarded"
                       type="number"
@@ -405,9 +419,19 @@ export default function StoryEditForm({
                 control={control}
                 render={({ field, fieldState }) => (
                   <Field className="grid" data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="pointAwarded">
-                      Gold Awarded (GP)
-                    </FieldLabel>
+                    <div className="flex items-center gap-1">
+                      <FieldLabel htmlFor="pointAwarded">
+                        Gold Awarded (GP)
+                      </FieldLabel>
+                      {!STORY_REWARD_FIELD_CONFIG.gold.isEditable && (
+                        <StoryRewardLockedPopover
+                          label="Gold Awarded"
+                          description={
+                            STORY_REWARD_FIELD_CONFIG.gold.lockedNote
+                          }
+                        />
+                      )}
+                    </div>
                     <Input
                       id="pointAwarded"
                       type="number"
