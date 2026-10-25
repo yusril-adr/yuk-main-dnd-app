@@ -7,6 +7,7 @@ export type TStoryCardListSortBy = Extract<
   | "type"
   | "game_system"
   | "max_members"
+  | "exp_awarded"
   | "point_awarded"
   | "start_at"
   | "location_type"
