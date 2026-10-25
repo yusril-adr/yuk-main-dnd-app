@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useRef } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import {
-  ArrowDownLeft,
-  ArrowUpRight,
+  ArrowDown,
+  ArrowUp,
   BookOpen,
   ChessKnight,
   type LucideIcon,
@@ -68,14 +68,14 @@ const DIRECTION_OPTIONS: {
   icon: LucideIcon;
 }[] = [
   {
-    value: UserExpLogDirectionEnum.INCOME,
-    label: USER_EXP_LOG_DIRECTION_LABEL[UserExpLogDirectionEnum.INCOME],
-    icon: ArrowDownLeft,
+    value: UserExpLogDirectionEnum.INCREMENT,
+    label: USER_EXP_LOG_DIRECTION_LABEL[UserExpLogDirectionEnum.INCREMENT],
+    icon: ArrowUp,
   },
   {
-    value: UserExpLogDirectionEnum.EXPENSE,
-    label: USER_EXP_LOG_DIRECTION_LABEL[UserExpLogDirectionEnum.EXPENSE],
-    icon: ArrowUpRight,
+    value: UserExpLogDirectionEnum.DECREMENT,
+    label: USER_EXP_LOG_DIRECTION_LABEL[UserExpLogDirectionEnum.DECREMENT],
+    icon: ArrowDown,
   },
 ];
 
@@ -91,7 +91,7 @@ export default function AddUserExperiencePointsDialog({
       resolver: zodResolver(AddUserExperiencePointsFormSchema),
       defaultValues: {
         type: UserExpLogTypeEnum.PLAYER,
-        direction: UserExpLogDirectionEnum.INCOME,
+        direction: UserExpLogDirectionEnum.INCREMENT,
         amount: "",
         description: "",
       },
@@ -145,7 +145,7 @@ export default function AddUserExperiencePointsDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Add experience points</AlertDialogTitle>
           <AlertDialogDescription>
-            Pick player EXP or DM EXP. Income adds EXP. Expense subtracts it.
+            Pick player EXP or DM EXP. Increment adds EXP. Decrement subtracts it.
             The amount stays positive.
           </AlertDialogDescription>
         </AlertDialogHeader>

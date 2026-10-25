@@ -32,7 +32,7 @@ const TYPE_ITEMS = [
 ];
 
 const DIRECTION_ITEMS = [
-  { label: "Earned & spent", value: BALANCE_FILTER_ALL },
+  { label: "All changes", value: BALANCE_FILTER_ALL },
   ...BALANCE_EXP_DIRECTION_OPTIONS.map((direction) => ({
     label: BALANCE_EXP_DIRECTION_LABEL[direction],
     value: String(direction),

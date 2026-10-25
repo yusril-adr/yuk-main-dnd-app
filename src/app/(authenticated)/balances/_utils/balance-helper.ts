@@ -12,13 +12,13 @@ export function getSignedPointAmount(
   return type === UserPointLogTypeEnum.EXPENSE ? -value : value;
 }
 
-// Same for EXP, except direction (not type) marks the expense
+// Same for EXP, except direction (not type) marks the decrement
 export function getSignedExpAmount(
   amount: number,
   direction: UserExpLogDirectionEnum,
 ) {
   const value = Math.abs(amount);
-  return direction === UserExpLogDirectionEnum.EXPENSE ? -value : value;
+  return direction === UserExpLogDirectionEnum.DECREMENT ? -value : value;
 }
 
 export function toTypeOrNull(value: string | null) {

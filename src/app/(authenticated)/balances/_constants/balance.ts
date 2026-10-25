@@ -24,8 +24,8 @@ export const BALANCE_EXP_TYPE_OPTIONS = [
 ] as const;
 
 export const BALANCE_EXP_DIRECTION_OPTIONS = [
-  UserExpLogDirectionEnum.INCOME,
-  UserExpLogDirectionEnum.EXPENSE,
+  UserExpLogDirectionEnum.INCREMENT,
+  UserExpLogDirectionEnum.DECREMENT,
 ] as const;
 
 export const BALANCE_POINT_TYPE_OPTIONS = [
@@ -43,8 +43,8 @@ export const BALANCE_EXP_DIRECTION_LABEL: Record<
   UserExpLogDirectionEnum,
   string
 > = {
-  [UserExpLogDirectionEnum.INCOME]: "EXP earned",
-  [UserExpLogDirectionEnum.EXPENSE]: "EXP spent",
+  [UserExpLogDirectionEnum.INCREMENT]: "EXP increments",
+  [UserExpLogDirectionEnum.DECREMENT]: "EXP decrements",
 };
 
 export const BALANCE_POINT_TYPE_LABEL: Record<UserPointLogTypeEnum, string> = {

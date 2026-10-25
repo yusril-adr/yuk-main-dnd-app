@@ -79,7 +79,7 @@ export default function UserBalanceLogList<TType extends number>({
   typeIcons,
   directionOptions,
   directionLabels,
-  isExpense,
+  isNegative,
   onPageChange,
   onSearchChange,
   onFilterApply,
@@ -296,7 +296,7 @@ export default function UserBalanceLogList<TType extends number>({
               : data.map((row, index) => {
                   const TypeIcon: LucideIcon | undefined =
                     typeIcons[row.type as TType];
-                  const expense = isExpense?.(row) ?? false;
+                  const negative = isNegative?.(row) ?? false;
                   return (
                     <Fragment key={row.id}>
                       {index > 0 && <ItemSeparator className="my-0" />}
@@ -330,12 +330,12 @@ export default function UserBalanceLogList<TType extends number>({
                         <ItemActions className="font-heading text-base tabular-nums">
                           <span
                             className={
-                              expense
+                              negative
                                 ? "text-destructive"
                                 : "text-emerald-700 dark:text-emerald-400"
                             }
                           >
-                            {expense ? "−" : "+"}
+                            {negative ? "−" : "+"}
                             {row.amount.toLocaleString()}
                           </span>
                           <ItemDescription className="text-xs">

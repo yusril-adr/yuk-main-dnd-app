@@ -77,8 +77,8 @@ const parseAsBalanceLogType = createParser({
 });
 
 const EXP_LOG_DIRECTION_OPTIONS = [
-  UserExpLogDirectionEnum.INCOME,
-  UserExpLogDirectionEnum.EXPENSE,
+  UserExpLogDirectionEnum.INCREMENT,
+  UserExpLogDirectionEnum.DECREMENT,
 ];
 
 const parseAsExpLogDirection = createParser({
@@ -395,8 +395,8 @@ export default function UserBalancesPageClient() {
               typeIcons={EXP_LOG_TYPE_ICONS}
               directionOptions={EXP_LOG_DIRECTION_OPTIONS}
               directionLabels={USER_EXP_LOG_DIRECTION_LABEL}
-              isExpense={(row) =>
-                row.direction === UserExpLogDirectionEnum.EXPENSE
+              isNegative={(row) =>
+                row.direction === UserExpLogDirectionEnum.DECREMENT
               }
               onPageChange={onPageChange}
               onSearchChange={onSearchChange}
@@ -420,7 +420,7 @@ export default function UserBalancesPageClient() {
               ]}
               typeLabels={USER_POINT_LOG_TYPE_LABEL}
               typeIcons={POINT_LOG_TYPE_ICONS}
-              isExpense={(row) => row.type === UserPointLogTypeEnum.EXPENSE}
+              isNegative={(row) => row.type === UserPointLogTypeEnum.EXPENSE}
               onPageChange={onPageChange}
               onSearchChange={onSearchChange}
               onFilterApply={onPointFilterApply}

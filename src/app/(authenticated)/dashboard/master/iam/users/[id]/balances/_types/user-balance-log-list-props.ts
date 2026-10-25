@@ -6,7 +6,7 @@ export type TUserBalanceLogRow = {
   id: string;
   amount: number;
   type: number;
-  // EXP logs only; GP logs carry income/expense in type
+  // EXP logs only (increment/decrement); GP logs carry income/expense in type
   direction?: number;
   description: string | null;
   created_at: string;
@@ -33,7 +33,7 @@ export type TUserBalanceLogListProps<TType extends number> = {
   // Omit to hide the direction filter
   directionOptions?: number[];
   directionLabels?: Record<number, string>;
-  isExpense?: (row: TUserBalanceLogRow) => boolean;
+  isNegative?: (row: TUserBalanceLogRow) => boolean;
   onPageChange: (page: number) => void;
   onSearchChange: (value: string) => void;
   onFilterApply: (filter: TUserBalanceLogListFilter<TType>) => void;
