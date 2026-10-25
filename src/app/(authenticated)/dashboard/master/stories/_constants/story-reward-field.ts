@@ -7,7 +7,7 @@ export const STORY_REWARD_FIELD_CONFIG: Record<
   "playerExp" | "gold",
   TStoryRewardFieldConfig
 > = {
-  // The API accepts 1 or more (exp_awarded), defaulting to 1
+  // The API accepts 0 or more (exp_awarded), defaulting to 1
   playerExp: {
     isEditable: false,
     defaultValue: 1,
