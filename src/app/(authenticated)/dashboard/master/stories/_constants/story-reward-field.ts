@@ -12,7 +12,7 @@ export const STORY_REWARD_FIELD_CONFIG: Record<
     isEditable: false,
     defaultValue: 1,
     lockedNote:
-      "Player EXP is standardized: every attending player gets 1 EXP per story, so it can't be filled in here. The DM gets 1 DM EXP automatically, unless they also played.",
+      "EXP rewards are standardized: every attending player gets 1 EXP per story, so it can't be filled in here. The DM gets 1 DM EXP automatically, unless they also played.",
   },
   gold: {
     isEditable: false,

@@ -377,12 +377,12 @@ export default function StoryEditForm({
                 render={({ field, fieldState }) => (
                   <Field className="grid" data-invalid={fieldState.invalid}>
                     <div className="flex items-center gap-1">
-                      <FieldLabel htmlFor="expAwarded">Player EXP</FieldLabel>
+                      <FieldLabel htmlFor="expAwarded">EXP Awarded</FieldLabel>
                       {STORY_REWARD_FIELD_CONFIG.playerExp.isEditable ? (
                         <StoryEditXpGuidePopover />
                       ) : (
                         <StoryRewardLockedPopover
-                          label="Player EXP"
+                          label="EXP Awarded"
                           description={
                             STORY_REWARD_FIELD_CONFIG.playerExp.lockedNote
                           }
