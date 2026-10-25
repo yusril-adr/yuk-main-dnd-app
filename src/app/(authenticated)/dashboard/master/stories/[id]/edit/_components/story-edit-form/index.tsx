@@ -38,11 +38,13 @@ import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enu
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
+import { cn } from "@/utils/cn";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
 import StoryEditFormActions from "./story-edit-form-actions";
 import RichTextEditor from "@/app/_components/rich-text-editor";
 import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 import { toStoryRewardPayload } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
+import { STORY_REWARD_FIELD_CONFIG } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-reward-field";
 import { StoryEditFormSchema, type TStoryEditFormSchema } from "./scheme";
 import type { TStoryEditFormProps } from "../../_types/story-edit-form-props";
 
@@ -66,7 +68,17 @@ export default function StoryEditForm({
       type: story?.type as StoryTypeEnum,
       gameSystem: story?.game_system ?? "",
       maxMembers: story?.max_members ? String(story.max_members) : "",
-      pointAwarded: String(story?.point_awarded ?? 0),
+      // A disabled reward field shows its config default, not the stored value
+      expAwarded: String(
+        STORY_REWARD_FIELD_CONFIG.playerExp.isEditable
+          ? (story?.exp_awarded ?? 0)
+          : STORY_REWARD_FIELD_CONFIG.playerExp.defaultValue,
+      ),
+      pointAwarded: String(
+        STORY_REWARD_FIELD_CONFIG.gold.isEditable
+          ? (story?.point_awarded ?? 0)
+          : STORY_REWARD_FIELD_CONFIG.gold.defaultValue,
+      ),
       // API returns ISO (UTC); datetime-local needs the browser's local time
       startAt: story?.start_at
         ? dayjs(story.start_at).format("YYYY-MM-DDTHH:mm")
@@ -188,8 +200,14 @@ export default function StoryEditForm({
       type: data.type,
       game_system: data.gameSystem || null,
       max_members: data.maxMembers ? Number(data.maxMembers) : null,
-      // NOT NULL column: an emptied field is sent as 0, never null
-      point_awarded: toStoryRewardPayload(data.pointAwarded),
+      // NOT NULL columns: an emptied field is sent as 0, never null.
+      // Disabled reward fields are left out so stored values are kept
+      ...(STORY_REWARD_FIELD_CONFIG.playerExp.isEditable && {
+        exp_awarded: toStoryRewardPayload(data.expAwarded),
+      }),
+      ...(STORY_REWARD_FIELD_CONFIG.gold.isEditable && {
+        point_awarded: toStoryRewardPayload(data.pointAwarded),
+      }),
       // datetime-local is the browser's local time; send it as ISO (UTC)
       start_at: data.startAt ? dayjs(data.startAt).toISOString() : null,
       location_type: data.locationType,
@@ -351,18 +369,37 @@ export default function StoryEditForm({
 
             {/* Rewards side by side from sm up */}
             <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-4">
-              {/* Display only: the API fixes story EXP at 1 by default */}
-              <Field className="grid">
-                <FieldLabel htmlFor="playerExp">Player EXP</FieldLabel>
-                <Input
-                  id="playerExp"
-                  type="number"
-                  value={1}
-                  readOnly
-                  disabled
-                  className="disabled:bg-muted/30 disabled:opacity-100 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                />
-              </Field>
+              <Controller
+                name="expAwarded"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field className="grid" data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="expAwarded">Player EXP</FieldLabel>
+                    <Input
+                      id="expAwarded"
+                      type="number"
+                      inputMode="numeric"
+                      min={0}
+                      step={1}
+                      placeholder="0"
+                      disabled={
+                        isFormDisabled ||
+                        !STORY_REWARD_FIELD_CONFIG.playerExp.isEditable
+                      }
+                      className={cn(
+                        "[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+                        // Fixed values stay readable while disabled
+                        !STORY_REWARD_FIELD_CONFIG.playerExp.isEditable &&
+                          "disabled:bg-muted/30 disabled:opacity-100",
+                      )}
+                      {...field}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
               <Controller
                 name="pointAwarded"
                 control={control}
@@ -378,8 +415,16 @@ export default function StoryEditForm({
                       min={0}
                       step={1}
                       placeholder="0"
-                      disabled={isFormDisabled}
-                      className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      disabled={
+                        isFormDisabled ||
+                        !STORY_REWARD_FIELD_CONFIG.gold.isEditable
+                      }
+                      className={cn(
+                        "[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+                        // Fixed values stay readable while disabled
+                        !STORY_REWARD_FIELD_CONFIG.gold.isEditable &&
+                          "disabled:bg-muted/30 disabled:opacity-100",
+                      )}
                       {...field}
                     />
                     {fieldState.invalid && (

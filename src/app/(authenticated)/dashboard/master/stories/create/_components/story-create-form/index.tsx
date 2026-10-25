@@ -39,11 +39,13 @@ import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enu
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
+import { cn } from "@/utils/cn";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
 import StoryCreateFormActions from "./story-create-form-actions";
 import RichTextEditor from "@/app/_components/rich-text-editor";
 import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 import { toStoryRewardPayload } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
+import { STORY_REWARD_FIELD_CONFIG } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-reward-field";
 import { StoryCreateFormSchema, type TStoryCreateFormSchema } from "./scheme";
 import type { TStoryCreateFormProps } from "../../_types/story-create-form-props";
 
@@ -64,7 +66,8 @@ export default function StoryCreateForm({
         description: "",
         gameSystem: "",
         maxMembers: "",
-        pointAwarded: "0",
+        expAwarded: String(STORY_REWARD_FIELD_CONFIG.playerExp.defaultValue),
+        pointAwarded: String(STORY_REWARD_FIELD_CONFIG.gold.defaultValue),
         startAt: "",
         locationDetail: "",
         locationLink: "",
@@ -166,6 +169,8 @@ export default function StoryCreateForm({
       type: data.type,
       game_system: data.gameSystem || undefined,
       max_members: data.maxMembers ? Number(data.maxMembers) : undefined,
+      // Always sent: a disabled field holds its config default
+      exp_awarded: toStoryRewardPayload(data.expAwarded),
       point_awarded: toStoryRewardPayload(data.pointAwarded),
       // datetime-local is the browser's local time; send it as ISO (UTC)
       start_at: data.startAt ? dayjs(data.startAt).toISOString() : undefined,
@@ -331,18 +336,37 @@ export default function StoryCreateForm({
 
             {/* Rewards side by side from sm up */}
             <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-4">
-              {/* Display only: the API fixes story EXP at 1 by default */}
-              <Field className="grid">
-                <FieldLabel htmlFor="playerExp">Player EXP</FieldLabel>
-                <Input
-                  id="playerExp"
-                  type="number"
-                  value={1}
-                  readOnly
-                  disabled
-                  className="disabled:bg-muted/30 disabled:opacity-100 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                />
-              </Field>
+              <Controller
+                name="expAwarded"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field className="grid" data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="expAwarded">Player EXP</FieldLabel>
+                    <Input
+                      id="expAwarded"
+                      type="number"
+                      inputMode="numeric"
+                      min={0}
+                      step={1}
+                      placeholder="0"
+                      disabled={
+                        isFormDisabled ||
+                        !STORY_REWARD_FIELD_CONFIG.playerExp.isEditable
+                      }
+                      className={cn(
+                        "[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+                        // Fixed values stay readable while disabled
+                        !STORY_REWARD_FIELD_CONFIG.playerExp.isEditable &&
+                          "disabled:bg-muted/30 disabled:opacity-100",
+                      )}
+                      {...field}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
               <Controller
                 name="pointAwarded"
                 control={control}
@@ -358,8 +382,16 @@ export default function StoryCreateForm({
                       min={0}
                       step={1}
                       placeholder="0"
-                      disabled={isFormDisabled}
-                      className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      disabled={
+                        isFormDisabled ||
+                        !STORY_REWARD_FIELD_CONFIG.gold.isEditable
+                      }
+                      className={cn(
+                        "[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+                        // Fixed values stay readable while disabled
+                        !STORY_REWARD_FIELD_CONFIG.gold.isEditable &&
+                          "disabled:bg-muted/30 disabled:opacity-100",
+                      )}
                       {...field}
                     />
                     {fieldState.invalid && (
