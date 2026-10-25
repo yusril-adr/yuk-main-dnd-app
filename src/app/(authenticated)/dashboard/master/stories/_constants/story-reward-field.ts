@@ -8,6 +8,16 @@ export const STORY_REWARD_FIELD_CONFIG: Record<
   TStoryRewardFieldConfig
 > = {
   // The API accepts 1 or more (exp_awarded), defaulting to 1
-  playerExp: { isEditable: false, defaultValue: 1 },
-  gold: { isEditable: false, defaultValue: 0 },
+  playerExp: {
+    isEditable: false,
+    defaultValue: 1,
+    lockedNote:
+      "Player EXP is standardized: every attending player gets 1 EXP per story, so it can't be filled in here. The DM gets 1 DM EXP automatically, unless they also played.",
+  },
+  gold: {
+    isEditable: false,
+    defaultValue: 0,
+    lockedNote:
+      "Gold rewards are standardized for now, so they can't be filled in here.",
+  },
 };
