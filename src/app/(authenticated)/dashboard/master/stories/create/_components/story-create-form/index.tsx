@@ -39,12 +39,15 @@ import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enu
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
+import { cn } from "@/utils/cn";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
 import StoryCreateFormActions from "./story-create-form-actions";
-import StoryCreateXpGuidePopover from "./story-create-xp-guide-popover";
 import RichTextEditor from "@/app/_components/rich-text-editor";
 import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 import { toStoryRewardPayload } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
+import { STORY_REWARD_FIELD_CONFIG } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-reward-field";
+import StoryCreateXpGuidePopover from "./story-create-xp-guide-popover";
+import StoryRewardLockedPopover from "@/app/(authenticated)/dashboard/master/stories/_components/story-reward-locked-popover";
 import { StoryCreateFormSchema, type TStoryCreateFormSchema } from "./scheme";
 import type { TStoryCreateFormProps } from "../../_types/story-create-form-props";
 
@@ -65,8 +68,8 @@ export default function StoryCreateForm({
         description: "",
         gameSystem: "",
         maxMembers: "",
-        expAwarded: "0",
-        pointAwarded: "0",
+        expAwarded: String(STORY_REWARD_FIELD_CONFIG.playerExp.defaultValue),
+        pointAwarded: String(STORY_REWARD_FIELD_CONFIG.gold.defaultValue),
         startAt: "",
         locationDetail: "",
         locationLink: "",
@@ -168,6 +171,7 @@ export default function StoryCreateForm({
       type: data.type,
       game_system: data.gameSystem || undefined,
       max_members: data.maxMembers ? Number(data.maxMembers) : undefined,
+      // Always sent: a disabled field holds its config default
       exp_awarded: toStoryRewardPayload(data.expAwarded),
       point_awarded: toStoryRewardPayload(data.pointAwarded),
       // datetime-local is the browser's local time; send it as ISO (UTC)
@@ -341,7 +345,16 @@ export default function StoryCreateForm({
                   <Field className="grid" data-invalid={fieldState.invalid}>
                     <div className="flex items-center gap-1">
                       <FieldLabel htmlFor="expAwarded">EXP Awarded</FieldLabel>
-                      <StoryCreateXpGuidePopover />
+                      {STORY_REWARD_FIELD_CONFIG.playerExp.isEditable ? (
+                        <StoryCreateXpGuidePopover />
+                      ) : (
+                        <StoryRewardLockedPopover
+                          label="EXP Awarded"
+                          description={
+                            STORY_REWARD_FIELD_CONFIG.playerExp.lockedNote
+                          }
+                        />
+                      )}
                     </div>
                     <Input
                       id="expAwarded"
@@ -350,8 +363,16 @@ export default function StoryCreateForm({
                       min={0}
                       step={1}
                       placeholder="0"
-                      disabled={isFormDisabled}
-                      className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      disabled={
+                        isFormDisabled ||
+                        !STORY_REWARD_FIELD_CONFIG.playerExp.isEditable
+                      }
+                      className={cn(
+                        "[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+                        // Fixed values stay readable while disabled
+                        !STORY_REWARD_FIELD_CONFIG.playerExp.isEditable &&
+                          "disabled:bg-muted/30 disabled:opacity-100",
+                      )}
                       {...field}
                     />
                     {fieldState.invalid && (
@@ -365,9 +386,19 @@ export default function StoryCreateForm({
                 control={control}
                 render={({ field, fieldState }) => (
                   <Field className="grid" data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="pointAwarded">
-                      Gold Awarded (GP)
-                    </FieldLabel>
+                    <div className="flex items-center gap-1">
+                      <FieldLabel htmlFor="pointAwarded">
+                        Gold Awarded (GP)
+                      </FieldLabel>
+                      {!STORY_REWARD_FIELD_CONFIG.gold.isEditable && (
+                        <StoryRewardLockedPopover
+                          label="Gold Awarded"
+                          description={
+                            STORY_REWARD_FIELD_CONFIG.gold.lockedNote
+                          }
+                        />
+                      )}
+                    </div>
                     <Input
                       id="pointAwarded"
                       type="number"
@@ -375,8 +406,16 @@ export default function StoryCreateForm({
                       min={0}
                       step={1}
                       placeholder="0"
-                      disabled={isFormDisabled}
-                      className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      disabled={
+                        isFormDisabled ||
+                        !STORY_REWARD_FIELD_CONFIG.gold.isEditable
+                      }
+                      className={cn(
+                        "[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+                        // Fixed values stay readable while disabled
+                        !STORY_REWARD_FIELD_CONFIG.gold.isEditable &&
+                          "disabled:bg-muted/30 disabled:opacity-100",
+                      )}
                       {...field}
                     />
                     {fieldState.invalid && (

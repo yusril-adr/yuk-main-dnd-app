@@ -8,7 +8,7 @@ export type TStoryCreatePayload = {
   status?: StoryStatusEnum;
   type: StoryTypeEnum;
   game_system?: string;
-  // Whole numbers >= 0; the API defaults to 0 when omitted
+  // Whole numbers >= 0; when omitted the API defaults exp_awarded to 1 and point_awarded to 0
   exp_awarded?: number;
   point_awarded?: number;
   max_members?: number;
