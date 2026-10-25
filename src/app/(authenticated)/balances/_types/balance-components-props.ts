@@ -23,6 +23,11 @@ export type TBalanceLogListProps = {
   typeItems: TBalanceTypeItem[];
   typeValue: string;
   typeAriaLabel: string;
+  // Optional second filter; omit to show only the type filter
+  directionItems?: TBalanceTypeItem[];
+  directionValue?: string;
+  directionAriaLabel?: string;
+  onDirectionChange?: (value: string) => void;
   emptyTitle: string;
   emptyDescription: string;
   onTypeChange: (value: string) => void;
@@ -34,8 +39,11 @@ export type TBalanceLogListProps = {
 export type TBalanceLogPanelProps = {
   page: number;
   type: number | null;
+  direction: number | null;
   onPageChange: (page: number) => void;
   onTypeChange: (type: number | null) => void;
+  onDirectionChange: (direction: number | null) => void;
+  onFilterReset: () => void;
 };
 
 export type TBalanceLogRowProps = { item: TBalanceLogItem };

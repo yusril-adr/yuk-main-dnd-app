@@ -38,12 +38,15 @@ import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enu
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
+import { cn } from "@/utils/cn";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
 import StoryEditFormActions from "./story-edit-form-actions";
-import StoryEditXpGuidePopover from "./story-edit-xp-guide-popover";
 import RichTextEditor from "@/app/_components/rich-text-editor";
 import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 import { toStoryRewardPayload } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
+import { STORY_REWARD_FIELD_CONFIG } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-reward-field";
+import StoryEditXpGuidePopover from "./story-edit-xp-guide-popover";
+import StoryRewardLockedPopover from "@/app/(authenticated)/dashboard/master/stories/_components/story-reward-locked-popover";
 import { StoryEditFormSchema, type TStoryEditFormSchema } from "./scheme";
 import type { TStoryEditFormProps } from "../../_types/story-edit-form-props";
 
@@ -67,8 +70,17 @@ export default function StoryEditForm({
       type: story?.type as StoryTypeEnum,
       gameSystem: story?.game_system ?? "",
       maxMembers: story?.max_members ? String(story.max_members) : "",
-      expAwarded: String(story?.exp_awarded ?? 0),
-      pointAwarded: String(story?.point_awarded ?? 0),
+      // A disabled reward field shows its config default, not the stored value
+      expAwarded: String(
+        STORY_REWARD_FIELD_CONFIG.playerExp.isEditable
+          ? (story?.exp_awarded ?? 0)
+          : STORY_REWARD_FIELD_CONFIG.playerExp.defaultValue,
+      ),
+      pointAwarded: String(
+        STORY_REWARD_FIELD_CONFIG.gold.isEditable
+          ? (story?.point_awarded ?? 0)
+          : STORY_REWARD_FIELD_CONFIG.gold.defaultValue,
+      ),
       // API returns ISO (UTC); datetime-local needs the browser's local time
       startAt: story?.start_at
         ? dayjs(story.start_at).format("YYYY-MM-DDTHH:mm")
@@ -190,9 +202,14 @@ export default function StoryEditForm({
       type: data.type,
       game_system: data.gameSystem || null,
       max_members: data.maxMembers ? Number(data.maxMembers) : null,
-      // NOT NULL columns: an emptied field is sent as 0, never null
-      exp_awarded: toStoryRewardPayload(data.expAwarded),
-      point_awarded: toStoryRewardPayload(data.pointAwarded),
+      // NOT NULL columns: an emptied field is sent as 0, never null.
+      // Disabled reward fields are left out so stored values are kept
+      ...(STORY_REWARD_FIELD_CONFIG.playerExp.isEditable && {
+        exp_awarded: toStoryRewardPayload(data.expAwarded),
+      }),
+      ...(STORY_REWARD_FIELD_CONFIG.gold.isEditable && {
+        point_awarded: toStoryRewardPayload(data.pointAwarded),
+      }),
       // datetime-local is the browser's local time; send it as ISO (UTC)
       start_at: data.startAt ? dayjs(data.startAt).toISOString() : null,
       location_type: data.locationType,
@@ -361,7 +378,16 @@ export default function StoryEditForm({
                   <Field className="grid" data-invalid={fieldState.invalid}>
                     <div className="flex items-center gap-1">
                       <FieldLabel htmlFor="expAwarded">EXP Awarded</FieldLabel>
-                      <StoryEditXpGuidePopover />
+                      {STORY_REWARD_FIELD_CONFIG.playerExp.isEditable ? (
+                        <StoryEditXpGuidePopover />
+                      ) : (
+                        <StoryRewardLockedPopover
+                          label="EXP Awarded"
+                          description={
+                            STORY_REWARD_FIELD_CONFIG.playerExp.lockedNote
+                          }
+                        />
+                      )}
                     </div>
                     <Input
                       id="expAwarded"
@@ -370,8 +396,16 @@ export default function StoryEditForm({
                       min={0}
                       step={1}
                       placeholder="0"
-                      disabled={isFormDisabled}
-                      className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      disabled={
+                        isFormDisabled ||
+                        !STORY_REWARD_FIELD_CONFIG.playerExp.isEditable
+                      }
+                      className={cn(
+                        "[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+                        // Fixed values stay readable while disabled
+                        !STORY_REWARD_FIELD_CONFIG.playerExp.isEditable &&
+                          "disabled:bg-muted/30 disabled:opacity-100",
+                      )}
                       {...field}
                     />
                     {fieldState.invalid && (
@@ -385,9 +419,19 @@ export default function StoryEditForm({
                 control={control}
                 render={({ field, fieldState }) => (
                   <Field className="grid" data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="pointAwarded">
-                      Gold Awarded (GP)
-                    </FieldLabel>
+                    <div className="flex items-center gap-1">
+                      <FieldLabel htmlFor="pointAwarded">
+                        Gold Awarded (GP)
+                      </FieldLabel>
+                      {!STORY_REWARD_FIELD_CONFIG.gold.isEditable && (
+                        <StoryRewardLockedPopover
+                          label="Gold Awarded"
+                          description={
+                            STORY_REWARD_FIELD_CONFIG.gold.lockedNote
+                          }
+                        />
+                      )}
+                    </div>
                     <Input
                       id="pointAwarded"
                       type="number"
@@ -395,8 +439,16 @@ export default function StoryEditForm({
                       min={0}
                       step={1}
                       placeholder="0"
-                      disabled={isFormDisabled}
-                      className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      disabled={
+                        isFormDisabled ||
+                        !STORY_REWARD_FIELD_CONFIG.gold.isEditable
+                      }
+                      className={cn(
+                        "[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+                        // Fixed values stay readable while disabled
+                        !STORY_REWARD_FIELD_CONFIG.gold.isEditable &&
+                          "disabled:bg-muted/30 disabled:opacity-100",
+                      )}
                       {...field}
                     />
                     {fieldState.invalid && (

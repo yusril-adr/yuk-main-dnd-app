@@ -33,6 +33,8 @@ import {
 import { useGetUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-by-id";
 import { UserExpLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type";
 import { USER_EXP_LOG_TYPE_LABEL } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type-label";
+import { UserExpLogDirectionEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-direction";
+import { USER_EXP_LOG_DIRECTION_LABEL } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-direction-label";
 import type { TAddUserExperiencePointsPayload } from "@/api/main/modules/master/iam/users/[id]/experience-points/types/add-user-experience-points-payload";
 import { UserPointLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/points/enums/user-point-log-type";
 import { USER_POINT_LOG_TYPE_LABEL } from "@/api/main/modules/master/iam/users/[id]/points/enums/user-point-log-type-label";
@@ -74,6 +76,21 @@ const parseAsBalanceLogType = createParser({
   },
 });
 
+const EXP_LOG_DIRECTION_OPTIONS = [
+  UserExpLogDirectionEnum.INCREMENT,
+  UserExpLogDirectionEnum.DECREMENT,
+];
+
+const parseAsExpLogDirection = createParser({
+  parse(value) {
+    const parsed = Number(value);
+    return EXP_LOG_DIRECTION_OPTIONS.includes(parsed) ? parsed : null;
+  },
+  serialize(value) {
+    return String(value);
+  },
+});
+
 const EXP_LOG_TYPE_ICONS: Record<UserExpLogTypeEnum, LucideIcon> = {
   [UserExpLogTypeEnum.PLAYER]: ChessKnight,
   [UserExpLogTypeEnum.DM]: BookOpen,
@@ -99,6 +116,7 @@ export default function UserBalancesPageClient() {
       Object.values(UserBalanceTabEnum),
     ).withDefault(UserBalanceTabEnum.EXPERIENCE_POINTS),
     type: parseAsBalanceLogType,
+    direction: parseAsExpLogDirection,
   });
   const [isAddExpDialogOpen, setIsAddExpDialogOpen] = useState(false);
   const [isAddPointDialogOpen, setIsAddPointDialogOpen] = useState(false);
@@ -113,9 +131,19 @@ export default function UserBalancesPageClient() {
   const user = userQuery.data?.data?.data;
   const canViewPoints = !!user && user.action_list.is_can_view_balances;
   const canCreatePoints = !!user && user.action_list.is_can_create_balances;
+  // Direction only exists on EXP logs; never send it to the GP endpoint
+  const direction =
+    queryStates.tab === UserBalanceTabEnum.EXPERIENCE_POINTS
+      ? queryStates.direction
+      : null;
   const payload = useMemo(
-    () => toUserBalanceLogPayload({ ...queryStates, pageSize: LOG_PAGE_SIZE }),
-    [queryStates],
+    () =>
+      toUserBalanceLogPayload({
+        ...queryStates,
+        direction,
+        pageSize: LOG_PAGE_SIZE,
+      }),
+    [queryStates, direction],
   );
   const logsEnabled = canViewPoints && userQuery.isSuccess;
   const expQuery = useGetUserExperiencePointPagination(userId, payload, {
@@ -183,6 +211,7 @@ export default function UserBalancesPageClient() {
         page: 1,
         search: "",
         type: null,
+        direction: null,
       });
     },
     [queryStates.tab, setQueryStates],
@@ -210,6 +239,7 @@ export default function UserBalancesPageClient() {
     (filter: TUserBalanceLogListFilter<UserExpLogTypeEnum>) => {
       setQueryStates({
         type: filter.type,
+        direction: filter.direction,
         page: 1,
       });
     },
@@ -250,6 +280,7 @@ export default function UserBalancesPageClient() {
     pageSize: LOG_PAGE_SIZE,
     search: queryStates.search,
     type: queryStates.type,
+    direction,
   };
 
   return (
@@ -362,6 +393,11 @@ export default function UserBalancesPageClient() {
               typeOptions={[UserExpLogTypeEnum.PLAYER, UserExpLogTypeEnum.DM]}
               typeLabels={USER_EXP_LOG_TYPE_LABEL}
               typeIcons={EXP_LOG_TYPE_ICONS}
+              directionOptions={EXP_LOG_DIRECTION_OPTIONS}
+              directionLabels={USER_EXP_LOG_DIRECTION_LABEL}
+              isNegative={(row) =>
+                row.direction === UserExpLogDirectionEnum.DECREMENT
+              }
               onPageChange={onPageChange}
               onSearchChange={onSearchChange}
               onFilterApply={onExpFilterApply}
@@ -384,7 +420,7 @@ export default function UserBalancesPageClient() {
               ]}
               typeLabels={USER_POINT_LOG_TYPE_LABEL}
               typeIcons={POINT_LOG_TYPE_ICONS}
-              isExpense={(type) => type === UserPointLogTypeEnum.EXPENSE}
+              isNegative={(row) => row.type === UserPointLogTypeEnum.EXPENSE}
               onPageChange={onPageChange}
               onSearchChange={onSearchChange}
               onFilterApply={onPointFilterApply}
