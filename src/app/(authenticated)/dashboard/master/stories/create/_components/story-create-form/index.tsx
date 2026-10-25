@@ -329,31 +329,46 @@ export default function StoryCreateForm({
               )}
             />
 
-            <Controller
-              name="pointAwarded"
-              control={control}
-              render={({ field, fieldState }) => (
-                <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="pointAwarded">
-                    Gold Awarded (GP)
-                  </FieldLabel>
-                  <Input
-                    id="pointAwarded"
-                    type="number"
-                    inputMode="numeric"
-                    min={0}
-                    step={1}
-                    placeholder="0"
-                    disabled={isFormDisabled}
-                    className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                    {...field}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
+            {/* Rewards side by side from sm up */}
+            <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-4">
+              {/* Display only: the API fixes story EXP at 1 by default */}
+              <Field className="grid">
+                <FieldLabel htmlFor="playerExp">Player EXP</FieldLabel>
+                <Input
+                  id="playerExp"
+                  type="number"
+                  value={1}
+                  readOnly
+                  disabled
+                  className="disabled:bg-muted/30 disabled:opacity-100 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                />
+              </Field>
+              <Controller
+                name="pointAwarded"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field className="grid" data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="pointAwarded">
+                      Gold Awarded (GP)
+                    </FieldLabel>
+                    <Input
+                      id="pointAwarded"
+                      type="number"
+                      inputMode="numeric"
+                      min={0}
+                      step={1}
+                      placeholder="0"
+                      disabled={isFormDisabled}
+                      className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      {...field}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </div>
 
             <Controller
               name="startAt"
