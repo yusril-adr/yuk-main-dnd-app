@@ -22,6 +22,8 @@ export type TStoryEntity = TBaseEntity & {
   // of location_type
   location_link: string | null;
   discord_channel_link: string | null;
+  // Any https link, e.g. a Google Form for feedback
+  feedback_form_link: string | null;
   banner_url: string | null;
   created_by?: TUserEntity;
 };

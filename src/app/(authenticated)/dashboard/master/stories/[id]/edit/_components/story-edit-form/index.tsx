@@ -89,6 +89,7 @@ export default function StoryEditForm({
       locationDetail: story?.location_detail ?? "",
       locationLink: story?.location_link ?? "",
       discordChannelLink: story?.discord_channel_link ?? "",
+      feedbackFormLink: story?.feedback_form_link ?? "",
     }),
     [story],
   );
@@ -217,6 +218,7 @@ export default function StoryEditForm({
       banner_file_id: bannerFileId,
       location_link: data.locationLink || null,
       discord_channel_link: data.discordChannelLink || null,
+      feedback_form_link: data.feedbackFormLink || null,
     });
   };
 
@@ -639,6 +641,29 @@ export default function StoryEditForm({
                     type="url"
                     inputMode="url"
                     placeholder="https://discord.gg/..."
+                    disabled={isFormDisabled}
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="feedbackFormLink"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field className="grid" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="feedbackFormLink">
+                    Feedback Form Link
+                  </FieldLabel>
+                  <Input
+                    id="feedbackFormLink"
+                    type="url"
+                    inputMode="url"
+                    placeholder="https://forms.gle/..."
                     disabled={isFormDisabled}
                     {...field}
                   />
