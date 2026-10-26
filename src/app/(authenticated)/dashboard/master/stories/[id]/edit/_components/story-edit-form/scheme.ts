@@ -30,7 +30,7 @@ export const StoryEditFormSchema = z.object({
     .string("Title is required")
     .min(1, "Title is required")
     .max(150, "Title must be at most 150 characters")
-    .regex(/[A-Za-z0-9]/, "Title must contain at least one letter or number"),
+    .regex(/\S/, "Title must not be empty"),
   // Markdown ("" = empty). Counted like the editor: visible text (no
   // Markdown syntax), line breaks 1, nothing between paragraphs
   description: z
