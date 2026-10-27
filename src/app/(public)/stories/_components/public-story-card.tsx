@@ -38,7 +38,8 @@ import type { TPublicStoryCardProps } from "@/app/(public)/stories/_types/public
 
 export default function PublicStoryCard({
   story,
-  priority = false,
+  preload = false,
+  loading,
 }: TPublicStoryCardProps) {
   // Plain text from rich text HTML; "" when empty or only images
   const descriptionText = getRichTextPlainText(story.description);
@@ -57,7 +58,8 @@ export default function PublicStoryCard({
         <PublicStoryBanner
           bannerUrl={story.banner_url}
           title={story.title}
-          priority={priority}
+          preload={preload}
+          loading={loading}
         />
 
         <div className="absolute inset-x-2 top-2 flex items-start gap-2 sm:inset-x-3 sm:top-3">

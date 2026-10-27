@@ -23,14 +23,21 @@ import type { TBoardStoryCardProps } from "@/app/(authenticated)/dashboard/(play
 
 // The title link is stretched over the whole card (after:inset-0), so the
 // card stays one click target without wrapping block content in <a>
-export default function BoardStoryCard({ story }: TBoardStoryCardProps) {
+export default function BoardStoryCard({
+  story,
+  loading,
+}: TBoardStoryCardProps) {
   return (
     <Card
       size="sm"
       className="group relative gap-3 pt-0 transition-colors hover:ring-primary/50 has-focus-visible:ring-2 has-focus-visible:ring-ring"
     >
       <AspectRatio ratio={16 / 10} className="overflow-hidden border-b">
-        <BoardStoryBanner bannerUrl={story.banner_url} title={story.title} />
+        <BoardStoryBanner
+          bannerUrl={story.banner_url}
+          title={story.title}
+          loading={loading}
+        />
         <BoardStoryStatusBadge
           status={story.status}
           className="absolute top-2 left-2 bg-card"

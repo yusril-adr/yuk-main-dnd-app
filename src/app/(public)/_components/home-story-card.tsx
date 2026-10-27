@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays, Crown, ScrollText, Users } from "lucide-react";
 
@@ -31,13 +32,12 @@ export default function HomeStoryCard({ story }: THomeStoryCardProps) {
     <Card className="group relative h-full gap-3 pt-0 transition-colors hover:ring-primary/50 has-focus-visible:ring-2 has-focus-visible:ring-ring">
       <AspectRatio ratio={16 / 10} className="overflow-hidden border-b">
         {story.banner_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={story.banner_url}
             alt=""
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 size-full object-cover"
+            fill
+            sizes="(min-width: 768px) 33vw, 100vw"
+            className="object-cover"
           />
         ) : (
           <Empty className="absolute inset-0 rounded-none bg-secondary p-0">

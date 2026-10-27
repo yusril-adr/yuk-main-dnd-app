@@ -32,7 +32,7 @@ export default function HomeHero() {
           src={HERO_PHOTO.src}
           alt=""
           fill
-          priority
+          preload
           sizes="100vw"
           className="-z-20 object-cover"
           style={{ objectPosition: HERO_PHOTO.objectPosition ?? "center" }}

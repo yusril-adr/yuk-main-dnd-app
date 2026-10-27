@@ -17,7 +17,10 @@ import PublicGuildmateStoryCardSkeleton from "@/app/(public)/guildmates/[slug]/_
 import PublicGuildmateErrorState from "@/app/(public)/guildmates/_components/public-guildmate-error-state";
 import { useGetPublicGuildmateCreatedStories } from "@/app/(public)/guildmates/[slug]/_hooks/use-get-public-guildmate-created-stories";
 import { useGetPublicGuildmateJoinedStories } from "@/app/(public)/guildmates/[slug]/_hooks/use-get-public-guildmate-joined-stories";
-import { PUBLIC_GUILDMATE_STORY_PAGE_SIZE } from "@/app/(public)/guildmates/[slug]/_constants/public-guildmate-detail";
+import {
+  PUBLIC_GUILDMATE_STORY_EAGER_CARD_COUNT,
+  PUBLIC_GUILDMATE_STORY_PAGE_SIZE,
+} from "@/app/(public)/guildmates/[slug]/_constants/public-guildmate-detail";
 import type { TPublicGuildmateStoriesSectionProps } from "@/app/(public)/guildmates/[slug]/_types/public-guildmate-detail-components-props";
 
 type TStoryTab = "led" | "joined";
@@ -95,8 +98,16 @@ export default function PublicGuildmateStoriesSection({
                     }).map((_, idx) => (
                       <PublicGuildmateStoryCardSkeleton key={`skeleton-${idx}`} />
                     ))
-                  : stories.map((story) => (
-                      <PublicGuildmateStoryCard key={story.id} story={story} />
+                  : stories.map((story, idx) => (
+                      <PublicGuildmateStoryCard
+                        key={story.id}
+                        story={story}
+                        loading={
+                          idx < PUBLIC_GUILDMATE_STORY_EAGER_CARD_COUNT
+                            ? "eager"
+                            : undefined
+                        }
+                      />
                     ))}
                 {query.isFetchingNextPage &&
                   Array.from({ length: 3 }).map((_, idx) => (

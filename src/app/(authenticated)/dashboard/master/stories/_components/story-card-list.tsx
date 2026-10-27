@@ -39,6 +39,7 @@ import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-typ
 import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
 import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
+import { STORY_EAGER_CARD_COUNT } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-card";
 
 import StoryCard from "./story-card";
 import StoryCardSkeleton from "./story-card-skeleton";
@@ -409,10 +410,11 @@ export default function StoryCardList({
           ))}
 
         {!isLoading &&
-          data.map((story) => (
+          data.map((story, idx) => (
             <StoryCard
               key={story.id}
               story={story}
+              loading={idx < STORY_EAGER_CARD_COUNT ? "eager" : undefined}
               onArchive={onActionHandler.onArchiveStory}
               onPublish={onActionHandler.onPublishStory}
               onUnarchive={onActionHandler.onUnarchiveStory}

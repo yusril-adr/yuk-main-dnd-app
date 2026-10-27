@@ -48,6 +48,7 @@ import type { TStoryCardProps } from "@/app/(authenticated)/dashboard/master/sto
 
 export default function StoryCard({
   story,
+  loading,
   onArchive,
   onUnarchive,
   onPublish,
@@ -124,6 +125,7 @@ export default function StoryCard({
             title={story.title}
             imageClassName="aspect-[16/10] max-h-none object-cover"
             placeholderClassName="aspect-[16/10]"
+            loading={loading}
           />
 
           <DropdownMenu>

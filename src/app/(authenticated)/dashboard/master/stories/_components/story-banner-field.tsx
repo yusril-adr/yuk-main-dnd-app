@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import Image from "next/image";
 import { formatFileSize } from "@/utils/file-helper";
 import { ImageIcon, Trash, Upload } from "lucide-react";
 import { Else, If, Then } from "react-if";
@@ -55,12 +56,17 @@ export default function StoryBannerField({
         <div className="w-full sm:w-72 overflow-hidden rounded-lg border bg-muted">
           <If condition={!!previewUrl}>
             <Then>
-              {/* Plain <img> like the story card banner (blob: or public storage URL).
-                  Cropped to 16:10 like the story cards. */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={previewUrl ?? undefined}
+              {/* Cropped to 16:10 like the story cards. A just-picked file is a
+                  local blob: URL the optimizer cannot fetch, so it is shown as is;
+                  the saved banner (storage URL) goes through /_next/image. */}
+              <Image
+                src={previewUrl as string}
                 alt="Story banner preview"
+                width={0}
+                height={0}
+                sizes="(min-width: 640px) 288px, 100vw"
+                loading="eager"
+                unoptimized={/^(blob|data):/.test(previewUrl ?? "")}
                 className="block aspect-[16/10] w-full object-cover"
               />
             </Then>

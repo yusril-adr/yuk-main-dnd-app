@@ -38,7 +38,8 @@ import type { TPublicGuildmateStoryCardProps } from "@/app/(public)/guildmates/[
 
 export default function PublicGuildmateStoryCard({
   story,
-  priority = false,
+  preload = false,
+  loading,
 }: TPublicGuildmateStoryCardProps) {
   // Plain text from rich text HTML; "" when empty or only images
   const descriptionText = getRichTextPlainText(story.description);
@@ -57,7 +58,8 @@ export default function PublicGuildmateStoryCard({
         <PublicGuildmateStoryBanner
           bannerUrl={story.banner_url}
           title={story.title}
-          priority={priority}
+          preload={preload}
+          loading={loading}
         />
 
         <div className="absolute inset-x-2 top-2 flex items-start gap-2 sm:inset-x-3 sm:top-3">

@@ -18,6 +18,8 @@ export default function StoryDetailHero({ story }: TStoryDetailCardProps) {
       <StoryCardBanner
         bannerUrl={story.banner_url}
         title={story.title}
+        sizes="(min-width: 1280px) 1200px, 100vw"
+        preload
         imageClassName="h-56 max-h-none object-cover sm:h-72 lg:h-80"
         placeholderClassName="aspect-auto h-56 sm:h-72 lg:h-80"
       />

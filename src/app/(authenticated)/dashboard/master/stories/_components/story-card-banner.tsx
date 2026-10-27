@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Swords } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
@@ -8,19 +9,25 @@ import type { TStoryCardBannerProps } from "@/app/(authenticated)/dashboard/mast
 export default function StoryCardBanner({
   bannerUrl,
   title,
+  sizes = "(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw",
+  preload = false,
+  loading,
   imageClassName,
   placeholderClassName,
 }: TStoryCardBannerProps) {
   return (
     <If condition={!!bannerUrl}>
       <Then>
-        {/* Plain <img> like the user avatars (Base UI AvatarImage): the banner is a
-            public storage URL, so no next/image remotePatterns host config is needed.
+        {/* Sized by its classes; width/height 0 because the intrinsic size is unknown.
             Natural aspect ratio (no crop); very tall images are capped and letterboxed. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={bannerUrl ?? undefined}
+        <Image
+          src={bannerUrl as string}
           alt={title}
+          width={0}
+          height={0}
+          sizes={sizes}
+          preload={preload}
+          loading={preload ? undefined : loading}
           className={cn(
             "block h-auto max-h-96 w-full bg-muted/40 object-contain",
             imageClassName,

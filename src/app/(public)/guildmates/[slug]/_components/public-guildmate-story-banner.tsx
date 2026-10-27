@@ -6,18 +6,16 @@ import { cn } from "cn";
 
 import type { TPublicGuildmateStoryBannerProps } from "@/app/(public)/guildmates/[slug]/_types/public-guildmate-detail-components-props";
 
-// Fills its (relative, sized) parent. `unoptimized`: the browser loads the
-// public storage URL directly (like the dashboard's <img>), skipping the
-// /_next/image proxy. That proxy fails when the storage host resolves to a
-// private/fake IP (Next 16 blocks those) and adds server load on small hosts.
-// next/image still gives lazy loading and async decoding.
+// Fills its (relative, sized) parent. Served through /_next/image; the
+// storage host is allowed in next.config.ts images.remotePatterns.
 export default function PublicGuildmateStoryBanner({
   bannerUrl,
   title,
   className,
   iconClassName,
   sizes = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
-  priority = false,
+  preload = false,
+  loading,
 }: TPublicGuildmateStoryBannerProps) {
   return (
     <If condition={!!bannerUrl}>
@@ -26,10 +24,9 @@ export default function PublicGuildmateStoryBanner({
           src={bannerUrl as string}
           alt={title}
           fill
-          unoptimized
           sizes={sizes}
-          priority={priority}
-          loading={priority ? undefined : "lazy"}
+          preload={preload}
+          loading={preload ? undefined : loading}
           className={cn("object-cover", className)}
         />
       </Then>

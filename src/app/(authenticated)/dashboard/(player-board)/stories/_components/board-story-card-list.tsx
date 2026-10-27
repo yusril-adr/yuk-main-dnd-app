@@ -5,6 +5,7 @@ import BoardStoryCardSkeleton from "@/app/(authenticated)/dashboard/(player-boar
 import BoardStoryEmptyState from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-empty-state";
 import BoardStoryErrorState from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-error-state";
 import BoardStoryPagination from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-pagination";
+import { BOARD_STORY_EAGER_CARD_COUNT } from "@/app/(authenticated)/dashboard/(player-board)/stories/_constants/board-story";
 import type { TBoardStoryCardListProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/_types/board-story-components-props";
 
 const GRID = "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3";
@@ -39,8 +40,14 @@ export default function BoardStoryCardList({
       <Default>
         <div className="flex flex-col gap-4">
           <div className={GRID}>
-            {data.map((story) => (
-              <BoardStoryCard key={story.id} story={story} />
+            {data.map((story, idx) => (
+              <BoardStoryCard
+                key={story.id}
+                story={story}
+                loading={
+                  idx < BOARD_STORY_EAGER_CARD_COUNT ? "eager" : undefined
+                }
+              />
             ))}
           </div>
           <BoardStoryPagination

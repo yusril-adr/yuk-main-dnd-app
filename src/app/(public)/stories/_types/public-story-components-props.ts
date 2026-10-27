@@ -1,3 +1,5 @@
+import type { ImageProps } from "next/image";
+
 import type { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import type { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
 import type { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
@@ -5,7 +7,9 @@ import type { TPublicStoryPaginationResponse } from "@/api/main/modules/stories/
 
 export type TPublicStoryCardProps = {
   story: TPublicStoryPaginationResponse;
-  priority?: boolean;
+  // Banner loading, passed through to PublicStoryBanner
+  preload?: boolean;
+  loading?: ImageProps["loading"];
 };
 
 export type TPublicStoryBannerProps = {
@@ -15,8 +19,10 @@ export type TPublicStoryBannerProps = {
   iconClassName?: string;
   // next/image sizes; defaults to the list grid columns
   sizes?: string;
-  // Above-the-fold image (detail hero): load eagerly
-  priority?: boolean;
+  // Preload in <head>: only the page's single LCP image (detail hero, first card)
+  preload?: boolean;
+  // "eager" for other above-the-fold banners; ignored when preloading
+  loading?: ImageProps["loading"];
 };
 
 export type TPublicStoryStatusBadgeProps = {

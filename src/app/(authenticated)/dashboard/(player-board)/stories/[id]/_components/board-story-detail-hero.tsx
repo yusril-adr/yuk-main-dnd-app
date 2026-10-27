@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Swords } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
@@ -28,10 +29,14 @@ export default function BoardStoryDetailHero({
     <Card className="gap-0 overflow-hidden py-0">
       <If condition={!!story.banner_url}>
         <Then>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={story.banner_url ?? undefined}
+          {/* Sized by its classes; width/height 0 because the intrinsic size is unknown */}
+          <Image
+            src={story.banner_url as string}
             alt={story.title}
+            width={0}
+            height={0}
+            sizes="(min-width: 1280px) 1200px, 100vw"
+            preload
             className={`block w-full object-cover ${BANNER_HEIGHT}`}
           />
         </Then>

@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import type { ImageProps } from "next/image";
 
 import type { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import type { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
@@ -27,7 +28,9 @@ export type TPublicGuildmateAdventurerCardBackProps = {
 
 export type TPublicGuildmateStoryCardProps = {
   story: TPublicStoryPaginationResponse;
-  priority?: boolean;
+  // Banner preload/loading, passed through to PublicGuildmateStoryBanner
+  preload?: boolean;
+  loading?: ImageProps["loading"];
 };
 
 export type TPublicGuildmateStoryBannerProps = {
@@ -37,8 +40,10 @@ export type TPublicGuildmateStoryBannerProps = {
   iconClassName?: string;
   // next/image sizes; defaults to the list grid columns
   sizes?: string;
-  // Above-the-fold image (detail hero): load eagerly
-  priority?: boolean;
+  // Preload in <head>: only for the page's single LCP image
+  preload?: boolean;
+  // "eager" for other above-the-fold banners; ignored when preloading
+  loading?: ImageProps["loading"];
 };
 
 export type TPublicGuildmateStoryStatusBadgeProps = {

@@ -52,7 +52,12 @@ export default function PublicStoryCardList({
                       <PublicStoryCard
                         key={story.id}
                         story={story}
-                        priority={idx < PUBLIC_STORY_EAGER_CARD_COUNT}
+                        preload={idx === 0}
+                        loading={
+                          idx < PUBLIC_STORY_EAGER_CARD_COUNT
+                            ? "eager"
+                            : undefined
+                        }
                       />
                     ))}
               </div>

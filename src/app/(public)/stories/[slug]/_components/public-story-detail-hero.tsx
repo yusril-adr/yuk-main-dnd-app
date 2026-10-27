@@ -18,7 +18,8 @@ export default function PublicStoryDetailHero({
         bannerUrl={story.banner_url}
         title={story.title}
         className="absolute inset-0 -z-20"
-        priority
+        preload
+        sizes="100vw"
         iconClassName="size-24"
       />
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/60 to-black/20" />

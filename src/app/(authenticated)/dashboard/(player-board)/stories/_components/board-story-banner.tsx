@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Shield } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
@@ -5,24 +6,26 @@ import { cn } from "cn";
 
 import type { TBoardStoryBannerProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/_types/board-story-components-props";
 
-// Fills its (relative, sized) parent. Plain <img> so the storage URL loads
-// directly without the /_next/image proxy.
+// Fills its (relative, sized) parent. Served through /_next/image; the
+// storage host is allowed in next.config.ts images.remotePatterns.
 export default function BoardStoryBanner({
   bannerUrl,
   title,
   className,
-  priority = false,
+  preload = false,
+  loading,
 }: TBoardStoryBannerProps) {
   return (
     <If condition={!!bannerUrl}>
       <Then>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={bannerUrl as string}
           alt={title}
-          loading={priority ? "eager" : "lazy"}
-          decoding="async"
-          className={cn("absolute inset-0 size-full object-cover", className)}
+          fill
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          preload={preload}
+          loading={preload ? undefined : loading}
+          className={cn("object-cover", className)}
         />
       </Then>
       <Else>

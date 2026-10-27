@@ -1,3 +1,5 @@
+import type { ImageProps } from "next/image";
+
 import type { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import type { StoryMemberStatusEnum } from "@/api/main/modules/master/stories/enums/story-member-status";
 import type { TBoardStoryPaginationResponse } from "@/api/main/modules/board/stories/types/board-story-pagination-response";
@@ -15,6 +17,8 @@ export type TBoardStoryFiltersProps = TBoardStoryFilterValues & {
 
 export type TBoardStoryCardProps = {
   story: TBoardStoryPaginationResponse;
+  // Banner loading; "eager" for the above-the-fold cards
+  loading?: ImageProps["loading"];
 };
 
 export type TBoardStoryCardListProps = {
@@ -52,7 +56,10 @@ export type TBoardStoryBannerProps = {
   bannerUrl: string | null;
   title: string;
   className?: string;
-  priority?: boolean;
+  // Preload in <head>: only for the page's single LCP image
+  preload?: boolean;
+  // "eager" for other above-the-fold banners; ignored when preloading
+  loading?: ImageProps["loading"];
 };
 
 export type TBoardStoryStatusBadgeProps = {
