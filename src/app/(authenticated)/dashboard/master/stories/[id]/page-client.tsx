@@ -24,6 +24,8 @@ import type { TStoryPaginationResponse } from "@/api/main/modules/master/stories
 
 import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-by-id";
 import { useGetStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-by-id";
+import { useGetStoryMemberPagination } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-member-pagination";
+import { STORY_MEMBER_PREVIEW_COUNT } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-member-preview";
 import { useArchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-archive-story-by-id";
 import { useUnarchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-unarchive-story-by-id";
 import { usePublishStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-publish-story-by-id";
@@ -49,6 +51,9 @@ export default function StoryDetailPageClient() {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [isCompleteDialogOpen, setIsCompleteDialogOpen] = useState(false);
   const storyQuery = useGetStoryById(storyId);
+  // Same key as the members card, so its list loads alongside the story
+  // instead of after it
+  useGetStoryMemberPagination(storyId, STORY_MEMBER_PREVIEW_COUNT);
   const story = storyQuery.data?.data?.data;
   const canEdit = !!story && story.action_list.is_can_update;
   const canPublish = !!story && story.action_list.is_can_publish;
