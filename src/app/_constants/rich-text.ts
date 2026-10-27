@@ -27,3 +27,22 @@ export const RICH_TEXT_EDITOR_SELECTED_IMAGE_CLASS_NAME =
 // Toolbar toggle that is currently on (bold, list, link, ...)
 export const RICH_TEXT_TOOLBAR_ACTIVE_CLASS_NAME =
   "bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary";
+
+// Leading "@username" in a reply (added to already sanitized comment HTML)
+export const RICH_TEXT_MENTION_CLASS_NAME =
+  "rounded-sm bg-primary/10 px-0.5 font-medium";
+
+// Emoji picker grid: 10 columns of 28px emoji, 8 on phones (~360px wide)
+export const RICH_TEXT_EMOJI_COLUMNS = 10;
+export const RICH_TEXT_EMOJI_COMPACT_COLUMNS = 8;
+export const RICH_TEXT_EMOJI_COMPACT_QUERY = "(max-width: 399px)";
+
+// Order the skin tone button cycles through
+export const RICH_TEXT_EMOJI_SKIN_TONES = [
+  "none",
+  "light",
+  "medium-light",
+  "medium",
+  "medium-dark",
+  "dark",
+] as const;

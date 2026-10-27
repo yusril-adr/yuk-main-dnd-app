@@ -1,6 +1,6 @@
 import { ExternalLink } from "lucide-react";
 
-import type { TPublicStoryDetailExternalLinkProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
+import type { TPublicStoryDetailExternalLinkProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-external-link-props";
 
 // External story link (map, Discord); opens in a new tab
 export default function PublicStoryDetailExternalLink({

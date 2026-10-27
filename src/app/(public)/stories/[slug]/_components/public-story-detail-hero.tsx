@@ -6,7 +6,7 @@ import PublicStoryBanner from "@/app/(public)/stories/_components/public-story-b
 import PublicStoryStatusBadge from "@/app/(public)/stories/_components/public-story-status-badge";
 import PublicStoryTypeBadge from "@/app/(public)/stories/_components/public-story-type-badge";
 import PublicStoryLocationBadge from "@/app/(public)/stories/_components/public-story-location-badge";
-import type { TPublicStoryDetailProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
+import type { TPublicStoryDetailProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-props";
 
 // Full-bleed banner with the title laid over a gradient
 export default function PublicStoryDetailHero({

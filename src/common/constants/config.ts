@@ -1,3 +1,6 @@
+// Unset or not a number -> fallback (0 is kept: always stale)
+const STALE_IN_MS = Number(process.env.NEXT_PUBLIC_REACT_QUERY_STALE_IN_MS);
+
 const CONFIG = {
   MAIN_API_BASE_URL: process.env.NEXT_PUBLIC_MAIN_API_BASE_URL,
 
@@ -8,13 +11,17 @@ const CONFIG = {
     "https://yusril-adr.github.io/yuk-main-dnd-manual/",
 
   IS_USING_THEME_TOGGLER:
-    process.env.NEXT_PUBLIC_NEXT_IS_USING_THEME_TOGGLER === "true",
+    process.env.NEXT_PUBLIC_IS_USING_THEME_TOGGLER === "true",
 
   COOKIE: {
     ACCESS_TOKEN_KEY: "access_token",
   },
 
-  REACT_QUERY_STALE_IN_MS: 1000 * 30, // 30 seconds
+  REACT_QUERY_STALE_IN_MS:
+    process.env.NEXT_PUBLIC_REACT_QUERY_STALE_IN_MS &&
+    Number.isFinite(STALE_IN_MS)
+      ? STALE_IN_MS
+      : 1000 * 30, // 30 seconds
 
   QUERY_KEY: {
     MAIN_API: {
@@ -51,6 +58,12 @@ const CONFIG = {
           ALL: () => [
             ...CONFIG.QUERY_KEY.MAIN_API.STORY.ALL(),
             "public-story-member",
+          ],
+        },
+        COMMENT: {
+          ALL: () => [
+            ...CONFIG.QUERY_KEY.MAIN_API.STORY.ALL(),
+            "public-story-comment",
           ],
         },
       },

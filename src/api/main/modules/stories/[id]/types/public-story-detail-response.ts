@@ -5,6 +5,8 @@ export type TPublicStoryDetailActionList = {
   // can join their own story too.
   is_can_join: boolean;
   is_can_cancel_join: boolean;
+  // Logged in and the story is published or completed
+  is_can_comment: boolean;
 };
 
 export type TPublicStoryDetailResponse = TStoryEntity & {

@@ -16,6 +16,19 @@ const MAIN_API_PATH = {
     // Join and cancel-join take the id only
     JOIN: (id: string) => `/api/v1/stories/${id}/join`,
     CANCEL_JOIN: (id: string) => `/api/v1/stories/${id}/cancel-join`,
+    // Comment list accepts the id or slug; writes take the story id only
+    COMMENTS: (identifier: string) => `/api/v1/stories/${identifier}/comments`,
+    COMMENT: (id: string, commentId: string) =>
+      `/api/v1/stories/${id}/comments/${commentId}`,
+    COMMENT_PIN: (id: string, commentId: string) =>
+      `/api/v1/stories/${id}/comments/${commentId}/pin`,
+    COMMENT_UNPIN: (id: string, commentId: string) =>
+      `/api/v1/stories/${id}/comments/${commentId}/unpin`,
+    // PUT sets (or switches) the caller's reaction, DELETE removes it
+    COMMENT_REACTION: (id: string, commentId: string) =>
+      `/api/v1/stories/${id}/comments/${commentId}/reaction`,
+    COMMENT_REPLIES: (identifier: string, commentId: string) =>
+      `/api/v1/stories/${identifier}/comments/${commentId}/replies`,
   },
   USER: {
     // Public guildmates list; search matches username or display name

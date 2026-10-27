@@ -33,7 +33,7 @@ import PublicStoryDetailExternalLink from "./public-story-detail-external-link";
 import PublicStoryStatusBadge from "@/app/(public)/stories/_components/public-story-status-badge";
 import { PUBLIC_STORY_LOCATION_TYPE_ICON } from "@/app/(public)/stories/_constants/public-story-icons";
 import { PUBLIC_STORY_START_AT_FORMAT } from "@/app/(public)/stories/[slug]/_constants/public-story-detail-date-format";
-import type { TPublicStoryDetailProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
+import type { TPublicStoryDetailProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-props";
 
 function formatReward(value: number, unit: "EXP" | "GP") {
   return value > 0 ? `${value.toLocaleString("en-US")} ${unit}` : null;

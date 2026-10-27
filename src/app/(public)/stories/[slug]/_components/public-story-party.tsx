@@ -10,7 +10,7 @@ import PublicStoryDetailSection from "./public-story-detail-section";
 import PublicStoryPartyMember from "./public-story-party-member";
 import { useGetPublicStoryMemberPagination } from "@/app/(public)/stories/[slug]/_hooks/use-get-public-story-member-pagination";
 import { PUBLIC_STORY_MEMBER_PER_PAGE } from "@/app/(public)/stories/[slug]/_constants/public-story-member";
-import type { TPublicStoryPartyProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
+import type { TPublicStoryPartyProps } from "@/app/(public)/stories/[slug]/_types/public-story-party-props";
 
 export default function PublicStoryParty({
   storyId,

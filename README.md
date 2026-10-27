@@ -46,9 +46,10 @@ The app runs at [http://localhost:3000](http://localhost:3000).
 | `NEXT_PUBLIC_MAIN_API_BASE_URL` | Base URL of the YukMainDnD API. |
 | `NEXT_PUBLIC_SITE_URL` | Public URL of this site, used for canonical URLs, the sitemap and share images (`metadataBase`). Defaults to `http://localhost:3000`. |
 | `NEXT_PUBLIC_MANUAL_URL` | URL of the user manual, linked from the home page call to action and the avatar menus. Defaults to `https://yusril-adr.github.io/yuk-main-dnd-manual/`. |
-| `NEXT_PUBLIC_NEXT_IS_USING_THEME_TOGGLER` | Set to `true` to show the light/dark theme toggle (login, switch role and dashboard sidebar). |
+| `NEXT_PUBLIC_IS_USING_THEME_TOGGLER` | Set to `true` to show the light/dark theme toggle (login, switch role and dashboard sidebar). Defaults to `false`. |
+| `NEXT_PUBLIC_REACT_QUERY_STALE_IN_MS` | How long fetched data stays fresh in React Query, in milliseconds. Defaults to `30000` (30 seconds). |
 
-`.env.example` currently lists the theme flag as `NEXT_IS_USING_THEME_TOGGLER`, but the code reads `NEXT_PUBLIC_NEXT_IS_USING_THEME_TOGGLER`. Use the `NEXT_PUBLIC_` name.
+`NEXT_PUBLIC_` variables are read in the browser, so Next.js inlines them at `next build`. Rebuild after changing them.
 
 ## Scripts
 
