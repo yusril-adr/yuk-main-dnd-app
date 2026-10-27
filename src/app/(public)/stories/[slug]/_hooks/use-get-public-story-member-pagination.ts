@@ -2,6 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getPublicStoryMemberPagination } from "@/api/main/modules/stories/[id]/members";
 import CONFIG from "@/common/constants/config";
+import { getMainApiNextPage } from "@/api/main/utils/pagination";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 
 // Infinite list like the dashboard members card: each "Show more" fetches the
@@ -25,13 +26,7 @@ export function useGetPublicStoryMemberPagination(
         },
       }),
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      const meta = lastPage.data?.data?.meta;
-      if (!meta) return undefined;
-      return meta.current_page < meta.total_page
-        ? meta.current_page + 1
-        : undefined;
-    },
+    getNextPageParam: getMainApiNextPage,
     enabled: !!storyId,
   });
 }
