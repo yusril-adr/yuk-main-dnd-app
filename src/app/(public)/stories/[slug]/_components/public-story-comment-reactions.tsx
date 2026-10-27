@@ -57,12 +57,12 @@ export default function PublicStoryCommentReactions({
   const toggle = (type: StoryCommentReactionTypeEnum) =>
     reactMutation.mutate({ type: myReaction === type ? null : type });
 
-  // Same box as the row's xs Reply / thread buttons (h-6, px-2, text-xs,
-  // 8px radius), on a faint darkening of whatever card sits behind them
+  // Pills as tall as the row's xs Reply / thread buttons (h-6, text-xs),
+  // on a faint darkening of whatever card sits behind them
   const chipClassName =
-    "h-6 gap-1 rounded-[min(var(--radius-md),8px)] border border-border/60 bg-foreground/5 px-2 text-xs tabular-nums shadow-none dark:border-foreground/10 dark:bg-popover";
+    "h-6 gap-1 rounded-full border border-border/60 bg-foreground/5 px-2.5 text-xs tabular-nums shadow-none dark:border-foreground/10 dark:bg-popover";
   const mineChipClassName =
-    "border-primary/50 bg-primary/10 ring-1 ring-primary/50 dark:border-primary/60 dark:bg-primary/15 dark:ring-primary/60";
+    "border-primary/50 bg-primary/10 dark:border-primary/60 dark:bg-primary/15";
 
   return (
     <div
@@ -150,6 +150,7 @@ export default function PublicStoryCommentReactions({
                   size="icon-xs"
                   aria-label={`React to this ${noun}`}
                   title="Add reaction"
+                  className="rounded-full"
                 />
               }
             >
