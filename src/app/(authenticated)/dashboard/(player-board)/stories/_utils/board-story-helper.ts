@@ -10,3 +10,11 @@ export function formatBoardStoryMembers(
 ) {
   return max ? `${joined} / ${max}` : String(joined);
 }
+
+// 1250 -> "1,250 EXP"; null for 0 so the detail row shows its empty text
+export function formatBoardStoryReward(
+  value: number,
+  unit: "EXP" | "GP",
+): string | null {
+  return value > 0 ? `${value.toLocaleString("en-US")} ${unit}` : null;
+}
