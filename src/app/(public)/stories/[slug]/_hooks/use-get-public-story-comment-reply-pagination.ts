@@ -2,7 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getStoryCommentReplyPagination } from "@/api/main/modules/stories/[id]/comments";
 import CONFIG from "@/common/constants/config";
-import { getMainApiNextPage } from "@/utils/pagination-helper";
+import { getMainApiNextPage } from "@/api/main/utils/pagination";
 
 // Replies of one top-level comment, oldest first, loaded only while the
 // thread is open. The key starts with COMMENT.ALL(), so every comment

@@ -2,7 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getStoryCommentPagination } from "@/api/main/modules/stories/[id]/comments";
 import CONFIG from "@/common/constants/config";
-import { getMainApiNextPage } from "@/utils/pagination-helper";
+import { getMainApiNextPage } from "@/api/main/utils/pagination";
 
 // "Load more" list like the party roster. The API orders it (pinned first,
 // then newest). action_list depends on the caller, so the viewer is part of
