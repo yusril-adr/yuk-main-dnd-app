@@ -1,5 +1,6 @@
 "use client";
 
+import { usePrefetchInfiniteQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -18,7 +19,7 @@ import BoardStoryDetailChronicleCard from "@/app/(authenticated)/dashboard/(play
 import BoardStoryDetailMembersCard from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-members-card";
 import BoardStoryDetailSkeleton from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-skeleton";
 import { useGetBoardStoryById } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_hooks/use-get-board-story-by-id";
-import { useGetBoardStoryMemberPagination } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_hooks/use-get-board-story-member-pagination";
+import { getBoardStoryMemberPaginationOptions } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_hooks/use-get-board-story-member-pagination";
 import { BOARD_STORY_MEMBER_PREVIEW_COUNT } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_constants/board-story-detail";
 
 export default function BoardStoryDetailPageClient() {
@@ -26,9 +27,9 @@ export default function BoardStoryDetailPageClient() {
   const storyId = id as string;
 
   const storyQuery = useGetBoardStoryById(storyId);
-  // Same key as the members card, so its list loads alongside the story
-  // instead of after it
-  useGetBoardStoryMemberPagination(storyId, BOARD_STORY_MEMBER_PREVIEW_COUNT);
+  // Start the members card's query alongside the story instead of after it,
+  // without subscribing this page to it
+  usePrefetchInfiniteQuery(getBoardStoryMemberPaginationOptions(storyId, BOARD_STORY_MEMBER_PREVIEW_COUNT));
   const story = storyQuery.data?.data?.data;
   const isNotFound =
     storyQuery.isError && storyQuery.error instanceof MainAPINotFoundError;

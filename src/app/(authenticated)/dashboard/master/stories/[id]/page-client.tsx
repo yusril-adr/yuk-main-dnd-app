@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useParams, useRouter, notFound } from "next/navigation";
 import { If, Then, Else } from "react-if";
-import { useQueryClient } from "@tanstack/react-query";
+import { usePrefetchInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import {
@@ -24,7 +24,7 @@ import type { TStoryPaginationResponse } from "@/api/main/modules/master/stories
 
 import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-by-id";
 import { useGetStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-by-id";
-import { useGetStoryMemberPagination } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-member-pagination";
+import { getStoryMemberPaginationOptions } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-member-pagination";
 import { STORY_MEMBER_PREVIEW_COUNT } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-member-preview";
 import { useArchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-archive-story-by-id";
 import { useUnarchiveStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-unarchive-story-by-id";
@@ -51,9 +51,9 @@ export default function StoryDetailPageClient() {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [isCompleteDialogOpen, setIsCompleteDialogOpen] = useState(false);
   const storyQuery = useGetStoryById(storyId);
-  // Same key as the members card, so its list loads alongside the story
-  // instead of after it
-  useGetStoryMemberPagination(storyId, STORY_MEMBER_PREVIEW_COUNT);
+  // Start the members card's query alongside the story instead of after it,
+  // without subscribing this page to it
+  usePrefetchInfiniteQuery(getStoryMemberPaginationOptions(storyId, STORY_MEMBER_PREVIEW_COUNT));
   const story = storyQuery.data?.data?.data;
   const canEdit = !!story && story.action_list.is_can_update;
   const canPublish = !!story && story.action_list.is_can_publish;
