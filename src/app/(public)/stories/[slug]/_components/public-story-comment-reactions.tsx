@@ -57,12 +57,16 @@ export default function PublicStoryCommentReactions({
   const toggle = (type: StoryCommentReactionTypeEnum) =>
     reactMutation.mutate({ type: myReaction === type ? null : type });
 
-  // Pills as tall as the row's xs Reply / thread buttons (h-6, text-xs),
-  // on a faint darkening of whatever card sits behind them
-  const chipClassName =
-    "h-6 gap-1 rounded-full border border-border/60 bg-foreground/5 px-2.5 text-xs tabular-nums shadow-none dark:border-foreground/10 dark:bg-popover";
+  // Replies: a step smaller, still a comfortable tap target. Light: a faint
+  // darkening of whatever card sits behind them
+  const chipClassName = cn(
+    "gap-1 rounded-full border border-border/60 bg-foreground/5 px-2.5 tabular-nums shadow-none dark:border-foreground/10 dark:bg-popover",
+    isReply ? "h-7 px-2 text-xs" : "h-8",
+  );
+  // Yours: a lighter fill (a primary tint mutes warm emoji skin) with the
+  // primary border and bold count as the signal
   const mineChipClassName =
-    "border-primary/50 bg-primary/10 dark:border-primary/60 dark:bg-primary/15";
+    "border-primary/70 bg-white/70 dark:border-primary dark:bg-primary/30";
 
   return (
     <div
@@ -76,10 +80,18 @@ export default function PublicStoryCommentReactions({
         const label = `${option.label}, ${countLabel(count)}${isMine ? ", including yours" : ""}`;
         const content = (
           <>
-            <span aria-hidden className="text-sm leading-none">
+            <span
+              aria-hidden
+              className={cn("leading-none", isReply ? "text-sm" : "text-base")}
+            >
               {option.emoji}
             </span>
-            <span aria-hidden className={cn(isMine && "font-bold")}>
+            <span
+              aria-hidden
+              className={cn(
+                isMine && "font-bold text-primary dark:text-foreground",
+              )}
+            >
               {count}
             </span>
           </>
@@ -93,7 +105,7 @@ export default function PublicStoryCommentReactions({
                     <Button
                       type="button"
                       variant="outline"
-                      size="xs"
+                      size="sm"
                       aria-pressed={isMine}
                       aria-label={label}
                       onClick={() => toggle(option.type)}
@@ -103,7 +115,7 @@ export default function PublicStoryCommentReactions({
                         isMine &&
                           cn(
                             mineChipClassName,
-                            "hover:bg-primary/15 dark:hover:bg-primary/25",
+                            "hover:bg-white/90 dark:hover:bg-primary/40",
                           ),
                       )}
                     />
@@ -120,7 +132,8 @@ export default function PublicStoryCommentReactions({
                       aria-label={label}
                       className={cn(
                         chipClassName,
-                        "inline-flex items-center font-medium",
+                        "inline-flex items-center text-sm font-medium",
+                        isReply && "text-xs",
                         isMine && mineChipClassName,
                       )}
                     />
@@ -147,14 +160,17 @@ export default function PublicStoryCommentReactions({
                 <Button
                   type="button"
                   variant="ghost"
-                  size="icon-xs"
+                  size="icon-sm"
                   aria-label={`React to this ${noun}`}
                   title="Add reaction"
-                  className="rounded-full"
+                  className={cn(
+                    "rounded-full text-muted-foreground hover:text-foreground",
+                    isReply && "size-7",
+                  )}
                 />
               }
             >
-              <SmilePlus className="size-3.5" />
+              <SmilePlus />
             </PopoverTrigger>
             <PopoverContent
               align="start"
