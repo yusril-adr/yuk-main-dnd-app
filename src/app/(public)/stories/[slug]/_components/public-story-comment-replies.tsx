@@ -17,9 +17,11 @@ import { useAuthContext } from "@/app/_hooks/use-auth-context";
 
 import PublicStoryCommentForm from "./public-story-comment-form";
 import PublicStoryCommentItem from "./public-story-comment-item";
+import PublicStoryCommentReactions from "./public-story-comment-reactions";
 import { useCreatePublicStoryComment } from "@/app/(public)/stories/[slug]/_hooks/use-create-public-story-comment";
 import { useGetPublicStoryCommentReplyPagination } from "@/app/(public)/stories/[slug]/_hooks/use-get-public-story-comment-reply-pagination";
 import { useRefreshPublicStoryComments } from "@/app/(public)/stories/[slug]/_hooks/use-refresh-public-story-comments";
+import { hasPublicStoryCommentReactions } from "@/app/(public)/stories/[slug]/_utils/public-story-comment-reaction-helper";
 import { PUBLIC_STORY_COMMENT_REPLY_PER_PAGE } from "@/app/(public)/stories/[slug]/_constants/public-story-comment";
 import type { TPublicStoryCommentRepliesProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-replies-props";
 
@@ -90,11 +92,19 @@ export default function PublicStoryCommentReplies({
     }));
   };
 
-  if (!canReply && !hasReplies) return null;
+  if (!canReply && !hasReplies && !hasPublicStoryCommentReactions(comment))
+    return null;
 
   return (
     <div className="mt-1 flex flex-col gap-2">
-      <div className="-ms-2 flex flex-wrap items-center gap-1">
+      {/* Reactions, then Reply and the thread toggle; wraps on phones.
+          -ms-2 lines up the ghost buttons' text, the outlined chips undo it */}
+      <div className="-ms-2 flex flex-wrap items-center gap-x-1 gap-y-1.5">
+        <PublicStoryCommentReactions
+          storyId={storyId}
+          comment={comment}
+          className="ms-2 me-1"
+        />
         <If condition={canReply}>
           <Then>
             <Button
@@ -178,22 +188,46 @@ export default function PublicStoryCommentReplies({
                           comment={reply}
                           isReply
                         >
-                          <If condition={canReply && !!reply.author?.username}>
+                          <If
+                            condition={
+                              hasPublicStoryCommentReactions(reply) ||
+                              (canReply && !!reply.author?.username)
+                            }
+                          >
                             <Then>
-                              <Button
-                                variant="ghost"
-                                size="xs"
-                                className="-ms-2 self-start"
-                                aria-label={`Reply to @${reply.author?.username}`}
-                                aria-controls={
-                                  isReplying ? `${formId}-panel` : undefined
-                                }
-                                onClick={() =>
-                                  replyToReply(reply.author?.username ?? "")
-                                }
-                              >
-                                <MessageSquareReply /> Reply
-                              </Button>
+                              <div className="-ms-2 flex flex-wrap items-center gap-x-1 gap-y-1.5">
+                                <PublicStoryCommentReactions
+                                  storyId={storyId}
+                                  comment={reply}
+                                  isReply
+                                  className="ms-2 me-1"
+                                />
+                                <If
+                                  condition={
+                                    canReply && !!reply.author?.username
+                                  }
+                                >
+                                  <Then>
+                                    <Button
+                                      variant="ghost"
+                                      size="xs"
+                                      aria-label={`Reply to @${reply.author?.username}`}
+                                      aria-controls={
+                                        isReplying
+                                          ? `${formId}-panel`
+                                          : undefined
+                                      }
+                                      onClick={() =>
+                                        replyToReply(
+                                          reply.author?.username ?? "",
+                                        )
+                                      }
+                                    >
+                                      <MessageSquareReply /> Reply
+                                    </Button>
+                                  </Then>
+                                </If>
+                              </div>
                             </Then>
                           </If>
                         </PublicStoryCommentItem>

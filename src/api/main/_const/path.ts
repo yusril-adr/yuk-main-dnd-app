@@ -24,6 +24,9 @@ const MAIN_API_PATH = {
       `/api/v1/stories/${id}/comments/${commentId}/pin`,
     COMMENT_UNPIN: (id: string, commentId: string) =>
       `/api/v1/stories/${id}/comments/${commentId}/unpin`,
+    // PUT sets (or switches) the caller's reaction, DELETE removes it
+    COMMENT_REACTION: (id: string, commentId: string) =>
+      `/api/v1/stories/${id}/comments/${commentId}/reaction`,
     COMMENT_REPLIES: (identifier: string, commentId: string) =>
       `/api/v1/stories/${identifier}/comments/${commentId}/replies`,
   },
