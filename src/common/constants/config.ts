@@ -53,6 +53,12 @@ const CONFIG = {
             "public-story-member",
           ],
         },
+        COMMENT: {
+          ALL: () => [
+            ...CONFIG.QUERY_KEY.MAIN_API.STORY.ALL(),
+            "public-story-comment",
+          ],
+        },
       },
       BOARD: {
         STORY: {

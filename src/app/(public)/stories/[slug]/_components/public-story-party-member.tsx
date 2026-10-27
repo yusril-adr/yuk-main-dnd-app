@@ -28,7 +28,7 @@ import {
   PUBLIC_STORY_MEMBER_STATUS_BADGE_VARIANT,
   PUBLIC_STORY_MEMBER_STATUS_LABEL,
 } from "@/app/(public)/stories/[slug]/_constants/public-story-member";
-import type { TPublicStoryPartyMemberProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
+import type { TPublicStoryPartyMemberProps } from "@/app/(public)/stories/[slug]/_types/public-story-party-member-props";
 
 export default function PublicStoryPartyMember({
   member,

@@ -16,6 +16,7 @@ import PublicStoryDetailSection from "@/app/(public)/stories/[slug]/_components/
 import PublicStoryDetailSummary from "@/app/(public)/stories/[slug]/_components/public-story-detail-summary";
 import PublicStoryDetailSkeleton from "@/app/(public)/stories/[slug]/_components/public-story-detail-skeleton";
 import PublicStoryParty from "@/app/(public)/stories/[slug]/_components/public-story-party";
+import PublicStoryComments from "@/app/(public)/stories/[slug]/_components/public-story-comments";
 import PublicStoryErrorState from "@/app/(public)/stories/_components/public-story-error-state";
 import { PUBLIC_STORY_DETAIL_DATE_FORMAT } from "@/app/(public)/stories/[slug]/_constants/public-story-detail-date-format";
 
@@ -109,6 +110,8 @@ export default function PublicStoryDetailPageClient() {
                           </div>
                         </dl>
                       </PublicStoryDetailSection>
+
+                      <PublicStoryComments story={story} />
                     </div>
                   </div>
                 </article>

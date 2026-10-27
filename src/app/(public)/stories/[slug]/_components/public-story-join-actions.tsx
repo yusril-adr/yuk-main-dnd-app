@@ -29,7 +29,7 @@ import { useJoinPublicStory } from "@/app/(public)/stories/[slug]/_hooks/use-joi
 import { useGetPublicStoryMemberPagination } from "@/app/(public)/stories/[slug]/_hooks/use-get-public-story-member-pagination";
 import { PUBLIC_STORY_MEMBER_PER_PAGE } from "@/app/(public)/stories/[slug]/_constants/public-story-member";
 import { useCancelJoinPublicStory } from "@/app/(public)/stories/[slug]/_hooks/use-cancel-join-public-story";
-import type { TPublicStoryDetailProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
+import type { TPublicStoryDetailProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-props";
 
 // Renders the action inline in the sidebar on desktop and as a fixed bottom
 // bar on mobile (one instance, so the dialog and mutation state are shared)
