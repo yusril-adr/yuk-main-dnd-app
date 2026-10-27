@@ -19,17 +19,18 @@ export function useUpdatePublicStoryComment(
     >,
     "mutationFn"
   >,
+  isReply = false,
 ) {
   return useMutation({
     ...options,
     mutationFn: updateStoryComment,
     onMutate: (...args) => {
-      toast.loading("Saving comment...");
+      toast.loading(isReply ? "Saving reply..." : "Saving comment...");
       return options?.onMutate?.(...args);
     },
     onSuccess: (...args) => {
       toast.dismiss();
-      toast.success("Comment updated");
+      toast.success(isReply ? "Reply updated" : "Comment updated");
       options?.onSuccess?.(...args);
     },
   });

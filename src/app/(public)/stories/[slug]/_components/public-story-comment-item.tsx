@@ -73,14 +73,17 @@ export default function PublicStoryCommentItem({
     onSuccess: refreshComments,
     onError: onCommentError,
   };
-  const updateMutation = useUpdatePublicStoryComment({
-    ...mutationOptions,
-    onSuccess: () => {
-      setIsEditing(false);
-      refreshComments();
+  const updateMutation = useUpdatePublicStoryComment(
+    {
+      ...mutationOptions,
+      onSuccess: () => {
+        setIsEditing(false);
+        refreshComments();
+      },
     },
-  });
-  const deleteMutation = useDeletePublicStoryComment(mutationOptions);
+    isReply,
+  );
+  const deleteMutation = useDeletePublicStoryComment(mutationOptions, isReply);
   const pinMutation = usePinPublicStoryComment(mutationOptions);
   const unpinMutation = useUnpinPublicStoryComment(mutationOptions);
 

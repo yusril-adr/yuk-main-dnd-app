@@ -14,17 +14,18 @@ export function useDeletePublicStoryComment(
     >,
     "mutationFn"
   >,
+  isReply = false,
 ) {
   return useMutation({
     ...options,
     mutationFn: deleteStoryComment,
     onMutate: (...args) => {
-      toast.loading("Deleting comment...");
+      toast.loading(isReply ? "Deleting reply..." : "Deleting comment...");
       return options?.onMutate?.(...args);
     },
     onSuccess: (...args) => {
       toast.dismiss();
-      toast.success("Comment deleted");
+      toast.success(isReply ? "Reply deleted" : "Comment deleted");
       options?.onSuccess?.(...args);
     },
   });
