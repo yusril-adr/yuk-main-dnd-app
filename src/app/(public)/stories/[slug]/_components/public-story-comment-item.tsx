@@ -99,6 +99,10 @@ export default function PublicStoryCommentItem({
   const ids = { storyId, commentId: comment.id };
   const authorName = author?.display_name ?? "Deleted comment";
   const noun = isReply ? "reply" : "comment";
+  // Replies may open with "@username"; rendered as text, never as markup
+  const leadingMention = isReply
+    ? (comment.content?.match(/^@\S+/)?.[0] ?? null)
+    : null;
   const avatarSize = isReply ? "size-8" : "size-10";
   const createdAt = dayjs(comment.created_at);
 
@@ -231,7 +235,16 @@ export default function PublicStoryCommentItem({
               <Else>
                 {/* Plain text from the API; keep the author's line breaks */}
                 <p className="mt-1 text-sm leading-relaxed break-words whitespace-pre-wrap text-foreground">
-                  {comment.content}
+                  {leadingMention ? (
+                    <>
+                      <span className="rounded-sm bg-primary/10 px-0.5 font-medium">
+                        {leadingMention}
+                      </span>
+                      {comment.content?.slice(leadingMention.length)}
+                    </>
+                  ) : (
+                    comment.content
+                  )}
                 </p>
               </Else>
             </If>

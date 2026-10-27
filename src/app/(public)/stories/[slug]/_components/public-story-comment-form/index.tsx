@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Send } from "lucide-react";
@@ -26,7 +27,19 @@ import {
 import { PUBLIC_STORY_COMMENT_MAX_LENGTH } from "@/app/(public)/stories/[slug]/_constants/public-story-comment";
 import type { TPublicStoryCommentFormProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-form-props";
 
-// Used for new comments and inline edits (and later for replies)
+// "@a @b " only holds mentions: a new mention replaces it
+const MENTIONS_ONLY = /^\s*(@\S+\s*)*$/;
+
+// Mention merge: blank or mentions only -> just the new mention; text
+// without the mention -> prepend it; text that has it -> unchanged
+function mergeMention(content: string, username: string) {
+  const mention = `@${username}`;
+  if (MENTIONS_ONLY.test(content)) return `${mention} `;
+  if (content.split(/\s+/).includes(mention)) return content;
+  return `${mention} ${content}`;
+}
+
+// Used for new comments, inline edits and replies
 export default function PublicStoryCommentForm({
   id,
   label,
@@ -37,8 +50,10 @@ export default function PublicStoryCommentForm({
   onSubmit,
   onCancel,
   autoFocus,
+  mention,
 }: TPublicStoryCommentFormProps) {
-  const { control, handleSubmit, setError, reset } =
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const { control, handleSubmit, setError, reset, getValues, setValue } =
     useForm<TPublicStoryCommentFormSchema>({
       resolver: zodResolver(PublicStoryCommentFormSchema),
       defaultValues: { content: defaultContent },
@@ -47,6 +62,22 @@ export default function PublicStoryCommentForm({
   const length = useWatch({ control, name: "content" }).length;
   const isOverLimit = length > PUBLIC_STORY_COMMENT_MAX_LENGTH;
   const counterId = `${id}-counter`;
+
+  const mentionUsername = mention?.username;
+  const mentionRequestId = mention?.requestId;
+  useEffect(() => {
+    if (!mentionUsername) return;
+    const content = mergeMention(getValues("content"), mentionUsername);
+    setValue("content", content, { shouldDirty: true });
+    // After the new value renders: focus with the caret at the end
+    const frame = requestAnimationFrame(() => {
+      const textarea = textareaRef.current;
+      if (!textarea) return;
+      textarea.focus();
+      textarea.setSelectionRange(content.length, content.length);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [mentionUsername, mentionRequestId, getValues, setValue]);
 
   const submit = handleSubmit(async ({ content }) => {
     try {
@@ -96,6 +127,10 @@ export default function PublicStoryCommentForm({
                 }
               }}
               {...field}
+              ref={(element) => {
+                field.ref(element);
+                textareaRef.current = element;
+              }}
             />
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">

@@ -33,10 +33,16 @@ export default function PublicStoryCommentReplies({
   const { auth } = useAuthContext();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
+  // Set by a reply's Reply button; the form merges it into its text
+  const [mention, setMention] = useState<{
+    username: string;
+    requestId: number;
+  } | null>(null);
   const { refreshComments, onCommentError } = useRefreshPublicStoryComments();
   const createMutation = useCreatePublicStoryComment({
     onSuccess: () => {
       setIsReplying(false);
+      setMention(null);
       // Show the thread the new reply landed in
       setIsExpanded(true);
       refreshComments();
@@ -71,6 +77,19 @@ export default function PublicStoryCommentReplies({
   const repliesId = `comment-replies-${comment.id}`;
   const formId = `comment-reply-${comment.id}`;
 
+  const closeForm = () => {
+    setIsReplying(false);
+    setMention(null);
+  };
+  // Replies are one level deep: the post still targets the top-level comment
+  const replyToReply = (username: string) => {
+    setIsReplying(true);
+    setMention((current) => ({
+      username,
+      requestId: (current?.requestId ?? 0) + 1,
+    }));
+  };
+
   if (!canReply && !hasReplies) return null;
 
   return (
@@ -83,7 +102,7 @@ export default function PublicStoryCommentReplies({
               size="xs"
               aria-expanded={isReplying}
               aria-controls={isReplying ? `${formId}-panel` : undefined}
-              onClick={() => setIsReplying((value) => !value)}
+              onClick={() => (isReplying ? closeForm() : setIsReplying(true))}
             >
               <MessageSquareReply /> Reply
             </Button>
@@ -158,7 +177,26 @@ export default function PublicStoryCommentReplies({
                           storyId={storyId}
                           comment={reply}
                           isReply
-                        />
+                        >
+                          <If condition={canReply && !!reply.author?.username}>
+                            <Then>
+                              <Button
+                                variant="ghost"
+                                size="xs"
+                                className="-ms-2 self-start"
+                                aria-label={`Reply to @${reply.author?.username}`}
+                                aria-controls={
+                                  isReplying ? `${formId}-panel` : undefined
+                                }
+                                onClick={() =>
+                                  replyToReply(reply.author?.username ?? "")
+                                }
+                              >
+                                <MessageSquareReply /> Reply
+                              </Button>
+                            </Then>
+                          </If>
+                        </PublicStoryCommentItem>
                       ))}
                     </ItemGroup>
 
@@ -203,7 +241,8 @@ export default function PublicStoryCommentReplies({
               submitLabel="Post reply"
               isPending={createMutation.isPending}
               autoFocus
-              onCancel={() => setIsReplying(false)}
+              mention={mention}
+              onCancel={closeForm}
               onSubmit={(content) =>
                 createMutation.mutateAsync({
                   storyId,
