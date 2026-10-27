@@ -36,6 +36,5 @@ export function useGetPublicStoryCommentReplyPagination(
         : undefined;
     },
     enabled: !!storyId && !!commentId && (options?.enabled ?? true),
-    retry: 1,
   });
 }

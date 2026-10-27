@@ -33,7 +33,5 @@ export function useGetPublicStoryMemberPagination(
         : undefined;
     },
     enabled: !!storyId,
-    // Fail fast to the "try again" state instead of a long skeleton
-    retry: 1,
   });
 }

@@ -45,6 +45,5 @@ export function useGetBoardStoryMemberPagination(
         : undefined;
     },
     enabled: (options?.enabled ?? true) && !!storyId,
-    retry: 1,
   });
 }
