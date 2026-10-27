@@ -1,5 +1,10 @@
-import { useEffect, useMemo } from "react";
-import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
+import { useEffect, useMemo, useRef } from "react";
+import {
+  EditorContent,
+  Extension,
+  useEditor,
+  useEditorState,
+} from "@tiptap/react";
 import type { Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Placeholder } from "@tiptap/extensions";
@@ -35,21 +40,61 @@ export default function RichTextEditor({
   disabled = false,
   isInvalid = false,
   ariaLabelledBy,
+  ariaDescribedBy,
+  variant = "default",
+  autoFocus = false,
+  onSubmitShortcut,
+  onEscape,
+  onEditorChange,
 }: TRichTextEditorProps) {
+  const isMinimal = variant === "minimal";
+
+  // Latest callbacks for the keyboard shortcuts, so the extensions (and the
+  // editor) aren't recreated when the parent re-renders
+  const shortcutsRef = useRef({ onSubmitShortcut, onEscape });
+  useEffect(() => {
+    shortcutsRef.current = { onSubmitShortcut, onEscape };
+  }, [onSubmitShortcut, onEscape]);
+
+  // Last Markdown sent through onChange. The parent's value can trail the
+  // editor by a keystroke (fast typing), so an echo of what we emitted must
+  // not be treated as an outside change and reset the content and caret
+  const emittedValueRef = useRef<string | null>(null);
+
   const extensions = useMemo(
     () => [
-      StarterKit.configure({
-        heading: { levels: [1, 2, 3] },
-        code: false,
-        codeBlock: false,
-        link: { openOnClick: false, autolink: true, defaultProtocol: "https" },
-        // Divider disabled: descriptions are stored as Markdown for Discord,
-        // which has no horizontal rule. Re-enable if Discord support isn't needed.
-        horizontalRule: false,
-        // Replaced by RichTextUnderline (Discord-style __text__ in Markdown)
-        underline: false,
-      }),
-      RichTextUnderline,
+      isMinimal
+        ? // Comments: bold, italic, strikethrough and lists only. Nodes and
+          // marks that aren't registered can't be created by typing, pasting
+          // or loading Markdown either (they fall back to plain text)
+          StarterKit.configure({
+            heading: false,
+            blockquote: false,
+            code: false,
+            codeBlock: false,
+            horizontalRule: false,
+            link: false,
+            underline: false,
+            // No forced empty paragraph after a list: it would be sent as
+            // trailing blank lines (Enter twice still leaves a list)
+            trailingNode: false,
+          })
+        : StarterKit.configure({
+            heading: { levels: [1, 2, 3] },
+            code: false,
+            codeBlock: false,
+            link: {
+              openOnClick: false,
+              autolink: true,
+              defaultProtocol: "https",
+            },
+            // Divider disabled: descriptions are stored as Markdown for Discord,
+            // which has no horizontal rule. Re-enable if Discord support isn't needed.
+            horizontalRule: false,
+            // Replaced by RichTextUnderline (Discord-style __text__ in Markdown)
+            underline: false,
+          }),
+      ...(isMinimal ? [] : [RichTextUnderline]),
       // Content is loaded from and saved as Markdown (editor.getMarkdown())
       Markdown,
       Placeholder.configure({ placeholder }),
@@ -57,8 +102,25 @@ export default function RichTextEditor({
       // RichTextImage,
       // Images count as 0 characters (same as countRichTextCharacters)
       RichTextCharacterCount.configure({ limit: maxLength }),
+      Extension.create({
+        name: "richTextShortcuts",
+        // Ahead of StarterKit's HardBreak, which also binds Mod-Enter
+        priority: 1000,
+        addKeyboardShortcuts: () => ({
+          "Mod-Enter": () => {
+            const handler = shortcutsRef.current.onSubmitShortcut;
+            handler?.();
+            return !!handler;
+          },
+          Escape: () => {
+            const handler = shortcutsRef.current.onEscape;
+            handler?.();
+            return !!handler;
+          },
+        }),
+      }),
     ],
-    [placeholder, maxLength],
+    [placeholder, maxLength, isMinimal],
   );
 
   const editor = useEditor({
@@ -67,6 +129,7 @@ export default function RichTextEditor({
     // The toolbar and counter subscribe through useEditorState instead
     shouldRerenderOnTransaction: false,
     editable: !disabled,
+    autofocus: autoFocus ? "end" : false,
     extensions,
     content: value,
     contentType: "markdown",
@@ -74,6 +137,7 @@ export default function RichTextEditor({
       attributes: {
         ...(id ? { id } : {}),
         ...(ariaLabelledBy ? { "aria-labelledby": ariaLabelledBy } : {}),
+        ...(ariaDescribedBy ? { "aria-describedby": ariaDescribedBy } : {}),
         role: "textbox",
         "aria-multiline": "true",
         "aria-invalid": String(isInvalid),
@@ -81,7 +145,9 @@ export default function RichTextEditor({
           RICH_TEXT_CONTENT_CLASS_NAME,
           RICH_TEXT_EDITOR_SELECTED_IMAGE_CLASS_NAME,
           PLACEHOLDER_CLASS_NAME,
-          "min-h-32 px-3 py-2 text-base outline-none md:text-sm",
+          "px-3 py-2 text-base outline-none md:text-sm",
+          // Comments stay compact and scroll inside instead of growing forever
+          isMinimal ? "max-h-60 min-h-20 overflow-y-auto" : "min-h-32",
         ),
       },
       // Image insert disabled: descriptions are stored as Markdown for Discord, which doesn't render inline images. Re-enable if Discord support isn't needed.
@@ -96,7 +162,9 @@ export default function RichTextEditor({
     },
     // Stored as Markdown; an empty document is saved as "" so optional / required checks work
     onUpdate: ({ editor: currentEditor }) => {
-      onChange(currentEditor.isEmpty ? "" : currentEditor.getMarkdown());
+      const markdown = currentEditor.isEmpty ? "" : currentEditor.getMarkdown();
+      emittedValueRef.current = markdown;
+      onChange(markdown);
     },
     onBlur: () => onBlur?.(),
   });
@@ -108,13 +176,18 @@ export default function RichTextEditor({
     }
 
     const currentValue = editor.isEmpty ? "" : editor.getMarkdown();
-    if (value !== currentValue) {
+    if (value !== currentValue && value !== emittedValueRef.current) {
       editor.commands.setContent(value, {
         emitUpdate: false,
         contentType: "markdown",
       });
     }
   }, [editor, value]);
+
+  useEffect(() => {
+    onEditorChange?.(editor);
+    return () => onEditorChange?.(null);
+  }, [editor, onEditorChange]);
 
   // useEditor keeps the current editable state on re-render, so sync it here
   useEffect(() => {
@@ -141,7 +214,11 @@ export default function RichTextEditor({
         <Then>
           {() => (
             <>
-              <RichTextToolbar editor={editor as Editor} disabled={disabled} />
+              <RichTextToolbar
+                editor={editor as Editor}
+                disabled={disabled}
+                variant={variant}
+              />
               <EditorContent editor={editor} />
               <If condition={!!maxLength}>
                 <Then>
@@ -154,8 +231,13 @@ export default function RichTextEditor({
           )}
         </Then>
         <Else>
-          {/* Roughly toolbar + min-h-32 content until the editor mounts */}
-          <Skeleton className="h-[10.5rem] rounded-none" />
+          {/* Roughly toolbar + content min height until the editor mounts */}
+          <Skeleton
+            className={cn(
+              "rounded-none",
+              isMinimal ? "h-[7.5rem]" : "h-[10.5rem]",
+            )}
+          />
         </Else>
       </If>
     </div>

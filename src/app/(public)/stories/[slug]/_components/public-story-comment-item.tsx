@@ -18,6 +18,7 @@ import {
   AvatarImage,
 } from "@/app/_components/ui/avatar";
 import { Badge } from "@/app/_components/ui/badge";
+import RichTextContent from "@/app/_components/rich-text-content";
 import { Button } from "@/app/_components/ui/button";
 import {
   DropdownMenu,
@@ -99,10 +100,6 @@ export default function PublicStoryCommentItem({
   const ids = { storyId, commentId: comment.id };
   const authorName = author?.display_name ?? "Deleted comment";
   const noun = isReply ? "reply" : "comment";
-  // Replies may open with "@username"; rendered as text, never as markup
-  const leadingMention = isReply
-    ? (comment.content?.match(/^@\S+/)?.[0] ?? null)
-    : null;
   // Smaller below sm so nested replies keep a readable text column
   const avatarSize = isReply ? "size-6 sm:size-8" : "size-8 sm:size-10";
   const createdAt = dayjs(comment.created_at);
@@ -241,19 +238,15 @@ export default function PublicStoryCommentItem({
                 </p>
               </Then>
               <Else>
-                {/* Plain text from the API; keep the author's line breaks */}
-                <p className="mt-1 text-sm leading-relaxed break-words whitespace-pre-wrap text-foreground">
-                  {leadingMention ? (
-                    <>
-                      <span className="rounded-sm bg-primary/10 px-0.5 font-medium">
-                        {leadingMention}
-                      </span>
-                      {comment.content?.slice(leadingMention.length)}
-                    </>
-                  ) : (
-                    comment.content
-                  )}
-                </p>
+                {/* Markdown from the API: bold, italic, strikethrough and
+                    lists only, anything else shows as written. Replies
+                    highlight a leading "@username" */}
+                <RichTextContent
+                  variant="comment"
+                  value={comment.content ?? ""}
+                  highlightLeadingMention={isReply}
+                  className="mt-1 text-sm text-foreground [&_p]:my-1.5"
+                />
               </Else>
             </If>
           </Else>
