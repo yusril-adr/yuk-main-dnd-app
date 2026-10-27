@@ -21,6 +21,7 @@ import type { TRichTextToolbarProps } from "@/app/_types/rich-text-toolbar-props
 
 // Image insert disabled: descriptions are stored as Markdown for Discord, which doesn't render inline images. Re-enable if Discord support isn't needed.
 // import RichTextImagePopover from "./rich-text-image-popover";
+import RichTextEmojiPopover from "./rich-text-emoji-popover";
 import RichTextLinkPopover from "./rich-text-link-popover";
 import RichTextToolbarButton from "./rich-text-toolbar-button";
 
@@ -97,6 +98,10 @@ export default function RichTextToolbar({
           disabled={disabled}
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
         />
+
+        <Separator orientation="vertical" className="mx-1" />
+
+        <RichTextEmojiPopover editor={editor} disabled={disabled} />
       </div>
     );
   }
