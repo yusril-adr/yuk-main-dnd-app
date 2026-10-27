@@ -13,7 +13,7 @@ import {
 } from "@/app/_components/ui/popover";
 import { RICH_TEXT_TOOLBAR_ACTIVE_CLASS_NAME } from "@/app/_constants/rich-text";
 import type { TRichTextImagePopoverProps } from "@/app/_types/rich-text-image-popover-props";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 import { normalizeRichTextImageUrl } from "@/utils/rich-text";
 
 export default function RichTextImagePopover({

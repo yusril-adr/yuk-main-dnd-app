@@ -2,7 +2,7 @@ import { UserCheck } from "lucide-react";
 
 import { Badge } from "@/app/_components/ui/badge";
 import { STORY_MEMBER_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-member-status-label";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 
 import { BOARD_STORY_MEMBER_STATUS_CLASS } from "@/app/(authenticated)/dashboard/(player-board)/stories/_constants/board-story";
 import type { TBoardStoryMemberStatusBadgeProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/_types/board-story-components-props";

@@ -23,7 +23,7 @@ import {
   getApiStringLength,
 } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 
 import {
   PublicStoryCommentFormSchema,

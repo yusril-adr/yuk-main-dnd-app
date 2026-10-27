@@ -5,7 +5,7 @@ import {
   RICH_TEXT_MENTION_CLASS_NAME,
 } from "@/app/_constants/rich-text";
 import type { TRichTextContentProps } from "@/app/_types/rich-text-content-props";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 import {
   renderCommentMarkdown,
   renderRichTextMarkdown,

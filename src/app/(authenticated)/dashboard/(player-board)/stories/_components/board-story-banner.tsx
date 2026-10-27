@@ -1,7 +1,7 @@
 import { Shield } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 
 import type { TBoardStoryBannerProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/_types/board-story-components-props";
 

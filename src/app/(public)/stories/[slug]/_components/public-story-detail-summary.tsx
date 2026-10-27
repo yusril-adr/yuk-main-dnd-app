@@ -22,7 +22,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 import dayjs from "@/libs/dayjs";
 import { getGuildmateHref, makeDefaultAvatarUrl } from "@/utils/user-helper";
 import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";

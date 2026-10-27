@@ -15,7 +15,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/app/_components/ui/item";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 import dayjs from "@/libs/dayjs";
 import {
   getGuildmateHref,

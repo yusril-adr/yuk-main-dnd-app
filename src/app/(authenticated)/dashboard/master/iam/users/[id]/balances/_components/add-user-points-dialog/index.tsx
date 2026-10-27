@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
 import { Button } from "@/app/_components/ui/button";
+import RequiredFieldLabel from "@/app/_components/required-field-label";
 import {
   Field,
   FieldError,
@@ -136,7 +137,7 @@ export default function AddUserPointsDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required>Type</FieldLabel>
+                  <RequiredFieldLabel required>Type</RequiredFieldLabel>
                   <div className="grid grid-cols-2 gap-2">
                     {TYPE_OPTIONS.map((option) => (
                       <Button
@@ -168,7 +169,7 @@ export default function AddUserPointsDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="point-amount">Amount</FieldLabel>
+                  <RequiredFieldLabel required htmlFor="point-amount">Amount</RequiredFieldLabel>
                   <Input
                     aria-required
                     id="point-amount"

@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { Card, CardContent, CardFooter } from "@/app/_components/ui/card";
+import RequiredFieldLabel from "@/app/_components/required-field-label";
 import {
   Field,
   FieldDescription,
@@ -243,7 +244,7 @@ export default function SettingsProfileForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="email">Email</FieldLabel>
+                  <RequiredFieldLabel required htmlFor="email">Email</RequiredFieldLabel>
                   <Input
                     aria-required
                     id="email"
@@ -287,7 +288,7 @@ export default function SettingsProfileForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="displayName">Display Name</FieldLabel>
+                  <RequiredFieldLabel required htmlFor="displayName">Display Name</RequiredFieldLabel>
                   <Input
                     aria-required
                     id="displayName"

@@ -6,6 +6,7 @@ import { CalendarDays as CalendarIcon, XIcon } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 import { Card, CardContent, CardFooter } from "@/app/_components/ui/card";
+import RequiredFieldLabel from "@/app/_components/required-field-label";
 import {
   Field,
   FieldError,
@@ -39,7 +40,7 @@ import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enu
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 import StoryBannerField from "@/app/(authenticated)/dashboard/master/stories/_components/story-banner-field";
 import StoryCreateFormActions from "./story-create-form-actions";
 import RichTextEditor from "@/app/_components/rich-text-editor";
@@ -223,7 +224,7 @@ export default function StoryCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="title">Title</FieldLabel>
+                  <RequiredFieldLabel required htmlFor="title">Title</RequiredFieldLabel>
                   <Input
                     aria-required
                     id="title"
@@ -267,7 +268,7 @@ export default function StoryCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="type">Type</FieldLabel>
+                  <RequiredFieldLabel required htmlFor="type">Type</RequiredFieldLabel>
                   <Combobox
                     id="type"
                     items={Object.values(StoryTypeEnum).filter(
@@ -512,7 +513,7 @@ export default function StoryCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="locationType">Location Type</FieldLabel>
+                  <RequiredFieldLabel required htmlFor="locationType">Location Type</RequiredFieldLabel>
                   <Combobox
                     id="locationType"
                     items={Object.values(StoryLocationTypeEnum).filter(
@@ -550,9 +551,9 @@ export default function StoryCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="locationDetail">
+                  <RequiredFieldLabel required htmlFor="locationDetail">
                     Location Detail
-                  </FieldLabel>
+                  </RequiredFieldLabel>
                   <Textarea
                     aria-required
                     id="locationDetail"
