@@ -1,7 +1,7 @@
 import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 import { getStoryMemberPagination } from "@/api/main/modules/master/stories/[id]/members";
 import CONFIG from "@/common/constants/config";
-import { getNextPage } from "@/utils/pagination-helper";
+import { getMainApiNextPage } from "@/utils/pagination-helper";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 
 export function getStoryMemberSearchParam(search?: string): string | undefined {
@@ -45,7 +45,7 @@ export function getStoryMemberPaginationOptions(
         },
       }),
     initialPageParam: 1,
-    getNextPageParam: getNextPage,
+    getNextPageParam: getMainApiNextPage,
   });
 }
 

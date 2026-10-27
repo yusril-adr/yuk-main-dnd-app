@@ -2,7 +2,7 @@ import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 
 import { getBoardStoryMemberPagination } from "@/api/main/modules/board/stories/[id]";
 import CONFIG from "@/common/constants/config";
-import { getNextPage } from "@/utils/pagination-helper";
+import { getMainApiNextPage } from "@/utils/pagination-helper";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 
 // Search is only sent from 3 characters
@@ -39,7 +39,7 @@ export function getBoardStoryMemberPaginationOptions(
         },
       }),
     initialPageParam: 1,
-    getNextPageParam: getNextPage,
+    getNextPageParam: getMainApiNextPage,
   });
 }
 

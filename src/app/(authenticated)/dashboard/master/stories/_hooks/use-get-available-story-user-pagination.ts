@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getAvailableStoryUserPagination } from "@/api/main/modules/master/stories/[id]/available-users";
 import CONFIG from "@/common/constants/config";
-import { getNextPage } from "@/utils/pagination-helper";
+import { getMainApiNextPage } from "@/utils/pagination-helper";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 
 // Same 3-character gate as the party list search. Shorter input is not sent.
@@ -46,7 +46,7 @@ export function useGetAvailableStoryUserPagination(
         },
       }),
     initialPageParam: 1,
-    getNextPageParam: getNextPage,
+    getNextPageParam: getMainApiNextPage,
     enabled: !!storyId && (options?.enabled ?? true),
   });
 }

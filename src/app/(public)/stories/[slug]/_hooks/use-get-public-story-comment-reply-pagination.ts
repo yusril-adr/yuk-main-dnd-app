@@ -2,7 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getStoryCommentReplyPagination } from "@/api/main/modules/stories/[id]/comments";
 import CONFIG from "@/common/constants/config";
-import { getNextPage } from "@/utils/pagination-helper";
+import { getMainApiNextPage } from "@/utils/pagination-helper";
 
 // Replies of one top-level comment, oldest first, loaded only while the
 // thread is open. The key starts with COMMENT.ALL(), so every comment
@@ -29,7 +29,7 @@ export function useGetPublicStoryCommentReplyPagination(
         payload: { page: pageParam, per_page: perPage },
       }),
     initialPageParam: 1,
-    getNextPageParam: getNextPage,
+    getNextPageParam: getMainApiNextPage,
     enabled: !!storyId && !!commentId && (options?.enabled ?? true),
   });
 }
