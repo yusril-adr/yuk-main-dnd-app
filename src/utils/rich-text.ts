@@ -177,7 +177,7 @@ export function renderRichTextMarkdown(
   return DOMPurify.sanitize(html, {
     ALLOWED_TAGS: RICH_TEXT_ALLOWED_TAGS,
     // src / alt are limited to <img> by the uponSanitizeAttribute hook
-    ALLOWED_ATTR: ["href", "target", "rel", "src", "alt"],
+    ALLOWED_ATTR: ["href", "target", "rel", "src", "alt", "start"],
   });
 }
 
@@ -247,7 +247,7 @@ export function renderCommentMarkdown(
 
   const html = DOMPurify.sanitize(
     commentMarked.parse(value, { async: false }),
-    { ALLOWED_TAGS: COMMENT_ALLOWED_TAGS, ALLOWED_ATTR: [] },
+    { ALLOWED_TAGS: COMMENT_ALLOWED_TAGS, ALLOWED_ATTR: ["start"] },
   );
   if (!mentionClassName) {
     return html;
