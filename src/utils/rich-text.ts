@@ -181,6 +181,84 @@ export function renderRichTextMarkdown(
   });
 }
 
+// Tags a comment may render: the minimal editor's marks and lists
+const COMMENT_ALLOWED_TAGS = [
+  "p",
+  "br",
+  "strong",
+  "em",
+  "s",
+  "del",
+  "ul",
+  "ol",
+  "li",
+];
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// Comments: only what the minimal editor can produce becomes markup. Anything
+// else that was typed by hand (raw HTML, links, images, headings, quotes,
+// code, tables, dividers) is shown as the text that was written, so older
+// plain-text comments still read the same. DOMPurify below is the safety net
+const commentMarked = new Marked({
+  gfm: true,
+  breaks: true,
+  renderer: {
+    html: ({ text }) => escapeHtml(text),
+    link: ({ raw }) => escapeHtml(raw),
+    image: ({ raw }) => escapeHtml(raw),
+    codespan: ({ raw }) => escapeHtml(raw),
+    code: ({ raw }) =>
+      `<p>${escapeHtml(raw.trim()).replace(/\n/g, "<br>")}</p>`,
+    table: ({ raw }) =>
+      `<p>${escapeHtml(raw.trim()).replace(/\n/g, "<br>")}</p>`,
+    hr: ({ raw }) => `<p>${escapeHtml(raw.trim())}</p>`,
+    checkbox: ({ checked }) => (checked ? "[x] " : "[ ] "),
+    // Keep the "#" / ">" that were typed, render the rest as inline text
+    heading({ depth, tokens }) {
+      return `<p>${"#".repeat(depth)} ${this.parser.parseInline(tokens)}</p>`;
+    },
+    blockquote({ tokens }) {
+      return `<p>&gt; ${this.parser.parse(tokens).replace(/^<p>|<\/p>\s*$/g, "")}</p>`;
+    },
+  },
+});
+
+// Wraps a leading "@username" of the first paragraph (already escaped text,
+// never markup) so replies can highlight who they answer
+const COMMENT_LEADING_MENTION_PATTERN = /^<p>(@[^\s<&]+)/;
+
+// Stored comment Markdown -> sanitized HTML. mentionClassName highlights a
+// leading @mention when given
+export function renderCommentMarkdown(
+  value: string | null | undefined,
+  mentionClassName?: string,
+): string {
+  if (typeof window === "undefined" || !value?.trim()) {
+    return "";
+  }
+
+  const html = DOMPurify.sanitize(
+    commentMarked.parse(value, { async: false }),
+    { ALLOWED_TAGS: COMMENT_ALLOWED_TAGS, ALLOWED_ATTR: [] },
+  );
+  if (!mentionClassName) {
+    return html;
+  }
+
+  return html.replace(
+    COMMENT_LEADING_MENTION_PATTERN,
+    `<p><span class="${mentionClassName}">$1</span>`,
+  );
+}
+
 const RICH_TEXT_LINK_PROTOCOLS = ["http:", "https:", "mailto:"];
 // https only: http images would be mixed content on the https site
 const RICH_TEXT_IMAGE_PROTOCOLS = ["https:"];

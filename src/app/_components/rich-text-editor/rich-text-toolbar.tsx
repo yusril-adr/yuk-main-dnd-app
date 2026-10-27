@@ -21,12 +21,14 @@ import type { TRichTextToolbarProps } from "@/app/_types/rich-text-toolbar-props
 
 // Image insert disabled: descriptions are stored as Markdown for Discord, which doesn't render inline images. Re-enable if Discord support isn't needed.
 // import RichTextImagePopover from "./rich-text-image-popover";
+import RichTextEmojiPopover from "./rich-text-emoji-popover";
 import RichTextLinkPopover from "./rich-text-link-popover";
 import RichTextToolbarButton from "./rich-text-toolbar-button";
 
 export default function RichTextToolbar({
   editor,
   disabled = false,
+  variant = "default",
 }: TRichTextToolbarProps) {
   // Re-renders only when one of these values changes
   const state = useEditorState({
@@ -49,6 +51,60 @@ export default function RichTextToolbar({
       canRedo: currentEditor.can().redo(),
     }),
   });
+
+  // Comments: inline marks and lists only (matches the minimal extensions)
+  if (variant === "minimal") {
+    return (
+      <div
+        role="toolbar"
+        aria-label="Formatting"
+        className="flex flex-wrap items-center gap-0.5 border-b bg-muted/40 p-1"
+      >
+        <RichTextToolbarButton
+          label="Bold"
+          icon={Bold}
+          isActive={state.isBold}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleBold().run()}
+        />
+        <RichTextToolbarButton
+          label="Italic"
+          icon={Italic}
+          isActive={state.isItalic}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+        />
+        <RichTextToolbarButton
+          label="Strikethrough"
+          icon={Strikethrough}
+          isActive={state.isStrike}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleStrike().run()}
+        />
+
+        <Separator orientation="vertical" className="mx-1" />
+
+        <RichTextToolbarButton
+          label="Bullet list"
+          icon={List}
+          isActive={state.isBulletList}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+        />
+        <RichTextToolbarButton
+          label="Numbered list"
+          icon={ListOrdered}
+          isActive={state.isOrderedList}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        />
+
+        <Separator orientation="vertical" className="mx-1" />
+
+        <RichTextEmojiPopover editor={editor} disabled={disabled} />
+      </div>
+    );
+  }
 
   return (
     <div

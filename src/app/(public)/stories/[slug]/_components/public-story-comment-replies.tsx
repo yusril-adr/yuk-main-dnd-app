@@ -239,6 +239,7 @@ export default function PublicStoryCommentReplies({
               label={`Reply to ${authorName}`}
               placeholder="Write a reply..."
               submitLabel="Post reply"
+              isShowGuideline
               isPending={createMutation.isPending}
               autoFocus
               mention={mention}
