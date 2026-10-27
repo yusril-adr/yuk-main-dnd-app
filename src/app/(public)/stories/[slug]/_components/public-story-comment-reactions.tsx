@@ -159,7 +159,9 @@ export default function PublicStoryCommentReactions({
             <PopoverContent
               align="start"
               side="top"
-              className="w-auto flex-row gap-1 rounded-full p-1"
+              // Light: yellow emoji vanish on the parchment popover, so this
+              // picker is a solid neutral white panel. Dark keeps the default
+              className="w-auto flex-row gap-1 rounded-full bg-white p-1 shadow-md ring-1 ring-neutral-200 dark:bg-popover dark:ring-foreground/10"
             >
               {PUBLIC_STORY_COMMENT_REACTIONS.map((option) => {
                 const isMine = myReaction === option.type;
@@ -179,8 +181,9 @@ export default function PublicStoryCommentReactions({
                       setIsPickerOpen(false);
                     }}
                     className={cn(
-                      "rounded-full text-xl leading-none transition-transform hover:scale-110",
-                      isMine && "bg-primary/15 ring-1 ring-primary/50",
+                      "rounded-full text-xl leading-none transition-transform hover:scale-110 hover:bg-neutral-100 dark:hover:bg-muted/50",
+                      isMine &&
+                        "bg-neutral-100 ring-2 ring-primary/60 hover:bg-neutral-200/70 dark:bg-primary/15 dark:ring-primary/60 dark:hover:bg-primary/25",
                     )}
                   >
                     <span aria-hidden>{option.emoji}</span>
