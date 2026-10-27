@@ -146,6 +146,10 @@ export default function UserBalancesPageClient() {
     [queryStates, direction],
   );
   const logsEnabled = canViewPoints && userQuery.isSuccess;
+  // Until the user (and its permission) loads, the log queries are disabled
+  // and report not loading; treat that wait as loading so the list shows its
+  // skeleton instead of the empty state
+  const isLogsPending = !logsEnabled;
   const expQuery = useGetUserExperiencePointPagination(userId, payload, {
     enabled:
       logsEnabled && queryStates.tab === UserBalanceTabEnum.EXPERIENCE_POINTS,
@@ -364,69 +368,75 @@ export default function UserBalancesPageClient() {
           />
         </section>
 
-        <Tabs
-          className="w-full min-w-0 gap-3"
-          value={queryStates.tab}
-          onValueChange={onTabChange}
-        >
-          <TabsList className="w-full sm:w-fit">
-            <TabsTrigger value={UserBalanceTabEnum.EXPERIENCE_POINTS}>
-              <Sparkles />
-              Experience Points
-            </TabsTrigger>
-            <TabsTrigger value={UserBalanceTabEnum.GOLD_PIECES}>
-              <Coins />
-              Gold Pieces
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value={UserBalanceTabEnum.EXPERIENCE_POINTS}>
-            <UserBalanceLogList<UserExpLogTypeEnum>
-              key={queryStates.tab}
-              data={expItems}
-              isLoading={expQuery.isLoading || expQuery.isFetching}
-              isError={expQuery.isError}
-              unit="EXP"
-              onRetry={() => expQuery.refetch()}
-              pageCount={expMeta?.total_page || 1}
-              rowCount={expMeta?.total_all_data || 0}
-              queryTable={queryTable}
-              typeOptions={[UserExpLogTypeEnum.PLAYER, UserExpLogTypeEnum.DM]}
-              typeLabels={USER_EXP_LOG_TYPE_LABEL}
-              typeIcons={EXP_LOG_TYPE_ICONS}
-              directionOptions={EXP_LOG_DIRECTION_OPTIONS}
-              directionLabels={USER_EXP_LOG_DIRECTION_LABEL}
-              isNegative={(row) =>
-                row.direction === UserExpLogDirectionEnum.DECREMENT
-              }
-              onPageChange={onPageChange}
-              onSearchChange={onSearchChange}
-              onFilterApply={onExpFilterApply}
-            />
-          </TabsContent>
-          <TabsContent value={UserBalanceTabEnum.GOLD_PIECES}>
-            <UserBalanceLogList<UserPointLogTypeEnum>
-              key={queryStates.tab}
-              data={pointItems}
-              isLoading={pointQuery.isLoading || pointQuery.isFetching}
-              isError={pointQuery.isError}
-              unit="GP"
-              onRetry={() => pointQuery.refetch()}
-              pageCount={pointMeta?.total_page || 1}
-              rowCount={pointMeta?.total_all_data || 0}
-              queryTable={queryTable}
-              typeOptions={[
-                UserPointLogTypeEnum.INCOME,
-                UserPointLogTypeEnum.EXPENSE,
-              ]}
-              typeLabels={USER_POINT_LOG_TYPE_LABEL}
-              typeIcons={POINT_LOG_TYPE_ICONS}
-              isNegative={(row) => row.type === UserPointLogTypeEnum.EXPENSE}
-              onPageChange={onPageChange}
-              onSearchChange={onSearchChange}
-              onFilterApply={onPointFilterApply}
-            />
-          </TabsContent>
-        </Tabs>
+        {!userQuery.isError && (
+          <Tabs
+            className="w-full min-w-0 gap-3"
+            value={queryStates.tab}
+            onValueChange={onTabChange}
+          >
+            <TabsList className="w-full sm:w-fit">
+              <TabsTrigger value={UserBalanceTabEnum.EXPERIENCE_POINTS}>
+                <Sparkles />
+                Experience Points
+              </TabsTrigger>
+              <TabsTrigger value={UserBalanceTabEnum.GOLD_PIECES}>
+                <Coins />
+                Gold Pieces
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value={UserBalanceTabEnum.EXPERIENCE_POINTS}>
+              <UserBalanceLogList<UserExpLogTypeEnum>
+                key={queryStates.tab}
+                data={expItems}
+                isLoading={
+                  isLogsPending || expQuery.isLoading || expQuery.isFetching
+                }
+                isError={expQuery.isError}
+                unit="EXP"
+                onRetry={() => expQuery.refetch()}
+                pageCount={expMeta?.total_page || 1}
+                rowCount={expMeta?.total_all_data || 0}
+                queryTable={queryTable}
+                typeOptions={[UserExpLogTypeEnum.PLAYER, UserExpLogTypeEnum.DM]}
+                typeLabels={USER_EXP_LOG_TYPE_LABEL}
+                typeIcons={EXP_LOG_TYPE_ICONS}
+                directionOptions={EXP_LOG_DIRECTION_OPTIONS}
+                directionLabels={USER_EXP_LOG_DIRECTION_LABEL}
+                isNegative={(row) =>
+                  row.direction === UserExpLogDirectionEnum.DECREMENT
+                }
+                onPageChange={onPageChange}
+                onSearchChange={onSearchChange}
+                onFilterApply={onExpFilterApply}
+              />
+            </TabsContent>
+            <TabsContent value={UserBalanceTabEnum.GOLD_PIECES}>
+              <UserBalanceLogList<UserPointLogTypeEnum>
+                key={queryStates.tab}
+                data={pointItems}
+                isLoading={
+                  isLogsPending || pointQuery.isLoading || pointQuery.isFetching
+                }
+                isError={pointQuery.isError}
+                unit="GP"
+                onRetry={() => pointQuery.refetch()}
+                pageCount={pointMeta?.total_page || 1}
+                rowCount={pointMeta?.total_all_data || 0}
+                queryTable={queryTable}
+                typeOptions={[
+                  UserPointLogTypeEnum.INCOME,
+                  UserPointLogTypeEnum.EXPENSE,
+                ]}
+                typeLabels={USER_POINT_LOG_TYPE_LABEL}
+                typeIcons={POINT_LOG_TYPE_ICONS}
+                isNegative={(row) => row.type === UserPointLogTypeEnum.EXPENSE}
+                onPageChange={onPageChange}
+                onSearchChange={onSearchChange}
+                onFilterApply={onPointFilterApply}
+              />
+            </TabsContent>
+          </Tabs>
+        )}
         {canCreatePoints && (
           <>
             <AddUserExperiencePointsDialog
