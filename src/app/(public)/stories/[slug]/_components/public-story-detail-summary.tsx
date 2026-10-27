@@ -25,6 +25,7 @@ import {
 import { cn } from "cn";
 import dayjs from "@/libs/dayjs";
 import { getGuildmateHref, makeDefaultAvatarUrl } from "@/utils/user-helper";
+import { formatStoryReward } from "@/utils/format-number";
 import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
 
 import PublicStoryJoinActions from "./public-story-join-actions";
@@ -35,10 +36,6 @@ import { PUBLIC_STORY_LOCATION_TYPE_ICON } from "@/app/(public)/stories/_constan
 import { PUBLIC_STORY_START_AT_FORMAT } from "@/app/(public)/stories/[slug]/_constants/public-story-detail-date-format";
 import type { TPublicStoryDetailProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-props";
 
-function formatReward(value: number, unit: "EXP" | "GP") {
-  return value > 0 ? `${value.toLocaleString("en-US")} ${unit}` : null;
-}
-
 // Sticky on desktop (see the page grid), stacked above the content on mobile
 export default function PublicStoryDetailSummary({
   story,
@@ -46,8 +43,8 @@ export default function PublicStoryDetailSummary({
 }: TPublicStoryDetailProps) {
   const creator = story.created_by;
   const LocationIcon = PUBLIC_STORY_LOCATION_TYPE_ICON[story.location_type];
-  const exp = formatReward(story.exp_awarded, "EXP");
-  const gold = formatReward(story.point_awarded, "GP");
+  const exp = formatStoryReward(story.exp_awarded, "EXP");
+  const gold = formatStoryReward(story.point_awarded, "GP");
 
   return (
     <Card

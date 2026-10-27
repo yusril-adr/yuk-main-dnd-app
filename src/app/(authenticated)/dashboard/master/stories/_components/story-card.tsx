@@ -40,7 +40,7 @@ import {
 } from "@/app/_components/ui/alert-dialog";
 import { getRichTextPlainText } from "@/utils/rich-text";
 import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
-import { formatStoryReward } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
+import { formatStoryReward } from "@/utils/format-number";
 
 import StoryCardBanner from "./story-card-banner";
 import StoryStatusBadge from "./story-status-badge";

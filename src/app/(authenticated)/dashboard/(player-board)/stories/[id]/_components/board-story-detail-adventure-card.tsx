@@ -17,7 +17,7 @@ import BoardStoryDetailInfoRow from "@/app/(authenticated)/dashboard/(player-boa
 import BoardStoryDetailExternalLink from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-external-link";
 import { BOARD_STORY_LOCATION_TYPE_ICON } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_constants/board-story-detail";
 import { BOARD_STORY_START_AT_FORMAT } from "@/app/(authenticated)/dashboard/(player-board)/stories/_constants/board-story";
-import { formatBoardStoryReward } from "@/app/(authenticated)/dashboard/(player-board)/stories/_utils/board-story-helper";
+import { formatStoryReward } from "@/utils/format-number";
 import type { TBoardStoryDetailCardProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_types/board-story-detail-components-props";
 
 export default function BoardStoryDetailAdventureCard({
@@ -30,8 +30,8 @@ export default function BoardStoryDetailAdventureCard({
   // "250 EXP · 100 GP"; zero rewards are left out, null when both are 0
   const rewards =
     [
-      formatBoardStoryReward(story.exp_awarded, "EXP"),
-      formatBoardStoryReward(story.point_awarded, "GP"),
+      formatStoryReward(story.exp_awarded, "EXP"),
+      formatStoryReward(story.point_awarded, "GP"),
     ]
       .filter(Boolean)
       .join(" · ") || null;

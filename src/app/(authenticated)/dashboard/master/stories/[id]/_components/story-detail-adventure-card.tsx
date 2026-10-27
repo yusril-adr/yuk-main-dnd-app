@@ -17,7 +17,7 @@ import StoryDetailInfoRow from "./story-detail-info-row";
 import StoryDetailExternalLink from "./story-detail-external-link";
 import { STORY_DETAIL_START_AT_FORMAT } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-detail-date-format";
 import { STORY_LOCATION_TYPE_ICON } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-location-type-icon";
-import { formatStoryReward } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
+import { formatStoryReward } from "@/utils/format-number";
 import type { TStoryDetailCardProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-card-props";
 
 export default function StoryDetailAdventureCard({

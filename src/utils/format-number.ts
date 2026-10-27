@@ -19,3 +19,11 @@ export function formatCompactBalance(value: number): string {
   const text = Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
   return `${sign}${text}${UNITS[unitIndex].suffix}`;
 }
+
+// 1250 -> "1,250 EXP"; null for 0 so the detail row shows its empty text
+export function formatStoryReward(
+  value: number,
+  unit: "EXP" | "GP",
+): string | null {
+  return value > 0 ? `${value.toLocaleString("en-US")} ${unit}` : null;
+}
