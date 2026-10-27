@@ -20,12 +20,16 @@ export function useCreatePublicStoryComment(
     ...options,
     mutationFn: createStoryComment,
     onMutate: (...args) => {
-      toast.loading("Posting comment...");
+      toast.loading(
+        args[0].payload.parent_id ? "Posting reply..." : "Posting comment...",
+      );
       return options?.onMutate?.(...args);
     },
     onSuccess: (...args) => {
       toast.dismiss();
-      toast.success("Comment posted");
+      toast.success(
+        args[1].payload.parent_id ? "Reply posted" : "Comment posted",
+      );
       options?.onSuccess?.(...args);
     },
   });

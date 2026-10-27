@@ -37,10 +37,10 @@ import {
 } from "@/app/_components/ui/item";
 import { Spinner } from "@/app/_components/ui/spinner";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/app/_components/ui/tooltip";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/app/_components/ui/popover";
 import { cn } from "@/utils/cn";
 import dayjs from "@/libs/dayjs";
 import {
@@ -62,6 +62,8 @@ import type { TPublicStoryCommentItemProps } from "@/app/(public)/stories/[slug]
 export default function PublicStoryCommentItem({
   storyId,
   comment,
+  isReply = false,
+  children,
 }: TPublicStoryCommentItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -71,14 +73,17 @@ export default function PublicStoryCommentItem({
     onSuccess: refreshComments,
     onError: onCommentError,
   };
-  const updateMutation = useUpdatePublicStoryComment({
-    ...mutationOptions,
-    onSuccess: () => {
-      setIsEditing(false);
-      refreshComments();
+  const updateMutation = useUpdatePublicStoryComment(
+    {
+      ...mutationOptions,
+      onSuccess: () => {
+        setIsEditing(false);
+        refreshComments();
+      },
     },
-  });
-  const deleteMutation = useDeletePublicStoryComment(mutationOptions);
+    isReply,
+  );
+  const deleteMutation = useDeletePublicStoryComment(mutationOptions, isReply);
   const pinMutation = usePinPublicStoryComment(mutationOptions);
   const unpinMutation = useUnpinPublicStoryComment(mutationOptions);
 
@@ -93,15 +98,24 @@ export default function PublicStoryCommentItem({
     actions.is_can_unpin;
   const ids = { storyId, commentId: comment.id };
   const authorName = author?.display_name ?? "Deleted comment";
+  const noun = isReply ? "reply" : "comment";
+  // Replies may open with "@username"; rendered as text, never as markup
+  const leadingMention = isReply
+    ? (comment.content?.match(/^@\S+/)?.[0] ?? null)
+    : null;
+  // Smaller below sm so nested replies keep a readable text column
+  const avatarSize = isReply ? "size-6 sm:size-8" : "size-8 sm:size-10";
   const createdAt = dayjs(comment.created_at);
 
   return (
     <Item
       role="listitem"
-      variant="outline"
+      variant={isReply ? "default" : "outline"}
       size="sm"
       className={cn(
-        "flex-nowrap items-start bg-background",
+        "items-start gap-x-2 gap-y-1 bg-background px-2.5 sm:gap-x-2.5 sm:px-3",
+        // Thread rows sit inside the parent card, so no border or padding
+        isReply && "bg-transparent px-0 py-1.5 sm:px-0",
         comment.is_pinned && "border-primary/50 bg-primary/5",
         isBusy && "opacity-70",
       )}
@@ -110,7 +124,12 @@ export default function PublicStoryCommentItem({
         <If condition={!!author}>
           <Then>
             {author && (
-              <Avatar className="size-10 shrink-0 border-2 border-primary/40">
+              <Avatar
+                className={cn(
+                  avatarSize,
+                  "shrink-0 border-2 border-primary/40",
+                )}
+              >
                 <AvatarImage
                   src={
                     author.avatar_url ??
@@ -120,14 +139,16 @@ export default function PublicStoryCommentItem({
                   loading="lazy"
                   className="object-cover"
                 />
-                <AvatarFallback className="font-heading">
+                <AvatarFallback
+                  className={cn("font-heading", isReply && "max-sm:text-xs")}
+                >
                   {getInitials(author.display_name)}
                 </AvatarFallback>
               </Avatar>
             )}
           </Then>
           <Else>
-            <Avatar className="size-10 shrink-0">
+            <Avatar className={cn(avatarSize, "shrink-0")}>
               <AvatarFallback aria-hidden>
                 <MessageSquareOff className="size-4 text-muted-foreground" />
               </AvatarFallback>
@@ -166,28 +187,33 @@ export default function PublicStoryCommentItem({
             </Then>
           </If>
         </div>
-        <ItemDescription className="text-xs text-foreground/70">
-          {author?.username ? `@${author.username} · ` : ""}
-          {/* Relative while the absolute date stays in the tooltip and for screen readers */}
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <time
-                  dateTime={comment.created_at}
-                  tabIndex={0}
-                  className="rounded-sm underline decoration-dotted underline-offset-2 outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-                />
-              }
+        {/* Wraps between handle and time instead of clamping */}
+        <ItemDescription className="line-clamp-none flex flex-wrap items-baseline gap-x-1 text-xs text-foreground/70">
+          <If condition={!!author?.username}>
+            <Then>
+              <span className="min-w-0 break-all">@{author?.username}</span>
+              <span aria-hidden>·</span>
+            </Then>
+          </If>
+          {/* Relative time; tap, click or hover shows the absolute date (also read by screen readers) */}
+          <Popover>
+            <PopoverTrigger
+              openOnHover
+              delay={300}
+              className="cursor-pointer rounded-sm whitespace-nowrap underline decoration-dotted underline-offset-2 outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
             >
-              {createdAt.fromNow()}
+              <time dateTime={comment.created_at}>{createdAt.fromNow()}</time>
               <span className="sr-only">
                 {` (${createdAt.format(PUBLIC_STORY_DETAIL_DATE_FORMAT)})`}
               </span>
-            </TooltipTrigger>
-            <TooltipContent>
+            </PopoverTrigger>
+            <PopoverContent
+              side="top"
+              className="w-auto gap-0 px-2.5 py-1.5 text-xs"
+            >
               {createdAt.format(PUBLIC_STORY_DETAIL_DATE_FORMAT)}
-            </TooltipContent>
-          </Tooltip>
+            </PopoverContent>
+          </Popover>
         </ItemDescription>
 
         <If condition={isEditing}>
@@ -195,7 +221,7 @@ export default function PublicStoryCommentItem({
             <div className="mt-2">
               <PublicStoryCommentForm
                 id={`comment-edit-${comment.id}`}
-                label="Edit comment"
+                label={isReply ? "Edit reply" : "Edit comment"}
                 defaultContent={comment.content ?? ""}
                 submitLabel="Save"
                 isPending={updateMutation.isPending}
@@ -217,7 +243,16 @@ export default function PublicStoryCommentItem({
               <Else>
                 {/* Plain text from the API; keep the author's line breaks */}
                 <p className="mt-1 text-sm leading-relaxed break-words whitespace-pre-wrap text-foreground">
-                  {comment.content}
+                  {leadingMention ? (
+                    <>
+                      <span className="rounded-sm bg-primary/10 px-0.5 font-medium">
+                        {leadingMention}
+                      </span>
+                      {comment.content?.slice(leadingMention.length)}
+                    </>
+                  ) : (
+                    comment.content
+                  )}
                 </p>
               </Else>
             </If>
@@ -235,7 +270,7 @@ export default function PublicStoryCommentItem({
                     variant="ghost"
                     size="icon-sm"
                     disabled={isBusy}
-                    aria-label={`Actions for comment by ${authorName}`}
+                    aria-label={`Actions for ${noun} by ${authorName}`}
                   >
                     {isBusy ? <Spinner /> : <EllipsisVertical />}
                   </Button>
@@ -296,10 +331,25 @@ export default function PublicStoryCommentItem({
         </Then>
       </If>
 
+      {/* Own row so threads use the full card width on phones; sm+ indents under the text column */}
+      <If condition={!!children}>
+        <Then>
+          <div
+            className={cn(
+              "min-w-0 basis-full",
+              isReply ? "ps-8 sm:ps-10.5" : "sm:ps-12.5",
+            )}
+          >
+            {children}
+          </div>
+        </Then>
+      </If>
+
       <PublicStoryCommentDeleteDialog
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
         isPending={deleteMutation.isPending}
+        noun={noun}
         onConfirm={() => {
           deleteMutation.mutate(ids);
           setIsDeleteDialogOpen(false);

@@ -3,8 +3,8 @@ import type { StoryCommentReactionTypeEnum } from "../enums/story-comment-reacti
 import type { TStoryCommentActionList } from "./story-comment-action-list";
 import type { TStoryCommentReactionCounts } from "./story-comment-reaction-counts";
 
-// Item of GET /stories/:identifier/comments (top-level comments only). The
-// replies list returns the same shape.
+// Item of GET /stories/:identifier/comments (top-level comments only). Replies
+// have the same shape without reply_count (TStoryCommentReplyPaginationResponse)
 export type TStoryCommentPaginationResponse = TStoryCommentEntity & {
   // Non-deleted replies
   reply_count: number;

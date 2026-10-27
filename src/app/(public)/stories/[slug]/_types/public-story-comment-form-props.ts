@@ -10,4 +10,6 @@ export type TPublicStoryCommentFormProps = {
   onSubmit: (content: string) => Promise<unknown>;
   onCancel?: () => void;
   autoFocus?: boolean;
+  // Bump requestId to merge "@username " into the text and focus the end
+  mention?: { username: string; requestId: number } | null;
 };
