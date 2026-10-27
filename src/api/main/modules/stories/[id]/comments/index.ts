@@ -12,6 +12,7 @@ import type { TStoryCommentReplyPaginationResponse } from "./types/story-comment
 import type { TStoryCommentCreatePayload } from "./types/story-comment-create-payload";
 import type { TStoryCommentCreateResponse } from "./types/story-comment-create-response";
 import type { TStoryCommentUpdatePayload } from "./types/story-comment-update-payload";
+import type { TStoryCommentReactionSetPayload } from "./types/story-comment-reaction-set-payload";
 
 // Public, optional auth (the token fills action_list). Identifier is the id
 // or slug. 404 unless the story is published or completed
@@ -125,6 +126,39 @@ export const unpinStoryComment = async ({
 }) => {
   const response = await mainAxios.patch(
     MAIN_API_PATH.STORY.COMMENT_UNPIN(storyId, commentId),
+  );
+  return response;
+};
+
+// Any logged-in user. One reaction per user per comment: a different type
+// replaces it, the same type is a no-op. 200 with data null (no counts). 400
+// unless the story is published or completed; 404 for a deleted comment
+export const setStoryCommentReaction = async ({
+  storyId,
+  commentId,
+  payload,
+}: {
+  storyId: string;
+  commentId: string;
+  payload: TStoryCommentReactionSetPayload;
+}): Promise<AxiosResponse<TMainApiResponse<null>>> => {
+  const response = await mainAxios.put(
+    MAIN_API_PATH.STORY.COMMENT_REACTION(storyId, commentId),
+    payload,
+  );
+  return response;
+};
+
+// Removes the caller's reaction. Idempotent 204, no story status check
+export const removeStoryCommentReaction = async ({
+  storyId,
+  commentId,
+}: {
+  storyId: string;
+  commentId: string;
+}) => {
+  const response = await mainAxios.delete(
+    MAIN_API_PATH.STORY.COMMENT_REACTION(storyId, commentId),
   );
   return response;
 };
