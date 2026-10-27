@@ -27,7 +27,7 @@ import {
   getAvailableStoryUserSearchParam,
   useGetAvailableStoryUserPagination,
 } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-available-story-user-pagination";
-import { STORY_MEMBER_DIALOG_PER_PAGE } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-member-preview";
+import { STORY_MEMBER_DIALOG_PER_PAGE } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-member-preview";
 import type { TStoryDetailAddMemberDialogProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-add-member-dialog-props";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import MainAPIValidationError from "@/api/main/errors/validation-error";

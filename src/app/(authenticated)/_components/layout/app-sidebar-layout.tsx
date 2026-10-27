@@ -1,6 +1,6 @@
 "use client";
 
-import { AppSidebar } from "@/app/(authenticated)/dashboard/_components/app-sidebar";
+import { AppSidebar } from "@/app/(authenticated)/_components/app-sidebar";
 import { SidebarInset, SidebarTrigger } from "@/app/_components/ui/sidebar";
 
 export default function AppSidebarLayout({

@@ -23,7 +23,7 @@ import {
   getStoryMemberSearchParam,
   useGetStoryMemberPagination,
 } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-member-pagination";
-import { STORY_MEMBER_DIALOG_PER_PAGE } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-member-preview";
+import { STORY_MEMBER_DIALOG_PER_PAGE } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-member-preview";
 import type { TStoryDetailMembersDialogProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-members-dialog-props";
 
 import StoryDetailMemberRow from "./story-detail-member-row";
