@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { getStoryMemberPagination } from "@/api/main/modules/master/stories/[id]/members";
 import type { TStoryMemberPaginationResponse } from "@/api/main/modules/master/stories/[id]/members/types/story-member-pagination-response";
@@ -25,14 +25,15 @@ export function getStoryMemberSearchParam(search?: string): string | undefined {
   return search;
 }
 
-export function useGetStoryMemberPagination(
+// Shared by the members card and the detail page prefetch, so both hit one cache entry
+export function getStoryMemberPaginationOptions(
   storyId: string,
   perPage: number,
-  options?: { search?: string; enabled?: boolean },
+  search?: string,
 ) {
-  const appliedSearch = getStoryMemberSearchParam(options?.search);
+  const appliedSearch = getStoryMemberSearchParam(search);
 
-  return useInfiniteQuery({
+  return infiniteQueryOptions({
     queryKey: appliedSearch
       ? [
           CONFIG.QUERY_KEY.MAIN_API.MASTER.STORY.ALL(),
@@ -60,6 +61,16 @@ export function useGetStoryMemberPagination(
       }),
     initialPageParam: 1,
     getNextPageParam: getStoryMemberNextPage,
+  });
+}
+
+export function useGetStoryMemberPagination(
+  storyId: string,
+  perPage: number,
+  options?: { search?: string; enabled?: boolean },
+) {
+  return useInfiniteQuery({
+    ...getStoryMemberPaginationOptions(storyId, perPage, options?.search),
     enabled: !!storyId && (options?.enabled ?? true),
   });
 }
