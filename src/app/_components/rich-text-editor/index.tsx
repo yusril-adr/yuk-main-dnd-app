@@ -21,7 +21,7 @@ import { RichTextCharacterCount } from "@/libs/tiptap/rich-text-character-count"
 // Image insert disabled: descriptions are stored as Markdown for Discord, which doesn't render inline images. Re-enable if Discord support isn't needed.
 // import { RichTextImage } from "@/libs/tiptap/rich-text-image";
 import { RichTextUnderline } from "@/libs/tiptap/rich-text-underline";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 // Image insert disabled: descriptions are stored as Markdown for Discord, which doesn't render inline images. Re-enable if Discord support isn't needed.
 // import { removeHtmlImages } from "@/utils/rich-text";
 

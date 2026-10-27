@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/app/_components/ui/card";
 import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 
 import BoardStoryDetailOrnament from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-ornament";
 import type { TBoardStoryDetailSectionCardProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_types/board-story-detail-components-props";

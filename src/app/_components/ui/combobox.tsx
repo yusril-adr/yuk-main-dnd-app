@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import { Combobox as ComboboxPrimitive } from "@base-ui/react"
+import { cn } from "cn"
 
-import { cn } from "@/utils/cn"
 import { Button } from "@/app/_components/ui/button"
 import {
   InputGroup,

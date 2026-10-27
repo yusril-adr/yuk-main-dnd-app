@@ -1,7 +1,7 @@
 import { Swords } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 
 import type { TStoryCardBannerProps } from "@/app/(authenticated)/dashboard/master/stories/_types/story-card-banner-props";
 

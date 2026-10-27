@@ -4,6 +4,7 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Card, CardContent, CardFooter } from "@/app/_components/ui/card";
+import RequiredFieldLabel from "@/app/_components/required-field-label";
 import {
   Field,
   FieldError,
@@ -89,7 +90,7 @@ export default function RoleEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="name">Name</FieldLabel>
+                  <RequiredFieldLabel required htmlFor="name">Name</RequiredFieldLabel>
                   <Input
                     aria-required
                     id="name"

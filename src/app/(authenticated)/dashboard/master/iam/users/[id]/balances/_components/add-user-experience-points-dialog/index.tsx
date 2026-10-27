@@ -22,6 +22,7 @@ import {
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
 import { Button } from "@/app/_components/ui/button";
+import RequiredFieldLabel from "@/app/_components/required-field-label";
 import {
   Field,
   FieldError,
@@ -165,7 +166,7 @@ export default function AddUserExperiencePointsDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required>Type</FieldLabel>
+                  <RequiredFieldLabel required>Type</RequiredFieldLabel>
                   <div className="grid grid-cols-2 gap-2">
                     {TYPE_OPTIONS.map((option) => (
                       <Button
@@ -197,7 +198,7 @@ export default function AddUserExperiencePointsDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required>Direction</FieldLabel>
+                  <RequiredFieldLabel required>Direction</RequiredFieldLabel>
                   <div className="grid grid-cols-2 gap-2">
                     {DIRECTION_OPTIONS.map((option) => (
                       <Button
@@ -229,7 +230,7 @@ export default function AddUserExperiencePointsDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="experience-amount">Amount</FieldLabel>
+                  <RequiredFieldLabel required htmlFor="experience-amount">Amount</RequiredFieldLabel>
                   <Input
                     aria-required
                     id="experience-amount"

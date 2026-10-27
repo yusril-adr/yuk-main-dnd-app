@@ -42,7 +42,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/app/_components/ui/popover";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 import dayjs from "@/libs/dayjs";
 import {
   getGuildmateHref,

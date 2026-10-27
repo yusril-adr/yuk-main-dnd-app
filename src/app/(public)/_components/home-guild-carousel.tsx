@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
 
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 import { Button } from "@/app/_components/ui/button";
 import {
   Carousel,
