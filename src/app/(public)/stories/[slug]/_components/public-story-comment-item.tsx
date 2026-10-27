@@ -36,6 +36,11 @@ import {
   ItemTitle,
 } from "@/app/_components/ui/item";
 import { Spinner } from "@/app/_components/ui/spinner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/app/_components/ui/tooltip";
 import { cn } from "@/utils/cn";
 import dayjs from "@/libs/dayjs";
 import {
@@ -163,9 +168,26 @@ export default function PublicStoryCommentItem({
         </div>
         <ItemDescription className="text-xs text-foreground/70">
           {author?.username ? `@${author.username} · ` : ""}
-          <time dateTime={comment.created_at}>
-            {createdAt.format(PUBLIC_STORY_DETAIL_DATE_FORMAT)}
-          </time>
+          {/* Relative while the absolute date stays in the tooltip and for screen readers */}
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <time
+                  dateTime={comment.created_at}
+                  tabIndex={0}
+                  className="rounded-sm underline decoration-dotted underline-offset-2 outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                />
+              }
+            >
+              {createdAt.fromNow()}
+              <span className="sr-only">
+                {` (${createdAt.format(PUBLIC_STORY_DETAIL_DATE_FORMAT)})`}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>
+              {createdAt.format(PUBLIC_STORY_DETAIL_DATE_FORMAT)}
+            </TooltipContent>
+          </Tooltip>
         </ItemDescription>
 
         <If condition={isEditing}>
