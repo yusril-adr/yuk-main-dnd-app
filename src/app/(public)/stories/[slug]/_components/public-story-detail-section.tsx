@@ -4,7 +4,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 
 import type { TPublicStoryDetailSectionProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-section-props";
 

@@ -81,8 +81,6 @@ export default function PublicGuildmateDetailPageClient() {
                       </section>
                     </Then>
                   </If>
-
-                  <PublicGuildmateStoriesSection identifier={identifier} />
                 </>
               )}
             </Then>
@@ -99,6 +97,13 @@ export default function PublicGuildmateDetailPageClient() {
             </Else>
           </If>
         </Else>
+      </If>
+
+      {/* Loads on its own; hidden once the guildmate fails (error or not found) */}
+      <If condition={!!guildmate || !guildmateQuery.isError}>
+        <Then>
+          <PublicGuildmateStoriesSection identifier={identifier} />
+        </Then>
       </If>
     </div>
   );

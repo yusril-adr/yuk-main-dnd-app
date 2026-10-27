@@ -26,6 +26,7 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "@/app/_components/ui/combobox";
+import RequiredFieldLabel from "@/app/_components/required-field-label";
 import {
   Field,
   FieldDescription,
@@ -242,7 +243,7 @@ export default function UserEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="email">Email</FieldLabel>
+                  <RequiredFieldLabel required htmlFor="email">Email</RequiredFieldLabel>
                   <Input
                     aria-required
                     id="email"
@@ -321,7 +322,7 @@ export default function UserEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="displayName">Display Name</FieldLabel>
+                  <RequiredFieldLabel required htmlFor="displayName">Display Name</RequiredFieldLabel>
                   <Input
                     aria-required
                     id="displayName"
@@ -360,7 +361,7 @@ export default function UserEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel required>Roles</FieldLabel>
+                  <RequiredFieldLabel required>Roles</RequiredFieldLabel>
                   <Combobox
                     multiple
                     items={roles}

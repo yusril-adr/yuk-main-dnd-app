@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Shield } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 
 import type { TPublicGuildmateStoryBannerProps } from "@/app/(public)/guildmates/[slug]/_types/public-guildmate-detail-components-props";
 

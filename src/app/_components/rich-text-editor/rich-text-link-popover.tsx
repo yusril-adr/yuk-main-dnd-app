@@ -13,7 +13,7 @@ import {
 } from "@/app/_components/ui/popover";
 import { RICH_TEXT_TOOLBAR_ACTIVE_CLASS_NAME } from "@/app/_constants/rich-text";
 import type { TRichTextLinkPopoverProps } from "@/app/_types/rich-text-link-popover-props";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 import { normalizeRichTextLinkUrl } from "@/utils/rich-text";
 
 export default function RichTextLinkPopover({

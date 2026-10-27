@@ -32,6 +32,5 @@ export function useGetPublicStoryCommentPagination(
         : undefined;
     },
     enabled: !!storyId,
-    retry: 1,
   });
 }

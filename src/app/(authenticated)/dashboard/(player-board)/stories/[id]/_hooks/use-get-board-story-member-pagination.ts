@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 
 import { getBoardStoryMemberPagination } from "@/api/main/modules/board/stories/[id]";
 import CONFIG from "@/common/constants/config";
@@ -10,15 +10,16 @@ export function getBoardStoryMemberSearchParam(search?: string) {
   return search;
 }
 
-// created_at asc keeps join order stable while statuses change
-export function useGetBoardStoryMemberPagination(
+// created_at asc keeps join order stable while statuses change.
+// Shared by the members card and the detail page prefetch, so both hit one cache entry
+export function getBoardStoryMemberPaginationOptions(
   storyId: string,
   perPage: number,
-  options?: { search?: string; enabled?: boolean },
+  searchInput?: string,
 ) {
-  const search = getBoardStoryMemberSearchParam(options?.search);
+  const search = getBoardStoryMemberSearchParam(searchInput);
 
-  return useInfiniteQuery({
+  return infiniteQueryOptions({
     queryKey: [
       CONFIG.QUERY_KEY.MAIN_API.BOARD.STORY.MEMBER.ALL(),
       storyId,
@@ -44,7 +45,16 @@ export function useGetBoardStoryMemberPagination(
         ? meta.current_page + 1
         : undefined;
     },
+  });
+}
+
+export function useGetBoardStoryMemberPagination(
+  storyId: string,
+  perPage: number,
+  options?: { search?: string; enabled?: boolean },
+) {
+  return useInfiniteQuery({
+    ...getBoardStoryMemberPaginationOptions(storyId, perPage, options?.search),
     enabled: (options?.enabled ?? true) && !!storyId,
-    retry: 1,
   });
 }

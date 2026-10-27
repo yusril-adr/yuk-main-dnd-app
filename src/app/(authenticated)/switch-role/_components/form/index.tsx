@@ -27,11 +27,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/_components/ui/select";
+import RequiredFieldLabel from "@/app/_components/required-field-label";
 import {
   Field,
   FieldDescription,
   FieldError,
-  FieldLabel,
 } from "@/app/_components/ui/field";
 import { Spinner } from "@/app/_components/ui/spinner";
 
@@ -101,7 +101,7 @@ export function SwitchRoleForm({
             control={control}
             render={({ field, fieldState }) => (
               <Field className="grid gap-2" data-invalid={fieldState.invalid}>
-                <FieldLabel required htmlFor="role">Role</FieldLabel>
+                <RequiredFieldLabel required htmlFor="role">Role</RequiredFieldLabel>
                 <Select
                   value={field.value}
                   onValueChange={(value) => field.onChange(value ?? "")}

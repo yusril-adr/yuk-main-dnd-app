@@ -11,7 +11,5 @@ export function useGetPublicGuildmateByIdentifier(
     queryKey: [CONFIG.QUERY_KEY.MAIN_API.USER.DETAIL(), identifier],
     queryFn: () => getPublicUserByIdentifier(identifier),
     enabled: !!identifier,
-    // 404 is final; don't retry it
-    retry: false,
   });
 }

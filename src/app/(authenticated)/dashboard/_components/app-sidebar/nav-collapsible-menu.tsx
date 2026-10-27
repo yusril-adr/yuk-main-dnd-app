@@ -15,7 +15,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/app/_components/ui/collapsible";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 
 import type { TNavSidebar } from "@/app/(authenticated)/dashboard/_types/nav-sidebar";
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Alegreya_Sans, DM_Mono, Eczar } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 import {
   SITE_DESCRIPTION,
   SITE_NAME,

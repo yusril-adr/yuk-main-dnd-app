@@ -4,7 +4,7 @@ import {
   CardContent,
   CardHeader,
 } from "@/app/_components/ui/card";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 
 import StoryDetailOrnament from "./story-detail-ornament";
 import type { TStoryDetailSectionCardProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-section-card-props";

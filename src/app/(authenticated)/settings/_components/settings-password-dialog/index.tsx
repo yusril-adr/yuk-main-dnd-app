@@ -13,12 +13,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
+import RequiredFieldLabel from "@/app/_components/required-field-label";
 import {
   Field,
   FieldDescription,
   FieldError,
   FieldGroup,
-  FieldLabel,
 } from "@/app/_components/ui/field";
 import {
   InputGroup,
@@ -123,9 +123,9 @@ export default function SettingsPasswordDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="currentPassword">
+                  <RequiredFieldLabel required htmlFor="currentPassword">
                     Current password
-                  </FieldLabel>
+                  </RequiredFieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       aria-required
@@ -169,7 +169,7 @@ export default function SettingsPasswordDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="newPassword">New password</FieldLabel>
+                  <RequiredFieldLabel required htmlFor="newPassword">New password</RequiredFieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       aria-required
@@ -215,9 +215,9 @@ export default function SettingsPasswordDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel required htmlFor="newPasswordConfirmation">
+                  <RequiredFieldLabel required htmlFor="newPasswordConfirmation">
                     Confirm new password
-                  </FieldLabel>
+                  </RequiredFieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       aria-required

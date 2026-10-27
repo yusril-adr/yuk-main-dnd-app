@@ -15,7 +15,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
-import { cn } from "@/utils/cn";
+import { cn } from "cn";
 import type { StoryCommentReactionTypeEnum } from "@/api/main/modules/stories/[id]/comments/enums/story-comment-reaction-type";
 
 import { useReactPublicStoryComment } from "@/app/(public)/stories/[slug]/_hooks/use-react-public-story-comment";
