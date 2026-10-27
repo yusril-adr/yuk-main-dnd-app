@@ -30,7 +30,10 @@ import {
   toPublicStoryCommentContent,
   type TPublicStoryCommentFormSchema,
 } from "./scheme";
-import { PUBLIC_STORY_COMMENT_MAX_LENGTH } from "@/app/(public)/stories/[slug]/_constants/public-story-comment";
+import {
+  PUBLIC_STORY_COMMENT_GUIDELINE,
+  PUBLIC_STORY_COMMENT_MAX_LENGTH,
+} from "@/app/(public)/stories/[slug]/_constants/public-story-comment";
 import type { TPublicStoryCommentFormProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-form-props";
 
 // "@a @b " only holds mentions: a new mention replaces it
@@ -71,6 +74,7 @@ export default function PublicStoryCommentForm({
   onSubmit,
   onCancel,
   autoFocus,
+  isShowGuideline,
   mention,
 }: TPublicStoryCommentFormProps) {
   const [editor, setEditor] = useState<Editor | null>(null);
@@ -181,6 +185,14 @@ export default function PublicStoryCommentForm({
           {submitLabel}
         </Button>
       </div>
+
+      <If condition={!!isShowGuideline}>
+        <Then>
+          <p className="text-xs text-pretty text-muted-foreground">
+            {PUBLIC_STORY_COMMENT_GUIDELINE}
+          </p>
+        </Then>
+      </If>
     </form>
   );
 }

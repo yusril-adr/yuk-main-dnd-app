@@ -108,6 +108,7 @@ export default function PublicStoryCommentComposer({
           label="Write a comment"
           placeholder="Share thy thoughts on this story..."
           submitLabel="Post comment"
+          isShowGuideline
           isPending={createMutation.isPending}
           onSubmit={(content) =>
             createMutation.mutateAsync({

@@ -10,6 +10,8 @@ export type TPublicStoryCommentFormProps = {
   onSubmit: (content: string) => Promise<unknown>;
   onCancel?: () => void;
   autoFocus?: boolean;
+  // Show the comment guideline under the buttons (new comments and replies)
+  isShowGuideline?: boolean;
   // Bump requestId to merge "@username " into the text and focus the end
   mention?: { username: string; requestId: number } | null;
 };
