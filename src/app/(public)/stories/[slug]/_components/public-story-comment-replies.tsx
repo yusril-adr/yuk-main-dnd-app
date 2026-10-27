@@ -130,7 +130,7 @@ export default function PublicStoryCommentReplies({
         <Then>
           <div
             id={repliesId}
-            className="flex flex-col gap-1 border-s-2 border-primary/20 ps-3"
+            className="flex flex-col gap-1 border-s-2 border-primary/20 ps-2.5 sm:ps-3"
           >
             <If condition={repliesQuery.isLoading}>
               <Then>
@@ -232,7 +232,7 @@ export default function PublicStoryCommentReplies({
         <Then>
           <div
             id={`${formId}-panel`}
-            className="border-s-2 border-primary/20 ps-3"
+            className="border-s-2 border-primary/20 ps-2.5 sm:ps-3"
           >
             <PublicStoryCommentForm
               id={formId}
