@@ -62,6 +62,8 @@ import type { TPublicStoryCommentItemProps } from "@/app/(public)/stories/[slug]
 export default function PublicStoryCommentItem({
   storyId,
   comment,
+  isReply = false,
+  children,
 }: TPublicStoryCommentItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -93,15 +95,19 @@ export default function PublicStoryCommentItem({
     actions.is_can_unpin;
   const ids = { storyId, commentId: comment.id };
   const authorName = author?.display_name ?? "Deleted comment";
+  const noun = isReply ? "reply" : "comment";
+  const avatarSize = isReply ? "size-8" : "size-10";
   const createdAt = dayjs(comment.created_at);
 
   return (
     <Item
       role="listitem"
-      variant="outline"
+      variant={isReply ? "default" : "outline"}
       size="sm"
       className={cn(
         "flex-nowrap items-start bg-background",
+        // Thread rows sit inside the parent card, so no border or padding
+        isReply && "bg-transparent px-0 py-1.5",
         comment.is_pinned && "border-primary/50 bg-primary/5",
         isBusy && "opacity-70",
       )}
@@ -110,7 +116,12 @@ export default function PublicStoryCommentItem({
         <If condition={!!author}>
           <Then>
             {author && (
-              <Avatar className="size-10 shrink-0 border-2 border-primary/40">
+              <Avatar
+                className={cn(
+                  avatarSize,
+                  "shrink-0 border-2 border-primary/40",
+                )}
+              >
                 <AvatarImage
                   src={
                     author.avatar_url ??
@@ -127,7 +138,7 @@ export default function PublicStoryCommentItem({
             )}
           </Then>
           <Else>
-            <Avatar className="size-10 shrink-0">
+            <Avatar className={cn(avatarSize, "shrink-0")}>
               <AvatarFallback aria-hidden>
                 <MessageSquareOff className="size-4 text-muted-foreground" />
               </AvatarFallback>
@@ -195,7 +206,7 @@ export default function PublicStoryCommentItem({
             <div className="mt-2">
               <PublicStoryCommentForm
                 id={`comment-edit-${comment.id}`}
-                label="Edit comment"
+                label={isReply ? "Edit reply" : "Edit comment"}
                 defaultContent={comment.content ?? ""}
                 submitLabel="Save"
                 isPending={updateMutation.isPending}
@@ -223,6 +234,8 @@ export default function PublicStoryCommentItem({
             </If>
           </Else>
         </If>
+
+        {children}
       </ItemContent>
 
       <If condition={hasActions && !isEditing}>
@@ -235,7 +248,7 @@ export default function PublicStoryCommentItem({
                     variant="ghost"
                     size="icon-sm"
                     disabled={isBusy}
-                    aria-label={`Actions for comment by ${authorName}`}
+                    aria-label={`Actions for ${noun} by ${authorName}`}
                   >
                     {isBusy ? <Spinner /> : <EllipsisVertical />}
                   </Button>
@@ -300,6 +313,7 @@ export default function PublicStoryCommentItem({
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
         isPending={deleteMutation.isPending}
+        noun={noun}
         onConfirm={() => {
           deleteMutation.mutate(ids);
           setIsDeleteDialogOpen(false);

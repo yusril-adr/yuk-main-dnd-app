@@ -24,6 +24,8 @@ const MAIN_API_PATH = {
       `/api/v1/stories/${id}/comments/${commentId}/pin`,
     COMMENT_UNPIN: (id: string, commentId: string) =>
       `/api/v1/stories/${id}/comments/${commentId}/unpin`,
+    COMMENT_REPLIES: (identifier: string, commentId: string) =>
+      `/api/v1/stories/${identifier}/comments/${commentId}/replies`,
   },
   USER: {
     // Public guildmates list; search matches username or display name

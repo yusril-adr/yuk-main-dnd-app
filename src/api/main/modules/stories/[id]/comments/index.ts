@@ -7,6 +7,8 @@ import type {
 } from "@/api/main/types/response";
 import type { TStoryCommentPaginationPayload } from "./types/story-comment-pagination-payload";
 import type { TStoryCommentPaginationResponse } from "./types/story-comment-pagination-response";
+import type { TStoryCommentReplyPaginationPayload } from "./types/story-comment-reply-pagination-payload";
+import type { TStoryCommentReplyPaginationResponse } from "./types/story-comment-reply-pagination-response";
 import type { TStoryCommentCreatePayload } from "./types/story-comment-create-payload";
 import type { TStoryCommentCreateResponse } from "./types/story-comment-create-response";
 import type { TStoryCommentUpdatePayload } from "./types/story-comment-update-payload";
@@ -24,6 +26,29 @@ export const getStoryCommentPagination = async ({
 > => {
   const response = await mainAxios.get(
     MAIN_API_PATH.STORY.COMMENTS(identifier),
+    { params: payload },
+  );
+  return response;
+};
+
+// Public, optional auth. Replies of one top-level comment, oldest first. 404
+// unless the story is public and commentId is a top-level comment of it (a
+// deleted parent stays readable while it has replies)
+export const getStoryCommentReplyPagination = async ({
+  identifier,
+  commentId,
+  payload,
+}: {
+  identifier: string;
+  commentId: string;
+  payload: TStoryCommentReplyPaginationPayload;
+}): Promise<
+  AxiosResponse<
+    TMainApiPaginationResponse<TStoryCommentReplyPaginationResponse>
+  >
+> => {
+  const response = await mainAxios.get(
+    MAIN_API_PATH.STORY.COMMENT_REPLIES(identifier, commentId),
     { params: payload },
   );
   return response;

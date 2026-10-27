@@ -16,14 +16,15 @@ export default function PublicStoryCommentDeleteDialog({
   onOpenChange,
   isPending,
   onConfirm,
+  noun = "comment",
 }: TPublicStoryCommentDeleteDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete this comment?</AlertDialogTitle>
+          <AlertDialogTitle>Delete this {noun}?</AlertDialogTitle>
           <AlertDialogDescription>
-            The comment will be removed from the story for everyone. This cannot
+            The {noun} will be removed from the story for everyone. This cannot
             be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -34,7 +35,7 @@ export default function PublicStoryCommentDeleteDialog({
             disabled={isPending}
             onClick={onConfirm}
           >
-            Delete comment
+            Delete {noun}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

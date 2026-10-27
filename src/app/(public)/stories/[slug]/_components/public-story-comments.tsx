@@ -21,6 +21,7 @@ import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import PublicStoryDetailSection from "./public-story-detail-section";
 import PublicStoryCommentComposer from "./public-story-comment-composer";
 import PublicStoryCommentItem from "./public-story-comment-item";
+import PublicStoryCommentReplies from "./public-story-comment-replies";
 import { useGetPublicStoryCommentPagination } from "@/app/(public)/stories/[slug]/_hooks/use-get-public-story-comment-pagination";
 import { PUBLIC_STORY_COMMENT_PER_PAGE } from "@/app/(public)/stories/[slug]/_constants/public-story-comment";
 import type { TPublicStoryCommentsProps } from "@/app/(public)/stories/[slug]/_types/public-story-comments-props";
@@ -49,6 +50,7 @@ export default function PublicStoryComments({
   const meta = pages[pages.length - 1]?.data?.data?.meta;
   const total = meta?.total_all_data ?? 0;
   const remaining = Math.max(total - comments.length, 0);
+  const isCanReply = !!auth && story.action_list.is_can_comment;
 
   return (
     <PublicStoryDetailSection
@@ -142,7 +144,13 @@ export default function PublicStoryComments({
                         key={comment.id}
                         storyId={story.id}
                         comment={comment}
-                      />
+                      >
+                        <PublicStoryCommentReplies
+                          storyId={story.id}
+                          comment={comment}
+                          isCanReply={isCanReply}
+                        />
+                      </PublicStoryCommentItem>
                     ))}
                   </ItemGroup>
 
