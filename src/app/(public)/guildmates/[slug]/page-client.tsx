@@ -14,7 +14,6 @@ import PublicGuildmateAdventurerCardBack from "@/app/(public)/guildmates/[slug]/
 import { getCardNumber } from "@/app/(public)/guildmates/[slug]/_utils/public-guildmate-detail-helper";
 import PublicGuildmateAdventurerCardSkeleton from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-adventurer-card-skeleton";
 import PublicGuildmatePrintButton from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-print-button";
-import PublicGuildmateStoriesSectionSkeleton from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-stories-section-skeleton";
 import PublicGuildmateStoriesSection from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-stories-section";
 import { useGetPublicGuildmateByIdentifier } from "@/app/(public)/guildmates/[slug]/_hooks/use-get-public-guildmate-by-identifier";
 
@@ -51,7 +50,6 @@ export default function PublicGuildmateDetailPageClient() {
           <div className="flex justify-center">
             <PublicGuildmateAdventurerCardSkeleton />
           </div>
-          <PublicGuildmateStoriesSectionSkeleton />
         </Then>
         <Else>
           <If condition={!!guildmate}>
@@ -83,8 +81,6 @@ export default function PublicGuildmateDetailPageClient() {
                       </section>
                     </Then>
                   </If>
-
-                  <PublicGuildmateStoriesSection identifier={identifier} />
                 </>
               )}
             </Then>
@@ -101,6 +97,13 @@ export default function PublicGuildmateDetailPageClient() {
             </Else>
           </If>
         </Else>
+      </If>
+
+      {/* Loads on its own; hidden once the guildmate fails (error or not found) */}
+      <If condition={!!guildmate || !guildmateQuery.isError}>
+        <Then>
+          <PublicGuildmateStoriesSection identifier={identifier} />
+        </Then>
       </If>
     </div>
   );
