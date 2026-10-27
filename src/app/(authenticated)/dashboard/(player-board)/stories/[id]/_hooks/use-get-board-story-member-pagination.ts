@@ -56,6 +56,5 @@ export function useGetBoardStoryMemberPagination(
   return useInfiniteQuery({
     ...getBoardStoryMemberPaginationOptions(storyId, perPage, options?.search),
     enabled: (options?.enabled ?? true) && !!storyId,
-    retry: 1,
   });
 }
