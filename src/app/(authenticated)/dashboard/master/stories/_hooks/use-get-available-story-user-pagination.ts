@@ -1,23 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import type { AxiosResponse } from "axios";
 import { getAvailableStoryUserPagination } from "@/api/main/modules/master/stories/[id]/available-users";
-import type { TAvailableStoryUserPaginationResponse } from "@/api/main/modules/master/stories/[id]/available-users/types/available-story-user-pagination-response";
-import type { TMainApiPaginationResponse } from "@/api/main/types/response";
 import CONFIG from "@/common/constants/config";
+import { getMainApiNextPage } from "@/api/main/utils/pagination";
 import { OrderKeyEnum } from "@/common/enums/order-key";
-
-export function getAvailableStoryUserNextPage(
-  lastPage: AxiosResponse<
-    TMainApiPaginationResponse<TAvailableStoryUserPaginationResponse>
-  >,
-): number | undefined {
-  const meta = lastPage.data?.data?.meta;
-  if (!meta) return undefined;
-  if (meta.current_page < meta.total_page) {
-    return meta.current_page + 1;
-  }
-  return undefined;
-}
 
 // Same 3-character gate as the party list search. Shorter input is not sent.
 export function getAvailableStoryUserSearchParam(
@@ -61,7 +46,7 @@ export function useGetAvailableStoryUserPagination(
         },
       }),
     initialPageParam: 1,
-    getNextPageParam: getAvailableStoryUserNextPage,
+    getNextPageParam: getMainApiNextPage,
     enabled: !!storyId && (options?.enabled ?? true),
   });
 }

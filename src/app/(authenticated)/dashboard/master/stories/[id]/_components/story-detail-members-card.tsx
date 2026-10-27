@@ -6,7 +6,7 @@ import { Else, If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
 import { useGetStoryMemberPagination } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-member-pagination";
-import { STORY_MEMBER_PREVIEW_COUNT } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-member-preview";
+import { STORY_MEMBER_PREVIEW_COUNT } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-member-preview";
 import type { TStoryDetailMembersCardProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-members-card-props";
 
 import StoryDetailAddMemberDialog from "./story-detail-add-member-dialog";

@@ -29,8 +29,8 @@ import {
   getStoryMemberSearchParam,
   useGetStoryMemberPagination,
 } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-member-pagination";
-import { STORY_MEMBER_DIALOG_PER_PAGE } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-member-preview";
-import StoryDetailDeleteMemberRow from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-delete-member-row";
+import { STORY_MEMBER_DIALOG_PER_PAGE } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-member-preview";
+import StoryDetailDeleteMemberRow from "@/app/(authenticated)/dashboard/master/stories/_components/story-detail-delete-member-row";
 import type { TStoryCompleteDialogProps } from "@/app/(authenticated)/dashboard/master/stories/_types/story-complete-dialog-props";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import MainAPIValidationError from "@/api/main/errors/validation-error";

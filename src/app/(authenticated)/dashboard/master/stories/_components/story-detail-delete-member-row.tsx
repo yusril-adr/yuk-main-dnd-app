@@ -13,7 +13,7 @@ import { Checkbox } from "@/app/_components/ui/checkbox";
 import { STORY_MEMBER_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-member-status-label";
 import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 
-import type { TStoryDetailDeleteMemberRowProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-delete-member-row-props";
+import type { TStoryDetailDeleteMemberRowProps } from "@/app/(authenticated)/dashboard/master/stories/_types/story-detail-delete-member-row-props";
 
 export default function StoryDetailDeleteMemberRow({
   member,
