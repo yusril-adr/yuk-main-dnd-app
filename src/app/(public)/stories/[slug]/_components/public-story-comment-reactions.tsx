@@ -57,11 +57,12 @@ export default function PublicStoryCommentReactions({
   const toggle = (type: StoryCommentReactionTypeEnum) =>
     reactMutation.mutate({ type: myReaction === type ? null : type });
 
-  // Replies: a step smaller, still a comfortable tap target
-  const chipClassName = cn(
-    "gap-1 rounded-full px-2.5 tabular-nums",
-    isReply ? "h-7 px-2 text-xs" : "h-8",
-  );
+  // Same box as the row's xs Reply / thread buttons (h-6, px-2, text-xs,
+  // 8px radius), on a faint darkening of whatever card sits behind them
+  const chipClassName =
+    "h-6 gap-1 rounded-[min(var(--radius-md),8px)] border border-border/60 bg-foreground/5 px-2 text-xs tabular-nums shadow-none dark:border-foreground/10 dark:bg-popover";
+  const mineChipClassName =
+    "border-primary/50 bg-primary/10 ring-1 ring-primary/50 dark:border-primary/60 dark:bg-primary/15 dark:ring-primary/60";
 
   return (
     <div
@@ -75,13 +76,12 @@ export default function PublicStoryCommentReactions({
         const label = `${option.label}, ${countLabel(count)}${isMine ? ", including yours" : ""}`;
         const content = (
           <>
-            <span
-              aria-hidden
-              className={cn("leading-none", isReply ? "text-sm" : "text-base")}
-            >
+            <span aria-hidden className="text-sm leading-none">
               {option.emoji}
             </span>
-            <span aria-hidden>{count}</span>
+            <span aria-hidden className={cn(isMine && "font-bold")}>
+              {count}
+            </span>
           </>
         );
         return (
@@ -93,14 +93,18 @@ export default function PublicStoryCommentReactions({
                     <Button
                       type="button"
                       variant="outline"
-                      size="sm"
+                      size="xs"
                       aria-pressed={isMine}
                       aria-label={label}
                       onClick={() => toggle(option.type)}
                       className={cn(
                         chipClassName,
+                        "hover:bg-foreground/10 dark:hover:bg-muted/50",
                         isMine &&
-                          "border-primary/60 bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary dark:border-primary/60 dark:bg-primary/15 dark:hover:bg-primary/20",
+                          cn(
+                            mineChipClassName,
+                            "hover:bg-primary/15 dark:hover:bg-primary/25",
+                          ),
                       )}
                     />
                   }
@@ -116,9 +120,8 @@ export default function PublicStoryCommentReactions({
                       aria-label={label}
                       className={cn(
                         chipClassName,
-                        "inline-flex items-center border border-border bg-background text-sm font-medium text-foreground/80 dark:border-input dark:bg-input/30",
-                        isReply && "text-xs",
-                        isMine && "border-primary/60 text-primary",
+                        "inline-flex items-center font-medium",
+                        isMine && mineChipClassName,
                       )}
                     />
                   }
@@ -144,17 +147,13 @@ export default function PublicStoryCommentReactions({
                 <Button
                   type="button"
                   variant="ghost"
-                  size="icon-sm"
+                  size="icon-xs"
                   aria-label={`React to this ${noun}`}
                   title="Add reaction"
-                  className={cn(
-                    "rounded-full text-muted-foreground hover:text-foreground",
-                    isReply && "size-7",
-                  )}
                 />
               }
             >
-              <SmilePlus />
+              <SmilePlus className="size-3.5" />
             </PopoverTrigger>
             <PopoverContent
               align="start"
