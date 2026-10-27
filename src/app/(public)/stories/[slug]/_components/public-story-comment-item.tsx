@@ -113,7 +113,6 @@ export default function PublicStoryCommentItem({
         "items-start gap-x-2 gap-y-1 bg-background px-2.5 sm:gap-x-2.5 sm:px-3",
         // Thread rows sit inside the parent card, so no border or padding
         isReply && "bg-transparent px-0 py-1.5 sm:px-0",
-        comment.is_pinned && "border-primary/50 bg-primary/5",
         isBusy && "opacity-70",
       )}
     >
