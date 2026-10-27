@@ -23,7 +23,7 @@ import PublicStoryCommentComposer from "./public-story-comment-composer";
 import PublicStoryCommentItem from "./public-story-comment-item";
 import { useGetPublicStoryCommentPagination } from "@/app/(public)/stories/[slug]/_hooks/use-get-public-story-comment-pagination";
 import { PUBLIC_STORY_COMMENT_PER_PAGE } from "@/app/(public)/stories/[slug]/_constants/public-story-comment";
-import type { TPublicStoryCommentsProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
+import type { TPublicStoryCommentsProps } from "@/app/(public)/stories/[slug]/_types/public-story-comments-props";
 
 export default function PublicStoryComments({
   story,

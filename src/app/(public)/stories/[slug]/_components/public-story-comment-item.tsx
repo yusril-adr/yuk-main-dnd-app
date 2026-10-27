@@ -57,7 +57,7 @@ import { usePinPublicStoryComment } from "@/app/(public)/stories/[slug]/_hooks/u
 import { useUnpinPublicStoryComment } from "@/app/(public)/stories/[slug]/_hooks/use-unpin-public-story-comment";
 import { useRefreshPublicStoryComments } from "@/app/(public)/stories/[slug]/_hooks/use-refresh-public-story-comments";
 import { PUBLIC_STORY_DETAIL_DATE_FORMAT } from "@/app/(public)/stories/[slug]/_constants/public-story-detail-date-format";
-import type { TPublicStoryCommentItemProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
+import type { TPublicStoryCommentItemProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-item-props";
 
 export default function PublicStoryCommentItem({
   storyId,

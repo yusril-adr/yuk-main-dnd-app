@@ -25,7 +25,7 @@ import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 import PublicStoryCommentForm from "./public-story-comment-form";
 import { useCreatePublicStoryComment } from "@/app/(public)/stories/[slug]/_hooks/use-create-public-story-comment";
 import { useRefreshPublicStoryComments } from "@/app/(public)/stories/[slug]/_hooks/use-refresh-public-story-comments";
-import type { TPublicStoryCommentComposerProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
+import type { TPublicStoryCommentComposerProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-composer-props";
 
 export default function PublicStoryCommentComposer({
   story,

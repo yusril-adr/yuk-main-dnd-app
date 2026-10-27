@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
 
-import type { TPublicStoryCommentDeleteDialogProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
+import type { TPublicStoryCommentDeleteDialogProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-delete-dialog-props";
 
 export default function PublicStoryCommentDeleteDialog({
   open,

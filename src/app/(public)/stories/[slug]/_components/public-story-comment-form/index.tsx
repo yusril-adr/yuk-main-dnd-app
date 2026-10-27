@@ -24,7 +24,7 @@ import {
   type TPublicStoryCommentFormSchema,
 } from "./scheme";
 import { PUBLIC_STORY_COMMENT_MAX_LENGTH } from "@/app/(public)/stories/[slug]/_constants/public-story-comment";
-import type { TPublicStoryCommentFormProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-components-props";
+import type { TPublicStoryCommentFormProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-form-props";
 
 // Used for new comments and inline edits (and later for replies)
 export default function PublicStoryCommentForm({
