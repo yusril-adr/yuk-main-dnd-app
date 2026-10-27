@@ -27,13 +27,13 @@ import {
   getStoryMemberSearchParam,
   useGetStoryMemberPagination,
 } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-member-pagination";
-import { STORY_MEMBER_DIALOG_PER_PAGE } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-member-preview";
+import { STORY_MEMBER_DIALOG_PER_PAGE } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-member-preview";
 import type { TStoryDetailDeleteMemberDialogProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-delete-member-dialog-props";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import CONFIG from "@/common/constants/config";
 
-import StoryDetailDeleteMemberRow from "./story-detail-delete-member-row";
+import StoryDetailDeleteMemberRow from "@/app/(authenticated)/dashboard/master/stories/_components/story-detail-delete-member-row";
 
 function getRemoveButtonLabel(count: number): string {
   if (count === 0) return "Remove";

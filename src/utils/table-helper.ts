@@ -1,4 +1,4 @@
-import type { TTablePageVisibility } from "@/app/_types/table-page-visibility";
+import type { TTablePageVisibility } from "@/types/table-page-visibility";
 
 export function generatePages({
   currentPage,
