@@ -1,0 +1,97 @@
+{
+  "hero": {
+    "badge": "Balai Guild",
+    "title": "Temui sesama petualangmu",
+    "description": "Dungeon Master dan heroes di guild. Hormati legends bulan ini, lalu cari teman untuk story berikutnya.",
+    "sworn_one": "guildmate bersumpah pada guild",
+    "sworn_other": "guildmates bersumpah pada guild"
+  },
+  "legends": {
+    "titleWithMonth": "Legends {{month}}",
+    "titleFallback": "Legends bulan ini",
+    "dungeonMastersOf": "Dungeon Masters {{month}}",
+    "heroesOf": "Heroes {{month}}",
+    "dungeonMasters": "Dungeon Masters",
+    "heroes": "Heroes",
+    "errorTitle": "Legends-nya hilang di kabut",
+    "errorDescription": "Papan ini nggak kebaca. Coba lagi ya.",
+    "emptyWithMonth": "Belum ada legends di {{month}}. Tavern masih nunggu.",
+    "emptyFallback": "Belum ada legends bulan ini. Tavern masih nunggu.",
+    "unclaimed": "Kosong",
+    "awaitingMaster": "Menunggu seorang master",
+    "awaitingHero": "Menunggu seorang hero",
+    "dmExpTotal": "{{count}} DM EXP total",
+    "playerExpTotal": "{{count}} Player EXP total",
+    "dmExp": "{{count}} DM EXP",
+    "playerExp": "{{count}} Player EXP",
+    "gainedExp": "+{{count}} EXP",
+    "soFar": "sejauh ini",
+    "place": "Peringkat {{rank}}"
+  },
+  "roll": {
+    "title": "Daftar Guild",
+    "description": "Setiap petualang yang bersumpah pada guild."
+  },
+  "search": {
+    "placeholder": "Cari nama atau username (min. 3 karakter)…",
+    "ariaLabel": "Cari guildmates"
+  },
+  "pagination": {
+    "showing": "Menampilkan {{start}}–{{end}} dari {{total}} guildmates",
+    "pagesAria": "Halaman guildmates",
+    "previous": "Halaman sebelumnya",
+    "next": "Halaman berikutnya"
+  },
+  "empty": {
+    "title": "Guildmates tidak ditemukan",
+    "filtered": "Tidak ada petualang dengan nama itu. Coba kata kunci lain.",
+    "default": "Balai guild masih kosong. Kembali lagi nanti, adventurer.",
+    "clearSearch": "Hapus pencarian"
+  },
+  "error": {
+    "rollTitle": "Daftar guild nggak bisa diambil",
+    "rollDescription": "Ada yang salah saat memuat guildmates. Coba lagi ya.",
+    "detailTitle": "Petualang ini nggak bisa dipanggil",
+    "detailDescription": "Ada yang salah saat memuat guildmate ini. Coba lagi ya.",
+    "questLogTitle": "Quest log nggak bisa diambil",
+    "questLogDescription": "Ada yang salah saat memuat stories. Coba lagi ya."
+  },
+  "card": {
+    "dungeonMaster": "Dungeon Master",
+    "player": "Player",
+    "exp": "{{count}} EXP"
+  },
+  "detail": {
+    "backToRoll": "Daftar guild",
+    "adventurersTale": "Kisah Petualang",
+    "adventurersGuild": "Guild Petualang",
+    "cardNumber": "No. {{number}}",
+    "wanderingAdventurer": "Petualang pengembara",
+    "dm": "DM",
+    "hero": "Hero",
+    "totalExp": "Total EXP",
+    "memberSince": "Anggota guild sejak {{date}}",
+    "expShareAria": "Bagian EXP {{label}} dari total",
+    "printCard": "Cetak kartu",
+    "motto": "Lempar berani, main adil, cerita yang bagus."
+  },
+  "questLog": {
+    "title": "Quest Log",
+    "storiesJoined": "Stories diikuti",
+    "storiesLed": "Stories dipimpin",
+    "emptyLed": "Belum ada story yang dipimpin. Kisah pertamanya menunggu.",
+    "emptyJoined": "Belum ada story yang diikuti. Jalan masih terbuka.",
+    "loadMore": "Muat lagi",
+    "loading": "Memuat…"
+  },
+  "story": {
+    "recruiting": "Rekrutmen",
+    "taleYetWritten": "Kisahnya belum ditulis…",
+    "dateTba": "Tanggal menyusul",
+    "joined": "{{count}} bergabung",
+    "rewardSlots_one": "Hanya {{count}} hero yang bisa main, lainnya ikut sebagai penonton",
+    "rewardSlots_other": "Hanya {{count}} heroes yang bisa main, lainnya ikut sebagai penonton",
+    "noPlayerLimit": "Tidak ada batas player",
+    "dungeonMaster": "Dungeon Master"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "hero": {
+    "badge": "The Guild Hall",
+    "title": "Meet thy fellow adventurers",
+    "description": "Dungeon masters and heroes of the guild. Honor this month's legends, then find a companion for your next story.",
+    "sworn_one": "guildmate sworn to the guild",
+    "sworn_other": "guildmates sworn to the guild"
+  },
+  "legends": {
+    "titleWithMonth": "Legends of {{month}}",
+    "titleFallback": "Legends of the Month",
+    "dungeonMastersOf": "Dungeon Masters of {{month}}",
+    "heroesOf": "Heroes of {{month}}",
+    "dungeonMasters": "Dungeon Masters",
+    "heroes": "Heroes",
+    "errorTitle": "The legends are lost to the mist",
+    "errorDescription": "We could not read this board. Please try again.",
+    "emptyWithMonth": "No legends yet in {{month}}. The tavern awaits.",
+    "emptyFallback": "No legends yet this month. The tavern awaits.",
+    "unclaimed": "Unclaimed",
+    "awaitingMaster": "Awaiting a master",
+    "awaitingHero": "Awaiting a hero",
+    "dmExpTotal": "{{count}} DM EXP total",
+    "playerExpTotal": "{{count}} Player EXP total",
+    "dmExp": "{{count}} DM EXP",
+    "playerExp": "{{count}} Player EXP",
+    "gainedExp": "+{{count}} EXP",
+    "soFar": "so far",
+    "place": "Place {{rank}}"
+  },
+  "roll": {
+    "title": "The Guild Roll",
+    "description": "Every adventurer sworn to the guild."
+  },
+  "search": {
+    "placeholder": "Search by name or username (min. 3 characters)…",
+    "ariaLabel": "Search guildmates"
+  },
+  "pagination": {
+    "showing": "Showing {{start}}–{{end}} of {{total}} guildmates",
+    "pagesAria": "Guildmates pages",
+    "previous": "Previous page",
+    "next": "Next page"
+  },
+  "empty": {
+    "title": "No guildmates found",
+    "filtered": "No adventurer answers to that name. Try different keywords.",
+    "default": "The guild hall stands empty for now. Return soon, adventurer.",
+    "clearSearch": "Clear search"
+  },
+  "error": {
+    "rollTitle": "The guild roll could not be fetched",
+    "rollDescription": "Something went wrong while loading guildmates. Please try again.",
+    "detailTitle": "This adventurer could not be summoned",
+    "detailDescription": "Something went wrong while loading this guildmate. Please try again.",
+    "questLogTitle": "The quest log could not be fetched",
+    "questLogDescription": "Something went wrong while loading stories. Please try again."
+  },
+  "card": {
+    "dungeonMaster": "Dungeon Master",
+    "player": "Player",
+    "exp": "{{count}} EXP"
+  },
+  "detail": {
+    "backToRoll": "Guild roll",
+    "adventurersTale": "The Adventurer's Tale",
+    "adventurersGuild": "Adventurer's Guild",
+    "cardNumber": "No. {{number}}",
+    "wanderingAdventurer": "Wandering adventurer",
+    "dm": "DM",
+    "hero": "Hero",
+    "totalExp": "Total EXP",
+    "memberSince": "Guild member since {{date}}",
+    "expShareAria": "{{label}} share of total EXP",
+    "printCard": "Print card",
+    "motto": "Roll bold, play fair, tell good tales."
+  },
+  "questLog": {
+    "title": "Quest Log",
+    "storiesJoined": "Stories joined",
+    "storiesLed": "Stories led",
+    "emptyLed": "No stories led yet. Their first tale awaits.",
+    "emptyJoined": "No stories joined yet. The road is still open.",
+    "loadMore": "Load more",
+    "loading": "Loading…"
+  },
+  "story": {
+    "recruiting": "Recruiting",
+    "taleYetWritten": "The tale is yet to be written…",
+    "dateTba": "Date to be proclaimed",
+    "joined": "{{count}} joined",
+    "rewardSlots_one": "Only {{count}} hero can play, others join as viewers",
+    "rewardSlots_other": "Only {{count}} heroes can play, others join as viewers",
+    "noPlayerLimit": "No player limit set",
+    "dungeonMaster": "Dungeon Master"
+  }
+}

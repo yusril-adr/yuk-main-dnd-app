@@ -1,5 +1,6 @@
 import { useMemo, useSyncExternalStore } from "react";
 
+import { useLocale } from "@/app/_hooks/use-locale";
 import dayjs from "@/libs/dayjs";
 
 // The day never changes mid-visit in a way worth re-rendering for
@@ -14,11 +15,12 @@ const getTodayKey = () => dayjs.utc().format("YYYY-MM-DD");
 // (no date baked into the HTML) and today is read on the client after
 // hydration, avoiding a mismatch.
 export function useCurrentMonthRange() {
+  const { locale } = useLocale();
   const todayKey = useSyncExternalStore(subscribe, getTodayKey, () => null);
 
   return useMemo(() => {
     if (!todayKey) return null;
-    const today = dayjs.utc(todayKey);
+    const today = dayjs.utc(todayKey).locale(locale);
     return {
       payload: {
         start_date: today.startOf("month").format("YYYY-MM-DD"),
@@ -27,5 +29,5 @@ export function useCurrentMonthRange() {
       monthName: today.format("MMMM"),
       monthLabel: today.format("MMMM YYYY"),
     };
-  }, [todayKey]);
+  }, [todayKey, locale]);
 }

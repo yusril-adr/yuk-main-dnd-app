@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Crown, Sword } from "lucide-react";
 import { If, Then } from "react-if";
@@ -18,6 +20,9 @@ import {
   ItemTitle,
 } from "@/app/_components/ui/item";
 import { Separator } from "@/app/_components/ui/separator";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 import PublicGuildmateAvatar from "./public-guildmate-avatar";
 import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
 import { getGuildmateHref } from "@/utils/user-helper";
@@ -26,6 +31,8 @@ import type { TPublicGuildmateCardProps } from "@/app/(public)/guildmates/_types
 export default function PublicGuildmateCard({
   guildmate,
 }: TPublicGuildmateCardProps) {
+  const { t } = useT(GUILDMATES_MESSAGES);
+  const { locale } = useLocale();
   const username = guildmate.username?.trim();
 
   return (
@@ -78,13 +85,13 @@ export default function PublicGuildmateCard({
             {
               key: "dm",
               icon: Crown,
-              label: "Dungeon Master",
+              label: t("card.dungeonMaster"),
               exp: guildmate.dm_exp,
             },
             {
               key: "player",
               icon: Sword,
-              label: "Player",
+              label: t("card.player"),
               exp: guildmate.player_exp,
             },
           ].map(({ key, icon: Icon, label, exp }) => (
@@ -102,7 +109,7 @@ export default function PublicGuildmateCard({
                   variant="secondary"
                   className="rounded-sm font-semibold tabular-nums"
                 >
-                  {formatExp(exp)} EXP
+                  {t("card.exp", { count: formatExp(exp, locale) })}
                 </Badge>
               </ItemActions>
             </Item>

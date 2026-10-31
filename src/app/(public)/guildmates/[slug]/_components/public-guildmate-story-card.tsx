@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { CalendarDays, Crown, Trophy, Users } from "lucide-react";
 import { Else, If, Then } from "react-if";
@@ -22,6 +24,9 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/app/_components/ui/item";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 import {
   getGuildmateHref,
   getInitials,
@@ -40,6 +45,8 @@ export default function PublicGuildmateStoryCard({
   story,
   priority = false,
 }: TPublicGuildmateStoryCardProps) {
+  const { t } = useT(GUILDMATES_MESSAGES);
+  const { locale } = useLocale();
   // Plain text from rich text HTML; "" when empty or only images
   const descriptionText = getRichTextPlainText(story.description);
   // max_members is the number of reward slots, not a join cap: anyone can
@@ -95,7 +102,7 @@ export default function PublicGuildmateStoryCard({
           <If condition={!!descriptionText}>
             <Then>{descriptionText}</Then>
             <Else>
-              <span className="italic">The tale is yet to be written…</span>
+              <span className="italic">{t("story.taleYetWritten")}</span>
             </Else>
           </If>
         </CardDescription>
@@ -106,12 +113,14 @@ export default function PublicGuildmateStoryCard({
           <span className="flex items-center gap-1.5 [&>svg]:size-3.5">
             <CalendarDays />
             {story.start_at
-              ? dayjs(story.start_at).format(PUBLIC_GUILDMATE_STORY_CARD_DATE_FORMAT)
-              : "Date to be proclaimed"}
+              ? dayjs(story.start_at)
+                  .locale(locale)
+                  .format(PUBLIC_GUILDMATE_STORY_CARD_DATE_FORMAT)
+              : t("story.dateTba")}
           </span>
           <span className="flex items-center gap-1.5 font-medium text-foreground [&>svg]:size-3.5">
             <Users />
-            {story.joined_members} joined
+            {t("story.joined", { count: story.joined_members })}
           </span>
         </div>
 
@@ -120,8 +129,8 @@ export default function PublicGuildmateStoryCard({
         <span className="flex items-center gap-1.5 text-xs text-foreground/80 [&>svg]:size-3.5 [&>svg]:text-primary">
           <Trophy />
           {rewardSlots
-            ? `Only ${rewardSlots} ${rewardSlots === 1 ? "hero" : "heroes"} can play, others join as viewers`
-            : "No player limit set"}
+            ? t("story.rewardSlots", { count: rewardSlots })
+            : t("story.noPlayerLimit")}
         </span>
 
         <If condition={!!creator}>
@@ -150,7 +159,7 @@ export default function PublicGuildmateStoryCard({
               <ItemContent className="min-w-0 gap-0">
                 <ItemDescription className="flex items-center gap-1 text-xs font-medium tracking-widest text-primary uppercase [&>svg]:size-3">
                   <Crown />
-                  Dungeon Master
+                  {t("story.dungeonMaster")}
                 </ItemDescription>
                 <ItemTitle className="block w-full truncate font-heading text-sm text-foreground">
                   <Link

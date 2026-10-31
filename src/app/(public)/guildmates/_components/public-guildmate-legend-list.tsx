@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { User } from "lucide-react";
 import { cn } from "cn";
@@ -12,6 +14,9 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/app/_components/ui/item";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 import PublicGuildmateAvatar from "./public-guildmate-avatar";
 import { PUBLIC_GUILDMATE_LEGEND_RANK_STYLE } from "@/app/(public)/guildmates/_constants/public-guildmate-legend-rank";
 import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
@@ -23,6 +28,8 @@ export default function PublicGuildmateLegendList({
   kind,
   entries,
 }: TPublicGuildmateLegendViewProps) {
+  const { t } = useT(GUILDMATES_MESSAGES);
+  const { locale } = useLocale();
   const isDm = kind === "dm";
 
   return (
@@ -63,10 +70,12 @@ export default function PublicGuildmateLegendList({
                 </ItemMedia>
                 <ItemContent className="min-w-0">
                   <ItemTitle className="font-heading text-foreground/70 italic">
-                    Unclaimed
+                    {t("legends.unclaimed")}
                   </ItemTitle>
                   <ItemDescription className="text-xs text-foreground/60">
-                    Awaiting a {isDm ? "master" : "hero"}
+                    {isDm
+                      ? t("legends.awaitingMaster")
+                      : t("legends.awaitingHero")}
                   </ItemDescription>
                 </ItemContent>
                 <ItemActions className="text-base text-foreground/50">
@@ -110,15 +119,24 @@ export default function PublicGuildmateLegendList({
                   </Link>
                 </ItemTitle>
                 <ItemDescription className="text-xs text-foreground/80">
-                  {formatExp(isDm ? user.dm_exp : user.player_exp)}{" "}
-                  {isDm ? "DM" : "Player"} EXP total
+                  {isDm
+                    ? t("legends.dmExpTotal", {
+                        count: formatExp(user.dm_exp, locale),
+                      })
+                    : t("legends.playerExpTotal", {
+                        count: formatExp(user.player_exp, locale),
+                      })}
                 </ItemDescription>
               </ItemContent>
               <ItemActions className="flex-col items-end gap-0">
                 <span className="font-heading text-base font-semibold text-primary">
-                  +{formatExp(gainedExp)} EXP
+                  {t("legends.gainedExp", {
+                    count: formatExp(gainedExp, locale),
+                  })}
                 </span>
-                <span className="text-xs text-foreground/80">so far</span>
+                <span className="text-xs text-foreground/80">
+                  {t("legends.soFar")}
+                </span>
               </ItemActions>
             </Item>
           </li>

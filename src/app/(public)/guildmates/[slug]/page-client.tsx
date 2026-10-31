@@ -16,8 +16,11 @@ import PublicGuildmateAdventurerCardSkeleton from "@/app/(public)/guildmates/[sl
 import PublicGuildmatePrintButton from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-print-button";
 import PublicGuildmateStoriesSection from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-stories-section";
 import { useGetPublicGuildmateByIdentifier } from "@/app/(public)/guildmates/[slug]/_hooks/use-get-public-guildmate-by-identifier";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 
 export default function PublicGuildmateDetailPageClient() {
+  const { t } = useT(GUILDMATES_MESSAGES);
   // Username URL; the API also accepts the id
   const { slug } = useParams();
   const identifier = decodeURIComponent(slug as string);
@@ -42,7 +45,7 @@ export default function PublicGuildmateDetailPageClient() {
         render={<Link href="/guildmates" />}
         nativeButton={false}
       >
-        <ArrowLeft /> Guild roll
+        <ArrowLeft /> {t("detail.backToRoll")}
       </Button>
 
       <If condition={guildmateQuery.isLoading}>
@@ -73,7 +76,7 @@ export default function PublicGuildmateDetailPageClient() {
                     <Then>
                       <section className="mx-auto flex w-full max-w-2xl flex-col gap-2 text-center print:hidden">
                         <h2 className="font-heading text-xl">
-                          The Adventurer&apos;s Tale
+                          {t("detail.adventurersTale")}
                         </h2>
                         <p className="whitespace-pre-line text-foreground/80">
                           {guildmate.bio}
@@ -88,8 +91,8 @@ export default function PublicGuildmateDetailPageClient() {
               <If condition={guildmateQuery.isError && !isNotFound}>
                 <Then>
                   <PublicGuildmateErrorState
-                    title="This adventurer could not be summoned"
-                    description="Something went wrong while loading this guildmate. Please try again."
+                    title={t("error.detailTitle")}
+                    description={t("error.detailDescription")}
                     onRetry={() => guildmateQuery.refetch()}
                   />
                 </Then>

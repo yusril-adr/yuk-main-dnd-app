@@ -1,10 +1,15 @@
+"use client";
+
 import { Crown, Sword } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 import { Badge } from "@/app/_components/ui/badge";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
 import dayjs from "@/libs/dayjs";
+import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 import PublicGuildmateAvatar from "@/app/(public)/guildmates/_components/public-guildmate-avatar";
 import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
 import PublicGuildmateStatRow from "./public-guildmate-stat-row";
@@ -20,8 +25,11 @@ import type { TPublicGuildmateAdventurerCardProps } from "@/app/(public)/guildma
 export default function PublicGuildmateAdventurerCard({
   guildmate,
 }: TPublicGuildmateAdventurerCardProps) {
+  const { t } = useT(GUILDMATES_MESSAGES);
+  const { locale } = useLocale();
   const username = guildmate.username?.trim();
   const totalExp = (guildmate.dm_exp ?? 0) + (guildmate.player_exp ?? 0);
+  const cardNumber = getCardNumber(guildmate.id);
 
   return (
     <Card
@@ -30,9 +38,9 @@ export default function PublicGuildmateAdventurerCard({
     >
       <CardContent className="flex h-full flex-col justify-between rounded-sm border border-primary/30 px-[4cqw] py-[3.5cqw]">
         <div className="flex items-center justify-between text-[3.4cqw] font-semibold tracking-[0.15em] text-primary uppercase">
-          <span>Adventurer&apos;s Guild</span>
+          <span>{t("detail.adventurersGuild")}</span>
           <span className="tabular-nums">
-            No. {getCardNumber(guildmate.id)}
+            {t("detail.cardNumber", { number: cardNumber })}
           </span>
         </div>
 
@@ -72,7 +80,7 @@ export default function PublicGuildmateAdventurerCard({
             </Then>
             <Else>
               <span className="text-[3.6cqw] text-foreground/75 italic">
-                Wandering adventurer
+                {t("detail.wanderingAdventurer")}
               </span>
             </Else>
           </If>
@@ -83,34 +91,33 @@ export default function PublicGuildmateAdventurerCard({
         <div className="flex flex-col gap-[4cqw]">
           <PublicGuildmateStatRow
             icon={Crown}
-            label="DM"
+            label={t("detail.dm")}
             exp={guildmate.dm_exp}
             share={getExpShare(guildmate.dm_exp, totalExp)}
           />
           <PublicGuildmateStatRow
             icon={Sword}
-            label="Hero"
+            label={t("detail.hero")}
             exp={guildmate.player_exp}
             share={getExpShare(guildmate.player_exp, totalExp)}
           />
         </div>
 
         <div className="flex items-center justify-center gap-[2cqw] text-[3.8cqw]">
-          <span className="text-foreground/80">Total EXP</span>
+          <span className="text-foreground/80">{t("detail.totalExp")}</span>
           <span className="font-heading text-[5cqw] leading-none text-primary tabular-nums">
-            {formatExp(totalExp)}
+            {formatExp(totalExp, locale)}
           </span>
         </div>
 
         <Separator className="bg-primary/30" />
 
         <p className="-mt-[2cqw] text-center text-[3.8cqw] text-foreground">
-          Guild member since{" "}
-          <span className="font-semibold text-foreground">
-            {dayjs(guildmate.created_at).format(
-              PUBLIC_GUILDMATE_MEMBER_SINCE_FORMAT,
-            )}
-          </span>
+          {t("detail.memberSince", {
+            date: dayjs(guildmate.created_at)
+              .locale(locale)
+              .format(PUBLIC_GUILDMATE_MEMBER_SINCE_FORMAT),
+          })}
         </p>
       </CardContent>
     </Card>

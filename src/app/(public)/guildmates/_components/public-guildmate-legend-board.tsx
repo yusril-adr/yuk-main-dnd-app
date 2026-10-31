@@ -1,3 +1,5 @@
+"use client";
+
 import { Feather } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
@@ -13,11 +15,12 @@ import {
   EmptyHeader,
   EmptyMedia,
 } from "@/app/_components/ui/empty";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 import PublicGuildmateLegendList from "./public-guildmate-legend-list";
 import PublicGuildmateLegendPodium from "./public-guildmate-legend-podium";
 import PublicGuildmateLegendSkeleton from "./public-guildmate-legend-skeleton";
 import PublicGuildmateErrorState from "./public-guildmate-error-state";
-import { getPublicGuildmateLegendEmptyText } from "@/app/(public)/guildmates/_constants/public-guildmate-legend-rank";
 import type { TPublicGuildmateLegendBoardProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 export default function PublicGuildmateLegendBoard({
@@ -30,6 +33,8 @@ export default function PublicGuildmateLegendBoard({
   isError,
   onRetry,
 }: TPublicGuildmateLegendBoardProps) {
+  const { t } = useT(GUILDMATES_MESSAGES);
+
   return (
     // Scroll-like board: double thin frame, solid background
     <Card className="h-full rounded-md p-1.5 shadow-none">
@@ -50,8 +55,8 @@ export default function PublicGuildmateLegendBoard({
                 <Then>
                   <PublicGuildmateErrorState
                     compact
-                    title="The legends are lost to the mist"
-                    description="We could not read this board. Please try again."
+                    title={t("legends.errorTitle")}
+                    description={t("legends.errorDescription")}
                     onRetry={onRetry}
                   />
                 </Then>
@@ -64,7 +69,11 @@ export default function PublicGuildmateLegendBoard({
                             <Feather aria-hidden className="size-6" />
                           </EmptyMedia>
                           <EmptyDescription className="italic">
-                            {getPublicGuildmateLegendEmptyText(monthName)}
+                            {monthName
+                              ? t("legends.emptyWithMonth", {
+                                  month: monthName,
+                                })
+                              : t("legends.emptyFallback")}
                           </EmptyDescription>
                         </EmptyHeader>
                       </Empty>
