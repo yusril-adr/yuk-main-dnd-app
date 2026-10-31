@@ -17,7 +17,7 @@
     "utils": "cn",
     "ui": "@/app/_components/ui",
     "lib": "@/libs",
-    "hooks": "@/hooks"
+    "hooks": "@/app/_hooks"
   },
   "menuColor": "default",
   "menuAccent": "subtle",
