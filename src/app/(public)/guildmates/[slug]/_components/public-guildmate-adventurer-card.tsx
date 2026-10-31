@@ -9,7 +9,7 @@ import { Separator } from "@/app/_components/ui/separator";
 import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
 import dayjs from "@/libs/dayjs";
-import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
+import { GUILDMATE_DETAIL_MESSAGES } from "@/app/(public)/guildmates/[slug]/_messages";
 import PublicGuildmateAvatar from "@/app/(public)/guildmates/_components/public-guildmate-avatar";
 import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
 import PublicGuildmateStatRow from "./public-guildmate-stat-row";
@@ -25,7 +25,7 @@ import type { TPublicGuildmateAdventurerCardProps } from "@/app/(public)/guildma
 export default function PublicGuildmateAdventurerCard({
   guildmate,
 }: TPublicGuildmateAdventurerCardProps) {
-  const { t } = useT(GUILDMATES_MESSAGES);
+  const { t } = useT(GUILDMATE_DETAIL_MESSAGES);
   const { locale } = useLocale();
   const username = guildmate.username?.trim();
   const totalExp = (guildmate.dm_exp ?? 0) + (guildmate.player_exp ?? 0);

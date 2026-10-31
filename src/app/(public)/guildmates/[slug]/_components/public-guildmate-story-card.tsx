@@ -26,7 +26,7 @@ import {
 } from "@/app/_components/ui/item";
 import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
-import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
+import { GUILDMATE_DETAIL_MESSAGES } from "@/app/(public)/guildmates/[slug]/_messages";
 import {
   getGuildmateHref,
   getInitials,
@@ -45,7 +45,7 @@ export default function PublicGuildmateStoryCard({
   story,
   priority = false,
 }: TPublicGuildmateStoryCardProps) {
-  const { t } = useT(GUILDMATES_MESSAGES);
+  const { t } = useT(GUILDMATE_DETAIL_MESSAGES);
   const { locale } = useLocale();
   // Plain text from rich text HTML; "" when empty or only images
   const descriptionText = getRichTextPlainText(story.description);

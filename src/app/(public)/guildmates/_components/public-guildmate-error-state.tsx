@@ -14,7 +14,6 @@ import {
 } from "@/app/_components/ui/empty";
 import { useT } from "@/app/_hooks/use-t";
 import { COMMON_MESSAGES } from "@/messages/common";
-import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 import type { TPublicGuildmateErrorStateProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 export default function PublicGuildmateErrorState({
@@ -23,7 +22,6 @@ export default function PublicGuildmateErrorState({
   onRetry,
   compact = false,
 }: TPublicGuildmateErrorStateProps) {
-  const { t } = useT(GUILDMATES_MESSAGES);
   const { t: tCommon } = useT(COMMON_MESSAGES);
 
   return (
@@ -41,12 +39,8 @@ export default function PublicGuildmateErrorState({
         >
           <TriangleAlert />
         </EmptyMedia>
-        <EmptyTitle className="font-heading text-lg">
-          {title ?? t("error.rollTitle")}
-        </EmptyTitle>
-        <EmptyDescription>
-          {description ?? t("error.rollDescription")}
-        </EmptyDescription>
+        <EmptyTitle className="font-heading text-lg">{title}</EmptyTitle>
+        <EmptyDescription>{description}</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <Button variant="outline" onClick={onRetry}>

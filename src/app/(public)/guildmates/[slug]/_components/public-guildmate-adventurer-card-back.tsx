@@ -3,14 +3,14 @@
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
 import { useT } from "@/app/_hooks/use-t";
-import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
+import { GUILDMATE_DETAIL_MESSAGES } from "@/app/(public)/guildmates/[slug]/_messages";
 import type { TPublicGuildmateAdventurerCardBackProps } from "@/app/(public)/guildmates/[slug]/_types/public-guildmate-detail-components-props";
 
 // Print-only back face (hidden on screen); same frame as the front
 export default function PublicGuildmateAdventurerCardBack({
   cardNumber,
 }: TPublicGuildmateAdventurerCardBackProps) {
-  const { t } = useT(GUILDMATES_MESSAGES);
+  const { t } = useT(GUILDMATE_DETAIL_MESSAGES);
 
   return (
     <Card

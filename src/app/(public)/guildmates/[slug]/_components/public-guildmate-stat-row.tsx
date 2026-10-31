@@ -3,7 +3,7 @@
 import { Progress } from "@/app/_components/ui/progress";
 import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
-import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
+import { GUILDMATE_DETAIL_MESSAGES } from "@/app/(public)/guildmates/[slug]/_messages";
 import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
 import type { TPublicGuildmateStatRowProps } from "@/app/(public)/guildmates/[slug]/_types/public-guildmate-detail-components-props";
 
@@ -14,7 +14,7 @@ export default function PublicGuildmateStatRow({
   exp,
   share,
 }: TPublicGuildmateStatRowProps) {
-  const { t } = useT(GUILDMATES_MESSAGES);
+  const { t } = useT(GUILDMATE_DETAIL_MESSAGES);
   const { locale } = useLocale();
 
   return (
@@ -25,7 +25,7 @@ export default function PublicGuildmateStatRow({
           {label}
         </span>
         <span className="text-[4.2cqw] leading-none font-semibold text-foreground tabular-nums">
-          {t("card.exp", { count: formatExp(exp, locale) })}
+          {t("detail.exp", { count: formatExp(exp, locale) })}
         </span>
       </div>
       <Progress

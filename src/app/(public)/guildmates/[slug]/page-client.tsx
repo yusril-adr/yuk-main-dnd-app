@@ -17,10 +17,10 @@ import PublicGuildmatePrintButton from "@/app/(public)/guildmates/[slug]/_compon
 import PublicGuildmateStoriesSection from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-stories-section";
 import { useGetPublicGuildmateByIdentifier } from "@/app/(public)/guildmates/[slug]/_hooks/use-get-public-guildmate-by-identifier";
 import { useT } from "@/app/_hooks/use-t";
-import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
+import { GUILDMATE_DETAIL_MESSAGES } from "@/app/(public)/guildmates/[slug]/_messages";
 
 export default function PublicGuildmateDetailPageClient() {
-  const { t } = useT(GUILDMATES_MESSAGES);
+  const { t } = useT(GUILDMATE_DETAIL_MESSAGES);
   // Username URL; the API also accepts the id
   const { slug } = useParams();
   const identifier = decodeURIComponent(slug as string);

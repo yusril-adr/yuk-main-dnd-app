@@ -13,7 +13,7 @@ import {
 import { Spinner } from "@/app/_components/ui/spinner";
 import { Tabs, TabsList, TabsTrigger } from "@/app/_components/ui/tabs";
 import { useT } from "@/app/_hooks/use-t";
-import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
+import { GUILDMATE_DETAIL_MESSAGES } from "@/app/(public)/guildmates/[slug]/_messages";
 import PublicGuildmateStoryCard from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-story-card";
 import PublicGuildmateStoryCardSkeleton from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-story-card-skeleton";
 import PublicGuildmateErrorState from "@/app/(public)/guildmates/_components/public-guildmate-error-state";
@@ -27,7 +27,7 @@ type TStoryTab = "led" | "joined";
 export default function PublicGuildmateStoriesSection({
   identifier,
 }: TPublicGuildmateStoriesSectionProps) {
-  const { t } = useT(GUILDMATES_MESSAGES);
+  const { t } = useT(GUILDMATE_DETAIL_MESSAGES);
   const [tab, setTab] = useState<TStoryTab>("joined");
   const createdQuery = useGetPublicGuildmateCreatedStories(
     identifier,

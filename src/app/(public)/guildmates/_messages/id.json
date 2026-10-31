@@ -48,50 +48,13 @@
     "default": "Balai guild masih kosong. Kembali lagi nanti, adventurer.",
     "clearSearch": "Hapus pencarian"
   },
-  "error": {
-    "rollTitle": "Daftar guild nggak bisa diambil",
-    "rollDescription": "Ada yang salah saat memuat guildmates. Coba lagi ya.",
-    "detailTitle": "Petualang ini nggak bisa dipanggil",
-    "detailDescription": "Ada yang salah saat memuat guildmate ini. Coba lagi ya.",
-    "questLogTitle": "Quest log nggak bisa diambil",
-    "questLogDescription": "Ada yang salah saat memuat stories. Coba lagi ya."
-  },
   "card": {
     "dungeonMaster": "Dungeon Master",
     "player": "Player",
     "exp": "{{count}} EXP"
   },
-  "detail": {
-    "backToRoll": "Daftar guild",
-    "adventurersTale": "Kisah Petualang",
-    "adventurersGuild": "Guild Petualang",
-    "cardNumber": "No. {{number}}",
-    "wanderingAdventurer": "Petualang pengembara",
-    "dm": "DM",
-    "hero": "Hero",
-    "totalExp": "Total EXP",
-    "memberSince": "Anggota guild sejak {{date}}",
-    "expShareAria": "Bagian EXP {{label}} dari total",
-    "printCard": "Cetak kartu",
-    "motto": "Lempar berani, main adil, cerita yang bagus."
-  },
-  "questLog": {
-    "title": "Quest Log",
-    "storiesJoined": "Stories diikuti",
-    "storiesLed": "Stories dipimpin",
-    "emptyLed": "Belum ada story yang dipimpin. Kisah pertamanya menunggu.",
-    "emptyJoined": "Belum ada story yang diikuti. Jalan masih terbuka.",
-    "loadMore": "Muat lagi",
-    "loading": "Memuat…"
-  },
-  "story": {
-    "recruiting": "Rekrutmen",
-    "taleYetWritten": "Kisahnya belum ditulis…",
-    "dateTba": "Tanggal menyusul",
-    "joined": "{{count}} bergabung",
-    "rewardSlots_one": "Hanya {{count}} hero yang bisa main, lainnya ikut sebagai penonton",
-    "rewardSlots_other": "Hanya {{count}} heroes yang bisa main, lainnya ikut sebagai penonton",
-    "noPlayerLimit": "Tidak ada batas player",
-    "dungeonMaster": "Dungeon Master"
+  "error": {
+    "rollTitle": "Daftar guild nggak bisa diambil",
+    "rollDescription": "Ada yang salah saat memuat guildmates. Coba lagi ya."
   }
 }
