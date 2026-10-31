@@ -28,6 +28,7 @@ import {
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 import {
   getGuildmateHref,
   getInitials,
@@ -47,7 +48,7 @@ export default function HomeLegendBoard({
   isError,
   onRetry,
 }: THomeLegendBoardProps) {
-  const { t } = useT("home");
+  const { t } = useT(HOME_MESSAGES);
   const { locale } = useLocale();
   const numberLocale = locale === "id" ? "id-ID" : "en-US";
 

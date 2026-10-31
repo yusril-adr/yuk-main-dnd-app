@@ -12,11 +12,12 @@ import {
 } from "@/app/_components/ui/item";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 import CONFIG from "@/common/constants/config";
 
 export default function HomeFinalCta() {
   const { auth } = useAuthContext();
-  const { t } = useT("home");
+  const { t } = useT(HOME_MESSAGES);
 
   return (
     <section

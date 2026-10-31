@@ -14,6 +14,7 @@ import {
   type CarouselApi,
 } from "@/app/_components/ui/carousel";
 import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 
 import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
@@ -22,7 +23,7 @@ import HomeGuildPhotoDialog from "@/app/(public)/_components/home-guild-photo-di
 import { HOME_GUILD_PHOTOS } from "@/app/(public)/_constants/home-guild-photos";
 
 export default function HomeGuildCarousel() {
-  const { t } = useT("home");
+  const { t } = useT(HOME_MESSAGES);
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [openIndex, setOpenIndex] = useState<number | null>(null);

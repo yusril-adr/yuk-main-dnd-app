@@ -2,6 +2,7 @@
 
 import { Crown, Sword } from "lucide-react";
 import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 
 import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
@@ -13,7 +14,7 @@ import {
 import { useHomePreviousMonthRange } from "@/app/(public)/_hooks/use-home-previous-month-range";
 
 export default function HomeLegendsSection() {
-  const { t } = useT("home");
+  const { t } = useT(HOME_MESSAGES);
   // null on the server/first paint; boards show their skeleton until then
   const range = useHomePreviousMonthRange();
   const monthName = range?.monthName ?? null;

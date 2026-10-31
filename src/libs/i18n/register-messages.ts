@@ -1,16 +1,18 @@
 import type { i18n } from "i18next";
 
-import type { Locale } from "./locales";
+import { LOCALES, type Locale } from "./locales";
+import type { MessageCatalog } from "./message-catalog";
 
 /** Sync, idempotent. Safe to call during render before t(). */
 export function registerMessages(
   instance: i18n,
-  ns: string,
-  messages: Record<Locale, object>,
+  catalog: MessageCatalog,
 ): void {
-  for (const [lng, bundle] of Object.entries(messages) as [Locale, object][]) {
-    if (!instance.hasResourceBundle(lng, ns)) {
-      instance.addResourceBundle(lng, ns, bundle, true, true);
+  for (const lng of LOCALES) {
+    if (!instance.hasResourceBundle(lng, catalog.namespace)) {
+      instance.addResourceBundle(lng, catalog.namespace, catalog[lng], true, true);
     }
   }
 }
+
+export type { Locale };

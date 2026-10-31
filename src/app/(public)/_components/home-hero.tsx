@@ -14,6 +14,7 @@ import { Button } from "@/app/_components/ui/button";
 import { ItemDescription } from "@/app/_components/ui/item";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 
 import { HOME_GUILD_PHOTOS } from "@/app/(public)/_constants/home-guild-photos";
 
@@ -22,7 +23,7 @@ const HERO_PHOTO = HOME_GUILD_PHOTOS[1] ?? HOME_GUILD_PHOTOS[0];
 
 export default function HomeHero() {
   const { auth } = useAuthContext();
-  const { t } = useT("home");
+  const { t } = useT(HOME_MESSAGES);
 
   return (
     <section

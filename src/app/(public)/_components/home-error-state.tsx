@@ -11,6 +11,7 @@ import {
   EmptyMedia,
 } from "@/app/_components/ui/empty";
 import { useT } from "@/app/_hooks/use-t";
+import { COMMON_MESSAGES } from "@/messages/common";
 
 import type { THomeErrorStateProps } from "@/app/(public)/_types/home-components-props";
 
@@ -18,7 +19,7 @@ export default function HomeErrorState({
   text,
   onRetry,
 }: THomeErrorStateProps) {
-  const { t } = useT("common");
+  const { t } = useT(COMMON_MESSAGES);
 
   return (
     <Empty role="alert" className="border border-destructive/30 bg-card py-10">

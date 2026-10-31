@@ -13,6 +13,8 @@ import {
 } from "@/app/_components/ui/dialog";
 import { Item, ItemActions, ItemContent } from "@/app/_components/ui/item";
 import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
+import { COMMON_MESSAGES } from "@/messages/common";
 
 import HomeGuildPhotoPagination from "@/app/(public)/_components/home-guild-photo-pagination";
 
@@ -24,8 +26,8 @@ export default function HomeGuildPhotoDialog({
   openIndex,
   onOpenIndexChange,
 }: THomeGuildPhotoDialogProps) {
-  const { t } = useT("home");
-  const { t: tCommon } = useT("common");
+  const { t } = useT(HOME_MESSAGES);
+  const { t: tCommon } = useT(COMMON_MESSAGES);
   const photo = openIndex === null ? null : photos[openIndex];
   const viewable = photos
     .map((item, index) => (item.src ? index : -1))

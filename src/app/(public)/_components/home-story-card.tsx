@@ -23,6 +23,7 @@ import { Empty, EmptyMedia } from "@/app/_components/ui/empty";
 import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 import dayjs from "@/libs/dayjs";
 
 import { HOME_STORY_DATE_FORMAT } from "@/app/(public)/_constants/home";
@@ -31,7 +32,7 @@ import type { THomeStoryCardProps } from "@/app/(public)/_types/home-components-
 
 // The title link is stretched over the card so the whole card is clickable
 export default function HomeStoryCard({ story }: THomeStoryCardProps) {
-  const { t } = useT("home");
+  const { t } = useT(HOME_MESSAGES);
   const { locale } = useLocale();
 
   return (

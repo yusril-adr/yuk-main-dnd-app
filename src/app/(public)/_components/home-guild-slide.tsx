@@ -14,6 +14,7 @@ import {
   EmptyTitle,
 } from "@/app/_components/ui/empty";
 import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 
 import type { THomeGuildSlideProps } from "@/app/(public)/_types/home-components-props";
 
@@ -21,7 +22,7 @@ export default function HomeGuildSlide({
   photo,
   onOpen,
 }: THomeGuildSlideProps) {
-  const { t } = useT("home");
+  const { t } = useT(HOME_MESSAGES);
   const alt = t(`guild.photos.${photo.id}.alt`);
   const caption = t(`guild.photos.${photo.id}.caption`);
 

@@ -10,6 +10,7 @@ import {
   PaginationItem,
 } from "@/app/_components/ui/pagination";
 import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 import { generatePages } from "@/utils/table-helper";
 
 import type { THomeGuildPhotoPaginationProps } from "@/app/(public)/_types/home-components-props";
@@ -21,7 +22,7 @@ export default function HomeGuildPhotoPagination({
   pageCount,
   onPageChange,
 }: THomeGuildPhotoPaginationProps) {
-  const { t } = useT("home");
+  const { t } = useT(HOME_MESSAGES);
   const pages = useMemo(
     () => generatePages({ currentPage: page, totalPages: pageCount }),
     [page, pageCount],

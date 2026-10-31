@@ -11,6 +11,7 @@ import {
 } from "@/app/_components/ui/dropdown-menu";
 import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
+import { COMMON_MESSAGES } from "@/messages/common";
 import type { Locale } from "@/libs/i18n/locales";
 
 const LOCALE_LABEL: Record<Locale, string> = {
@@ -20,7 +21,7 @@ const LOCALE_LABEL: Record<Locale, string> = {
 
 export function LanguageSwitcher() {
   const { locale, setLocale, locales } = useLocale();
-  const { t } = useT("common");
+  const { t } = useT(COMMON_MESSAGES);
 
   return (
     <DropdownMenu>

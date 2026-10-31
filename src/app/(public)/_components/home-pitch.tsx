@@ -13,6 +13,7 @@ import {
 import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
 import { Badge } from "@/app/_components/ui/badge";
 import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 
 import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
@@ -28,7 +29,7 @@ const ICONS: Record<THomePitchKey, LucideIcon> = {
 };
 
 export default function HomePitch() {
-  const { t } = useT("home");
+  const { t } = useT(HOME_MESSAGES);
 
   return (
     <HomeBand labelledBy="what-is-this">

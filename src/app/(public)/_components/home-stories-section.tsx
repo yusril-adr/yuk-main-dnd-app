@@ -2,6 +2,7 @@
 
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 
 import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
@@ -15,7 +16,7 @@ import { HOME_STORY_LIMIT } from "@/app/(public)/_constants/home";
 const GRID = "grid grid-cols-1 gap-6 md:grid-cols-3";
 
 export default function HomeStoriesSection() {
-  const { t } = useT("home");
+  const { t } = useT(HOME_MESSAGES);
   const query = useGetHomeStories({
     page: 1,
     per_page: HOME_STORY_LIMIT,
