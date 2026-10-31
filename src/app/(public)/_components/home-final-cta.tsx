@@ -11,10 +11,13 @@ import {
   ItemDescription,
 } from "@/app/_components/ui/item";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 import CONFIG from "@/common/constants/config";
 
 export default function HomeFinalCta() {
   const { auth } = useAuthContext();
+  const { t } = useT(HOME_MESSAGES);
 
   return (
     <section
@@ -26,10 +29,10 @@ export default function HomeFinalCta() {
           <ItemContent className="gap-2">
             {/* `final-cta` is also the hook PublicFooter uses to turn red on home; keep the id in sync */}
             <h2 id="final-cta" className="font-heading text-3xl sm:text-4xl">
-              Ready for your first story?
+              {t("cta.title")}
             </h2>
             <ItemDescription className="line-clamp-none text-base text-primary-foreground/80 sm:text-lg">
-              The tavern is warm and a seat is waiting for you.
+              {t("cta.description")}
             </ItemDescription>
           </ItemContent>
           <ItemActions className="w-full flex-col sm:w-auto sm:flex-row">
@@ -41,7 +44,7 @@ export default function HomeFinalCta() {
               nativeButton={false}
             >
               {auth ? <LayoutDashboard /> : <UserPlus />}
-              {auth ? "Find a story" : "Join the guild"}
+              {auth ? t("cta.findStory") : t("cta.joinGuild")}
             </Button>
             <Button
               size="lg"
@@ -56,9 +59,9 @@ export default function HomeFinalCta() {
               }
               nativeButton={false}
             >
-              New here? Read the manual
+              {t("cta.readManual")}
               <ExternalLink aria-hidden />
-              <span className="sr-only">(opens in a new tab)</span>
+              <span className="sr-only">{t("cta.opensNewTab")}</span>
             </Button>
           </ItemActions>
         </Item>

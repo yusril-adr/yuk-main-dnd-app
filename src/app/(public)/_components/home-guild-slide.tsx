@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Camera } from "lucide-react";
 
@@ -11,6 +13,8 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/app/_components/ui/empty";
+import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 
 import type { THomeGuildSlideProps } from "@/app/(public)/_types/home-components-props";
 
@@ -18,6 +22,10 @@ export default function HomeGuildSlide({
   photo,
   onOpen,
 }: THomeGuildSlideProps) {
+  const { t } = useT(HOME_MESSAGES);
+  const alt = t(`guild.photos.${photo.id}.alt`);
+  const caption = t(`guild.photos.${photo.id}.caption`);
+
   return (
     <Card className="gap-0 border border-primary/40 bg-card p-1 ring-0 sm:p-1.5">
       <CardContent className="overflow-hidden rounded-[calc(var(--radius-xl)-5px)] border border-primary/20 p-0 sm:rounded-[calc(var(--radius-xl)-7px)]">
@@ -26,12 +34,12 @@ export default function HomeGuildSlide({
             <Button
               variant="ghost"
               onClick={onOpen}
-              aria-label={`Enlarge photo: ${photo.caption ?? photo.alt}`}
+              aria-label={t("guild.enlargePhoto", { caption })}
               className="absolute inset-0 size-full cursor-zoom-in rounded-none border-0 p-0 hover:bg-transparent focus-visible:ring-inset"
             >
               <Image
                 src={photo.src}
-                alt={photo.alt}
+                alt={alt}
                 fill
                 loading="lazy"
                 sizes="(min-width: 1024px) 1024px, 100vw"
@@ -42,7 +50,7 @@ export default function HomeGuildSlide({
           ) : (
             <Empty
               role="img"
-              aria-label={photo.alt}
+              aria-label={alt}
               className="absolute inset-0 rounded-none bg-muted px-12"
             >
               <EmptyHeader>
@@ -50,13 +58,9 @@ export default function HomeGuildSlide({
                   <Camera />
                 </EmptyMedia>
                 <EmptyTitle className="text-sm sm:text-base">
-                  Guild photo coming soon
+                  {t("guild.comingSoon")}
                 </EmptyTitle>
-                {photo.caption && (
-                  <EmptyDescription className="italic">
-                    {photo.caption}
-                  </EmptyDescription>
-                )}
+                <EmptyDescription className="italic">{caption}</EmptyDescription>
               </EmptyHeader>
             </Empty>
           )}

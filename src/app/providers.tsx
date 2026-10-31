@@ -9,24 +9,34 @@ import { SidebarProvider } from "@/app/_components/ui/sidebar";
 import { Toaster } from "@/app/_components/ui/sonner";
 import { globalQueryClient } from "@/libs/react-query/global-query-client";
 import { AuthProvider } from "@/app/_components/auth-provider";
+import { I18nProvider } from "@/app/_components/i18n-provider";
+import type { TLocale } from "@/libs/i18n/types/locale";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({
+  children,
+  initialLocale,
+}: {
+  children: React.ReactNode;
+  initialLocale: TLocale;
+}) {
   return (
     <QueryClientProvider client={globalQueryClient}>
       <NuqsAdapter>
-        <AuthProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme={ThemeEnum.LIGHT}
-            enableSystem
-            disableTransitionOnChange
-          >
-            <SidebarProvider>
-              {children}
-              <Toaster />
-            </SidebarProvider>
-          </ThemeProvider>
-        </AuthProvider>
+        <I18nProvider initialLocale={initialLocale}>
+          <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme={ThemeEnum.LIGHT}
+              enableSystem
+              disableTransitionOnChange
+            >
+              <SidebarProvider>
+                {children}
+                <Toaster />
+              </SidebarProvider>
+            </ThemeProvider>
+          </AuthProvider>
+        </I18nProvider>
       </NuqsAdapter>
     </QueryClientProvider>
   );

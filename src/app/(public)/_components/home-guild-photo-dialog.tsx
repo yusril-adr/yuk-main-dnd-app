@@ -12,6 +12,9 @@ import {
   DialogTitle,
 } from "@/app/_components/ui/dialog";
 import { Item, ItemActions, ItemContent } from "@/app/_components/ui/item";
+import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
+import { COMMON_MESSAGES } from "@/messages/common";
 
 import HomeGuildPhotoPagination from "@/app/(public)/_components/home-guild-photo-pagination";
 
@@ -23,11 +26,17 @@ export default function HomeGuildPhotoDialog({
   openIndex,
   onOpenIndexChange,
 }: THomeGuildPhotoDialogProps) {
+  const { t } = useT(HOME_MESSAGES);
+  const { t: tCommon } = useT(COMMON_MESSAGES);
   const photo = openIndex === null ? null : photos[openIndex];
   const viewable = photos
     .map((item, index) => (item.src ? index : -1))
     .filter((index) => index >= 0);
   const position = openIndex === null ? -1 : viewable.indexOf(openIndex);
+  const alt = photo ? t(`guild.photos.${photo.id}.alt`) : "";
+  const caption = photo
+    ? t(`guild.photos.${photo.id}.caption`)
+    : t("guild.photoFallback");
 
   const step = (delta: number) => {
     if (position < 0) return;
@@ -52,12 +61,10 @@ export default function HomeGuildPhotoDialog({
       >
         {photo?.src && (
           <>
-            <DialogTitle className="sr-only">
-              {photo.caption ?? "Guild photo"}
-            </DialogTitle>
+            <DialogTitle className="sr-only">{caption}</DialogTitle>
             <Image
               src={photo.src}
-              alt={photo.alt}
+              alt={alt}
               width={1600}
               height={1200}
               sizes="(min-width: 1024px) 1024px, 94vw"
@@ -69,7 +76,7 @@ export default function HomeGuildPhotoDialog({
                 <Button
                   variant="ghost"
                   size="icon-sm"
-                  aria-label="Close"
+                  aria-label={tCommon("actions.close")}
                   className="absolute top-3 right-3 rounded-full bg-black/45 text-white hover:bg-black/65 hover:text-white sm:top-4 sm:right-4"
                 />
               }
@@ -82,7 +89,7 @@ export default function HomeGuildPhotoDialog({
             >
               <ItemContent className="min-w-0">
                 <DialogDescription className="text-center sm:truncate sm:text-start">
-                  {photo.caption ?? photo.alt}
+                  {caption}
                 </DialogDescription>
               </ItemContent>
               {viewable.length > 1 && (

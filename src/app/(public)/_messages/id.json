@@ -1,0 +1,88 @@
+{
+  "hero": {
+    "badge": "Guild tabletop RPG",
+    "title": "Kumpulkan party-mu. Legendamu dimulai di sini.",
+    "description": "Cari meja, ikuti Dungeon Master-mu, dan tulis namamu di chronicle YukMainDnD.",
+    "joinGuild": "Gabung guild",
+    "openBoard": "Buka Board-ku",
+    "seeStories": "Lihat stories"
+  },
+  "pitch": {
+    "title": "Apa itu YukMainDnD?",
+    "description": "Guild untuk Dungeons & Dragons dan tabletop RPG lainnya. Ikut stories, kenalan sama guildmates, dan lacak petualanganmu di satu tempat.",
+    "step": "Langkah {{n}}",
+    "friends": {
+      "title": "Main bareng temen",
+      "description": "Pilih story yang masih open, ambil kursi, lalu lempar dadu bareng party petualang lain — online atau di meja."
+    },
+    "rewards": {
+      "title": "Dapat EXP & rewards",
+      "description": "Setiap story yang selesai kasih experience dan gold pieces. Naik level dan kejar legends bulanan."
+    },
+    "dm": {
+      "title": "Jadi DM",
+      "description": "Siap bikin cerita sendiri? Jalankan stories buat guild dan dapatkan experience Dungeon Master."
+    }
+  },
+  "stories": {
+    "title": "Stories yang open",
+    "description": "Meja yang masih nyari petualang. Ambil tempatmu sebelum party berangkat.",
+    "seeAll": "Lihat semua stories",
+    "error": "Papan quest-nya nggak kebaca.",
+    "empty": "Belum ada story di papan sekarang. Cek lagi nanti ya.",
+    "unknownDm": "DM tidak diketahui",
+    "dateTba": "Tanggal menyusul",
+    "anySystem": "Sistem apa saja",
+    "member_one": "{{count}} member",
+    "member_other": "{{count}} members"
+  },
+  "legends": {
+    "titleWithMonth": "Legends {{month}}",
+    "titleFallback": "Legends bulan lalu",
+    "description": "Petualang dan Dungeon Master yang dapat EXP terbanyak di {{month}}.",
+    "descriptionFallback": "Petualang dan Dungeon Master yang dapat EXP terbanyak di bulan sebelumnya.",
+    "seeAll": "Lihat semua guildmates",
+    "heroes": "Heroes",
+    "dungeonMasters": "Dungeon Masters",
+    "error": "Legends-nya hilang di kabut.",
+    "empty": "Belum ada legends di {{month}}. Tavern masih nunggu.",
+    "emptyFallback": "Belum ada legends di bulan sebelumnya. Tavern masih nunggu.",
+    "inMonth": "di {{month}}",
+    "gainedExp": "+{{count}} EXP"
+  },
+  "guild": {
+    "title": "Kehidupan di guild",
+    "description": "Lingkaran temen yang suka lempar dadu, cerita, dan nyasar bareng di dungeon. Wajah baru selalu diterima di dekat perapian.",
+    "photosLabel": "Foto guild",
+    "showPhoto": "Tampilkan foto {{n}}",
+    "photoOf": "{{n}} dari {{total}}",
+    "previousPhoto": "Foto sebelumnya",
+    "nextPhoto": "Foto berikutnya",
+    "photoFallback": "Foto guild",
+    "photos": {
+      "sessionNight": {
+        "alt": "Anggota guild Yuk Main DnD tersenyum bersama di malam sesi",
+        "caption": "Salah satu malam sesi yang seru"
+      },
+      "heroesAtTable": {
+        "alt": "Anggota guild Yuk Main DnD berkostum di sekitar meja, satu orang mengangkat pedang mainan",
+        "caption": "Heroes di meja"
+      },
+      "afterSession": {
+        "alt": "Anggota guild Yuk Main DnD tersenyum di sekitar meja setelah meetup",
+        "caption": "Senyum setelah sesi"
+      }
+    },
+    "comingSoon": "Foto guild segera hadir",
+    "enlargePhoto": "Perbesar foto: {{caption}}",
+    "photoNumber": "Foto {{n}}"
+  },
+  "cta": {
+    "title": "Siap buat story pertamamu?",
+    "description": "Tavern-nya hangat, dan ada kursi nungguin kamu.",
+    "joinGuild": "Gabung guild",
+    "findStory": "Cari story",
+    "readManual": "Baru di sini? Baca manual-nya",
+    "opensNewTab": "(buka di tab baru)"
+  }
+}

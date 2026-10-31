@@ -48,10 +48,14 @@ export type THomeErrorStateProps = {
   onRetry: () => void;
 };
 
+export type THomeGuildPhotoId =
+  | "sessionNight"
+  | "heroesAtTable"
+  | "afterSession";
+
 export type THomeGuildPhoto = {
+  id: THomeGuildPhotoId;
   src?: string;
-  alt: string;
-  caption?: string;
   // CSS object-position to keep faces in frame when cropped to 16:9
   objectPosition?: string;
 };

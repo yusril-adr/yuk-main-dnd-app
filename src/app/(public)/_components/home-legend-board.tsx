@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 import { cn } from "cn";
@@ -24,6 +26,9 @@ import {
   ItemTitle,
 } from "@/app/_components/ui/item";
 import { Skeleton } from "@/app/_components/ui/skeleton";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 import {
   getGuildmateHref,
   getInitials,
@@ -43,6 +48,10 @@ export default function HomeLegendBoard({
   isError,
   onRetry,
 }: THomeLegendBoardProps) {
+  const { t } = useT(HOME_MESSAGES);
+  const { locale } = useLocale();
+  const numberLocale = locale === "id" ? "id-ID" : "en-US";
+
   let content: React.ReactNode;
   if (isLoading) {
     content = (
@@ -60,15 +69,16 @@ export default function HomeLegendBoard({
     );
   } else if (isError) {
     content = (
-      <HomeErrorState
-        text="The legends are lost to the mist."
-        onRetry={onRetry}
-      />
+      <HomeErrorState text={t("legends.error")} onRetry={onRetry} />
     );
   } else if (entries.length === 0) {
     content = (
       <HomeEmptyState
-        text={`No legends in ${monthName ?? "the previous month"}. The tavern awaits.`}
+        text={
+          monthName
+            ? t("legends.empty", { month: monthName })
+            : t("legends.emptyFallback")
+        }
       />
     );
   } else {
@@ -116,11 +126,15 @@ export default function HomeLegendBoard({
             </ItemContent>
             <ItemActions className="flex-col items-end gap-0 text-right">
               <span className="font-heading text-primary tabular-nums">
-                +{gainedExp.toLocaleString("en-US")} EXP
+                {t("legends.gainedExp", {
+                  count: gainedExp.toLocaleString(numberLocale),
+                })}
               </span>
-              <span className="text-xs text-muted-foreground">
-                in {monthName}
-              </span>
+              {monthName ? (
+                <span className="text-xs text-muted-foreground">
+                  {t("legends.inMonth", { month: monthName })}
+                </span>
+              ) : null}
             </ItemActions>
           </Item>
         ))}
