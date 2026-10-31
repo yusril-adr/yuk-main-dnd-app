@@ -1,3 +1,5 @@
+"use client";
+
 import { Crown, Sparkles, Users, type LucideIcon } from "lucide-react";
 
 import {
@@ -10,31 +12,37 @@ import {
 } from "@/app/_components/ui/item";
 import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
 import { Badge } from "@/app/_components/ui/badge";
+import { useT } from "@/app/_hooks/use-t";
 
 import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
-import { HOME_PITCH_POINTS } from "@/app/(public)/_constants/home";
+import {
+  HOME_PITCH_KEYS,
+  type THomePitchKey,
+} from "@/app/(public)/_constants/home";
 
-const ICONS: Record<(typeof HOME_PITCH_POINTS)[number]["key"], LucideIcon> = {
+const ICONS: Record<THomePitchKey, LucideIcon> = {
   friends: Users,
   rewards: Sparkles,
   dm: Crown,
 };
 
 export default function HomePitch() {
+  const { t } = useT("home");
+
   return (
     <HomeBand labelledBy="what-is-this">
       <HomeSectionHeader
         id="what-is-this"
-        title="What is YukMainDnD?"
-        description="A guild for Dungeons & Dragons and other tabletop RPGs. Join stories, meet guildmates and track your adventures in one place."
+        title={t("pitch.title")}
+        description={t("pitch.description")}
       />
       <ItemGroup className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-6 lg:gap-10">
-        {HOME_PITCH_POINTS.map((point, index) => {
-          const Icon = ICONS[point.key];
+        {HOME_PITCH_KEYS.map((key, index) => {
+          const Icon = ICONS[key];
           return (
             <Item
-              key={point.key}
+              key={key}
               role="listitem"
               className="flex-col flex-nowrap items-center gap-4 p-0 text-center lg:items-start lg:text-left"
             >
@@ -49,7 +57,7 @@ export default function HomePitch() {
                   </AvatarFallback>
                 </Avatar>
                 <Badge variant="secondary" className="shrink-0">
-                  Step {index + 1}
+                  {t("pitch.step", { n: index + 1 })}
                 </Badge>
               </ItemHeader>
               <ItemContent className="w-full items-center gap-2 lg:items-start">
@@ -58,10 +66,10 @@ export default function HomePitch() {
                   aria-level={3}
                   className="line-clamp-none font-heading text-2xl font-normal"
                 >
-                  {point.title}
+                  {t(`pitch.${key}.title`)}
                 </ItemTitle>
                 <ItemDescription className="line-clamp-none text-base">
-                  {point.description}
+                  {t(`pitch.${key}.description`)}
                 </ItemDescription>
               </ItemContent>
             </Item>

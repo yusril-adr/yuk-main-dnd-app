@@ -15,6 +15,7 @@ const CONFIG = {
 
   COOKIE: {
     ACCESS_TOKEN_KEY: "access_token",
+    LOCALE_KEY: "locale",
   },
 
   REACT_QUERY_STALE_IN_MS:

@@ -1,0 +1,11 @@
+{
+  "language": {
+    "en": "English",
+    "id": "Indonesia",
+    "switcherLabel": "Language"
+  },
+  "actions": {
+    "tryAgain": "Try again",
+    "close": "Close"
+  }
+}

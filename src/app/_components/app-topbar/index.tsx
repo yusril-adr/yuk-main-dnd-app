@@ -21,6 +21,8 @@ import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { AvatarDropdown } from "./avatar-dropdown";
 import { DashboardButton } from "./dashboard-button";
 import { GuestActions } from "./guest-actions";
+import { LanguageSwitcher } from "@/app/_components/language-switcher";
+
 import { TopBarNav } from "./top-bar-nav";
 
 export function AppTopBar() {
@@ -42,6 +44,7 @@ export function AppTopBar() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-2">
+          <LanguageSwitcher />
           {showLoading && <Skeleton className="h-9 w-24 rounded-md" />}
           {!showLoading &&
             (auth ? (
@@ -77,6 +80,9 @@ export function AppTopBar() {
             </nav>
 
             <SheetFooter>
+              <div className="flex justify-end">
+                <LanguageSwitcher />
+              </div>
               {showLoading && <Skeleton className="h-9 w-full rounded-md" />}
               {!showLoading &&
                 (auth ? (

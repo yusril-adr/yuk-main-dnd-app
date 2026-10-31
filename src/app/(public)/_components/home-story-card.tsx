@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { CalendarDays, Crown, ScrollText, Users } from "lucide-react";
 
@@ -19,6 +21,8 @@ import {
 } from "@/app/_components/ui/card";
 import { Empty, EmptyMedia } from "@/app/_components/ui/empty";
 import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
 import dayjs from "@/libs/dayjs";
 
 import { HOME_STORY_DATE_FORMAT } from "@/app/(public)/_constants/home";
@@ -27,6 +31,9 @@ import type { THomeStoryCardProps } from "@/app/(public)/_types/home-components-
 
 // The title link is stretched over the card so the whole card is clickable
 export default function HomeStoryCard({ story }: THomeStoryCardProps) {
+  const { t } = useT("home");
+  const { locale } = useLocale();
+
   return (
     <Card className="group relative h-full gap-3 pt-0 transition-colors hover:ring-primary/50 has-focus-visible:ring-2 has-focus-visible:ring-ring">
       <AspectRatio ratio={16 / 10} className="overflow-hidden border-b">
@@ -72,7 +79,7 @@ export default function HomeStoryCard({ story }: THomeStoryCardProps) {
             </ItemMedia>
             <ItemContent className="min-w-0">
               <ItemDescription className="truncate">
-                {story.created_by?.display_name ?? "Unknown DM"}
+                {story.created_by?.display_name ?? t("stories.unknownDm")}
               </ItemDescription>
             </ItemContent>
           </Item>
@@ -83,8 +90,10 @@ export default function HomeStoryCard({ story }: THomeStoryCardProps) {
             <ItemContent>
               <ItemDescription>
                 {story.start_at
-                  ? dayjs(story.start_at).format(HOME_STORY_DATE_FORMAT)
-                  : "Date to be announced"}
+                  ? dayjs(story.start_at)
+                      .locale(locale)
+                      .format(HOME_STORY_DATE_FORMAT)
+                  : t("stories.dateTba")}
               </ItemDescription>
             </ItemContent>
           </Item>
@@ -92,12 +101,11 @@ export default function HomeStoryCard({ story }: THomeStoryCardProps) {
       </CardContent>
       <CardFooter className="mt-auto justify-between gap-2 border-t">
         <Badge variant="outline" className="max-w-[60%] truncate">
-          {story.game_system || "Any system"}
+          {story.game_system || t("stories.anySystem")}
         </Badge>
         <Badge variant="secondary" className="shrink-0 gap-1.5">
           <Users aria-hidden className="size-3.5" />
-          {story.joined_members}{" "}
-          {story.joined_members === 1 ? "member" : "members"}
+          {t("stories.member", { count: story.joined_members })}
         </Badge>
       </CardFooter>
     </Card>

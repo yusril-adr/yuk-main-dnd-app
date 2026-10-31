@@ -1,6 +1,7 @@
 "use client";
 
 import { Crown, Sword } from "lucide-react";
+import { useT } from "@/app/_hooks/use-t";
 
 import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
@@ -12,6 +13,7 @@ import {
 import { useHomePreviousMonthRange } from "@/app/(public)/_hooks/use-home-previous-month-range";
 
 export default function HomeLegendsSection() {
+  const { t } = useT("home");
   // null on the server/first paint; boards show their skeleton until then
   const range = useHomePreviousMonthRange();
   const monthName = range?.monthName ?? null;
@@ -29,18 +31,25 @@ export default function HomeLegendsSection() {
     gainedExp: user.gained_dm_exp,
   }));
 
+  const title = monthName
+    ? t("legends.titleWithMonth", { month: monthName })
+    : t("legends.titleFallback");
+  const description = monthName
+    ? t("legends.description", { month: range?.monthLabel })
+    : t("legends.descriptionFallback");
+
   return (
     <HomeBand labelledBy="legends">
       <HomeSectionHeader
         id="legends"
-        title={monthName ? `Legends of ${monthName}` : "Last month's legends"}
-        description={`The adventurers and Dungeon Masters who gained the most EXP in ${range?.monthLabel ?? "the previous month"}.`}
+        title={title}
+        description={description}
         linkHref="/guildmates"
-        linkLabel="See all guildmates"
+        linkLabel={t("legends.seeAll")}
       />
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <HomeLegendBoard
-          title="Heroes"
+          title={t("legends.heroes")}
           icon={Sword}
           monthName={monthName}
           entries={players}
@@ -49,7 +58,7 @@ export default function HomeLegendsSection() {
           onRetry={() => playersQuery.refetch()}
         />
         <HomeLegendBoard
-          title="Dungeon Masters"
+          title={t("legends.dungeonMasters")}
           icon={Crown}
           monthName={monthName}
           entries={dms}

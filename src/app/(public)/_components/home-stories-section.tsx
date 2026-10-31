@@ -1,6 +1,7 @@
 "use client";
 
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
+import { useT } from "@/app/_hooks/use-t";
 
 import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
@@ -14,6 +15,7 @@ import { HOME_STORY_LIMIT } from "@/app/(public)/_constants/home";
 const GRID = "grid grid-cols-1 gap-6 md:grid-cols-3";
 
 export default function HomeStoriesSection() {
+  const { t } = useT("home");
   const query = useGetHomeStories({
     page: 1,
     per_page: HOME_STORY_LIMIT,
@@ -36,14 +38,12 @@ export default function HomeStoriesSection() {
   } else if (query.isError) {
     content = (
       <HomeErrorState
-        text="The quest board could not be read."
+        text={t("stories.error")}
         onRetry={() => query.refetch()}
       />
     );
   } else if (stories.length === 0) {
-    content = (
-      <HomeEmptyState text="No stories are posted on the board right now. Check back soon." />
-    );
+    content = <HomeEmptyState text={t("stories.empty")} />;
   } else {
     content = (
       <div className={GRID}>
@@ -58,10 +58,10 @@ export default function HomeStoriesSection() {
     <HomeBand labelledBy="open-stories" muted>
       <HomeSectionHeader
         id="open-stories"
-        title="Open stories"
-        description="Tables still seeking brave adventurers. Claim your seat before the party sets out."
+        title={t("stories.title")}
+        description={t("stories.description")}
         linkHref="/stories"
-        linkLabel="See all stories"
+        linkLabel={t("stories.seeAll")}
       />
       {content}
     </HomeBand>

@@ -1,0 +1,88 @@
+{
+  "hero": {
+    "badge": "A tabletop RPG guild",
+    "title": "Gather your party. Your legend starts here.",
+    "description": "Find a table, follow your Dungeon Master and write your name into the chronicles of YukMainDnD.",
+    "joinGuild": "Join the guild",
+    "openBoard": "Open my Board",
+    "seeStories": "See stories"
+  },
+  "pitch": {
+    "title": "What is YukMainDnD?",
+    "description": "A guild for Dungeons & Dragons and other tabletop RPGs. Join stories, meet guildmates and track your adventures in one place.",
+    "step": "Step {{n}}",
+    "friends": {
+      "title": "Play with friends",
+      "description": "Pick an open story, claim a seat and roll dice with a party of fellow adventurers, online or at the table."
+    },
+    "rewards": {
+      "title": "Earn EXP & rewards",
+      "description": "Every finished story grants experience and gold pieces. Level up and climb the monthly legends."
+    },
+    "dm": {
+      "title": "Become a DM",
+      "description": "Ready to weave your own tale? Run stories for the guild and earn Dungeon Master experience."
+    }
+  },
+  "stories": {
+    "title": "Open stories",
+    "description": "Tables still seeking brave adventurers. Claim your seat before the party sets out.",
+    "seeAll": "See all stories",
+    "error": "The quest board could not be read.",
+    "empty": "No stories are posted on the board right now. Check back soon.",
+    "unknownDm": "Unknown DM",
+    "dateTba": "Date to be announced",
+    "anySystem": "Any system",
+    "member_one": "{{count}} member",
+    "member_other": "{{count}} members"
+  },
+  "legends": {
+    "titleWithMonth": "Legends of {{month}}",
+    "titleFallback": "Last month's legends",
+    "description": "The adventurers and Dungeon Masters who gained the most EXP in {{month}}.",
+    "descriptionFallback": "The adventurers and Dungeon Masters who gained the most EXP in the previous month.",
+    "seeAll": "See all guildmates",
+    "heroes": "Heroes",
+    "dungeonMasters": "Dungeon Masters",
+    "error": "The legends are lost to the mist.",
+    "empty": "No legends in {{month}}. The tavern awaits.",
+    "emptyFallback": "No legends in the previous month. The tavern awaits.",
+    "inMonth": "in {{month}}",
+    "gainedExp": "+{{count}} EXP"
+  },
+  "guild": {
+    "title": "Life in the guild",
+    "description": "A circle of friends who roll dice, share tales and get gloriously lost in dungeons together. New faces are always welcome by the hearth.",
+    "photosLabel": "Guild photos",
+    "showPhoto": "Show photo {{n}}",
+    "photoOf": "{{n}} of {{total}}",
+    "previousPhoto": "Previous photo",
+    "nextPhoto": "Next photo",
+    "photoFallback": "Guild photo",
+    "photos": {
+      "sessionNight": {
+        "alt": "Yuk Main DnD guild members smiling together at a session night",
+        "caption": "One of our fun session night"
+      },
+      "heroesAtTable": {
+        "alt": "Yuk Main DnD guild members in costume around the game table, one raising a toy sword",
+        "caption": "Heroes at the table"
+      },
+      "afterSession": {
+        "alt": "Yuk Main DnD guild members smiling around a table after a meetup",
+        "caption": "After session smile"
+      }
+    },
+    "comingSoon": "Guild photo coming soon",
+    "enlargePhoto": "Enlarge photo: {{caption}}",
+    "photoNumber": "Photo {{n}}"
+  },
+  "cta": {
+    "title": "Ready for your first story?",
+    "description": "The tavern is warm and a seat is waiting for you.",
+    "joinGuild": "Join the guild",
+    "findStory": "Find a story",
+    "readManual": "New here? Read the manual",
+    "opensNewTab": "(opens in a new tab)"
+  }
+}
