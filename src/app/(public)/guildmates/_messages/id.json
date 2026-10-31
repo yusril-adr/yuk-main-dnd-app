@@ -1,0 +1,60 @@
+{
+  "hero": {
+    "badge": "Balai Guild",
+    "title": "Temui sesama petualangmu",
+    "description": "Dungeon Master dan heroes di guild. Hormati legends bulan ini, lalu cari teman untuk story berikutnya.",
+    "sworn_one": "guildmate bersumpah pada guild",
+    "sworn_other": "guildmates bersumpah pada guild"
+  },
+  "legends": {
+    "titleWithMonth": "Legends {{month}}",
+    "titleFallback": "Legends bulan ini",
+    "dungeonMastersOf": "Dungeon Masters {{month}}",
+    "heroesOf": "Heroes {{month}}",
+    "dungeonMasters": "Dungeon Masters",
+    "heroes": "Heroes",
+    "errorTitle": "Legends-nya hilang di kabut",
+    "errorDescription": "Papan ini nggak kebaca. Coba lagi ya.",
+    "emptyWithMonth": "Belum ada legends di {{month}}. Tavern masih nunggu.",
+    "emptyFallback": "Belum ada legends bulan ini. Tavern masih nunggu.",
+    "unclaimed": "Kosong",
+    "awaitingMaster": "Menunggu seorang master",
+    "awaitingHero": "Menunggu seorang hero",
+    "dmExpTotal": "{{count}} DM EXP total",
+    "playerExpTotal": "{{count}} Player EXP total",
+    "dmExp": "{{count}} DM EXP",
+    "playerExp": "{{count}} Player EXP",
+    "gainedExp": "+{{count}} EXP",
+    "soFar": "sejauh ini",
+    "place": "Peringkat {{rank}}"
+  },
+  "roll": {
+    "title": "Daftar Guild",
+    "description": "Setiap petualang yang bersumpah pada guild."
+  },
+  "search": {
+    "placeholder": "Cari nama atau username (min. 3 karakter)…",
+    "ariaLabel": "Cari guildmates"
+  },
+  "pagination": {
+    "showing": "Menampilkan {{start}}–{{end}} dari {{total}} guildmates",
+    "pagesAria": "Halaman guildmates",
+    "previous": "Halaman sebelumnya",
+    "next": "Halaman berikutnya"
+  },
+  "empty": {
+    "title": "Guildmates tidak ditemukan",
+    "filtered": "Tidak ada petualang dengan nama itu. Coba kata kunci lain.",
+    "default": "Balai guild masih kosong. Kembali lagi nanti, adventurer.",
+    "clearSearch": "Hapus pencarian"
+  },
+  "card": {
+    "dungeonMaster": "Dungeon Master",
+    "player": "Player",
+    "exp": "{{count}} EXP"
+  },
+  "error": {
+    "rollTitle": "Daftar guild nggak bisa diambil",
+    "rollDescription": "Ada yang salah saat memuat guildmates. Coba lagi ya."
+  }
+}

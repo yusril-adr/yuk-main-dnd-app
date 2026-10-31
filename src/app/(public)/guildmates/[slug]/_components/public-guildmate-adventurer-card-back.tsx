@@ -1,11 +1,17 @@
+"use client";
+
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATE_DETAIL_MESSAGES } from "@/app/(public)/guildmates/[slug]/_messages";
 import type { TPublicGuildmateAdventurerCardBackProps } from "@/app/(public)/guildmates/[slug]/_types/public-guildmate-detail-components-props";
 
 // Print-only back face (hidden on screen); same frame as the front
 export default function PublicGuildmateAdventurerCardBack({
   cardNumber,
 }: TPublicGuildmateAdventurerCardBackProps) {
+  const { t } = useT(GUILDMATE_DETAIL_MESSAGES);
+
   return (
     <Card
       data-print-face="back"
@@ -14,7 +20,7 @@ export default function PublicGuildmateAdventurerCardBack({
     >
       <CardContent className="flex h-full flex-col items-center justify-between rounded-sm border border-primary/30 px-[4cqw] py-[5cqw] text-center">
         <span className="text-[3.4cqw] font-semibold tracking-[0.2em] text-primary uppercase">
-          Adventurer&apos;s Guild
+          {t("detail.adventurersGuild")}
         </span>
 
         <div className="flex flex-col items-center gap-[4cqw]">
@@ -39,12 +45,12 @@ export default function PublicGuildmateAdventurerCardBack({
           </span>
           <Separator className="w-[30cqw]! bg-primary/50" />
           <span className="text-[3.8cqw] text-foreground/85 italic">
-            Roll bold, play fair, tell good tales.
+            {t("detail.motto")}
           </span>
         </div>
 
         <span className="text-[3.4cqw] font-semibold tracking-[0.15em] text-primary uppercase tabular-nums">
-          No. {cardNumber}
+          {t("detail.cardNumber", { number: cardNumber })}
         </span>
       </CardContent>
     </Card>

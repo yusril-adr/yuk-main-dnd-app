@@ -16,8 +16,12 @@ import { useGetTopPlayerExperience } from "@/app/(public)/guildmates/_hooks/use-
 import { useCurrentMonthRange } from "@/app/(public)/guildmates/_hooks/use-current-month-range";
 import { PUBLIC_GUILDMATE_PAGE_SIZE } from "@/app/(public)/guildmates/_constants/public-guildmate-page-size";
 import type { TPublicGuildmateLegendEntry } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 
 export default function GuildMatesPageClient() {
+  const { t } = useT(GUILDMATES_MESSAGES);
+
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
     search: parseAsString.withDefault(""),
@@ -132,10 +136,10 @@ export default function GuildMatesPageClient() {
               id="guildmates-heading"
               className="scroll-mt-20 font-heading text-2xl sm:text-3xl"
             >
-              The Guild Roll
+              {t("roll.title")}
             </h2>
             <p className="text-sm text-muted-foreground">
-              Every adventurer sworn to the guild.
+              {t("roll.description")}
             </p>
           </div>
 

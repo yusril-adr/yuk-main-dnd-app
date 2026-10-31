@@ -1,0 +1,60 @@
+{
+  "hero": {
+    "badge": "The Guild Hall",
+    "title": "Meet thy fellow adventurers",
+    "description": "Dungeon masters and heroes of the guild. Honor this month's legends, then find a companion for your next story.",
+    "sworn_one": "guildmate sworn to the guild",
+    "sworn_other": "guildmates sworn to the guild"
+  },
+  "legends": {
+    "titleWithMonth": "Legends of {{month}}",
+    "titleFallback": "Legends of the Month",
+    "dungeonMastersOf": "Dungeon Masters of {{month}}",
+    "heroesOf": "Heroes of {{month}}",
+    "dungeonMasters": "Dungeon Masters",
+    "heroes": "Heroes",
+    "errorTitle": "The legends are lost to the mist",
+    "errorDescription": "We could not read this board. Please try again.",
+    "emptyWithMonth": "No legends yet in {{month}}. The tavern awaits.",
+    "emptyFallback": "No legends yet this month. The tavern awaits.",
+    "unclaimed": "Unclaimed",
+    "awaitingMaster": "Awaiting a master",
+    "awaitingHero": "Awaiting a hero",
+    "dmExpTotal": "{{count}} DM EXP total",
+    "playerExpTotal": "{{count}} Player EXP total",
+    "dmExp": "{{count}} DM EXP",
+    "playerExp": "{{count}} Player EXP",
+    "gainedExp": "+{{count}} EXP",
+    "soFar": "so far",
+    "place": "Place {{rank}}"
+  },
+  "roll": {
+    "title": "The Guild Roll",
+    "description": "Every adventurer sworn to the guild."
+  },
+  "search": {
+    "placeholder": "Search by name or username (min. 3 characters)…",
+    "ariaLabel": "Search guildmates"
+  },
+  "pagination": {
+    "showing": "Showing {{start}}–{{end}} of {{total}} guildmates",
+    "pagesAria": "Guildmates pages",
+    "previous": "Previous page",
+    "next": "Next page"
+  },
+  "empty": {
+    "title": "No guildmates found",
+    "filtered": "No adventurer answers to that name. Try different keywords.",
+    "default": "The guild hall stands empty for now. Return soon, adventurer.",
+    "clearSearch": "Clear search"
+  },
+  "card": {
+    "dungeonMaster": "Dungeon Master",
+    "player": "Player",
+    "exp": "{{count}} EXP"
+  },
+  "error": {
+    "rollTitle": "The guild roll could not be fetched",
+    "rollDescription": "Something went wrong while loading guildmates. Please try again."
+  }
+}

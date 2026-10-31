@@ -68,8 +68,8 @@ export type TPublicGuildmateEmptyStateProps = {
 };
 
 export type TPublicGuildmateErrorStateProps = {
-  title?: string;
-  description?: string;
+  title: string;
+  description: string;
   onRetry: () => void;
   compact?: boolean;
 };

@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { User } from "lucide-react";
 import { cn } from "cn";
 
 import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
 import { Badge } from "@/app/_components/ui/badge";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 import PublicGuildmateAvatar from "./public-guildmate-avatar";
 import {
   PUBLIC_GUILDMATE_LEGEND_RANK_STYLE,
@@ -18,6 +23,9 @@ export default function PublicGuildmateLegendPodium({
   kind,
   entries,
 }: TPublicGuildmateLegendViewProps) {
+  const { t } = useT(GUILDMATES_MESSAGES);
+  const { locale } = useLocale();
+
   return (
     <ol className="grid grid-cols-3 items-end gap-2 lg:gap-3">
       {PUBLIC_GUILDMATE_PODIUM_ORDER.map((rank) => {
@@ -49,17 +57,19 @@ export default function PublicGuildmateLegendPodium({
                     style.badge,
                     rank === 1 && "pl-px",
                   )}
-                  aria-label={`${style.label} place`}
+                  aria-label={t("legends.place", { rank })}
                 >
                   {rank}
                 </Badge>
               </div>
               <div className="mt-1 flex w-full min-w-0 flex-col gap-0.5">
                 <span className="truncate font-heading text-sm text-foreground/70 italic lg:text-base">
-                  Unclaimed
+                  {t("legends.unclaimed")}
                 </span>
                 <span className="text-xs text-foreground/60">
-                  Awaiting a {kind === "dm" ? "master" : "hero"}
+                  {kind === "dm"
+                    ? t("legends.awaitingMaster")
+                    : t("legends.awaitingHero")}
                 </span>
               </div>
               <div
@@ -98,7 +108,7 @@ export default function PublicGuildmateLegendPodium({
                   style.badge,
                   rank === 1 && "pl-px",
                 )}
-                aria-label={`${style.label} place`}
+                aria-label={t("legends.place", { rank })}
               >
                 {rank}
               </Badge>
@@ -111,8 +121,13 @@ export default function PublicGuildmateLegendPodium({
                 {user.display_name}
               </Link>
               <span className="text-xs font-medium text-foreground/80">
-                {formatExp(isDm ? user.dm_exp : user.player_exp)}{" "}
-                {isDm ? "DM" : "Player"} EXP
+                {isDm
+                  ? t("legends.dmExp", {
+                      count: formatExp(user.dm_exp, locale),
+                    })
+                  : t("legends.playerExp", {
+                      count: formatExp(user.player_exp, locale),
+                    })}
               </span>
             </div>
             <div
@@ -122,10 +137,12 @@ export default function PublicGuildmateLegendPodium({
               )}
             >
               <span className="font-heading text-base leading-tight font-semibold text-primary lg:text-lg">
-                +{formatExp(entry.gainedExp)} EXP
+                {t("legends.gainedExp", {
+                  count: formatExp(entry.gainedExp, locale),
+                })}
               </span>
               <span className="text-xs leading-tight text-foreground/80">
-                so far
+                {t("legends.soFar")}
               </span>
             </div>
           </li>
