@@ -12,9 +12,9 @@ import {
 import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
 import { COMMON_MESSAGES } from "@/messages/common";
-import type { Locale } from "@/libs/i18n/locales";
+import type { TLocale } from "@/libs/i18n/types/locale";
 
-const LOCALE_LABEL: Record<Locale, string> = {
+const LOCALE_LABEL: Record<TLocale, string> = {
   en: "English",
   id: "Indonesia",
 };

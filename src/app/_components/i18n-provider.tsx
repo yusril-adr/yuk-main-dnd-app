@@ -7,7 +7,8 @@ import { I18nextProvider } from "react-i18next";
 import dayjs from "@/libs/dayjs";
 import { createI18nInstance } from "@/libs/i18n/create-instance";
 import { LocaleCookie } from "@/libs/i18n/locale-cookie";
-import { LOCALES, type Locale } from "@/libs/i18n/locales";
+import { LOCALES } from "@/libs/i18n/locales";
+import type { TLocale } from "@/libs/i18n/types/locale";
 import type { TI18nProviderProps } from "@/app/_types/i18n-provider-props";
 import type { TI18nProviderState } from "@/app/_types/i18n-provider-state";
 
@@ -19,7 +20,7 @@ export const I18nProviderContext = createContext<TI18nProviderState>({
 
 export function I18nProvider({ children, initialLocale }: TI18nProviderProps) {
   const router = useRouter();
-  const [locale, setLocaleState] = useState<Locale>(initialLocale);
+  const [locale, setLocaleState] = useState<TLocale>(initialLocale);
   const [i18n] = useState(() => {
     const instance = createI18nInstance({ locale: initialLocale });
     dayjs.locale(initialLocale);
@@ -27,7 +28,7 @@ export function I18nProvider({ children, initialLocale }: TI18nProviderProps) {
   });
 
   const setLocale = useCallback(
-    async (next: Locale) => {
+    async (next: TLocale) => {
       if (next === locale) return;
 
       LocaleCookie.set(next);

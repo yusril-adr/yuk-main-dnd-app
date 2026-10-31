@@ -10,14 +10,14 @@ import { Toaster } from "@/app/_components/ui/sonner";
 import { globalQueryClient } from "@/libs/react-query/global-query-client";
 import { AuthProvider } from "@/app/_components/auth-provider";
 import { I18nProvider } from "@/app/_components/i18n-provider";
-import type { Locale } from "@/libs/i18n/locales";
+import type { TLocale } from "@/libs/i18n/types/locale";
 
 export function Providers({
   children,
   initialLocale,
 }: {
   children: React.ReactNode;
-  initialLocale: Locale;
+  initialLocale: TLocale;
 }) {
   return (
     <QueryClientProvider client={globalQueryClient}>

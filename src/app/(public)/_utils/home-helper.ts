@@ -1,5 +1,6 @@
 import dayjs from "@/libs/dayjs";
-import { DEFAULT_LOCALE, type Locale } from "@/libs/i18n/locales";
+import { DEFAULT_LOCALE } from "@/libs/i18n/locales";
+import type { TLocale } from "@/libs/i18n/types/locale";
 
 // Public story detail accepts the slug (falls back to the id)
 export function getHomeStoryHref(story: { slug?: string | null; id: string }) {
@@ -17,7 +18,7 @@ export function getHomePreviousMonthKey() {
 // First to last day of the given "YYYY-MM" month, plus locale month labels
 export function getHomeMonthRange(
   monthKey: string,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: TLocale = DEFAULT_LOCALE,
 ) {
   const month = dayjs.utc(`${monthKey}-01`).locale(locale);
   return {

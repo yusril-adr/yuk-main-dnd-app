@@ -1,4 +1,4 @@
-import type { Locale } from "@/libs/i18n/locales";
+import type { TLocale } from "@/libs/i18n/types/locale";
 
 import en from "./en.json";
 import id from "./id.json";
@@ -9,6 +9,4 @@ export const HOME_MESSAGES = {
   id,
 } as const satisfies {
   namespace: "home";
-} & Record<Locale, typeof en>;
-
-export type HomeMessages = typeof en;
+} & Record<TLocale, typeof en>;

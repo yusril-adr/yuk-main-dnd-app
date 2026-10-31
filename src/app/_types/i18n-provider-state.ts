@@ -1,7 +1,7 @@
-import type { Locale } from "@/libs/i18n/locales";
+import type { TLocale } from "@/libs/i18n/types/locale";
 
 export type TI18nProviderState = {
-  locale: Locale;
-  setLocale: (locale: Locale) => Promise<void>;
-  locales: readonly Locale[];
+  locale: TLocale;
+  setLocale: (locale: TLocale) => Promise<void>;
+  locales: readonly TLocale[];
 };
