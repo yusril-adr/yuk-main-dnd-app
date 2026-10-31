@@ -1,10 +1,13 @@
+"use client";
+
 import { useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/app/_components/ui/button";
+import { useT } from "@/app/_hooks/use-t";
 import { generatePages } from "@/utils/table-helper";
 import { PUBLIC_STORY_PAGE_SIZE } from "@/app/(public)/stories/_constants/public-story-page-size";
-
+import { STORIES_MESSAGES } from "@/app/(public)/stories/_messages";
 import type { TPublicStoryPaginationProps } from "@/app/(public)/stories/_types/public-story-components-props";
 
 export default function PublicStoryPagination({
@@ -14,6 +17,7 @@ export default function PublicStoryPagination({
   itemCount,
   onPageChange,
 }: TPublicStoryPaginationProps) {
+  const { t } = useT(STORIES_MESSAGES);
   const pages = useMemo(
     () => generatePages({ currentPage: page, totalPages: pageCount }),
     [page, pageCount],
@@ -25,12 +29,11 @@ export default function PublicStoryPagination({
   return (
     <div className="flex flex-col-reverse items-center justify-between gap-3 rounded-2xl border bg-card px-3 py-3 sm:flex-row sm:px-4">
       <span className="text-xs text-muted-foreground sm:text-sm">
-        Showing{" "}
-        <span className="font-medium text-foreground">
-          {indexStart}–{indexEnd}
-        </span>{" "}
-        of <span className="font-medium text-foreground">{rowCount}</span>{" "}
-        stories
+        {t("pagination.showing", {
+          start: indexStart,
+          end: indexEnd,
+          total: rowCount,
+        })}
       </span>
 
       <div className="flex flex-wrap items-center justify-center gap-0.5 sm:gap-1">
@@ -38,7 +41,7 @@ export default function PublicStoryPagination({
           variant="ghost"
           size="icon-sm"
           className="rounded-full"
-          aria-label="Previous page"
+          aria-label={t("pagination.previous")}
           disabled={page <= 1}
           onClick={() => onPageChange(page - 1)}
         >
@@ -60,7 +63,7 @@ export default function PublicStoryPagination({
           variant="ghost"
           size="icon-sm"
           className="rounded-full"
-          aria-label="Next page"
+          aria-label={t("pagination.next")}
           disabled={page >= pageCount}
           onClick={() => onPageChange(page + 1)}
         >
