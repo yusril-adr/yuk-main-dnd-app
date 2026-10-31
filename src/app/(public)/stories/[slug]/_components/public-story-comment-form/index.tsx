@@ -24,16 +24,15 @@ import {
 } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
 import { cn } from "cn";
+import { useT } from "@/app/_hooks/use-t";
 
 import {
   PublicStoryCommentFormSchema,
   toPublicStoryCommentContent,
   type TPublicStoryCommentFormSchema,
 } from "./scheme";
-import {
-  PUBLIC_STORY_COMMENT_GUIDELINE,
-  PUBLIC_STORY_COMMENT_MAX_LENGTH,
-} from "@/app/(public)/stories/[slug]/_constants/public-story-comment";
+import { PUBLIC_STORY_COMMENT_MAX_LENGTH } from "@/app/(public)/stories/[slug]/_constants/public-story-comment";
+import { STORY_DETAIL_MESSAGES } from "@/app/(public)/stories/[slug]/_messages";
 import type { TPublicStoryCommentFormProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-form-props";
 
 // "@a @b " only holds mentions: a new mention replaces it
@@ -77,6 +76,7 @@ export default function PublicStoryCommentForm({
   isShowGuideline,
   mention,
 }: TPublicStoryCommentFormProps) {
+  const { t } = useT(STORY_DETAIL_MESSAGES);
   const [editor, setEditor] = useState<Editor | null>(null);
   const { control, handleSubmit, setError, reset } =
     useForm<TPublicStoryCommentFormSchema>({
@@ -159,7 +159,7 @@ export default function PublicStoryCommentForm({
                   isOverLimit && "text-destructive",
                 )}
               >
-                <span className="sr-only">Characters used: </span>
+                <span className="sr-only">{t("comments.charactersUsed")}</span>
                 {length}/{PUBLIC_STORY_COMMENT_MAX_LENGTH}
               </FieldDescription>
             </div>
@@ -176,7 +176,7 @@ export default function PublicStoryCommentForm({
               disabled={isPending}
               onClick={onCancel}
             >
-              Cancel
+              {t("comments.cancel")}
             </Button>
           </Then>
         </If>
@@ -189,7 +189,7 @@ export default function PublicStoryCommentForm({
       <If condition={!!isShowGuideline}>
         <Then>
           <p className="text-xs text-pretty text-muted-foreground">
-            {PUBLIC_STORY_COMMENT_GUIDELINE}
+            {t("comments.guideline")}
           </p>
         </Then>
       </If>

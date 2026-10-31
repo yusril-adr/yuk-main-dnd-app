@@ -1,4 +1,6 @@
-import { useCallback, useState } from "react";
+"use client";
+
+import { useCallback, useMemo, useState } from "react";
 import { Funnel, Search } from "lucide-react";
 
 import { Button } from "@/app/_components/ui/button";
@@ -22,14 +24,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/_components/ui/select";
-import { STORY_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-status-label";
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
-import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
-import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
+import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
+import { useT } from "@/app/_hooks/use-t";
 
 import { PUBLIC_STORY_STATUS_OPTIONS } from "@/app/(public)/stories/_constants/public-story-status-options";
 import { PUBLIC_STORY_TYPE_ICON } from "@/app/(public)/stories/_constants/public-story-icons";
+import { STORIES_MESSAGES } from "@/app/(public)/stories/_messages";
 import type { TPublicStoryStatus } from "@/app/(public)/stories/_types/public-story-card-list-props";
 import type { TPublicStoryFiltersProps } from "@/app/(public)/stories/_types/public-story-filters-props";
 
@@ -37,46 +39,71 @@ let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 
 const ALL = "all";
 
-const STATUS_OPTIONS = [
-  { label: "All statuses", value: ALL },
-  ...PUBLIC_STORY_STATUS_OPTIONS.map((status) => ({
-    label: STORY_STATUS_LABEL[status],
-    value: String(status),
-  })),
-];
+const STATUS_I18N_KEY = {
+  [StoryStatusEnum.PUBLISHED]: "enums.status.published",
+  [StoryStatusEnum.COMPLETED]: "enums.status.completed",
+} as const;
 
-const LOCATION_OPTIONS = [
-  { label: "Anywhere", value: ALL },
-  ...[StoryLocationTypeEnum.ONLINE, StoryLocationTypeEnum.OFFLINE].map(
-    (location) => ({
-      label: STORY_LOCATION_TYPE_LABEL[location],
-      value: String(location),
-    }),
-  ),
-];
+const TYPE_I18N_KEY = {
+  [StoryTypeEnum.ONESHOT]: "enums.type.oneshot",
+  [StoryTypeEnum.CAMPAIGN]: "enums.type.campaign",
+} as const;
 
-const TYPE_CHIPS: { label: string; value: StoryTypeEnum | null }[] = [
-  { label: "All", value: null },
-  {
-    label: STORY_TYPE_LABEL[StoryTypeEnum.ONESHOT],
-    value: StoryTypeEnum.ONESHOT,
-  },
-  {
-    label: STORY_TYPE_LABEL[StoryTypeEnum.CAMPAIGN],
-    value: StoryTypeEnum.CAMPAIGN,
-  },
-];
+const LOCATION_I18N_KEY = {
+  [StoryLocationTypeEnum.ONLINE]: "enums.location.online",
+  [StoryLocationTypeEnum.OFFLINE]: "enums.location.offline",
+} as const;
 
 export default function PublicStoryFilters({
   queryTable,
   onSearchChange,
   onFilterApply,
 }: TPublicStoryFiltersProps) {
+  const { t } = useT(STORIES_MESSAGES);
   const [filterStatus, setFilterStatus] = useState<TPublicStoryStatus | null>(
     queryTable.status ?? null,
   );
   const [filterLocationType, setFilterLocationType] =
     useState<StoryLocationTypeEnum | null>(queryTable.locationType ?? null);
+
+  const statusOptions = useMemo(
+    () => [
+      { label: t("filters.allStatuses"), value: ALL },
+      ...PUBLIC_STORY_STATUS_OPTIONS.map((status) => ({
+        label: t(STATUS_I18N_KEY[status]),
+        value: String(status),
+      })),
+    ],
+    [t],
+  );
+
+  const locationOptions = useMemo(
+    () => [
+      { label: t("filters.anywhere"), value: ALL },
+      ...[StoryLocationTypeEnum.ONLINE, StoryLocationTypeEnum.OFFLINE].map(
+        (location) => ({
+          label: t(LOCATION_I18N_KEY[location]),
+          value: String(location),
+        }),
+      ),
+    ],
+    [t],
+  );
+
+  const typeChips = useMemo(
+    () => [
+      { label: t("filters.allTypes"), value: null as StoryTypeEnum | null },
+      {
+        label: t(TYPE_I18N_KEY[StoryTypeEnum.ONESHOT]),
+        value: StoryTypeEnum.ONESHOT,
+      },
+      {
+        label: t(TYPE_I18N_KEY[StoryTypeEnum.CAMPAIGN]),
+        value: StoryTypeEnum.CAMPAIGN,
+      },
+    ],
+    [t],
+  );
 
   const activeFilterCount = [queryTable.status, queryTable.locationType].filter(
     (value) => value != null,
@@ -135,7 +162,7 @@ export default function PublicStoryFilters({
             <Search />
           </InputGroupAddon>
           <InputGroupInput
-            placeholder="Search stories by title (min. 3 characters)…"
+            placeholder={t("filters.searchPlaceholder")}
             onChange={(event) => handleSearchChange(event.target.value)}
             defaultValue={queryTable.search}
           />
@@ -151,7 +178,7 @@ export default function PublicStoryFilters({
             }
           >
             <Funnel />
-            Filters
+            {t("filters.filters")}
             {activeFilterCount > 0 && (
               <span className="flex size-5 items-center justify-center rounded-full bg-primary text-[11px] text-primary-foreground">
                 {activeFilterCount}
@@ -161,9 +188,9 @@ export default function PublicStoryFilters({
           <PopoverContent align="end" className="w-[calc(100vw-2rem)] max-w-80">
             <FieldGroup className="gap-4">
               <Field className="grid gap-2">
-                <FieldLabel>Status</FieldLabel>
+                <FieldLabel>{t("filters.status")}</FieldLabel>
                 <Select
-                  items={STATUS_OPTIONS}
+                  items={statusOptions}
                   value={filterStatus != null ? String(filterStatus) : ALL}
                   onValueChange={(val) =>
                     setFilterStatus(
@@ -178,7 +205,7 @@ export default function PublicStoryFilters({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      {STATUS_OPTIONS.map((item) => (
+                      {statusOptions.map((item) => (
                         <SelectItem key={item.value} value={item.value}>
                           {item.label}
                         </SelectItem>
@@ -189,9 +216,9 @@ export default function PublicStoryFilters({
               </Field>
 
               <Field className="grid gap-2">
-                <FieldLabel>Location</FieldLabel>
+                <FieldLabel>{t("filters.location")}</FieldLabel>
                 <Select
-                  items={LOCATION_OPTIONS}
+                  items={locationOptions}
                   value={
                     filterLocationType != null
                       ? String(filterLocationType)
@@ -210,7 +237,7 @@ export default function PublicStoryFilters({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      {LOCATION_OPTIONS.map((item) => (
+                      {locationOptions.map((item) => (
                         <SelectItem key={item.value} value={item.value}>
                           {item.label}
                         </SelectItem>
@@ -222,9 +249,9 @@ export default function PublicStoryFilters({
 
               <Field orientation="horizontal">
                 <Button className="ms-auto" variant="outline" onClick={onClear}>
-                  Clear
+                  {t("filters.clear")}
                 </Button>
-                <Button onClick={onApply}>Apply</Button>
+                <Button onClick={onApply}>{t("filters.apply")}</Button>
               </Field>
             </FieldGroup>
           </PopoverContent>
@@ -243,12 +270,12 @@ export default function PublicStoryFilters({
         }
       >
         <TabsList className="h-10! w-full rounded-md border bg-card p-1 sm:w-fit">
-          {TYPE_CHIPS.map((chip) => {
+          {typeChips.map((chip) => {
             const Icon =
               chip.value != null ? PUBLIC_STORY_TYPE_ICON[chip.value] : null;
             return (
               <TabsTrigger
-                key={chip.label}
+                key={chip.value != null ? String(chip.value) : ALL}
                 value={chip.value != null ? String(chip.value) : ALL}
                 className="rounded-sm px-3 text-muted-foreground data-active:bg-primary data-active:text-primary-foreground data-active:shadow-none data-active:hover:text-primary-foreground sm:px-4"
               >

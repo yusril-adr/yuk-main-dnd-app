@@ -17,6 +17,8 @@ import { Separator } from "@/app/_components/ui/separator";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { Spinner } from "@/app/_components/ui/spinner";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { useT } from "@/app/_hooks/use-t";
+import { COMMON_MESSAGES } from "@/messages/common";
 
 import PublicStoryDetailSection from "./public-story-detail-section";
 import PublicStoryCommentComposer from "./public-story-comment-composer";
@@ -24,12 +26,15 @@ import PublicStoryCommentItem from "./public-story-comment-item";
 import PublicStoryCommentReplies from "./public-story-comment-replies";
 import { useGetPublicStoryCommentPagination } from "@/app/(public)/stories/[slug]/_hooks/use-get-public-story-comment-pagination";
 import { PUBLIC_STORY_COMMENT_PER_PAGE } from "@/app/(public)/stories/[slug]/_constants/public-story-comment";
+import { STORY_DETAIL_MESSAGES } from "@/app/(public)/stories/[slug]/_messages";
 import type { TPublicStoryCommentsProps } from "@/app/(public)/stories/[slug]/_types/public-story-comments-props";
 
 export default function PublicStoryComments({
   story,
   className,
 }: TPublicStoryCommentsProps) {
+  const { t } = useT(STORY_DETAIL_MESSAGES);
+  const { t: tCommon } = useT(COMMON_MESSAGES);
   const { auth } = useAuthContext();
   const commentsQuery = useGetPublicStoryCommentPagination(
     story.id,
@@ -55,14 +60,16 @@ export default function PublicStoryComments({
   return (
     <PublicStoryDetailSection
       icon={MessagesSquare}
-      title="Tavern Talk"
+      title={t("comments.title")}
       className={className}
     >
       <If condition={!!meta}>
         <Then>
           <p className="-mt-2 text-sm text-foreground/80" aria-live="polite">
-            <span className="font-medium text-foreground">{total}</span>{" "}
-            {total === 1 ? "comment" : "comments"}
+            {t(
+              total === 1 ? "comments.count_one" : "comments.count_other",
+              { count: total },
+            )}
           </p>
         </Then>
       </If>
@@ -76,7 +83,7 @@ export default function PublicStoryComments({
           <ItemGroup
             className="flex flex-col gap-2"
             aria-busy="true"
-            aria-label="Loading comments"
+            aria-label={t("comments.loadingAria")}
           >
             {Array.from({ length: 3 }).map((_, idx) => (
               <Item
@@ -103,7 +110,7 @@ export default function PublicStoryComments({
               <Empty className="border border-destructive/40 bg-destructive/5">
                 <EmptyHeader>
                   <EmptyTitle className="text-base">
-                    The comments could not be read.
+                    {t("comments.error")}
                   </EmptyTitle>
                 </EmptyHeader>
                 <EmptyContent>
@@ -112,7 +119,7 @@ export default function PublicStoryComments({
                     size="sm"
                     onClick={() => commentsQuery.refetch()}
                   >
-                    <RotateCw /> Try again
+                    <RotateCw /> {tCommon("actions.tryAgain")}
                   </Button>
                 </EmptyContent>
               </Empty>
@@ -126,10 +133,10 @@ export default function PublicStoryComments({
                         <MessagesSquare />
                       </EmptyMedia>
                       <EmptyTitle className="font-heading text-lg">
-                        No comments yet
+                        {t("comments.emptyTitle")}
                       </EmptyTitle>
                       <EmptyDescription>
-                        Be the first to speak at this table.
+                        {t("comments.emptyDescription")}
                       </EmptyDescription>
                     </EmptyHeader>
                   </Empty>
@@ -137,7 +144,7 @@ export default function PublicStoryComments({
                 <Else>
                   <ItemGroup
                     className="flex flex-col gap-2"
-                    aria-label="Comments"
+                    aria-label={t("comments.listAria")}
                   >
                     {comments.map((comment) => (
                       <PublicStoryCommentItem
@@ -168,8 +175,8 @@ export default function PublicStoryComments({
                           <ChevronDown />
                         )}
                         {commentsQuery.isFetchingNextPage
-                          ? "Loading comments..."
-                          : `Load more comments (${remaining} more)`}
+                          ? t("comments.loadingMore")
+                          : t("comments.loadMore", { count: remaining })}
                       </Button>
                     </Then>
                   </If>

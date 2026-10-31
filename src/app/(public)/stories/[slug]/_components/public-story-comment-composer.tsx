@@ -20,17 +20,20 @@ import {
 } from "@/app/_components/ui/item";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { useT } from "@/app/_hooks/use-t";
 import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 
 import PublicStoryCommentForm from "./public-story-comment-form";
 import { useCreatePublicStoryComment } from "@/app/(public)/stories/[slug]/_hooks/use-create-public-story-comment";
 import { useRefreshPublicStoryComments } from "@/app/(public)/stories/[slug]/_hooks/use-refresh-public-story-comments";
+import { STORY_DETAIL_MESSAGES } from "@/app/(public)/stories/[slug]/_messages";
 import type { TPublicStoryCommentComposerProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-composer-props";
 
 export default function PublicStoryCommentComposer({
   story,
 }: TPublicStoryCommentComposerProps) {
   const pathname = usePathname();
+  const { t } = useT(STORY_DETAIL_MESSAGES);
   const { auth, authQuery } = useAuthContext();
   const { refreshComments, onCommentError } = useRefreshPublicStoryComments();
   const createMutation = useCreatePublicStoryComment({
@@ -52,10 +55,10 @@ export default function PublicStoryCommentComposer({
       >
         <ItemContent>
           <ItemTitle className="font-heading text-base">
-            Join the conversation
+            {t("comments.joinTitle")}
           </ItemTitle>
           <ItemDescription>
-            Log in to leave a comment on this story.
+            {t("comments.joinDescription")}
           </ItemDescription>
         </ItemContent>
         <ItemActions>
@@ -66,7 +69,7 @@ export default function PublicStoryCommentComposer({
             }
             nativeButton={false}
           >
-            <LogIn /> Log in to comment
+            <LogIn /> {t("comments.loginToComment")}
           </Button>
         </ItemActions>
       </Item>
@@ -81,9 +84,9 @@ export default function PublicStoryCommentComposer({
           <MessageSquareLock />
         </ItemMedia>
         <ItemContent>
-          <ItemTitle>Comments are closed</ItemTitle>
+          <ItemTitle>{t("comments.closedTitle")}</ItemTitle>
           <ItemDescription>
-            This story is not taking new comments.
+            {t("comments.closedDescription")}
           </ItemDescription>
         </ItemContent>
       </Item>
@@ -105,9 +108,9 @@ export default function PublicStoryCommentComposer({
       <div className="min-w-0 flex-1">
         <PublicStoryCommentForm
           id="comment-new"
-          label="Write a comment"
-          placeholder="Share thy thoughts on this story..."
-          submitLabel="Post comment"
+          label={t("comments.writeLabel")}
+          placeholder={t("comments.writePlaceholder")}
+          submitLabel={t("comments.postComment")}
           isShowGuideline
           isPending={createMutation.isPending}
           onSubmit={(content) =>

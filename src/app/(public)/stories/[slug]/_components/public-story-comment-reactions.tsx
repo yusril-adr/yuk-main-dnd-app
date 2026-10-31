@@ -16,16 +16,22 @@ import {
   TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
 import { cn } from "cn";
-import type { StoryCommentReactionTypeEnum } from "@/api/main/modules/stories/[id]/comments/enums/story-comment-reaction-type";
+import { useT } from "@/app/_hooks/use-t";
+import { StoryCommentReactionTypeEnum } from "@/api/main/modules/stories/[id]/comments/enums/story-comment-reaction-type";
 
 import { useReactPublicStoryComment } from "@/app/(public)/stories/[slug]/_hooks/use-react-public-story-comment";
 import { useRefreshPublicStoryComments } from "@/app/(public)/stories/[slug]/_hooks/use-refresh-public-story-comments";
 import { PUBLIC_STORY_COMMENT_REACTIONS } from "@/app/(public)/stories/[slug]/_constants/public-story-comment-reaction";
+import { STORY_DETAIL_MESSAGES } from "@/app/(public)/stories/[slug]/_messages";
 import { hasPublicStoryCommentReactions } from "@/app/(public)/stories/[slug]/_utils/public-story-comment-reaction-helper";
 import type { TPublicStoryCommentReactionsProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-reactions-props";
 
-const countLabel = (count: number) =>
-  `${count} ${count === 1 ? "reaction" : "reactions"}`;
+const REACTION_LABEL_KEY = {
+  [StoryCommentReactionTypeEnum.LIKE]: "comments.reactionLike",
+  [StoryCommentReactionTypeEnum.LOVE]: "comments.reactionLove",
+  [StoryCommentReactionTypeEnum.LAUGH]: "comments.reactionLaugh",
+  [StoryCommentReactionTypeEnum.WOW]: "comments.reactionWow",
+} as const;
 
 // Chips with counts (non-zero only) and an add button, at the start of the
 // comment's action row (before Reply). Tapping your own
@@ -37,6 +43,7 @@ export default function PublicStoryCommentReactions({
   isReply = false,
   className,
 }: TPublicStoryCommentReactionsProps) {
+  const { t } = useT(STORY_DETAIL_MESSAGES);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const { onCommentError } = useRefreshPublicStoryComments();
   const reactMutation = useReactPublicStoryComment(
@@ -49,7 +56,14 @@ export default function PublicStoryCommentReactions({
   const chips = PUBLIC_STORY_COMMENT_REACTIONS.filter(
     (option) => comment.reaction_counts[option.countKey] > 0,
   );
-  const noun = isReply ? "reply" : "comment";
+  const noun = t(isReply ? "comments.nounReply" : "comments.nounComment");
+  const countLabel = (count: number) =>
+    t(
+      count === 1 ? "comments.reaction_one" : "comments.reaction_other",
+      { count },
+    );
+  const reactionLabel = (type: StoryCommentReactionTypeEnum) =>
+    t(REACTION_LABEL_KEY[type]);
 
   // Placeholders keep no reactions; nothing to show or do
   if (!hasPublicStoryCommentReactions(comment)) return null;
@@ -71,13 +85,16 @@ export default function PublicStoryCommentReactions({
   return (
     <div
       role="group"
-      aria-label={`Reactions to this ${noun}`}
+      aria-label={t("comments.reactionsAria", { noun })}
       className={cn("flex flex-wrap items-center gap-1.5", className)}
     >
       {chips.map((option) => {
         const count = comment.reaction_counts[option.countKey];
         const isMine = myReaction === option.type;
-        const label = `${option.label}, ${countLabel(count)}${isMine ? ", including yours" : ""}`;
+        const optionLabel = reactionLabel(option.type);
+        const label = `${optionLabel}, ${countLabel(count)}${
+          isMine ? t("comments.includingYours") : ""
+        }`;
         const content = (
           <>
             <span
@@ -145,8 +162,8 @@ export default function PublicStoryCommentReactions({
             </If>
             <TooltipContent>
               {isMine && isCanReact
-                ? `${option.label} (tap to remove)`
-                : option.label}
+                ? t("comments.tapToRemove", { label: optionLabel })
+                : optionLabel}
             </TooltipContent>
           </Tooltip>
         );
@@ -161,8 +178,8 @@ export default function PublicStoryCommentReactions({
                   type="button"
                   variant="ghost"
                   size="icon-sm"
-                  aria-label={`React to this ${noun}`}
-                  title="Add reaction"
+                  aria-label={t("comments.reactAria", { noun })}
+                  title={t("comments.addReaction")}
                   className={cn(
                     "rounded-full text-muted-foreground hover:text-foreground",
                     isReply && "size-7",
@@ -181,6 +198,7 @@ export default function PublicStoryCommentReactions({
             >
               {PUBLIC_STORY_COMMENT_REACTIONS.map((option) => {
                 const isMine = myReaction === option.type;
+                const optionLabel = reactionLabel(option.type);
                 return (
                   <Button
                     key={option.type}
@@ -189,9 +207,11 @@ export default function PublicStoryCommentReactions({
                     size="icon-lg"
                     aria-pressed={isMine}
                     aria-label={
-                      isMine ? `Remove ${option.label}` : option.label
+                      isMine
+                        ? t("comments.removeReaction", { label: optionLabel })
+                        : optionLabel
                     }
-                    title={option.label}
+                    title={optionLabel}
                     onClick={() => {
                       toggle(option.type);
                       setIsPickerOpen(false);

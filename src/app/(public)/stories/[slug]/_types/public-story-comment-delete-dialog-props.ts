@@ -3,5 +3,5 @@ export type TPublicStoryCommentDeleteDialogProps = {
   onOpenChange: (open: boolean) => void;
   isPending: boolean;
   onConfirm: () => void;
-  noun?: "comment" | "reply";
+  noun?: string;
 };

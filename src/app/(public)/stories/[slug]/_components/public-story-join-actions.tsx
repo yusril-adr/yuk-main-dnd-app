@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { useT } from "@/app/_hooks/use-t";
 import CONFIG from "@/common/constants/config";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
@@ -29,6 +30,7 @@ import { useJoinPublicStory } from "@/app/(public)/stories/[slug]/_hooks/use-joi
 import { useGetPublicStoryMemberPagination } from "@/app/(public)/stories/[slug]/_hooks/use-get-public-story-member-pagination";
 import { PUBLIC_STORY_MEMBER_PER_PAGE } from "@/app/(public)/stories/[slug]/_constants/public-story-member";
 import { useCancelJoinPublicStory } from "@/app/(public)/stories/[slug]/_hooks/use-cancel-join-public-story";
+import { STORY_DETAIL_MESSAGES } from "@/app/(public)/stories/[slug]/_messages";
 import type { TPublicStoryDetailProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-props";
 
 // Renders the action inline in the sidebar on desktop and as a fixed bottom
@@ -39,6 +41,7 @@ export default function PublicStoryJoinActions({
   const pathname = usePathname();
   const queryClient = useQueryClient();
   const { auth, authQuery } = useAuthContext();
+  const { t } = useT(STORY_DETAIL_MESSAGES);
   const [isLeaveDialogOpen, setIsLeaveDialogOpen] = useState(false);
   const [isFullDialogOpen, setIsFullDialogOpen] = useState(false);
 
@@ -53,7 +56,7 @@ export default function PublicStoryJoinActions({
     // 404 is not toasted by the interceptor (story gone or not a member)
     if (error instanceof MainAPINotFoundError) {
       toast.dismiss();
-      toast.error(error.message || "This story could not be found");
+      toast.error(error.message || t("join.notFound"));
     }
     // 400 / 401 / 409 are toasted by the interceptor. A 401 also logs out,
     // which turns this button into "Log in to join". Either way, resync.
@@ -103,10 +106,10 @@ export default function PublicStoryJoinActions({
   const loginHref = `/login?from=${encodeURIComponent(pathname)}`;
 
   const hint = showLogin
-    ? "Log in to enlist in this story."
+    ? t("join.hintLogin")
     : canLeave
-      ? "Thou art enlisted in this story."
-      : "Anyone may join. The Dungeon Master rewards the bravest at the end.";
+      ? t("join.hintEnlisted")
+      : t("join.hintAnyone");
 
   const action = (
     <If condition={showLogin}>
@@ -117,7 +120,7 @@ export default function PublicStoryJoinActions({
           render={<Link href={loginHref} />}
           nativeButton={false}
         >
-          <LogIn /> Join the party
+          <LogIn /> {t("join.joinParty")}
         </Button>
       </Then>
       <Else>
@@ -131,7 +134,7 @@ export default function PublicStoryJoinActions({
               onClick={() => setIsLeaveDialogOpen(true)}
             >
               {cancelJoinMutation.isPending ? <Spinner /> : <DoorOpen />}
-              Leave the party
+              {t("join.leaveParty")}
             </Button>
           </Then>
           <Else>
@@ -142,7 +145,7 @@ export default function PublicStoryJoinActions({
               onClick={onJoinClick}
             >
               {joinMutation.isPending ? <Spinner /> : <Swords />}
-              Join the party
+              {t("join.joinParty")}
             </Button>
           </Else>
         </If>
@@ -171,14 +174,13 @@ export default function PublicStoryJoinActions({
       <AlertDialog open={isLeaveDialogOpen} onOpenChange={setIsLeaveDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Leave the party?</AlertDialogTitle>
+            <AlertDialogTitle>{t("join.leaveTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Thou shalt be struck from the roster of &ldquo;{story.title}
-              &rdquo;. Thou may rejoin while the story is still open.
+              {t("join.leaveDescription", { title: story.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="sm:grid sm:grid-cols-2">
-            <AlertDialogCancel>Stay</AlertDialogCancel>
+            <AlertDialogCancel>{t("join.stay")}</AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
               disabled={cancelJoinMutation.isPending}
@@ -187,7 +189,7 @@ export default function PublicStoryJoinActions({
                 setIsLeaveDialogOpen(false);
               }}
             >
-              Leave the party
+              {t("join.leaveParty")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -196,16 +198,16 @@ export default function PublicStoryJoinActions({
       <AlertDialog open={isFullDialogOpen} onOpenChange={setIsFullDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>The party is full</AlertDialogTitle>
+            <AlertDialogTitle>{t("join.fullTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              All {story.max_members} player slots of &ldquo;{story.title}
-              &rdquo; are taken. Thou may still join, but as a viewer. Speak
-              with the Dungeon Master to learn whether thou can be a substitute
-              player.
+              {t("join.fullDescription", {
+                count: story.max_members,
+                title: story.title,
+              })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="sm:grid sm:grid-cols-2">
-            <AlertDialogCancel>Not now</AlertDialogCancel>
+            <AlertDialogCancel>{t("join.notNow")}</AlertDialogCancel>
             <AlertDialogAction
               disabled={joinMutation.isPending}
               onClick={() => {
@@ -213,7 +215,7 @@ export default function PublicStoryJoinActions({
                 setIsFullDialogOpen(false);
               }}
             >
-              Join as viewer
+              {t("join.joinAsViewer")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

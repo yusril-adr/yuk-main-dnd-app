@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { CalendarDays, Crown, Trophy, Users } from "lucide-react";
 import { Else, If, Then } from "react-if";
@@ -28,18 +30,44 @@ import {
   makeDefaultAvatarUrl,
 } from "@/utils/user-helper";
 import { getRichTextPlainText } from "@/utils/rich-text";
+import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
+import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
+import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
 
 import PublicStoryBanner from "./public-story-banner";
 import PublicStoryStatusBadge from "./public-story-status-badge";
 import PublicStoryTypeBadge from "./public-story-type-badge";
 import PublicStoryLocationBadge from "./public-story-location-badge";
 import { PUBLIC_STORY_CARD_DATE_FORMAT } from "@/app/(public)/stories/_constants/public-story-date-format";
+import { STORIES_MESSAGES } from "@/app/(public)/stories/_messages";
 import type { TPublicStoryCardProps } from "@/app/(public)/stories/_types/public-story-components-props";
+
+const STATUS_BADGE_KEY = {
+  [StoryStatusEnum.DRAFT]: "enums.status.draft",
+  [StoryStatusEnum.PUBLISHED]: "enums.status.recruiting",
+  [StoryStatusEnum.ARCHIVED]: "enums.status.archived",
+  [StoryStatusEnum.CANCELLED]: "enums.status.cancelled",
+  [StoryStatusEnum.COMPLETED]: "enums.status.completed",
+} as const;
+
+const TYPE_KEY = {
+  [StoryTypeEnum.ONESHOT]: "enums.type.oneshot",
+  [StoryTypeEnum.CAMPAIGN]: "enums.type.campaign",
+} as const;
+
+const LOCATION_KEY = {
+  [StoryLocationTypeEnum.ONLINE]: "enums.location.online",
+  [StoryLocationTypeEnum.OFFLINE]: "enums.location.offline",
+} as const;
 
 export default function PublicStoryCard({
   story,
   priority = false,
 }: TPublicStoryCardProps) {
+  const { t } = useT(STORIES_MESSAGES);
+  const { locale } = useLocale();
   // Plain text from rich text HTML; "" when empty or only images
   const descriptionText = getRichTextPlainText(story.description);
   // max_members is the number of reward slots, not a join cap: anyone can
@@ -61,7 +89,10 @@ export default function PublicStoryCard({
         />
 
         <div className="absolute inset-x-2 top-2 flex items-start gap-2 sm:inset-x-3 sm:top-3">
-          <PublicStoryStatusBadge status={story.status} />
+          <PublicStoryStatusBadge
+            status={story.status}
+            label={t(STATUS_BADGE_KEY[story.status])}
+          />
         </div>
 
         <div className="absolute inset-x-2 bottom-2 flex flex-col gap-0.5 rounded-lg border bg-background/90 px-3 py-2 sm:inset-x-3 sm:bottom-3">
@@ -86,8 +117,14 @@ export default function PublicStoryCard({
 
       <CardContent className="flex flex-col gap-3 sm:gap-4">
         <div className="flex flex-wrap items-center gap-1.5">
-          <PublicStoryTypeBadge type={story.type} />
-          <PublicStoryLocationBadge locationType={story.location_type} />
+          <PublicStoryTypeBadge
+            type={story.type}
+            label={t(TYPE_KEY[story.type])}
+          />
+          <PublicStoryLocationBadge
+            locationType={story.location_type}
+            label={t(LOCATION_KEY[story.location_type])}
+          />
         </div>
 
         {/* min-h-15 = 3 lines of text-sm keeps cards in a row the same height */}
@@ -95,7 +132,7 @@ export default function PublicStoryCard({
           <If condition={!!descriptionText}>
             <Then>{descriptionText}</Then>
             <Else>
-              <span className="italic">The tale is yet to be written…</span>
+              <span className="italic">{t("card.taleYetWritten")}</span>
             </Else>
           </If>
         </CardDescription>
@@ -106,12 +143,14 @@ export default function PublicStoryCard({
           <span className="flex items-center gap-1.5 [&>svg]:size-3.5">
             <CalendarDays />
             {story.start_at
-              ? dayjs(story.start_at).format(PUBLIC_STORY_CARD_DATE_FORMAT)
-              : "Date to be proclaimed"}
+              ? dayjs(story.start_at)
+                  .locale(locale)
+                  .format(PUBLIC_STORY_CARD_DATE_FORMAT)
+              : t("card.dateTba")}
           </span>
           <span className="flex items-center gap-1.5 font-medium text-foreground [&>svg]:size-3.5">
             <Users />
-            {story.joined_members} joined
+            {t("card.joined", { count: story.joined_members })}
           </span>
         </div>
 
@@ -120,8 +159,13 @@ export default function PublicStoryCard({
         <span className="flex items-center gap-1.5 text-xs text-foreground/80 [&>svg]:size-3.5 [&>svg]:text-primary">
           <Trophy />
           {rewardSlots
-            ? `Only ${rewardSlots} ${rewardSlots === 1 ? "hero" : "heroes"} can play, others join as viewers`
-            : "No player limit set"}
+            ? t(
+                rewardSlots === 1
+                  ? "card.rewardSlots_one"
+                  : "card.rewardSlots_other",
+                { count: rewardSlots },
+              )
+            : t("card.noPlayerLimit")}
         </span>
 
         <If condition={!!creator}>
@@ -150,7 +194,7 @@ export default function PublicStoryCard({
               <ItemContent className="min-w-0 gap-0">
                 <ItemDescription className="flex items-center gap-1 text-xs font-medium tracking-widest text-primary uppercase [&>svg]:size-3">
                   <Crown />
-                  Dungeon Master
+                  {t("card.dungeonMaster")}
                 </ItemDescription>
                 <ItemTitle className="block w-full truncate font-heading text-sm text-foreground">
                   <Link
