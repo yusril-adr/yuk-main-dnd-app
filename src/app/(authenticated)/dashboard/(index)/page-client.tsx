@@ -27,6 +27,13 @@ export default function DashboardPageClient() {
             <h2 className="font-heading text-xl">
               Welcome, {auth?.display_name ?? "-"}
             </h2>
+
+            <h3>
+              You&apos;re currently logged as{" "}
+              <span className="font-bold text-primary">
+                {auth?.selected_role?.name ?? "Player"}
+              </span>
+            </h3>
           </div>
         </div>
       </main>
