@@ -7,30 +7,28 @@ import { cn } from "cn";
 import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
 import { Badge } from "@/app/_components/ui/badge";
 import { useLocale } from "@/app/_hooks/use-locale";
-import { useT } from "@/app/_hooks/use-t";
-import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
-import PublicGuildmateAvatar from "./public-guildmate-avatar";
+import PublicAvatar from "@/app/(public)/_components/public-avatar";
 import {
-  PUBLIC_GUILDMATE_LEGEND_RANK_STYLE,
-  PUBLIC_GUILDMATE_PODIUM_ORDER,
-} from "@/app/(public)/guildmates/_constants/public-guildmate-legend-rank";
-import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
+  PUBLIC_LEGEND_RANK_STYLE,
+  PUBLIC_PODIUM_ORDER,
+} from "@/app/(public)/_constants/public-legend-rank";
+import { formatExp } from "@/app/(public)/_utils/public-helper";
 import { getGuildmateHref } from "@/utils/user-helper";
-import type { TPublicGuildmateLegendViewProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
+import type { TPublicLegendViewProps } from "@/app/(public)/_types/public-legend-components-props";
 
 // sm and up: 2nd left, 1st center and raised, 3rd right
-export default function PublicGuildmateLegendPodium({
+export default function PublicLegendPodium({
   kind,
   entries,
-}: TPublicGuildmateLegendViewProps) {
-  const { t } = useT(GUILDMATES_MESSAGES);
+  copy,
+}: TPublicLegendViewProps) {
   const { locale } = useLocale();
 
   return (
     <ol className="grid grid-cols-3 items-end gap-2 lg:gap-3">
-      {PUBLIC_GUILDMATE_PODIUM_ORDER.map((rank) => {
+      {PUBLIC_PODIUM_ORDER.map((rank) => {
         const entry = entries.find((item) => item.rank === rank);
-        const style = PUBLIC_GUILDMATE_LEGEND_RANK_STYLE[rank];
+        const style = PUBLIC_LEGEND_RANK_STYLE[rank];
 
         if (!entry) {
           // Unclaimed spot: same shape as a filled one, muted
@@ -57,19 +55,17 @@ export default function PublicGuildmateLegendPodium({
                     style.badge,
                     rank === 1 && "pl-px",
                   )}
-                  aria-label={t("legends.place", { rank })}
+                  aria-label={copy.place(rank)}
                 >
                   {rank}
                 </Badge>
               </div>
               <div className="mt-1 flex w-full min-w-0 flex-col gap-0.5">
                 <span className="truncate font-heading text-sm text-foreground/70 italic lg:text-base">
-                  {t("legends.unclaimed")}
+                  {copy.unclaimed}
                 </span>
                 <span className="text-xs text-foreground/60">
-                  {kind === "dm"
-                    ? t("legends.awaitingMaster")
-                    : t("legends.awaitingHero")}
+                  {kind === "dm" ? copy.awaitingMaster : copy.awaitingHero}
                 </span>
               </div>
               <div
@@ -93,7 +89,7 @@ export default function PublicGuildmateLegendPodium({
             className="flex min-w-0 flex-col items-center gap-2 text-center"
           >
             <div className="relative">
-              <PublicGuildmateAvatar
+              <PublicAvatar
                 name={user.display_name}
                 avatarUrl={user.avatar_url}
                 className={cn(
@@ -108,7 +104,7 @@ export default function PublicGuildmateLegendPodium({
                   style.badge,
                   rank === 1 && "pl-px",
                 )}
-                aria-label={t("legends.place", { rank })}
+                aria-label={copy.place(rank)}
               >
                 {rank}
               </Badge>
@@ -122,12 +118,8 @@ export default function PublicGuildmateLegendPodium({
               </Link>
               <span className="text-xs font-medium text-foreground/80">
                 {isDm
-                  ? t("legends.dmExp", {
-                      count: formatExp(user.dm_exp, locale),
-                    })
-                  : t("legends.playerExp", {
-                      count: formatExp(user.player_exp, locale),
-                    })}
+                  ? copy.dmExp(formatExp(user.dm_exp, locale))
+                  : copy.playerExp(formatExp(user.player_exp, locale))}
               </span>
             </div>
             <div
@@ -137,13 +129,13 @@ export default function PublicGuildmateLegendPodium({
               )}
             >
               <span className="font-heading text-base leading-tight font-semibold text-primary lg:text-lg">
-                {t("legends.gainedExp", {
-                  count: formatExp(entry.gainedExp, locale),
-                })}
+                {copy.gainedExp(formatExp(entry.gainedExp, locale))}
               </span>
-              <span className="text-xs leading-tight text-foreground/80">
-                {t("legends.soFar")}
-              </span>
+              {copy.expCaption ? (
+                <span className="text-xs leading-tight text-foreground/80">
+                  {copy.expCaption}
+                </span>
+              ) : null}
             </div>
           </li>
         );

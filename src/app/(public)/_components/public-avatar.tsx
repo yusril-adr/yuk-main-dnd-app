@@ -6,16 +6,13 @@ import {
   AvatarImage,
 } from "@/app/_components/ui/avatar";
 import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
+import type { TPublicAvatarProps } from "@/app/(public)/_types/public-legend-components-props";
 
-export default function PublicGuildmateAvatar({
+export default function PublicAvatar({
   name,
   avatarUrl,
   className,
-}: {
-  name: string;
-  avatarUrl: string | null;
-  className?: string;
-}) {
+}: TPublicAvatarProps) {
   return (
     <Avatar className={cn("size-12", className)}>
       <AvatarImage

@@ -4,7 +4,7 @@ import { Progress } from "@/app/_components/ui/progress";
 import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
 import { GUILDMATE_DETAIL_MESSAGES } from "@/app/(public)/guildmates/[slug]/_messages";
-import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
+import { formatExp } from "@/app/(public)/_utils/public-helper";
 import type { TPublicGuildmateStatRowProps } from "@/app/(public)/guildmates/[slug]/_types/public-guildmate-detail-components-props";
 
 // Sizes use cqw so the row scales with the card (screen and 63mm print)

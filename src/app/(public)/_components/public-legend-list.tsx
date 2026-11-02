@@ -15,27 +15,25 @@ import {
   ItemTitle,
 } from "@/app/_components/ui/item";
 import { useLocale } from "@/app/_hooks/use-locale";
-import { useT } from "@/app/_hooks/use-t";
-import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
-import PublicGuildmateAvatar from "./public-guildmate-avatar";
-import { PUBLIC_GUILDMATE_LEGEND_RANK_STYLE } from "@/app/(public)/guildmates/_constants/public-guildmate-legend-rank";
-import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
+import PublicAvatar from "@/app/(public)/_components/public-avatar";
+import { PUBLIC_LEGEND_RANK_STYLE } from "@/app/(public)/_constants/public-legend-rank";
+import { formatExp } from "@/app/(public)/_utils/public-helper";
 import { getGuildmateHref } from "@/utils/user-helper";
-import type { TPublicGuildmateLegendViewProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
+import type { TPublicLegendViewProps } from "@/app/(public)/_types/public-legend-components-props";
 
 // Phones: a plain ranked list, 1 to 3 top to bottom
-export default function PublicGuildmateLegendList({
+export default function PublicLegendList({
   kind,
   entries,
-}: TPublicGuildmateLegendViewProps) {
-  const { t } = useT(GUILDMATES_MESSAGES);
+  copy,
+}: TPublicLegendViewProps) {
   const { locale } = useLocale();
   const isDm = kind === "dm";
 
   return (
     <ol className="flex flex-col gap-2">
       {[1, 2, 3].map((rank) => {
-        const style = PUBLIC_GUILDMATE_LEGEND_RANK_STYLE[rank];
+        const style = PUBLIC_LEGEND_RANK_STYLE[rank];
         const entry = entries.find((item) => item.rank === rank);
 
         if (!entry) {
@@ -70,12 +68,10 @@ export default function PublicGuildmateLegendList({
                 </ItemMedia>
                 <ItemContent className="min-w-0">
                   <ItemTitle className="font-heading text-foreground/70 italic">
-                    {t("legends.unclaimed")}
+                    {copy.unclaimed}
                   </ItemTitle>
                   <ItemDescription className="text-xs text-foreground/60">
-                    {isDm
-                      ? t("legends.awaitingMaster")
-                      : t("legends.awaitingHero")}
+                    {isDm ? copy.awaitingMaster : copy.awaitingHero}
                   </ItemDescription>
                 </ItemContent>
                 <ItemActions className="text-base text-foreground/50">
@@ -91,7 +87,7 @@ export default function PublicGuildmateLegendList({
           <li key={user.id}>
             <Item variant="outline" size="sm" className="bg-muted/20">
               <ItemMedia className="relative">
-                <PublicGuildmateAvatar
+                <PublicAvatar
                   name={user.display_name}
                   avatarUrl={user.avatar_url}
                   className={cn(
@@ -120,23 +116,17 @@ export default function PublicGuildmateLegendList({
                 </ItemTitle>
                 <ItemDescription className="text-xs text-foreground/80">
                   {isDm
-                    ? t("legends.dmExpTotal", {
-                        count: formatExp(user.dm_exp, locale),
-                      })
-                    : t("legends.playerExpTotal", {
-                        count: formatExp(user.player_exp, locale),
-                      })}
+                    ? copy.dmExpTotal(formatExp(user.dm_exp, locale))
+                    : copy.playerExpTotal(formatExp(user.player_exp, locale))}
                 </ItemDescription>
               </ItemContent>
               <ItemActions className="flex-col items-end gap-0">
                 <span className="font-heading text-base font-semibold text-primary">
-                  {t("legends.gainedExp", {
-                    count: formatExp(gainedExp, locale),
-                  })}
+                  {copy.gainedExp(formatExp(gainedExp, locale))}
                 </span>
-                <span className="text-xs text-foreground/80">
-                  {t("legends.soFar")}
-                </span>
+                {copy.expCaption ? (
+                  <span className="text-xs text-foreground/80">{copy.expCaption}</span>
+                ) : null}
               </ItemActions>
             </Item>
           </li>

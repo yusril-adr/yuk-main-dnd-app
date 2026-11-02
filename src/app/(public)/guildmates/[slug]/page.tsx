@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { getPublicUserByIdentifierOnServer } from "@/api/main/modules/users/server";
 import { getGuildmateHref } from "@/utils/user-helper";
-import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
+import { formatExp } from "@/app/(public)/_utils/public-helper";
 import { getRichTextPlainText } from "@/utils/rich-text";
 import { makePageMetadata, toMetaDescription } from "@/utils/seo-helper";
 

@@ -1,5 +1,5 @@
 // Solid medal colors per rank (1-3); no gradients
-export const PUBLIC_GUILDMATE_LEGEND_RANK_STYLE: Record<
+export const PUBLIC_LEGEND_RANK_STYLE: Record<
   number,
   { ring: string; badge: string; plinth: string }
 > = {
@@ -21,4 +21,4 @@ export const PUBLIC_GUILDMATE_LEGEND_RANK_STYLE: Record<
 };
 
 // Podium visual order: 2nd left, 1st center, 3rd right
-export const PUBLIC_GUILDMATE_PODIUM_ORDER = [2, 1, 3];
+export const PUBLIC_PODIUM_ORDER = [2, 1, 3];

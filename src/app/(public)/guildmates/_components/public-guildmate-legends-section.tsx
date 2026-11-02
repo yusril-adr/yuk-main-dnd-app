@@ -1,16 +1,8 @@
 "use client";
 
-import { Crown, Sword } from "lucide-react";
-
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/app/_components/ui/tabs";
 import { useT } from "@/app/_hooks/use-t";
 import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
-import PublicGuildmateLegendBoard from "./public-guildmate-legend-board";
+import PublicLegendBoards from "@/app/(public)/_components/public-legend-boards";
 import type { TPublicGuildmateLegendsSectionProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 export default function PublicGuildmateLegendsSection({
@@ -31,24 +23,23 @@ export default function PublicGuildmateLegendsSection({
     ? t("legends.heroesOf", { month: monthName })
     : t("legends.heroes");
 
-  const dm = (
-    <PublicGuildmateLegendBoard
-      kind="dm"
-      title={dmTitle}
-      icon={Crown}
-      monthName={monthName}
-      {...dmBoard}
-    />
-  );
-  const player = (
-    <PublicGuildmateLegendBoard
-      kind="player"
-      title={heroesTitle}
-      icon={Sword}
-      monthName={monthName}
-      {...playerBoard}
-    />
-  );
+  const copy = {
+    unclaimed: t("legends.unclaimed"),
+    awaitingMaster: t("legends.awaitingMaster"),
+    awaitingHero: t("legends.awaitingHero"),
+    expCaption: t("legends.soFar"),
+    errorTitle: t("legends.errorTitle"),
+    errorDescription: t("legends.errorDescription"),
+    empty: monthName
+      ? t("legends.emptyWithMonth", { month: monthName })
+      : t("legends.emptyFallback"),
+    dmExpTotal: (count: string) => t("legends.dmExpTotal", { count }),
+    playerExpTotal: (count: string) => t("legends.playerExpTotal", { count }),
+    dmExp: (count: string) => t("legends.dmExp", { count }),
+    playerExp: (count: string) => t("legends.playerExp", { count }),
+    gainedExp: (count: string) => t("legends.gainedExp", { count }),
+    place: (rank: number) => t("legends.place", { rank }),
+  };
 
   return (
     <section aria-labelledby="legends-heading" className="flex flex-col gap-4">
@@ -61,25 +52,15 @@ export default function PublicGuildmateLegendsSection({
         </p>
       </div>
 
-      {/* Below md: one board at a time via tabs */}
-      <Tabs defaultValue="dm" className="md:hidden">
-        <TabsList className="h-10! w-full rounded-md">
-          <TabsTrigger value="dm" className="rounded-sm">
-            <Crown /> {t("legends.dungeonMasters")}
-          </TabsTrigger>
-          <TabsTrigger value="player" className="rounded-sm">
-            <Sword /> {t("legends.heroes")}
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="dm">{dm}</TabsContent>
-        <TabsContent value="player">{player}</TabsContent>
-      </Tabs>
-
-      {/* md and up: both boards side by side */}
-      <div className="hidden gap-4 md:grid md:grid-cols-2 lg:gap-6">
-        {dm}
-        {player}
-      </div>
+      <PublicLegendBoards
+        dmTitle={dmTitle}
+        heroesTitle={heroesTitle}
+        dmTabLabel={t("legends.dungeonMasters")}
+        heroesTabLabel={t("legends.heroes")}
+        copy={copy}
+        dmBoard={dmBoard}
+        playerBoard={playerBoard}
+      />
     </section>
   );
 }
