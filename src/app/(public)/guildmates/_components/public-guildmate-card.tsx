@@ -43,7 +43,7 @@ export default function PublicGuildmateCard({
           avatarUrl={guildmate.avatar_url}
           className="size-12 ring-1 ring-primary/30 ring-offset-2 ring-offset-card"
         />
-        <div className="flex min-w-0 flex-col">
+        <div className="flex w-full min-w-0 flex-col items-center text-center">
           <CardTitle className="truncate font-heading text-base">
             <Link
               href={getGuildmateHref(guildmate)}
