@@ -1,0 +1,20 @@
+{
+  "logoAria": "Logo Yuk Main DnD",
+  "title": "Masuk ke akun kamu",
+  "description": "Masukkan username atau email kamu di bawah untuk masuk",
+  "identifier": "Username/Email",
+  "identifierPlaceholder": "user@example.com",
+  "password": "Password",
+  "passwordPlaceholder": "Masukkan password",
+  "showPassword": "Tampilkan password",
+  "hidePassword": "Sembunyikan password",
+  "submit": "Masuk",
+  "validation": {
+    "identifierRequired": "Username/Email wajib diisi",
+    "passwordRequired": "Password wajib diisi"
+  },
+  "toast": {
+    "loggingIn": "Sedang masuk...",
+    "success": "Berhasil masuk"
+  }
+}

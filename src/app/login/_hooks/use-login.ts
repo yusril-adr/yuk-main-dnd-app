@@ -7,6 +7,8 @@ import type { TLoginPayload } from "@/api/main/modules/auth/login/types/login-pa
 import type { TLoginResponse } from "@/api/main/modules/auth/login/types/login-response";
 import type { TMainApiResponse } from "@/api/main/types/response";
 import AccessToken from "@/libs/cookies/access-token";
+import { useT } from "@/app/_hooks/use-t";
+import { LOGIN_MESSAGES } from "@/app/login/_messages";
 
 export function useLogin(
   options?: Omit<
@@ -18,10 +20,12 @@ export function useLogin(
     "mutationFn"
   >,
 ) {
+  const { t } = useT(LOGIN_MESSAGES);
+
   return useMutation({
     mutationFn: login,
     onMutate: (...args) => {
-      toast.loading("Logging in...");
+      toast.loading(t("toast.loggingIn"));
       options?.onMutate?.(...args);
     },
     onSuccess: async (data, ...args) => {
@@ -29,7 +33,7 @@ export function useLogin(
       AccessToken.set(responseData.access_token);
 
       toast.dismiss();
-      toast.success("Login Success");
+      toast.success(t("toast.success"));
       await options?.onSuccess?.(data, ...args);
     },
     onError: (...args) => {

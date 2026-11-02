@@ -7,6 +7,8 @@ import type { TSwitchRolePayload } from "@/api/main/modules/auth/switch-role/typ
 import type { TSwitchRoleResponse } from "@/api/main/modules/auth/switch-role/types/switch-role-response";
 import type { TMainApiResponse } from "@/api/main/types/response";
 import AccessToken from "@/libs/cookies/access-token";
+import { useT } from "@/app/_hooks/use-t";
+import { SWITCH_ROLE_MESSAGES } from "@/app/(authenticated)/switch-role/_messages";
 
 export function useSwitchRole(
   options?: Omit<
@@ -18,10 +20,12 @@ export function useSwitchRole(
     "mutationFn"
   >,
 ) {
+  const { t } = useT(SWITCH_ROLE_MESSAGES);
+
   return useMutation({
     mutationFn: switchRole,
     onMutate: (...args) => {
-      toast.loading("Switching role...");
+      toast.loading(t("toast.switching"));
       options?.onMutate?.(...args);
     },
     onSuccess: async (data, ...args) => {
@@ -29,7 +33,7 @@ export function useSwitchRole(
       AccessToken.set(responseData.access_token);
 
       toast.dismiss();
-      toast.success("Role switched successfully");
+      toast.success(t("toast.success"));
       await options?.onSuccess?.(data, ...args);
     },
     onError: (...args) => {

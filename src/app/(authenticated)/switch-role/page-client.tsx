@@ -6,6 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { parseAsString, useQueryState } from "nuqs";
 
 import CONFIG from "@/common/constants/config";
+import { LanguageSwitcher } from "@/app/_components/language-switcher";
 import { ThemeToggler } from "@/app/_components/theme-toggler";
 import GlobalLoader from "@/app/_components/global-loader";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
@@ -47,7 +48,8 @@ export default function SwitchRolePageClient() {
   return (
     <div className="w-full flex justify-center items-center">
       <main className="flex w-full h-[calc(100vh-32px)] max-w-7xl px-10 relative">
-        <div className="absolute right-0 top-0 pt-4">
+        <div className="absolute right-0 top-0 flex items-center gap-1 pt-4 pr-2">
+          <LanguageSwitcher />
           {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler />}
         </div>
 
