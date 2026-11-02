@@ -8,14 +8,17 @@ import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
+import { useT } from "@/app/_hooks/use-t";
 import RoleEditForm from "./_components/role-edit-form";
 import { useGetPermissionOptions } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-permission-options";
 import { useGetRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-role-by-id";
 import { useUpdateRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-update-role-by-id";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import CONFIG from "@/common/constants/config";
+import { MASTER_ROLES_EDIT_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/roles/[id]/edit/_messages";
 
 export default function RoleEditPageClient() {
+  const { t } = useT(MASTER_ROLES_EDIT_MESSAGES);
   const { id } = useParams();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -48,16 +51,19 @@ export default function RoleEditPageClient() {
       return;
     }
 
-    toast.error("You don't have permission to edit this role");
+    toast.error(t("toast.editForbidden"));
     router.replace(`/dashboard/master/iam/roles/${roleId}`);
-  }, [isEditForbidden, router, roleId]);
+  }, [isEditForbidden, router, roleId, t]);
 
   return (
     <div className="w-full flex justify-center">
       <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
         <AppBreadcrumb
           items={[
-            { name: "Roles", link: "/dashboard/master/iam/roles" },
+            {
+              name: t("breadcrumb.roles"),
+              link: "/dashboard/master/iam/roles",
+            },
             ...(role
               ? [
                   {
@@ -66,7 +72,7 @@ export default function RoleEditPageClient() {
                   },
                 ]
               : []),
-            { name: "Edit" },
+            { name: t("breadcrumb.edit") },
           ]}
         />
 
@@ -74,7 +80,7 @@ export default function RoleEditPageClient() {
           <Link href={`/dashboard/master/iam/roles/${roleId}`}>
             <ArrowLeft />
           </Link>
-          <h1 className="font-heading text-2xl">Edit Role</h1>
+          <h1 className="font-heading text-2xl">{t("title")}</h1>
         </div>
 
         <RoleEditForm

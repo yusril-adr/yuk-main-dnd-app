@@ -1,14 +1,20 @@
 import * as z from "zod";
 
-export const RoleEditFormSchema = z.object({
-  name: z
-    .string("Name is required")
-    .min(1, "Name is required")
-    .max(100, "Name must be at most 100 characters")
-    .regex(/[A-Za-z0-9]/, "Name must contain at least one letter or number"),
-  description: z.string().optional(),
-  isShowInPublic: z.boolean(),
-  permissionIds: z.array(z.string()),
-});
+import type { TRoleEditTranslate } from "@/app/(authenticated)/dashboard/master/iam/roles/[id]/edit/_types/role-edit-translate";
 
-export type TRoleEditFormSchema = z.infer<typeof RoleEditFormSchema>;
+export function createRoleEditFormSchema(t: TRoleEditTranslate) {
+  return z.object({
+    name: z
+      .string(t("validation.nameRequired"))
+      .min(1, t("validation.nameRequired"))
+      .max(100, t("validation.nameMax", { max: 100 }))
+      .regex(/[A-Za-z0-9]/, t("validation.nameAlphanumeric")),
+    description: z.string().optional(),
+    isShowInPublic: z.boolean(),
+    permissionIds: z.array(z.string()),
+  });
+}
+
+export type TRoleEditFormSchema = z.infer<
+  ReturnType<typeof createRoleEditFormSchema>
+>;

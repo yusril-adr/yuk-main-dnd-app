@@ -16,12 +16,17 @@ import { Textarea } from "@/app/_components/ui/textarea";
 import { Checkbox } from "@/app/_components/ui/checkbox";
 import { Button } from "@/app/_components/ui/button";
 import { Spinner } from "@/app/_components/ui/spinner";
+import { useT } from "@/app/_hooks/use-t";
 
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
-import { RoleEditFormSchema, type TRoleEditFormSchema } from "./scheme";
+import {
+  createRoleEditFormSchema,
+  type TRoleEditFormSchema,
+} from "./scheme";
 import type { TRoleEditFormProps } from "../../_types/role-edit-form-props";
 import RoleEditPermissionChecboxInput from "../role-edit-permission-checbox-input";
+import { MASTER_ROLES_EDIT_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/roles/[id]/edit/_messages";
 
 export default function RoleEditForm({
   name,
@@ -36,6 +41,8 @@ export default function RoleEditForm({
   isPending,
   isPaused,
 }: TRoleEditFormProps) {
+  const { t } = useT(MASTER_ROLES_EDIT_MESSAGES);
+  const schema = useMemo(() => createRoleEditFormSchema(t), [t]);
   const values = useMemo(
     () => ({
       name: name ?? "",
@@ -47,7 +54,7 @@ export default function RoleEditForm({
   );
 
   const { control, handleSubmit, setError } = useForm<TRoleEditFormSchema>({
-    resolver: zodResolver(RoleEditFormSchema),
+    resolver: zodResolver(schema),
     values,
   });
 
@@ -90,11 +97,13 @@ export default function RoleEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="name">Name</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="name">
+                    {t("fields.name")}
+                  </RequiredFieldLabel>
                   <Input
                     aria-required
                     id="name"
-                    placeholder="Input role name"
+                    placeholder={t("fields.namePlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -110,10 +119,12 @@ export default function RoleEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="description">Description</FieldLabel>
+                  <FieldLabel htmlFor="description">
+                    {t("fields.description")}
+                  </FieldLabel>
                   <Textarea
                     id="description"
-                    placeholder="Input role description"
+                    placeholder={t("fields.descriptionPlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -140,7 +151,7 @@ export default function RoleEditForm({
                     disabled={isFormDisabled}
                   />
                   <FieldLabel htmlFor="isShowInPublic">
-                    Show in public
+                    {t("fields.showInPublic")}
                   </FieldLabel>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -155,7 +166,7 @@ export default function RoleEditForm({
               render={({ field, fieldState }) => {
                 return (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>Permissions</FieldLabel>
+                    <FieldLabel>{t("fields.permissions")}</FieldLabel>
                     <RoleEditPermissionChecboxInput
                       permissions={permissions}
                       value={field.value}
@@ -183,12 +194,12 @@ export default function RoleEditForm({
                 disabled={isFormDisabled}
                 nativeButton={false}
               >
-                Cancel
+                {t("actions.cancel")}
                 {isFormDisabled && <Spinner />}
               </Button>
 
               <Button type="submit" disabled={isFormDisabled}>
-                Save
+                {t("actions.save")}
                 {isFormDisabled && <Spinner />}
               </Button>
             </Field>
