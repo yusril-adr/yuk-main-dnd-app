@@ -24,7 +24,17 @@
     "addingMembers": "Adding story members...",
     "membersAdded": "Story members added",
     "removingMembers": "Removing story members...",
-    "membersRemoved": "Story members removed"
+    "membersRemoved": "Story members removed",
+    "publishing": "Publishing story...",
+    "published": "Story published",
+    "archiving": "Archiving story...",
+    "archived": "Story archived",
+    "unarchiving": "Unarchiving story...",
+    "unarchived": "Story unarchived",
+    "cancelling": "Cancelling story...",
+    "cancelled": "Story cancelled",
+    "deleting": "Deleting story...",
+    "deleted": "Story deleted"
   },
   "enums": {
     "memberStatus": {

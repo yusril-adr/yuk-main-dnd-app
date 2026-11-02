@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { deleteStoryById } from "@/api/main/modules/master/stories/[id]";
 import { useT } from "@/app/_hooks/use-t";
 
-import { MASTER_STORIES_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages";
+import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages/shared";
 
 export function useDeleteStoryById(
   options?: Omit<
@@ -13,7 +13,7 @@ export function useDeleteStoryById(
     "mutationFn"
   >,
 ) {
-  const { t } = useT(MASTER_STORIES_MESSAGES);
+  const { t } = useT(MASTER_STORIES_SHARED_MESSAGES);
 
   return useMutation({
     ...options,
