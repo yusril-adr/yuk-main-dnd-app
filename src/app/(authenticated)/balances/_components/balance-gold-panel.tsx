@@ -1,16 +1,17 @@
 import { useMemo } from "react";
 
-import type { UserPointLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/points/enums/user-point-log-type";
+import { UserPointLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/points/enums/user-point-log-type";
 import { OrderKeyEnum } from "@/common/enums/order-key";
+import { useT } from "@/app/_hooks/use-t";
 
 import BalanceLogList from "@/app/(authenticated)/balances/_components/balance-log-list";
 import { useGetMyPointPagination } from "@/app/(authenticated)/balances/_hooks/use-get-my-point-pagination";
 import {
-  BALANCE_POINT_TYPE_LABEL,
   BALANCE_POINT_TYPE_OPTIONS,
   BALANCE_FILTER_ALL,
   BALANCE_PAGE_SIZE,
 } from "@/app/(authenticated)/balances/_constants/balance";
+import { BALANCES_MESSAGES } from "@/app/(authenticated)/balances/_messages";
 import {
   getSignedPointAmount,
   toTypeOrNull,
@@ -20,13 +21,10 @@ import type {
   TBalanceLogPanelProps,
 } from "@/app/(authenticated)/balances/_types/balance-components-props";
 
-const TYPE_ITEMS = [
-  { label: "All gold", value: BALANCE_FILTER_ALL },
-  ...BALANCE_POINT_TYPE_OPTIONS.map((type) => ({
-    label: BALANCE_POINT_TYPE_LABEL[type],
-    value: String(type),
-  })),
-];
+const POINT_TYPE_LABEL_KEY = {
+  [UserPointLogTypeEnum.INCOME]: "enums.pointType.income",
+  [UserPointLogTypeEnum.EXPENSE]: "enums.pointType.expense",
+} as const;
 
 export default function BalanceGoldPanel({
   page,
@@ -34,6 +32,7 @@ export default function BalanceGoldPanel({
   onPageChange,
   onTypeChange,
 }: TBalanceLogPanelProps) {
+  const { t } = useT(BALANCES_MESSAGES);
   const { data, isPending, isError, refetch } = useGetMyPointPagination({
     page,
     per_page: BALANCE_PAGE_SIZE,
@@ -42,17 +41,31 @@ export default function BalanceGoldPanel({
     type: (type ?? undefined) as UserPointLogTypeEnum | undefined,
   });
 
+  const typeItems = useMemo(
+    () => [
+      { label: t("filters.allGold"), value: BALANCE_FILTER_ALL },
+      ...BALANCE_POINT_TYPE_OPTIONS.map((option) => ({
+        label: t(POINT_TYPE_LABEL_KEY[option]),
+        value: String(option),
+      })),
+    ],
+    [t],
+  );
+
   const items: TBalanceLogItem[] = useMemo(
     () =>
       (data?.data?.data?.items ?? []).map((log) => ({
         id: log.id,
         createdAt: log.created_at,
-        typeLabel: BALANCE_POINT_TYPE_LABEL[log.type] ?? "Gold",
+        typeLabel:
+          POINT_TYPE_LABEL_KEY[log.type] != null
+            ? t(POINT_TYPE_LABEL_KEY[log.type])
+            : t("enums.pointType.fallback"),
         description: log.description,
         amount: getSignedPointAmount(log.amount, log.type),
-        unit: "GP",
+        unit: t("units.gp"),
       })),
-    [data],
+    [data, t],
   );
   const meta = data?.data?.data?.meta;
 
@@ -65,11 +78,11 @@ export default function BalanceGoldPanel({
       page={page}
       pageCount={meta?.total_page || 1}
       rowCount={meta?.total_all_data || 0}
-      typeItems={TYPE_ITEMS}
+      typeItems={typeItems}
       typeValue={type != null ? String(type) : BALANCE_FILTER_ALL}
-      typeAriaLabel="Gold type"
-      emptyTitle="No gold yet"
-      emptyDescription="Gold you earn or spend will be recorded here."
+      typeAriaLabel={t("filters.goldTypeAria")}
+      emptyTitle={t("empty.goldTitle")}
+      emptyDescription={t("empty.goldDescription")}
       onTypeChange={(value) => onTypeChange(toTypeOrNull(value))}
       onRetry={() => refetch()}
       onReset={() => onTypeChange(null)}

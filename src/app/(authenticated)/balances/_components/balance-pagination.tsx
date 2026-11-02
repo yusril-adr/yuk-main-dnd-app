@@ -9,9 +9,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/app/_components/ui/pagination";
+import { useT } from "@/app/_hooks/use-t";
 import { generatePages } from "@/utils/table-helper";
 
 import { BALANCE_PAGE_SIZE } from "@/app/(authenticated)/balances/_constants/balance";
+import { BALANCES_MESSAGES } from "@/app/(authenticated)/balances/_messages";
 import type { TBalancePaginationProps } from "@/app/(authenticated)/balances/_types/balance-components-props";
 
 const DISABLED = "pointer-events-none opacity-50";
@@ -23,6 +25,7 @@ export default function BalancePagination({
   itemCount,
   onPageChange,
 }: TBalancePaginationProps) {
+  const { t } = useT(BALANCES_MESSAGES);
   const pages = useMemo(
     () => generatePages({ currentPage: page, totalPages: pageCount }),
     [page, pageCount],
@@ -43,15 +46,19 @@ export default function BalancePagination({
       className="flex-col-reverse items-center justify-between gap-3 px-3 sm:flex-row sm:px-4"
     >
       <CardDescription>
-        Showing {indexStart}–{indexEnd} of {rowCount}
+        {t("pagination.showing", {
+          start: indexStart,
+          end: indexEnd,
+          total: rowCount,
+        })}
       </CardDescription>
-      <Pagination aria-label="Ledger pages" className="mx-0 w-auto">
+      <Pagination aria-label={t("pagination.pagesAria")} className="mx-0 w-auto">
         <PaginationContent className="flex-wrap justify-center">
           <PaginationItem>
             <PaginationPrevious
               href="#"
               text=""
-              aria-label="Previous page"
+              aria-label={t("pagination.previous")}
               aria-disabled={page <= 1}
               className={page <= 1 ? DISABLED : undefined}
               onClick={go(page - 1)}
@@ -73,7 +80,7 @@ export default function BalancePagination({
             <PaginationNext
               href="#"
               text=""
-              aria-label="Next page"
+              aria-label={t("pagination.next")}
               aria-disabled={page >= pageCount}
               className={page >= pageCount ? DISABLED : undefined}
               onClick={go(page + 1)}

@@ -9,7 +9,9 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/app/_components/ui/empty";
+import { useT } from "@/app/_hooks/use-t";
 
+import { BALANCES_MESSAGES } from "@/app/(authenticated)/balances/_messages";
 import type { TBalanceEmptyStateProps } from "@/app/(authenticated)/balances/_types/balance-components-props";
 
 export default function BalanceEmptyState({
@@ -18,6 +20,8 @@ export default function BalanceEmptyState({
   isFiltered,
   onReset,
 }: TBalanceEmptyStateProps) {
+  const { t } = useT(BALANCES_MESSAGES);
+
   return (
     <Empty className="border bg-card">
       <EmptyHeader>
@@ -25,16 +29,16 @@ export default function BalanceEmptyState({
           <ScrollText />
         </EmptyMedia>
         <EmptyTitle className="font-heading text-xl">
-          {isFiltered ? "No entries match" : title}
+          {isFiltered ? t("empty.filteredTitle") : title}
         </EmptyTitle>
         <EmptyDescription>
-          {isFiltered ? "Try another type filter." : description}
+          {isFiltered ? t("empty.filteredDescription") : description}
         </EmptyDescription>
       </EmptyHeader>
       {isFiltered && (
         <EmptyContent>
           <Button variant="outline" onClick={onReset}>
-            Clear filter
+            {t("empty.clearFilter")}
           </Button>
         </EmptyContent>
       )}
