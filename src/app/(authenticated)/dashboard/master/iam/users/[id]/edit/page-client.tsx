@@ -122,7 +122,7 @@ export default function UserEditPageClient() {
           isRolesLoading={rolesQuery.isLoading}
           roleSearch={roleSearch}
           onRoleSearchChange={setRoleSearch}
-          email={user?.email}
+          email={user?.email ?? undefined}
           username={user?.username}
           displayName={user?.display_name}
           bio={user?.bio}

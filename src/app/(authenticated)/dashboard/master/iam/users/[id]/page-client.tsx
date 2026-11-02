@@ -89,7 +89,7 @@ export default function UserDetailPageClient() {
     },
   });
 
-  const renderValue = (value: string | number | undefined) => {
+  const renderValue = (value: string | number | null | undefined) => {
     if (userQuery.isLoading) {
       return <Skeleton className="h-6 w-full" />;
     }
