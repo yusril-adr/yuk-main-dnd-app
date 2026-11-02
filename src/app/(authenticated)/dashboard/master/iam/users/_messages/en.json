@@ -1,0 +1,45 @@
+{
+  "breadcrumb": "Users",
+  "title": "Users",
+  "addUser": "Add User",
+  "filters": {
+    "filter": "Filter",
+    "sortBy": "Sort By",
+    "sortOrder": "Sort Order",
+    "selectField": "Select field",
+    "selectOrder": "Select order",
+    "roles": "Roles",
+    "searchRoles": "Search roles",
+    "noRolesFound": "No roles found.",
+    "clear": "Clear",
+    "apply": "Apply",
+    "searchPlaceholder": "Type minimum 3 characters to search ..."
+  },
+  "sort": {
+    "displayName": "Display Name",
+    "username": "Username",
+    "email": "Email",
+    "dmExp": "DM EXP",
+    "playerExp": "Player EXP",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "asc": "Ascending",
+    "desc": "Descending"
+  },
+  "card": {
+    "usernameUnset": "(username is not set)",
+    "playerExp": "Player EXP",
+    "dmExp": "DM EXP",
+    "gold": "Gold",
+    "view": "View",
+    "balances": "Balances",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "dialogs": {
+    "cancel": "Cancel",
+    "deleteTitle": "Delete user?",
+    "deleteDescription": "This action cannot be undone. The user will be permanently removed from the system.",
+    "deleteConfirm": "Delete"
+  }
+}
