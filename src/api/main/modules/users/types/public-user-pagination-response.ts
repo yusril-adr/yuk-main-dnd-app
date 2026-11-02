@@ -10,6 +10,7 @@ export type TPublicUserPaginationResponse = {
   username: string | null;
   display_name: string;
   avatar_url: string | null;
+  is_guest: boolean;
   dm_exp: number;
   dm_level: number;
   player_exp: number;
