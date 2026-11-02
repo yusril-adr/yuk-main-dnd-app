@@ -89,17 +89,5 @@
     "deleteTitle": "Hapus story?",
     "deleteDescription": "Aksi ini tidak bisa diurungkan. Story akan dihapus dari sistem.",
     "deleteConfirm": "Hapus"
-  },
-  "toast": {
-    "publishing": "Mem-publish story...",
-    "published": "Story dipublish",
-    "archiving": "Mengarsipkan story...",
-    "archived": "Story diarsipkan",
-    "unarchiving": "Membatalkan arsip story...",
-    "unarchived": "Arsip story dibatalkan",
-    "cancelling": "Membatalkan story...",
-    "cancelled": "Story dibatalkan",
-    "deleting": "Menghapus story...",
-    "deleted": "Story dihapus"
   }
 }

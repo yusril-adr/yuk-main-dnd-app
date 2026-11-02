@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { publishStoryById } from "@/api/main/modules/master/stories/[id]";
 import { useT } from "@/app/_hooks/use-t";
 
-import { MASTER_STORIES_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages";
+import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages/shared";
 
 // PATCH /:id/publish (stories:update or the story's creator). A 400 (not a
 // draft) is already toasted by the axios interceptor
@@ -15,7 +15,7 @@ export function usePublishStoryById(
     "mutationFn"
   >,
 ) {
-  const { t } = useT(MASTER_STORIES_MESSAGES);
+  const { t } = useT(MASTER_STORIES_SHARED_MESSAGES);
 
   return useMutation({
     ...options,

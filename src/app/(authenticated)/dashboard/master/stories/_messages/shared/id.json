@@ -24,7 +24,17 @@
     "addingMembers": "Menambah anggota story...",
     "membersAdded": "Anggota story ditambahkan",
     "removingMembers": "Menghapus anggota story...",
-    "membersRemoved": "Anggota story dihapus"
+    "membersRemoved": "Anggota story dihapus",
+    "publishing": "Mem-publish story...",
+    "published": "Story dipublish",
+    "archiving": "Mengarsipkan story...",
+    "archived": "Story diarsipkan",
+    "unarchiving": "Membatalkan arsip story...",
+    "unarchived": "Arsip story dibatalkan",
+    "cancelling": "Membatalkan story...",
+    "cancelled": "Story dibatalkan",
+    "deleting": "Menghapus story...",
+    "deleted": "Story dihapus"
   },
   "enums": {
     "memberStatus": {

@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { archiveStoryById } from "@/api/main/modules/master/stories/[id]";
 import { useT } from "@/app/_hooks/use-t";
 
-import { MASTER_STORIES_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages";
+import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages/shared";
 
 // PATCH /:id/archive (stories:update or the story's creator); the API keeps
 // the current status so the story can be unarchived later
@@ -15,7 +15,7 @@ export function useArchiveStoryById(
     "mutationFn"
   >,
 ) {
-  const { t } = useT(MASTER_STORIES_MESSAGES);
+  const { t } = useT(MASTER_STORIES_SHARED_MESSAGES);
 
   return useMutation({
     ...options,

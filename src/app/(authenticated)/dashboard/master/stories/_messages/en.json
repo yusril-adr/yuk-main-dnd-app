@@ -89,17 +89,5 @@
     "deleteTitle": "Delete story?",
     "deleteDescription": "This action cannot be undone. The story will be removed from the system.",
     "deleteConfirm": "Delete"
-  },
-  "toast": {
-    "publishing": "Publishing story...",
-    "published": "Story published",
-    "archiving": "Archiving story...",
-    "archived": "Story archived",
-    "unarchiving": "Unarchiving story...",
-    "unarchived": "Story unarchived",
-    "cancelling": "Cancelling story...",
-    "cancelled": "Story cancelled",
-    "deleting": "Deleting story...",
-    "deleted": "Story deleted"
   }
 }
