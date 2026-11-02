@@ -10,13 +10,16 @@ import { useQueryClient } from "@tanstack/react-query";
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import CONFIG from "@/common/constants/config";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import { useT } from "@/app/_hooks/use-t";
 import UserEditForm from "./_components/user-edit-form";
 import { useGetUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-by-id";
 import { useUpdateUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-update-user-by-id";
 import { useAvatarUploadFile } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-avatar-upload-file";
 import { useGetRoleOptions } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-role-options";
+import { MASTER_USERS_EDIT_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/[id]/edit/_messages";
 
 export default function UserEditPageClient() {
+  const { t } = useT(MASTER_USERS_EDIT_MESSAGES);
   const params = useParams();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -82,33 +85,36 @@ export default function UserEditPageClient() {
       return;
     }
 
-    toast.error("You don't have permission to edit this user");
+    toast.error(t("toast.editForbidden"));
     router.replace(`/dashboard/master/iam/users/${userId}`);
-  }, [isEditForbidden, router, userId]);
-
-  const breadcrumbItems = [
-    { name: "Users", link: "/dashboard/master/iam/users" },
-    ...(!getDataQuery.isLoading
-      ? [
-          {
-            name: user?.display_name ?? "Detail",
-            link: `/dashboard/master/iam/users/${userId}`,
-          },
-        ]
-      : []),
-    { name: "Edit" },
-  ];
+  }, [isEditForbidden, router, userId, t]);
 
   return (
     <div className="w-full flex justify-center">
       <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
-        <AppBreadcrumb items={breadcrumbItems} />
+        <AppBreadcrumb
+          items={[
+            {
+              name: t("breadcrumb.users"),
+              link: "/dashboard/master/iam/users",
+            },
+            ...(user
+              ? [
+                  {
+                    name: user.display_name,
+                    link: `/dashboard/master/iam/users/${userId}`,
+                  },
+                ]
+              : []),
+            { name: t("breadcrumb.edit") },
+          ]}
+        />
 
         <div className="flex items-center mt-4 mb-6 gap-x-2">
           <Link href={`/dashboard/master/iam/users/${userId}`}>
             <ArrowLeft />
           </Link>
-          <h1 className="font-heading text-2xl">Edit User</h1>
+          <h1 className="font-heading text-2xl">{t("title")}</h1>
         </div>
 
         <UserEditForm

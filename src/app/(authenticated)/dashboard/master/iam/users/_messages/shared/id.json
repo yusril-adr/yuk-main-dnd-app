@@ -1,6 +1,12 @@
 {
   "toast": {
+    "creating": "Membuat user...",
+    "created": "User dibuat",
+    "updating": "Memperbarui user...",
+    "updated": "User diperbarui",
     "deleting": "Menghapus user...",
-    "deleted": "User dihapus"
+    "deleted": "User dihapus",
+    "uploadingAvatar": "Mengunggah avatar...",
+    "avatarUploaded": "Avatar terunggah"
   }
 }

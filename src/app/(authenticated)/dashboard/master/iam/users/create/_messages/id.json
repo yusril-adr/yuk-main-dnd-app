@@ -1,0 +1,40 @@
+{
+  "breadcrumb": {
+    "users": "Users",
+    "create": "Buat"
+  },
+  "title": "Buat User",
+  "fields": {
+    "avatar": "Avatar",
+    "chooseFile": "Pilih file",
+    "resetFile": "Atur ulang file",
+    "avatarHint": "Foto profil sebaiknya berukuran rasio 1:1\ndan tidak lebih besar dari {{size}}.",
+    "email": "Email",
+    "emailPlaceholder": "Masukkan email",
+    "username": "Username",
+    "usernamePlaceholder": "Masukkan username",
+    "password": "Password",
+    "passwordPlaceholder": "Masukkan password",
+    "displayName": "Nama Tampilan",
+    "displayNamePlaceholder": "Masukkan nama tampilan",
+    "bio": "Bio",
+    "bioPlaceholder": "Masukkan bio",
+    "roles": "Roles",
+    "rolesPlaceholder": "Pilih roles",
+    "noRolesFound": "Tidak ada roles."
+  },
+  "actions": {
+    "cancel": "Batal",
+    "save": "Simpan"
+  },
+  "validation": {
+    "emailRequired": "Email wajib diisi",
+    "emailInvalid": "Email tidak valid",
+    "passwordRequired": "Password wajib diisi",
+    "passwordMin": "Password minimal {{min}} karakter",
+    "usernameNoSpaces": "Username tidak boleh mengandung spasi",
+    "displayNameRequired": "Nama tampilan wajib diisi",
+    "bioMax": "Bio maksimal {{max}} karakter",
+    "rolesRequired": "Minimal satu role wajib dipilih"
+  }
+}

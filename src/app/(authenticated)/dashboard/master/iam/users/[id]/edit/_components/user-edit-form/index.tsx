@@ -48,12 +48,17 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/app/_components/ui/avatar";
+import { useT } from "@/app/_hooks/use-t";
 
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { emptyToNull } from "@/utils/form-helper";
 import { applyValidationErrors } from "@/utils/validation-helper";
-import { UserEditFormSchema, type TUserEditFormSchema } from "./scheme";
+import {
+  createUserEditFormSchema,
+  type TUserEditFormSchema,
+} from "./scheme";
 import type { TUserEditFormProps } from "../../_types/user-edit-form-props";
+import { MASTER_USERS_EDIT_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/[id]/edit/_messages";
 
 export default function UserEditForm({
   roles,
@@ -74,6 +79,12 @@ export default function UserEditForm({
   isUploadingAvatar,
   avatarFileId,
 }: TUserEditFormProps) {
+  const { t } = useT(MASTER_USERS_EDIT_MESSAGES);
+  const schema = useMemo(() => createUserEditFormSchema(t), [t]);
+  const avatarHintLines = t("fields.avatarHint", {
+    size: formatFileSize(USER_AVATAR_MAX_FILE_SIZE_BYTES),
+  }).split("\n");
+
   const defaultValues = useMemo(
     () => ({
       email: email || "",
@@ -89,7 +100,7 @@ export default function UserEditForm({
 
   const { control, handleSubmit, setError, setValue } =
     useForm<TUserEditFormSchema>({
-      resolver: zodResolver(UserEditFormSchema),
+      resolver: zodResolver(schema),
       values: defaultValues,
     });
 
@@ -173,7 +184,7 @@ export default function UserEditForm({
               control={control}
               render={({ fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Avatar</FieldLabel>
+                  <FieldLabel>{t("fields.avatar")}</FieldLabel>
                   <div className="flex flex-col sm:flex-row items-center gap-4">
                     <Avatar className="size-24">
                       <AvatarImage src={previewUrl ?? avatarUrl ?? undefined} />
@@ -199,7 +210,7 @@ export default function UserEditForm({
                                 <Upload data-icon="inline-start" />
                               </Else>
                             </If>
-                            Choose file
+                            {t("fields.chooseFile")}
                           </Button>
 
                           {(previewUrl || avatarUrl) && (
@@ -211,7 +222,7 @@ export default function UserEditForm({
                               onClick={handleResetAvatar}
                             >
                               <RotateCcwClock data-icon="inline-start" />
-                              Reset file
+                              {t("fields.resetFile")}
                             </Button>
                           )}
                         </div>
@@ -224,10 +235,9 @@ export default function UserEditForm({
                         />
                       </div>
                       <FieldDescription className="flex-1">
-                        Your profile image should have a 1:1 ratio
+                        {avatarHintLines[0]}
                         <br />
-                        and be no larger than{" "}
-                        {formatFileSize(USER_AVATAR_MAX_FILE_SIZE_BYTES)}.
+                        {avatarHintLines[1]}
                       </FieldDescription>
                     </div>
                   </div>
@@ -243,12 +253,14 @@ export default function UserEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="email">Email</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="email">
+                    {t("fields.email")}
+                  </RequiredFieldLabel>
                   <Input
                     aria-required
                     id="email"
                     type="email"
-                    placeholder="Input email"
+                    placeholder={t("fields.emailPlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -264,10 +276,12 @@ export default function UserEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="username">Username</FieldLabel>
+                  <FieldLabel htmlFor="username">
+                    {t("fields.username")}
+                  </FieldLabel>
                   <Input
                     id="username"
-                    placeholder="Input username"
+                    placeholder={t("fields.usernamePlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -283,12 +297,14 @@ export default function UserEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <FieldLabel htmlFor="password">
+                    {t("fields.password")}
+                  </FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id="password"
                       type={isShowPassword ? "text" : "password"}
-                      placeholder="Leave blank to keep current password"
+                      placeholder={t("fields.passwordPlaceholder")}
                       disabled={isFormDisabled}
                       autoComplete="off"
                       {...field}
@@ -322,11 +338,13 @@ export default function UserEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="displayName">Display Name</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="displayName">
+                    {t("fields.displayName")}
+                  </RequiredFieldLabel>
                   <Input
                     aria-required
                     id="displayName"
-                    placeholder="Input display name"
+                    placeholder={t("fields.displayNamePlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -342,10 +360,10 @@ export default function UserEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="bio">Bio</FieldLabel>
+                  <FieldLabel htmlFor="bio">{t("fields.bio")}</FieldLabel>
                   <Textarea
                     id="bio"
-                    placeholder="Input bio"
+                    placeholder={t("fields.bioPlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -361,7 +379,9 @@ export default function UserEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required>Roles</RequiredFieldLabel>
+                  <RequiredFieldLabel required>
+                    {t("fields.roles")}
+                  </RequiredFieldLabel>
                   <Combobox
                     multiple
                     items={roles}
@@ -391,10 +411,13 @@ export default function UserEditForm({
                           </ComboboxChip>
                         );
                       })}
-                      <ComboboxChipsInput aria-required placeholder="Select roles" />
+                      <ComboboxChipsInput
+                        aria-required
+                        placeholder={t("fields.rolesPlaceholder")}
+                      />
                     </ComboboxChips>
                     <ComboboxContent>
-                      <ComboboxEmpty>No roles found.</ComboboxEmpty>
+                      <ComboboxEmpty>{t("fields.noRolesFound")}</ComboboxEmpty>
                       <ComboboxList>
                         {(item: { value: string; label: string }) => (
                           <ComboboxItem key={item.value} value={item}>
@@ -424,7 +447,7 @@ export default function UserEditForm({
                 disabled={isFormDisabled || isUploadingAvatar}
                 nativeButton={false}
               >
-                Cancel
+                {t("actions.cancel")}
                 {isFormDisabled && <Spinner />}
               </Button>
 
@@ -432,7 +455,7 @@ export default function UserEditForm({
                 type="submit"
                 disabled={isFormDisabled || isUploadingAvatar}
               >
-                Save
+                {t("actions.save")}
                 {(isFormDisabled || isUploadingAvatar) && <Spinner />}
               </Button>
             </Field>
