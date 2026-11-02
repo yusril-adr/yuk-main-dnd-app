@@ -8,12 +8,15 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import CONFIG from "@/common/constants/config";
+import { useT } from "@/app/_hooks/use-t";
 import UserCreateForm from "./_components/user-create-form";
 import { useCreateUser } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-create-user";
 import { useAvatarUploadFile } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-avatar-upload-file";
 import { useGetRoleOptions } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-role-options";
+import { MASTER_USERS_CREATE_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/create/_messages";
 
 export default function UserCreatePageClient() {
+  const { t } = useT(MASTER_USERS_CREATE_MESSAGES);
   const router = useRouter();
   const queryClient = useQueryClient();
   const [roleSearch, setRoleSearch] = useState("");
@@ -52,8 +55,11 @@ export default function UserCreatePageClient() {
       <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
         <AppBreadcrumb
           items={[
-            { name: "Users", link: "/dashboard/master/iam/users" },
-            { name: "Create" },
+            {
+              name: t("breadcrumb.users"),
+              link: "/dashboard/master/iam/users",
+            },
+            { name: t("breadcrumb.create") },
           ]}
         />
 
@@ -61,7 +67,7 @@ export default function UserCreatePageClient() {
           <Link href="/dashboard/master/iam/users">
             <ArrowLeft />
           </Link>
-          <h1 className="font-heading text-2xl">Create User</h1>
+          <h1 className="font-heading text-2xl">{t("title")}</h1>
         </div>
 
         <UserCreateForm

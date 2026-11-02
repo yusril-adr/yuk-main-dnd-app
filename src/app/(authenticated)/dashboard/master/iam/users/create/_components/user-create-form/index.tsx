@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { USER_AVATAR_MAX_FILE_SIZE_BYTES } from "@/common/constants/user-avatar";
 import { formatFileSize } from "@/utils/file-helper";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
@@ -48,11 +48,16 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/app/_components/ui/avatar";
+import { useT } from "@/app/_hooks/use-t";
 
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
-import { UserCreateFormSchema, type TUserCreateFormSchema } from "./scheme";
+import {
+  createUserCreateFormSchema,
+  type TUserCreateFormSchema,
+} from "./scheme";
 import type { TUserCreateFormProps } from "../../_types/user-create-form-props";
+import { MASTER_USERS_CREATE_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/create/_messages";
 
 export default function UserCreateForm({
   roles,
@@ -66,9 +71,15 @@ export default function UserCreateForm({
   isUploadingAvatar,
   avatarFileId,
 }: TUserCreateFormProps) {
+  const { t } = useT(MASTER_USERS_CREATE_MESSAGES);
+  const schema = useMemo(() => createUserCreateFormSchema(t), [t]);
+  const avatarHintLines = t("fields.avatarHint", {
+    size: formatFileSize(USER_AVATAR_MAX_FILE_SIZE_BYTES),
+  }).split("\n");
+
   const { control, handleSubmit, setError, setValue } =
     useForm<TUserCreateFormSchema>({
-      resolver: zodResolver(UserCreateFormSchema),
+      resolver: zodResolver(schema),
       defaultValues: {
         email: "",
         password: "",
@@ -84,14 +95,12 @@ export default function UserCreateForm({
   const [isShowPassword, setIsShowPassword] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Revoke object URL on unmount
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
     };
   }, [previewUrl]);
 
-  // Sync uploaded file ID from parent into form
   useEffect(() => {
     if (avatarFileId) {
       setValue("avatarFileId", avatarFileId);
@@ -122,7 +131,6 @@ export default function UserCreateForm({
       const file = event.target.files?.[0];
       if (!file) return;
 
-      // Revoke previous preview
       if (previewUrl) URL.revokeObjectURL(previewUrl);
 
       const url = URL.createObjectURL(file);
@@ -163,7 +171,7 @@ export default function UserCreateForm({
               control={control}
               render={({ fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Avatar</FieldLabel>
+                  <FieldLabel>{t("fields.avatar")}</FieldLabel>
                   <div className="flex flex-col sm:flex-row items-center gap-4">
                     <Avatar className="size-24">
                       <AvatarImage src={previewUrl ?? undefined} />
@@ -189,7 +197,7 @@ export default function UserCreateForm({
                                 <Upload data-icon="inline-start" />
                               </Else>
                             </If>
-                            Choose file
+                            {t("fields.chooseFile")}
                           </Button>
 
                           {previewUrl && (
@@ -201,7 +209,7 @@ export default function UserCreateForm({
                               onClick={handleResetAvatar}
                             >
                               <RotateCcwClock data-icon="inline-start" />
-                              Reset file
+                              {t("fields.resetFile")}
                             </Button>
                           )}
                         </div>
@@ -214,10 +222,9 @@ export default function UserCreateForm({
                         />
                       </div>
                       <FieldDescription className="flex-1">
-                        Your profile image should have a 1:1 ratio
+                        {avatarHintLines[0]}
                         <br />
-                        and be no larger than{" "}
-                        {formatFileSize(USER_AVATAR_MAX_FILE_SIZE_BYTES)}.
+                        {avatarHintLines[1]}
                       </FieldDescription>
                     </div>
                   </div>
@@ -233,12 +240,14 @@ export default function UserCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="email">Email</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="email">
+                    {t("fields.email")}
+                  </RequiredFieldLabel>
                   <Input
                     aria-required
                     id="email"
                     type="email"
-                    placeholder="Input email"
+                    placeholder={t("fields.emailPlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -254,10 +263,12 @@ export default function UserCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="username">Username</FieldLabel>
+                  <FieldLabel htmlFor="username">
+                    {t("fields.username")}
+                  </FieldLabel>
                   <Input
                     id="username"
-                    placeholder="Input username"
+                    placeholder={t("fields.usernamePlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -273,13 +284,15 @@ export default function UserCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="password">Password</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="password">
+                    {t("fields.password")}
+                  </RequiredFieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       aria-required
                       id="password"
                       type={isShowPassword ? "text" : "password"}
-                      placeholder="Input password"
+                      placeholder={t("fields.passwordPlaceholder")}
                       disabled={isFormDisabled}
                       autoComplete="off"
                       {...field}
@@ -313,11 +326,13 @@ export default function UserCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="displayName">Display Name</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="displayName">
+                    {t("fields.displayName")}
+                  </RequiredFieldLabel>
                   <Input
                     aria-required
                     id="displayName"
-                    placeholder="Input display name"
+                    placeholder={t("fields.displayNamePlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -333,10 +348,10 @@ export default function UserCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="bio">Bio</FieldLabel>
+                  <FieldLabel htmlFor="bio">{t("fields.bio")}</FieldLabel>
                   <Textarea
                     id="bio"
-                    placeholder="Input bio"
+                    placeholder={t("fields.bioPlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -352,7 +367,9 @@ export default function UserCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required>Roles</RequiredFieldLabel>
+                  <RequiredFieldLabel required>
+                    {t("fields.roles")}
+                  </RequiredFieldLabel>
                   <Combobox
                     multiple
                     items={roles}
@@ -382,10 +399,13 @@ export default function UserCreateForm({
                           </ComboboxChip>
                         );
                       })}
-                      <ComboboxChipsInput aria-required placeholder="Select roles" />
+                      <ComboboxChipsInput
+                        aria-required
+                        placeholder={t("fields.rolesPlaceholder")}
+                      />
                     </ComboboxChips>
                     <ComboboxContent>
-                      <ComboboxEmpty>No roles found.</ComboboxEmpty>
+                      <ComboboxEmpty>{t("fields.noRolesFound")}</ComboboxEmpty>
                       <ComboboxList>
                         {(item: { value: string; label: string }) => (
                           <ComboboxItem key={item.value} value={item}>
@@ -415,7 +435,7 @@ export default function UserCreateForm({
                 disabled={isFormDisabled || isUploadingAvatar}
                 nativeButton={false}
               >
-                Cancel
+                {t("actions.cancel")}
                 {isFormDisabled && <Spinner />}
               </Button>
 
@@ -423,7 +443,7 @@ export default function UserCreateForm({
                 type="submit"
                 disabled={isFormDisabled || isUploadingAvatar}
               >
-                Save
+                {t("actions.save")}
                 {(isFormDisabled || isUploadingAvatar) && <Spinner />}
               </Button>
             </Field>

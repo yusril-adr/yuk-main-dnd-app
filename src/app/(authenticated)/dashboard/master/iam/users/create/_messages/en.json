@@ -1,0 +1,40 @@
+{
+  "breadcrumb": {
+    "users": "Users",
+    "create": "Create"
+  },
+  "title": "Create User",
+  "fields": {
+    "avatar": "Avatar",
+    "chooseFile": "Choose file",
+    "resetFile": "Reset file",
+    "avatarHint": "Your profile image should have a 1:1 ratio\nand be no larger than {{size}}.",
+    "email": "Email",
+    "emailPlaceholder": "Input email",
+    "username": "Username",
+    "usernamePlaceholder": "Input username",
+    "password": "Password",
+    "passwordPlaceholder": "Input password",
+    "displayName": "Display Name",
+    "displayNamePlaceholder": "Input display name",
+    "bio": "Bio",
+    "bioPlaceholder": "Input bio",
+    "roles": "Roles",
+    "rolesPlaceholder": "Select roles",
+    "noRolesFound": "No roles found."
+  },
+  "actions": {
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "validation": {
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email",
+    "passwordRequired": "Password is required",
+    "passwordMin": "Password must be at least {{min}} characters",
+    "usernameNoSpaces": "Username must not contain spaces",
+    "displayNameRequired": "Display name is required",
+    "bioMax": "Bio must be at most {{max}} characters",
+    "rolesRequired": "At least one role is required"
+  }
+}

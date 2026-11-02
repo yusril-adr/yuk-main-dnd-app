@@ -7,6 +7,8 @@ import { FilePurposesEnum } from "@/api/main/modules/files/enums/file-upload-pur
 import type { TFileUploadPayload } from "@/api/main/modules/files/types/file-upload-payload";
 import type { TFileResponse } from "@/api/main/modules/files/types/file-response";
 import type { TMainApiResponse } from "@/api/main/types/response";
+import { useT } from "@/app/_hooks/use-t";
+import { MASTER_USERS_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/_messages/shared";
 
 export function useAvatarUploadFile(
   options?: Omit<
@@ -18,17 +20,19 @@ export function useAvatarUploadFile(
     "mutationFn"
   >,
 ) {
+  const { t } = useT(MASTER_USERS_SHARED_MESSAGES);
+
   return useMutation({
     ...options,
     mutationFn: (payload) =>
       uploadFile({ ...payload, purpose: FilePurposesEnum.USER_AVATAR }),
     onMutate: (...args) => {
-      toast.loading("Uploading avatar...");
+      toast.loading(t("toast.uploadingAvatar"));
       options?.onMutate?.(...args);
     },
     onSuccess: (...args) => {
       toast.dismiss();
-      toast.success("Avatar uploaded");
+      toast.success(t("toast.avatarUploaded"));
       options?.onSuccess?.(...args);
     },
   });
