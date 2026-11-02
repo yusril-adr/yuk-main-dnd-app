@@ -1,0 +1,62 @@
+{
+  "hero": {
+    "badge": "Papan Quest",
+    "title": "Cari petualanganmu berikutnya",
+    "description": "Oneshot dan campaign dari guild. Pilih story, gabung party, lalu lempar initiative.",
+    "count_one": "story tertempel di papan",
+    "count_other": "stories tertempel di papan"
+  },
+  "filters": {
+    "searchPlaceholder": "Cari story berdasarkan judul (min. 3 karakter)…",
+    "filters": "Filter",
+    "status": "Status",
+    "location": "Lokasi",
+    "allStatuses": "Semua status",
+    "anywhere": "Di mana saja",
+    "allTypes": "Semua",
+    "clear": "Hapus",
+    "apply": "Terapkan"
+  },
+  "enums": {
+    "status": {
+      "recruiting": "Rekrutmen",
+      "draft": "Draf",
+      "published": "Published",
+      "archived": "Diarsipkan",
+      "cancelled": "Dibatalkan",
+      "completed": "Selesai"
+    },
+    "type": {
+      "oneshot": "Oneshot",
+      "campaign": "Campaign"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    }
+  },
+  "card": {
+    "taleYetWritten": "Kisahnya belum ditulis…",
+    "dateTba": "Tanggal menyusul",
+    "joined": "{{count}} bergabung",
+    "rewardSlots_one": "Hanya {{count}} hero yang bisa main, lainnya ikut sebagai penonton",
+    "rewardSlots_other": "Hanya {{count}} heroes yang bisa main, lainnya ikut sebagai penonton",
+    "noPlayerLimit": "Tidak ada batas player",
+    "dungeonMaster": "Dungeon Master"
+  },
+  "pagination": {
+    "showing": "Menampilkan {{start}}–{{end}} dari {{total}} stories",
+    "previous": "Halaman sebelumnya",
+    "next": "Halaman berikutnya"
+  },
+  "empty": {
+    "title": "Stories tidak ditemukan",
+    "filtered": "Tidak ada kisah yang cocok. Coba kata kunci lain atau hapus filter.",
+    "default": "Papan quest masih kosong. Kembali lagi nanti, adventurer.",
+    "clearFilters": "Hapus pencarian & filter"
+  },
+  "error": {
+    "title": "Gulungan nggak bisa diambil",
+    "description": "Ada yang salah saat memuat stories. Coba lagi ya."
+  }
+}

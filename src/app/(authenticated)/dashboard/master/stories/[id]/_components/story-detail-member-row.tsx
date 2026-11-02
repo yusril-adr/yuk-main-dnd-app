@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { If, Then } from "react-if";
 
@@ -7,19 +9,29 @@ import {
   AvatarImage,
 } from "@/app/_components/ui/avatar";
 import { Badge } from "@/app/_components/ui/badge";
-import { STORY_MEMBER_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-member-status-label";
+import { StoryMemberStatusEnum } from "@/api/main/modules/master/stories/enums/story-member-status";
 import {
   getGuildmateHref,
   getInitials,
   makeDefaultAvatarUrl,
 } from "@/utils/user-helper";
+import { useT } from "@/app/_hooks/use-t";
 
 import type { TStoryDetailMemberRowProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-member-row-props";
+import { MASTER_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/[id]/_messages";
+
+const MEMBER_STATUS_KEY = {
+  [StoryMemberStatusEnum.REGISTERED]: "enums.memberStatus.registered",
+  [StoryMemberStatusEnum.VIEWER]: "enums.memberStatus.viewer",
+  [StoryMemberStatusEnum.ATTENDED]: "enums.memberStatus.attended",
+} as const;
 
 export default function StoryDetailMemberRow({
   member,
   variant,
 }: TStoryDetailMemberRowProps) {
+  const { t } = useT(MASTER_STORY_DETAIL_MESSAGES);
+
   const avatar = (
     <Avatar className="size-7">
       <AvatarImage
@@ -39,7 +51,7 @@ export default function StoryDetailMemberRow({
     return <span className="flex items-center">{avatar}</span>;
   }
 
-  const statusLabel = STORY_MEMBER_STATUS_LABEL[member.status];
+  const statusLabel = t(MEMBER_STATUS_KEY[member.status]);
 
   return (
     <span className="flex min-w-0 items-center gap-2">

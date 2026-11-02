@@ -1,0 +1,12 @@
+{
+  "toast": {
+    "creating": "Creating user...",
+    "created": "User created",
+    "updating": "Updating user...",
+    "updated": "User updated",
+    "deleting": "Deleting user...",
+    "deleted": "User deleted",
+    "uploadingAvatar": "Uploading avatar...",
+    "avatarUploaded": "Avatar uploaded"
+  }
+}

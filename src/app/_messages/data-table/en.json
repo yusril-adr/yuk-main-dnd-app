@@ -1,0 +1,4 @@
+{
+  "range": "{{start}} - {{end}} of {{total}} items",
+  "perPage": "{{count}} / page"
+}

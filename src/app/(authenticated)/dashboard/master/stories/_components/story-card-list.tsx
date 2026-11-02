@@ -34,11 +34,9 @@ import {
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import { generatePages } from "@/utils/table-helper";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
-import { STORY_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-status-label";
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
-import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
-import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
+import { useT } from "@/app/_hooks/use-t";
 
 import StoryCard from "./story-card";
 import StoryCardSkeleton from "./story-card-skeleton";
@@ -47,35 +45,58 @@ import type {
   TStoryCardListUserItem,
 } from "@/app/(authenticated)/dashboard/master/stories/_types/story-card-list-props";
 import type { TStoryCardListSortBy } from "@/app/(authenticated)/dashboard/master/stories/_types/story-card-list-sort-by";
+import { MASTER_STORIES_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 let debounceUserSearchTimeoutId: NodeJS.Timeout | number | null = null;
 
-const PAGE_SIZE_OPTIONS = [
-  { label: "6 / page", value: 6 },
-  { label: "12 / page", value: 12 },
-  { label: "24 / page", value: 24 },
-  { label: "48 / page", value: 48 },
+const PAGE_SIZE_VALUES = [6, 12, 24, 48] as const;
+
+const STATUS_MESSAGE_KEY = {
+  [StoryStatusEnum.DRAFT]: "enums.status.draft",
+  [StoryStatusEnum.PUBLISHED]: "enums.status.published",
+  [StoryStatusEnum.ARCHIVED]: "enums.status.archived",
+  [StoryStatusEnum.CANCELLED]: "enums.status.cancelled",
+  [StoryStatusEnum.COMPLETED]: "enums.status.completed",
+} as const;
+
+const TYPE_MESSAGE_KEY = {
+  [StoryTypeEnum.ONESHOT]: "enums.type.oneshot",
+  [StoryTypeEnum.CAMPAIGN]: "enums.type.campaign",
+} as const;
+
+const LOCATION_MESSAGE_KEY = {
+  [StoryLocationTypeEnum.ONLINE]: "enums.location.online",
+  [StoryLocationTypeEnum.OFFLINE]: "enums.location.offline",
+} as const;
+
+const SORT_BY_VALUES: TStoryCardListSortBy[] = [
+  "title",
+  "status",
+  "type",
+  "game_system",
+  "max_members",
+  "exp_awarded",
+  "point_awarded",
+  "start_at",
+  "location_type",
+  "created_at",
+  "updated_at",
 ];
 
-const SORT_BY_OPTIONS: { label: string; value: TStoryCardListSortBy }[] = [
-  { label: "Title", value: "title" },
-  { label: "Status", value: "status" },
-  { label: "Type", value: "type" },
-  { label: "Game System", value: "game_system" },
-  { label: "Max Members", value: "max_members" },
-  { label: "EXP Awarded", value: "exp_awarded" },
-  { label: "Gold Awarded", value: "point_awarded" },
-  { label: "Start At", value: "start_at" },
-  { label: "Location", value: "location_type" },
-  { label: "Created At", value: "created_at" },
-  { label: "Updated At", value: "updated_at" },
-];
-
-const SORT_ORDER_OPTIONS = [
-  { label: "Ascending", value: OrderKeyEnum.ASC },
-  { label: "Descending", value: OrderKeyEnum.DESC },
-];
+const SORT_BY_MESSAGE_KEY = {
+  title: "sort.title",
+  status: "sort.status",
+  type: "sort.type",
+  game_system: "sort.gameSystem",
+  max_members: "sort.maxMembers",
+  exp_awarded: "sort.expAwarded",
+  point_awarded: "sort.goldAwarded",
+  start_at: "sort.startAt",
+  location_type: "sort.location",
+  created_at: "sort.createdAt",
+  updated_at: "sort.updatedAt",
+} as const satisfies Record<TStoryCardListSortBy, string>;
 
 export default function StoryCardList({
   data,
@@ -88,6 +109,7 @@ export default function StoryCardList({
   onUserSearchChange,
   onActionHandler,
 }: TStoryCardListProps) {
+  const { t } = useT(MASTER_STORIES_MESSAGES);
   const [filterSortBy, setFilterSortBy] = useState<TStoryCardListSortBy | null>(
     queryTable.sortBy ?? null,
   );
@@ -104,6 +126,47 @@ export default function StoryCardList({
     useState<StoryLocationTypeEnum | null>(queryTable.locationType ?? null);
   const [filterCreatedBy, setFilterCreatedBy] = useState<string | null>(
     queryTable.createdBy ?? null,
+  );
+
+  const sortByOptions = useMemo(
+    () =>
+      SORT_BY_VALUES.map((value) => ({
+        label: t(SORT_BY_MESSAGE_KEY[value]),
+        value,
+      })),
+    [t],
+  );
+
+  const sortOrderOptions = useMemo(
+    () => [
+      { label: t("sort.asc"), value: OrderKeyEnum.ASC },
+      { label: t("sort.desc"), value: OrderKeyEnum.DESC },
+    ],
+    [t],
+  );
+
+  const pageSizeOptions = useMemo(
+    () =>
+      PAGE_SIZE_VALUES.map((value) => ({
+        label: t("pagination.perPage", { count: value }),
+        value,
+      })),
+    [t],
+  );
+
+  const statusLabel = useCallback(
+    (status: StoryStatusEnum) => t(STATUS_MESSAGE_KEY[status]),
+    [t],
+  );
+
+  const typeLabel = useCallback(
+    (type: StoryTypeEnum) => t(TYPE_MESSAGE_KEY[type]),
+    [t],
+  );
+
+  const locationLabel = useCallback(
+    (location: StoryLocationTypeEnum) => t(LOCATION_MESSAGE_KEY[location]),
+    [t],
   );
 
   const pages = useMemo(
@@ -207,24 +270,24 @@ export default function StoryCardList({
         <Popover>
           <PopoverTrigger render={<Button variant="outline" />}>
             <Funnel />
-            Filter
+            {t("filters.filter")}
           </PopoverTrigger>
           <PopoverContent align="start">
             <div className="flex flex-col gap-4 md:gap-2">
               <FieldGroup className="flex flex-col md:flex-row gap-4 md:gap-2">
                 <Field className="grid gap-2">
-                  <FieldLabel>Sort By</FieldLabel>
+                  <FieldLabel>{t("filters.sortBy")}</FieldLabel>
                   <Select
-                    items={SORT_BY_OPTIONS}
+                    items={sortByOptions}
                     value={filterSortBy ?? undefined}
                     onValueChange={(val) => setFilterSortBy(val || null)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select field" />
+                      <SelectValue placeholder={t("filters.selectField")} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {SORT_BY_OPTIONS.map((item) => (
+                        {sortByOptions.map((item) => (
                           <SelectItem key={item.value} value={item.value}>
                             {item.label}
                           </SelectItem>
@@ -235,18 +298,18 @@ export default function StoryCardList({
                 </Field>
 
                 <Field className="grid gap-2">
-                  <FieldLabel>Sort Order</FieldLabel>
+                  <FieldLabel>{t("filters.sortOrder")}</FieldLabel>
                   <Select
-                    items={SORT_ORDER_OPTIONS}
+                    items={sortOrderOptions}
                     value={filterOrder ?? undefined}
                     onValueChange={(val) => setFilterOrder(val || null)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select order" />
+                      <SelectValue placeholder={t("filters.selectOrder")} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {SORT_ORDER_OPTIONS.map((item) => (
+                        {sortOrderOptions.map((item) => (
                           <SelectItem key={item.value} value={item.value}>
                             {item.label}
                           </SelectItem>
@@ -259,23 +322,26 @@ export default function StoryCardList({
 
               <FieldGroup className="flex flex-col md:flex-row gap-4 md:gap-2">
                 <Field className="grid gap-2">
-                  <FieldLabel htmlFor="status">Status</FieldLabel>
+                  <FieldLabel htmlFor="status">{t("filters.status")}</FieldLabel>
                   <Combobox
                     id="status"
                     items={Object.values(StoryStatusEnum).filter(
                       (v): v is StoryStatusEnum => typeof v === "number",
                     )}
                     value={filterStatus}
-                    itemToStringLabel={(item) => STORY_STATUS_LABEL[item]}
+                    itemToStringLabel={(item) => statusLabel(item)}
                     onValueChange={(value) => setFilterStatus(value || null)}
                   >
-                    <ComboboxInput placeholder="Select status" showClear />
+                    <ComboboxInput
+                      placeholder={t("filters.selectStatus")}
+                      showClear
+                    />
                     <ComboboxContent>
-                      <ComboboxEmpty>No items found.</ComboboxEmpty>
+                      <ComboboxEmpty>{t("filters.noItemsFound")}</ComboboxEmpty>
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {STORY_STATUS_LABEL[item as StoryStatusEnum]}
+                            {statusLabel(item as StoryStatusEnum)}
                           </ComboboxItem>
                         )}
                       </ComboboxList>
@@ -284,23 +350,26 @@ export default function StoryCardList({
                 </Field>
 
                 <Field className="grid gap-2">
-                  <FieldLabel htmlFor="type">Type</FieldLabel>
+                  <FieldLabel htmlFor="type">{t("filters.type")}</FieldLabel>
                   <Combobox
                     id="type"
                     items={Object.values(StoryTypeEnum).filter(
                       (v): v is StoryTypeEnum => typeof v === "number",
                     )}
                     value={filterType}
-                    itemToStringLabel={(item) => STORY_TYPE_LABEL[item]}
+                    itemToStringLabel={(item) => typeLabel(item)}
                     onValueChange={(value) => setFilterType(value || null)}
                   >
-                    <ComboboxInput placeholder="Select type" showClear />
+                    <ComboboxInput
+                      placeholder={t("filters.selectType")}
+                      showClear
+                    />
                     <ComboboxContent>
-                      <ComboboxEmpty>No items found.</ComboboxEmpty>
+                      <ComboboxEmpty>{t("filters.noItemsFound")}</ComboboxEmpty>
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {STORY_TYPE_LABEL[item as StoryTypeEnum]}
+                            {typeLabel(item as StoryTypeEnum)}
                           </ComboboxItem>
                         )}
                       </ComboboxList>
@@ -309,31 +378,30 @@ export default function StoryCardList({
                 </Field>
 
                 <Field className="grid gap-2">
-                  <FieldLabel htmlFor="location-type">Location</FieldLabel>
+                  <FieldLabel htmlFor="location-type">
+                    {t("filters.location")}
+                  </FieldLabel>
                   <Combobox
                     id="location-type"
                     items={Object.values(StoryLocationTypeEnum).filter(
                       (v): v is StoryLocationTypeEnum => typeof v === "number",
                     )}
                     value={filterLocationType}
-                    itemToStringLabel={(item) =>
-                      STORY_LOCATION_TYPE_LABEL[item]
-                    }
+                    itemToStringLabel={(item) => locationLabel(item)}
                     onValueChange={(value) =>
                       setFilterLocationType(value || null)
                     }
                   >
-                    <ComboboxInput placeholder="Select location" showClear />
+                    <ComboboxInput
+                      placeholder={t("filters.selectLocation")}
+                      showClear
+                    />
                     <ComboboxContent>
-                      <ComboboxEmpty>No items found.</ComboboxEmpty>
+                      <ComboboxEmpty>{t("filters.noItemsFound")}</ComboboxEmpty>
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {
-                              STORY_LOCATION_TYPE_LABEL[
-                                item as StoryLocationTypeEnum
-                              ]
-                            }
+                            {locationLabel(item as StoryLocationTypeEnum)}
                           </ComboboxItem>
                         )}
                       </ComboboxList>
@@ -344,7 +412,9 @@ export default function StoryCardList({
 
               <FieldGroup>
                 <Field className="grid gap-2">
-                  <FieldLabel htmlFor="created-by">Created By</FieldLabel>
+                  <FieldLabel htmlFor="created-by">
+                    {t("filters.createdBy")}
+                  </FieldLabel>
                   <Combobox
                     id="created-by"
                     items={userItems}
@@ -359,9 +429,12 @@ export default function StoryCardList({
                     onInputValueChange={handleUserSearchChange}
                     itemToStringLabel={(item) => item.label}
                   >
-                    <ComboboxInput placeholder="Search user" showClear />
+                    <ComboboxInput
+                      placeholder={t("filters.searchUser")}
+                      showClear
+                    />
                     <ComboboxContent>
-                      <ComboboxEmpty>No users found.</ComboboxEmpty>
+                      <ComboboxEmpty>{t("filters.noUsersFound")}</ComboboxEmpty>
                       <ComboboxList>
                         {(item: TStoryCardListUserItem) => (
                           <ComboboxItem key={item.value} value={item}>
@@ -381,9 +454,9 @@ export default function StoryCardList({
                     variant="outline"
                     onClick={onFilterClear}
                   >
-                    Clear
+                    {t("filters.clear")}
                   </Button>
-                  <Button onClick={onFilterApply}>Apply</Button>
+                  <Button onClick={onFilterApply}>{t("filters.apply")}</Button>
                 </Field>
               </FieldGroup>
             </div>
@@ -392,7 +465,7 @@ export default function StoryCardList({
 
         <InputGroup>
           <InputGroupInput
-            placeholder="Type minimum 3 characters to search ..."
+            placeholder={t("filters.searchPlaceholder")}
             onChange={(event) => onSearchChange(event.target.value)}
             defaultValue={queryTable.search}
           />
@@ -425,7 +498,7 @@ export default function StoryCardList({
       <If condition={!isLoading && data.length === 0}>
         <Then>
           <p className="py-10 text-center text-muted-foreground">
-            No stories found.
+            {t("empty.title")}
           </p>
         </Then>
       </If>
@@ -433,7 +506,11 @@ export default function StoryCardList({
       {!isLoading && (
         <div className="flex flex-col md:flex-row justify-end items-center gap-2 mt-6">
           <span>
-            {indexStart} - {indexEnd} of {rowCount} items
+            {t("pagination.range", {
+              start: indexStart,
+              end: indexEnd,
+              total: rowCount,
+            })}
           </span>
 
           <ButtonGroup>
@@ -469,7 +546,7 @@ export default function StoryCardList({
           </ButtonGroup>
 
           <Select
-            items={PAGE_SIZE_OPTIONS}
+            items={pageSizeOptions}
             value={Number(queryTable.pageSize)}
             onValueChange={(val) =>
               handlePageSizeChange(val || queryTable.pageSize)
@@ -480,7 +557,7 @@ export default function StoryCardList({
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {PAGE_SIZE_OPTIONS.map((item) => (
+                {pageSizeOptions.map((item) => (
                   <SelectItem key={item.value} value={item.value.toString()}>
                     {item.label}
                   </SelectItem>

@@ -1,0 +1,73 @@
+{
+  "breadcrumb": "Saldo",
+  "title": "Saldo",
+  "description": "Catatan experience dan gold pieces kamu.",
+  "tabs": {
+    "experience": "Experience",
+    "gold": "Gold Pieces"
+  },
+  "summary": {
+    "aria": "Saldo saat ini",
+    "playerExp": "Player EXP",
+    "dmExp": "DM EXP",
+    "goldPieces": "Gold Pieces"
+  },
+  "units": {
+    "exp": "EXP",
+    "gp": "GP"
+  },
+  "filters": {
+    "allExperience": "Semua experience",
+    "allChanges": "Semua perubahan",
+    "allGold": "Semua gold",
+    "expTypeAria": "Tipe experience",
+    "expDirectionAria": "Arah experience",
+    "goldTypeAria": "Tipe gold"
+  },
+  "enums": {
+    "expType": {
+      "player": "Player EXP",
+      "dm": "Dungeon Master EXP",
+      "fallback": "Experience"
+    },
+    "expDirection": {
+      "increment": "Penambahan EXP",
+      "decrement": "Pengurangan EXP"
+    },
+    "pointType": {
+      "income": "Gold didapat",
+      "expense": "Gold dipakai",
+      "fallback": "Gold"
+    }
+  },
+  "empty": {
+    "filteredTitle": "Tidak ada entri yang cocok",
+    "filteredDescription": "Coba filter tipe lain.",
+    "clearFilter": "Hapus filter",
+    "expTitle": "Belum ada experience",
+    "expDescription": "EXP yang kamu dapat atau pakai sebagai player maupun dungeon master akan tercatat di sini.",
+    "goldTitle": "Belum ada gold",
+    "goldDescription": "Gold yang kamu dapat atau pakai akan tercatat di sini."
+  },
+  "error": {
+    "title": "Gagal memuat catatan",
+    "description": "Ada yang tidak beres di perjalanan. Silakan coba lagi.",
+    "retry": "Coba lagi"
+  },
+  "pagination": {
+    "showing": "Menampilkan {{start}}–{{end}} dari {{total}}",
+    "pagesAria": "Halaman catatan",
+    "previous": "Halaman sebelumnya",
+    "next": "Halaman berikutnya"
+  },
+  "amount": {
+    "showExactAria": "Tampilkan {{label}} lengkap",
+    "close": "Tutup"
+  },
+  "skeleton": {
+    "loadingAria": "Memuat catatan"
+  },
+  "log": {
+    "noDescription": "—"
+  }
+}

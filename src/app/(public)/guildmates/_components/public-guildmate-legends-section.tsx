@@ -1,12 +1,8 @@
-import { Crown, Sword } from "lucide-react";
+"use client";
 
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/app/_components/ui/tabs";
-import PublicGuildmateLegendBoard from "./public-guildmate-legend-board";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
+import PublicLegendBoards from "@/app/(public)/_components/public-legend-boards";
 import type { TPublicGuildmateLegendsSectionProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 export default function PublicGuildmateLegendsSection({
@@ -15,57 +11,56 @@ export default function PublicGuildmateLegendsSection({
   dmBoard,
   playerBoard,
 }: TPublicGuildmateLegendsSectionProps) {
+  const { t } = useT(GUILDMATES_MESSAGES);
   // Generic wording until the client knows the month (prerendered page)
-  const period = monthName ?? "the Month";
-  const dm = (
-    <PublicGuildmateLegendBoard
-      kind="dm"
-      title={`Dungeon Masters of ${period}`}
-      icon={Crown}
-      monthName={monthName}
-      {...dmBoard}
-    />
-  );
-  const player = (
-    <PublicGuildmateLegendBoard
-      kind="player"
-      title={`Heroes of ${period}`}
-      icon={Sword}
-      monthName={monthName}
-      {...playerBoard}
-    />
-  );
+  const periodTitle = monthName
+    ? t("legends.titleWithMonth", { month: monthName })
+    : t("legends.titleFallback");
+  const dmTitle = monthName
+    ? t("legends.dungeonMastersOf", { month: monthName })
+    : t("legends.dungeonMasters");
+  const heroesTitle = monthName
+    ? t("legends.heroesOf", { month: monthName })
+    : t("legends.heroes");
+
+  const copy = {
+    unclaimed: t("legends.unclaimed"),
+    awaitingMaster: t("legends.awaitingMaster"),
+    awaitingHero: t("legends.awaitingHero"),
+    expCaption: t("legends.soFar"),
+    errorTitle: t("legends.errorTitle"),
+    errorDescription: t("legends.errorDescription"),
+    empty: monthName
+      ? t("legends.emptyWithMonth", { month: monthName })
+      : t("legends.emptyFallback"),
+    dmExpTotal: (count: string) => t("legends.dmExpTotal", { count }),
+    playerExpTotal: (count: string) => t("legends.playerExpTotal", { count }),
+    dmExp: (count: string) => t("legends.dmExp", { count }),
+    playerExp: (count: string) => t("legends.playerExp", { count }),
+    gainedExp: (count: string) => t("legends.gainedExp", { count }),
+    place: (rank: number) => t("legends.place", { rank }),
+  };
 
   return (
     <section aria-labelledby="legends-heading" className="flex flex-col gap-4">
       <div className="flex flex-col items-center gap-1 text-center">
         <h2 id="legends-heading" className="font-heading text-2xl sm:text-3xl">
-          Legends of {period}
+          {periodTitle}
         </h2>
         <p className="min-h-4 text-xs tracking-[0.2em] text-primary uppercase">
           {monthLabel}
         </p>
       </div>
 
-      {/* Below md: one board at a time via tabs */}
-      <Tabs defaultValue="dm" className="md:hidden">
-        <TabsList className="h-10! w-full rounded-md">
-          <TabsTrigger value="dm" className="rounded-sm">
-            <Crown /> Dungeon Masters
-          </TabsTrigger>
-          <TabsTrigger value="player" className="rounded-sm">
-            <Sword /> Heroes
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="dm">{dm}</TabsContent>
-        <TabsContent value="player">{player}</TabsContent>
-      </Tabs>
-
-      {/* md and up: both boards side by side */}
-      <div className="hidden gap-4 md:grid md:grid-cols-2 lg:gap-6">
-        {dm}
-        {player}
-      </div>
+      <PublicLegendBoards
+        dmTitle={dmTitle}
+        heroesTitle={heroesTitle}
+        dmTabLabel={t("legends.dungeonMasters")}
+        heroesTabLabel={t("legends.heroes")}
+        copy={copy}
+        dmBoard={dmBoard}
+        playerBoard={playerBoard}
+      />
     </section>
   );
 }

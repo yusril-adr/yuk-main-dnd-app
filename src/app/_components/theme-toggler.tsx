@@ -11,8 +11,9 @@ import {
 } from "@/app/_components/ui/dropdown-menu";
 import { useTheme } from "next-themes";
 import { ThemeEnum } from "@/common/enums/theme";
+import type { TThemeTogglerProps } from "@/app/_types/theme-toggler-props";
 
-export function ThemeToggler() {
+export function ThemeToggler({ size = "icon" }: TThemeTogglerProps) {
   const { theme, setTheme } = useTheme();
 
   const isUsingSystemTheme = theme === ThemeEnum.SYSTEM;
@@ -20,7 +21,10 @@ export function ThemeToggler() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <div className={buttonVariants({ variant: "ghost", size: "icon" })} suppressHydrationWarning>
+        <div
+          className={buttonVariants({ variant: "ghost", size })}
+          suppressHydrationWarning
+        >
           <Sun
             className={`h-[1.2rem] w-[1.2rem] rotate-0 dark:rotate-90 ${!isUsingSystemTheme && "scale-100"} dark:scale-0 transition-all`}
           />

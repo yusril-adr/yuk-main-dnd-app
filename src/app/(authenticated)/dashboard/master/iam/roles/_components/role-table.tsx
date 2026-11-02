@@ -57,10 +57,13 @@ import {
 } from "@/app/_components/data-table";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import dayjs from "@/libs/dayjs";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
 
 import type { TRoleTableCol } from "@/app/(authenticated)/dashboard/master/iam/roles/_types/role-table-col";
 import type { TRoleTableProps } from "@/app/(authenticated)/dashboard/master/iam/roles/_types/role-table-props";
 import { ROLE_SHOW_IN_PUBLIC_FILTER_OPTIONS } from "@/app/(authenticated)/dashboard/master/iam/roles/_constants/role-show-in-public-filter-options";
+import { MASTER_ROLES_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/roles/_messages";
 
 export default function RoleTable({
   data,
@@ -71,9 +74,20 @@ export default function RoleTable({
   columnFilters,
   onActionHandler,
 }: TRoleTableProps) {
+  const { t } = useT(MASTER_ROLES_MESSAGES);
+  const { locale } = useLocale();
   const filterForm = onActionHandler.onFilterForm;
   const [confirmedDeletedId, setConfirmedDeletedId] = useState<string | null>(
     null,
+  );
+
+  const showInPublicFilterOptions = useMemo(
+    () =>
+      ROLE_SHOW_IN_PUBLIC_FILTER_OPTIONS.map((item) => ({
+        label: t(`enums.showInPublic.${item.labelKey}`),
+        value: item.value,
+      })),
+    [t],
   );
 
   const onDeleteHandler = useCallback(() => {
@@ -88,7 +102,7 @@ export default function RoleTable({
   const columns = [
     columnHelper.display({
       id: "no",
-      header: "No.",
+      header: t("columns.no"),
       cell: ({ row, table }) => {
         const pageIndex = table.getState().pagination.pageIndex;
         const pageSize = table.getState().pagination.pageSize;
@@ -100,7 +114,7 @@ export default function RoleTable({
     columnHelper.accessor("name", {
       header: () => (
         <DataTableSortableColHeader
-          label="Name"
+          label={t("columns.name")}
           sortKey="name"
           sortBy={queryTable.sortBy}
           order={queryTable.order}
@@ -123,7 +137,7 @@ export default function RoleTable({
     columnHelper.accessor("description", {
       header: () => (
         <DataTableSortableColHeader
-          label="Description"
+          label={t("columns.description")}
           sortKey="description"
           sortBy={queryTable.sortBy}
           order={queryTable.order}
@@ -136,7 +150,7 @@ export default function RoleTable({
     columnHelper.accessor("is_show_in_public", {
       header: () => (
         <DataTableSortableColHeader
-          label="Show in Public"
+          label={t("columns.showInPublic")}
           sortKey="is_show_in_public"
           sortBy={queryTable.sortBy}
           order={queryTable.order}
@@ -146,10 +160,10 @@ export default function RoleTable({
       cell: (info) => (
         <If condition={info.getValue()}>
           <Then>
-            <Badge>Yes</Badge>
+            <Badge>{t("enums.showInPublic.yes")}</Badge>
           </Then>
           <Else>
-            <Badge variant="secondary">No</Badge>
+            <Badge variant="secondary">{t("enums.showInPublic.no")}</Badge>
           </Else>
         </If>
       ),
@@ -158,19 +172,20 @@ export default function RoleTable({
     columnHelper.accessor("created_at", {
       header: () => (
         <DataTableSortableColHeader
-          label="Created At"
+          label={t("columns.createdAt")}
           sortKey="created_at"
           sortBy={queryTable.sortBy}
           order={queryTable.order}
           onClick={() => onActionHandler.onSortingChange("created_at")}
         />
       ),
-      cell: (info) => dayjs(info.getValue()).format("YYYY-MM-DD HH:mm:ss"),
+      cell: (info) =>
+        dayjs(info.getValue()).locale(locale).format("YYYY-MM-DD HH:mm:ss"),
     }),
 
     columnHelper.display({
       id: "actions",
-      header: "Action",
+      header: t("columns.action"),
       cell: ({ row }) => (
         <DropdownMenu>
           <DropdownMenuTrigger
@@ -190,7 +205,7 @@ export default function RoleTable({
                 }
               >
                 <Eye />
-                View
+                {t("actions.view")}
               </DropdownMenuItem>
               {row.original.action_list.is_can_update && (
                 <DropdownMenuItem
@@ -201,7 +216,7 @@ export default function RoleTable({
                   }
                 >
                   <Pencil />
-                  Edit
+                  {t("actions.edit")}
                 </DropdownMenuItem>
               )}
               {row.original.action_list.is_can_delete && (
@@ -210,7 +225,7 @@ export default function RoleTable({
                   onClick={() => setConfirmedDeletedId(row.original.id)}
                 >
                   <Trash />
-                  Delete
+                  {t("actions.delete")}
                 </DropdownMenuItem>
               )}
             </DropdownMenuGroup>
@@ -258,7 +273,7 @@ export default function RoleTable({
           <Popover>
             <PopoverTrigger render={<Button variant="outline" />}>
               <Funnel />
-              Filter
+              {t("filters.filter")}
             </PopoverTrigger>
             <PopoverContent align="start">
               <form
@@ -275,10 +290,10 @@ export default function RoleTable({
                         data-invalid={fieldState.invalid}
                       >
                         <FieldLabel htmlFor="is-show-in-public">
-                          Show in Public
+                          {t("filters.showInPublic")}
                         </FieldLabel>
                         <Select
-                          items={ROLE_SHOW_IN_PUBLIC_FILTER_OPTIONS}
+                          items={showInPublicFilterOptions}
                           value={field.value}
                           onValueChange={(value) => field.onChange(value)}
                         >
@@ -290,13 +305,14 @@ export default function RoleTable({
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              {ROLE_SHOW_IN_PUBLIC_FILTER_OPTIONS.map(
-                                (item) => (
-                                  <SelectItem key={item.label} value={item.value}>
-                                    {item.label}
-                                  </SelectItem>
-                                ),
-                              )}
+                              {showInPublicFilterOptions.map((item) => (
+                                <SelectItem
+                                  key={item.label}
+                                  value={item.value}
+                                >
+                                  {item.label}
+                                </SelectItem>
+                              ))}
                             </SelectGroup>
                           </SelectContent>
                         </Select>
@@ -313,10 +329,10 @@ export default function RoleTable({
                       type="reset"
                       onClick={filterForm.onFilterReset}
                     >
-                      Clear
+                      {t("filters.clear")}
                     </Button>
 
-                    <Button type="submit">Apply</Button>
+                    <Button type="submit">{t("filters.apply")}</Button>
                   </Field>
                 </FieldGroup>
               </form>
@@ -325,7 +341,7 @@ export default function RoleTable({
 
           <InputGroup>
             <InputGroupInput
-              placeholder="Type minimum 3 characters to search ..."
+              placeholder={t("filters.searchPlaceholder")}
               onChange={(event) =>
                 onActionHandler.onSearchChange(event.target.value)
               }
@@ -348,16 +364,15 @@ export default function RoleTable({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete role?</AlertDialogTitle>
+            <AlertDialogTitle>{t("dialogs.deleteTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. The role will be removed from the
-              system.
+              {t("dialogs.deleteDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
             <AlertDialogAction variant="destructive" onClick={onDeleteHandler}>
-              Delete
+              {t("dialogs.deleteConfirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

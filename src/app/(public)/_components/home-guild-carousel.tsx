@@ -13,6 +13,8 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/app/_components/ui/carousel";
+import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 
 import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
@@ -21,6 +23,7 @@ import HomeGuildPhotoDialog from "@/app/(public)/_components/home-guild-photo-di
 import { HOME_GUILD_PHOTOS } from "@/app/(public)/_constants/home-guild-photos";
 
 export default function HomeGuildCarousel() {
+  const { t } = useT(HOME_MESSAGES);
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -54,21 +57,24 @@ export default function HomeGuildCarousel() {
     <HomeBand labelledBy="life-in-the-guild" muted>
       <HomeSectionHeader
         id="life-in-the-guild"
-        title="Life in the guild"
-        description="A circle of friends who roll dice, share tales and get gloriously lost in dungeons together. New faces are always welcome by the hearth."
+        title={t("guild.title")}
+        description={t("guild.description")}
       />
       <Carousel
         setApi={setApi}
         opts={{ loop: true }}
         plugins={plugins}
-        aria-label="Guild photos"
+        aria-label={t("guild.photosLabel")}
         className="w-full px-12 sm:px-16"
       >
         <CarouselContent>
           {HOME_GUILD_PHOTOS.map((photo, index) => (
             <CarouselItem
-              key={photo.alt}
-              aria-label={`${index + 1} of ${HOME_GUILD_PHOTOS.length}`}
+              key={photo.id}
+              aria-label={t("guild.photoOf", {
+                n: index + 1,
+                total: HOME_GUILD_PHOTOS.length,
+              })}
             >
               <HomeGuildSlide
                 photo={photo}
@@ -84,9 +90,9 @@ export default function HomeGuildCarousel() {
       <div className="-mt-2 flex justify-center gap-3">
         {HOME_GUILD_PHOTOS.map((photo, index) => (
           <Button
-            key={photo.alt}
+            key={photo.id}
             variant="ghost"
-            aria-label={`Show photo ${index + 1}`}
+            aria-label={t("guild.showPhoto", { n: index + 1 })}
             aria-current={current === index}
             onClick={() => api?.scrollTo(index)}
             className={cn(

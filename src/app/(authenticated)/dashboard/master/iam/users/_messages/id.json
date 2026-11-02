@@ -1,0 +1,45 @@
+{
+  "breadcrumb": "Users",
+  "title": "Users",
+  "addUser": "Tambah User",
+  "filters": {
+    "filter": "Filter",
+    "sortBy": "Urutkan Berdasarkan",
+    "sortOrder": "Urutan",
+    "selectField": "Pilih field",
+    "selectOrder": "Pilih urutan",
+    "roles": "Roles",
+    "searchRoles": "Cari roles",
+    "noRolesFound": "Tidak ada roles.",
+    "clear": "Hapus",
+    "apply": "Terapkan",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ..."
+  },
+  "sort": {
+    "displayName": "Nama Tampilan",
+    "username": "Username",
+    "email": "Email",
+    "dmExp": "DM EXP",
+    "playerExp": "Player EXP",
+    "createdAt": "Dibuat Pada",
+    "updatedAt": "Diperbarui Pada",
+    "asc": "Naik",
+    "desc": "Turun"
+  },
+  "card": {
+    "usernameUnset": "(username belum diatur)",
+    "playerExp": "Player EXP",
+    "dmExp": "DM EXP",
+    "gold": "Gold",
+    "view": "Lihat",
+    "balances": "Saldo",
+    "edit": "Edit",
+    "delete": "Hapus"
+  },
+  "dialogs": {
+    "cancel": "Batal",
+    "deleteTitle": "Hapus user?",
+    "deleteDescription": "Aksi ini tidak bisa diurungkan. User akan dihapus permanen dari sistem.",
+    "deleteConfirm": "Hapus"
+  }
+}

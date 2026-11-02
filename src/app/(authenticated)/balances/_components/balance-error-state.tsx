@@ -9,12 +9,16 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/app/_components/ui/empty";
+import { useT } from "@/app/_hooks/use-t";
 
+import { BALANCES_MESSAGES } from "@/app/(authenticated)/balances/_messages";
 import type { TBalanceErrorStateProps } from "@/app/(authenticated)/balances/_types/balance-components-props";
 
 export default function BalanceErrorState({
   onRetry,
 }: TBalanceErrorStateProps) {
+  const { t } = useT(BALANCES_MESSAGES);
+
   return (
     <Empty role="alert" className="border bg-card">
       <EmptyHeader>
@@ -22,15 +26,13 @@ export default function BalanceErrorState({
           <TriangleAlert />
         </EmptyMedia>
         <EmptyTitle className="font-heading text-xl">
-          Could not load the ledger
+          {t("error.title")}
         </EmptyTitle>
-        <EmptyDescription>
-          Something went wrong on the way. Please try again.
-        </EmptyDescription>
+        <EmptyDescription>{t("error.description")}</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <Button variant="outline" onClick={onRetry}>
-          Try again
+          {t("error.retry")}
         </Button>
       </EmptyContent>
     </Empty>

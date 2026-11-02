@@ -1,19 +1,19 @@
 import { useMemo } from "react";
 
-import type { UserExpLogDirectionEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-direction";
-import type { UserExpLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type";
+import { UserExpLogDirectionEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-direction";
+import { UserExpLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type";
 import { OrderKeyEnum } from "@/common/enums/order-key";
+import { useT } from "@/app/_hooks/use-t";
 
 import BalanceLogList from "@/app/(authenticated)/balances/_components/balance-log-list";
 import { useGetMyExperiencePointPagination } from "@/app/(authenticated)/balances/_hooks/use-get-my-experience-point-pagination";
 import {
-  BALANCE_EXP_DIRECTION_LABEL,
   BALANCE_EXP_DIRECTION_OPTIONS,
-  BALANCE_EXP_TYPE_LABEL,
   BALANCE_EXP_TYPE_OPTIONS,
   BALANCE_FILTER_ALL,
   BALANCE_PAGE_SIZE,
 } from "@/app/(authenticated)/balances/_constants/balance";
+import { BALANCES_MESSAGES } from "@/app/(authenticated)/balances/_messages";
 import {
   getSignedExpAmount,
   toTypeOrNull,
@@ -23,21 +23,15 @@ import type {
   TBalanceLogPanelProps,
 } from "@/app/(authenticated)/balances/_types/balance-components-props";
 
-const TYPE_ITEMS = [
-  { label: "All experience", value: BALANCE_FILTER_ALL },
-  ...BALANCE_EXP_TYPE_OPTIONS.map((type) => ({
-    label: BALANCE_EXP_TYPE_LABEL[type],
-    value: String(type),
-  })),
-];
+const EXP_TYPE_LABEL_KEY = {
+  [UserExpLogTypeEnum.PLAYER]: "enums.expType.player",
+  [UserExpLogTypeEnum.DM]: "enums.expType.dm",
+} as const;
 
-const DIRECTION_ITEMS = [
-  { label: "All changes", value: BALANCE_FILTER_ALL },
-  ...BALANCE_EXP_DIRECTION_OPTIONS.map((direction) => ({
-    label: BALANCE_EXP_DIRECTION_LABEL[direction],
-    value: String(direction),
-  })),
-];
+const EXP_DIRECTION_LABEL_KEY = {
+  [UserExpLogDirectionEnum.INCREMENT]: "enums.expDirection.increment",
+  [UserExpLogDirectionEnum.DECREMENT]: "enums.expDirection.decrement",
+} as const;
 
 export default function BalanceExperiencePanel({
   page,
@@ -48,6 +42,7 @@ export default function BalanceExperiencePanel({
   onDirectionChange,
   onFilterReset,
 }: TBalanceLogPanelProps) {
+  const { t } = useT(BALANCES_MESSAGES);
   const { data, isPending, isError, refetch } =
     useGetMyExperiencePointPagination({
       page,
@@ -60,17 +55,42 @@ export default function BalanceExperiencePanel({
         | undefined,
     });
 
+  const typeItems = useMemo(
+    () => [
+      { label: t("filters.allExperience"), value: BALANCE_FILTER_ALL },
+      ...BALANCE_EXP_TYPE_OPTIONS.map((option) => ({
+        label: t(EXP_TYPE_LABEL_KEY[option]),
+        value: String(option),
+      })),
+    ],
+    [t],
+  );
+
+  const directionItems = useMemo(
+    () => [
+      { label: t("filters.allChanges"), value: BALANCE_FILTER_ALL },
+      ...BALANCE_EXP_DIRECTION_OPTIONS.map((option) => ({
+        label: t(EXP_DIRECTION_LABEL_KEY[option]),
+        value: String(option),
+      })),
+    ],
+    [t],
+  );
+
   const items: TBalanceLogItem[] = useMemo(
     () =>
       (data?.data?.data?.items ?? []).map((log) => ({
         id: log.id,
         createdAt: log.created_at,
-        typeLabel: BALANCE_EXP_TYPE_LABEL[log.type] ?? "Experience",
+        typeLabel:
+          EXP_TYPE_LABEL_KEY[log.type] != null
+            ? t(EXP_TYPE_LABEL_KEY[log.type])
+            : t("enums.expType.fallback"),
         description: log.description,
         amount: getSignedExpAmount(log.amount, log.direction),
-        unit: "EXP",
+        unit: t("units.exp"),
       })),
-    [data],
+    [data, t],
   );
   const meta = data?.data?.data?.meta;
 
@@ -83,17 +103,17 @@ export default function BalanceExperiencePanel({
       page={page}
       pageCount={meta?.total_page || 1}
       rowCount={meta?.total_all_data || 0}
-      typeItems={TYPE_ITEMS}
+      typeItems={typeItems}
       typeValue={type != null ? String(type) : BALANCE_FILTER_ALL}
-      typeAriaLabel="Experience type"
-      directionItems={DIRECTION_ITEMS}
+      typeAriaLabel={t("filters.expTypeAria")}
+      directionItems={directionItems}
       directionValue={
         direction != null ? String(direction) : BALANCE_FILTER_ALL
       }
-      directionAriaLabel="Experience direction"
+      directionAriaLabel={t("filters.expDirectionAria")}
       onDirectionChange={(value) => onDirectionChange(toTypeOrNull(value))}
-      emptyTitle="No experience yet"
-      emptyDescription="EXP you earn or spend as a player or dungeon master will be recorded here."
+      emptyTitle={t("empty.expTitle")}
+      emptyDescription={t("empty.expDescription")}
       onTypeChange={(value) => onTypeChange(toTypeOrNull(value))}
       onRetry={() => refetch()}
       onReset={onFilterReset}

@@ -3,24 +3,7 @@ export const HOME_STORY_LIMIT = 3;
 
 export const HOME_STORY_DATE_FORMAT = "ddd, D MMM YYYY";
 
-// "What is this" pitch; icons are mapped in home-pitch
-export const HOME_PITCH_POINTS = [
-  {
-    key: "friends",
-    title: "Play with friends",
-    description:
-      "Pick an open story, claim a seat and roll dice with a party of fellow adventurers, online or at the table.",
-  },
-  {
-    key: "rewards",
-    title: "Earn EXP & rewards",
-    description:
-      "Every finished story grants experience and gold pieces. Level up and climb the monthly legends.",
-  },
-  {
-    key: "dm",
-    title: "Become a DM",
-    description:
-      "Ready to weave your own tale? Run stories for the guild and earn Dungeon Master experience.",
-  },
-] as const;
+// "What is this" pitch keys; copy lives in messages/*/home.json
+export const HOME_PITCH_KEYS = ["friends", "rewards", "dm"] as const;
+
+export type THomePitchKey = (typeof HOME_PITCH_KEYS)[number];

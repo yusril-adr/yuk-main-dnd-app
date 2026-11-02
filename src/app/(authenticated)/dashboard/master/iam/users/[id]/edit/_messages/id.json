@@ -1,0 +1,42 @@
+{
+  "breadcrumb": {
+    "users": "Users",
+    "edit": "Edit"
+  },
+  "title": "Edit User",
+  "fields": {
+    "avatar": "Avatar",
+    "chooseFile": "Pilih file",
+    "resetFile": "Atur ulang file",
+    "avatarHint": "Foto profil sebaiknya berukuran rasio 1:1\ndan tidak lebih besar dari {{size}}.",
+    "email": "Email",
+    "emailPlaceholder": "Masukkan email",
+    "username": "Username",
+    "usernamePlaceholder": "Masukkan username",
+    "password": "Password",
+    "passwordPlaceholder": "Kosongkan untuk tetap memakai password saat ini",
+    "displayName": "Nama Tampilan",
+    "displayNamePlaceholder": "Masukkan nama tampilan",
+    "bio": "Bio",
+    "bioPlaceholder": "Masukkan bio",
+    "roles": "Roles",
+    "rolesPlaceholder": "Pilih roles",
+    "noRolesFound": "Tidak ada roles."
+  },
+  "actions": {
+    "cancel": "Batal",
+    "save": "Simpan"
+  },
+  "toast": {
+    "editForbidden": "Kamu tidak punya izin untuk mengedit user ini"
+  },
+  "validation": {
+    "emailRequired": "Email wajib diisi",
+    "emailInvalid": "Email tidak valid",
+    "passwordMin": "Password minimal {{min}} karakter",
+    "usernameNoSpaces": "Username tidak boleh mengandung spasi",
+    "displayNameRequired": "Nama tampilan wajib diisi",
+    "bioMax": "Bio maksimal {{max}} karakter",
+    "rolesRequired": "Minimal satu role wajib dipilih"
+  }
+}

@@ -1,3 +1,5 @@
+"use client";
+
 import { useMemo } from "react";
 
 import { Card, CardDescription } from "@/app/_components/ui/card";
@@ -10,8 +12,10 @@ import {
   PaginationPrevious,
 } from "@/app/_components/ui/pagination";
 import { generatePages } from "@/utils/table-helper";
+import { useT } from "@/app/_hooks/use-t";
 
 import { BOARD_STORY_PAGE_SIZE } from "@/app/(authenticated)/dashboard/(player-board)/stories/_constants/board-story";
+import { BOARD_STORIES_MESSAGES } from "@/app/(authenticated)/dashboard/(player-board)/stories/_messages";
 import type { TBoardStoryPaginationProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/_types/board-story-components-props";
 
 const DISABLED = "pointer-events-none opacity-50";
@@ -23,6 +27,7 @@ export default function BoardStoryPagination({
   itemCount,
   onPageChange,
 }: TBoardStoryPaginationProps) {
+  const { t } = useT(BOARD_STORIES_MESSAGES);
   const pages = useMemo(
     () => generatePages({ currentPage: page, totalPages: pageCount }),
     [page, pageCount],
@@ -43,15 +48,19 @@ export default function BoardStoryPagination({
       className="flex-col-reverse items-center justify-between gap-3 px-3 sm:flex-row sm:px-4"
     >
       <CardDescription>
-        Showing {indexStart}–{indexEnd} of {rowCount}
+        {t("pagination.showing", {
+          start: indexStart,
+          end: indexEnd,
+          total: rowCount,
+        })}
       </CardDescription>
-      <Pagination aria-label="Stories pages" className="mx-0 w-auto">
+      <Pagination aria-label={t("pagination.pagesAria")} className="mx-0 w-auto">
         <PaginationContent className="flex-wrap justify-center">
           <PaginationItem>
             <PaginationPrevious
               href="#"
               text=""
-              aria-label="Previous page"
+              aria-label={t("pagination.previous")}
               aria-disabled={page <= 1}
               className={page <= 1 ? DISABLED : undefined}
               onClick={go(page - 1)}
@@ -73,7 +82,7 @@ export default function BoardStoryPagination({
             <PaginationNext
               href="#"
               text=""
-              aria-label="Next page"
+              aria-label={t("pagination.next")}
               aria-disabled={page >= pageCount}
               className={page >= pageCount ? DISABLED : undefined}
               onClick={go(page + 1)}

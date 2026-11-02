@@ -12,8 +12,11 @@ import StoryCreateForm from "./_components/story-create-form";
 import { useCreateStory } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-create-story";
 import { useBannerUploadFile } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-banner-upload-file";
 import type { TStoryBannerUploadHandler } from "@/app/(authenticated)/dashboard/master/stories/_types/story-banner-upload-handler";
+import { useT } from "@/app/_hooks/use-t";
+import { MASTER_STORIES_CREATE_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/create/_messages";
 
 export default function StoryCreatePageClient() {
+  const { t } = useT(MASTER_STORIES_CREATE_MESSAGES);
   const router = useRouter();
   const queryClient = useQueryClient();
   const createStoryMutation = useCreateStory({
@@ -43,8 +46,11 @@ export default function StoryCreatePageClient() {
       <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
         <AppBreadcrumb
           items={[
-            { name: "Stories", link: "/dashboard/master/stories" },
-            { name: "Create" },
+            {
+              name: t("breadcrumb.stories"),
+              link: "/dashboard/master/stories",
+            },
+            { name: t("breadcrumb.create") },
           ]}
         />
 
@@ -52,7 +58,7 @@ export default function StoryCreatePageClient() {
           <Link href="/dashboard/master/stories">
             <ArrowLeft />
           </Link>
-          <h1 className="font-heading text-2xl">Create Story</h1>
+          <h1 className="font-heading text-2xl">{t("title.create")}</h1>
         </div>
 
         <StoryCreateForm

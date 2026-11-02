@@ -1,0 +1,100 @@
+{
+  "breadcrumb": {
+    "stories": "Stories",
+    "create": "Create",
+    "edit": "Edit"
+  },
+  "title": {
+    "create": "Create Story",
+    "edit": "Edit Story"
+  },
+  "fields": {
+    "title": "Title",
+    "titlePlaceholder": "Input story title",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe the story: the hook, the setting, what players should expect...",
+    "type": "Type",
+    "selectType": "Select type",
+    "noItemsFound": "No items found.",
+    "gameSystem": "Game System",
+    "gameSystemPlaceholder": "e.g. DnD 5e 2014",
+    "maxMembers": "Max Members",
+    "maxMembersPlaceholder": "Input max members",
+    "expAwarded": "EXP Awarded",
+    "goldAwarded": "Gold Awarded (GP)",
+    "goldAwardedShort": "Gold Awarded",
+    "startAt": "Start At",
+    "pickDate": "Pick a date",
+    "locationType": "Location Type",
+    "selectLocationType": "Select location type",
+    "locationDetail": "Location Detail",
+    "locationDetailPlaceholder": "e.g. Venue name and address",
+    "locationLink": "Location Link",
+    "discordChannelLink": "Discord Channel Link",
+    "feedbackFormLink": "Feedback Form Link"
+  },
+  "enums": {
+    "type": {
+      "oneshot": "Oneshot",
+      "campaign": "Campaign"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    }
+  },
+  "rewards": {
+    "expLockedNote": "EXP rewards are standardized: every attending player gets 1 EXP per story, so it can't be filled in here. The DM gets 1 DM EXP automatically, unless they also played.",
+    "goldLockedNote": "Gold rewards are standardized for now, so they can't be filled in here."
+  },
+  "xpGuide": {
+    "aria": "EXP guide",
+    "title": "EXP guide by difficulty",
+    "note": "Only a guide. DMs can enter any value.",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "xpValue": "{{count}} EXP"
+  },
+  "actions": {
+    "cancel": "Cancel",
+    "saveAsDraft": "Save as Draft",
+    "publish": "Publish",
+    "save": "Save",
+    "currentStatus": "Current status:"
+  },
+  "toast": {
+    "updating": "Updating story...",
+    "updated": "Story updated",
+    "completedBlocked": "Completed stories can't be edited",
+    "editForbidden": "You don't have permission to edit this story"
+  },
+  "validation": {
+    "titleRequired": "Title is required",
+    "titleMax": "Title must be at most {{max}} characters",
+    "titleNotEmpty": "Title must not be empty",
+    "descriptionMax": "Description must be at most {{max}} characters",
+    "typeRequired": "Type is required",
+    "gameSystemMax": "Game system must be at most {{max}} characters",
+    "maxMembersWhole": "Max members must be a whole number of at least 1",
+    "rewardWhole": "{{label}} must be a whole number of 0 or more",
+    "rewardMax": "{{label}} must be at most {{max}}",
+    "locationTypeRequired": "Location type is required",
+    "locationDetailRequired": "Location detail is required",
+    "locationLinkMax": "Location link must be at most {{max}} characters",
+    "locationLinkHttps": "Location link must be an https link",
+    "discordLinkMax": "Discord channel link must be at most {{max}} characters",
+    "discordLinkHttps": "Discord channel link must be an https link on discord.com, discord.gg or discordapp.com",
+    "feedbackLinkMax": "Feedback form link must be at most {{max}} characters",
+    "feedbackLinkHttps": "Feedback form link must be an https link",
+    "rewardLabelExp": "EXP awarded",
+    "rewardLabelGold": "Gold awarded"
+  }
+}

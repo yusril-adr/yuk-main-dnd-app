@@ -4,10 +4,13 @@ import { STORY_STATUS_BADGE_VARIANT } from "@/app/(authenticated)/dashboard/mast
 import { STORY_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-status-label";
 import type { TStoryStatusBadgeProps } from "@/app/(authenticated)/dashboard/master/stories/_types/story-status-badge-props";
 
-export default function StoryStatusBadge({ status }: TStoryStatusBadgeProps) {
+export default function StoryStatusBadge({
+  status,
+  label,
+}: TStoryStatusBadgeProps) {
   return (
     <Badge variant={STORY_STATUS_BADGE_VARIANT[status]}>
-      {STORY_STATUS_LABEL[status]}
+      {label ?? STORY_STATUS_LABEL[status]}
     </Badge>
   );
 }

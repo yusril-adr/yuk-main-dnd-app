@@ -1,3 +1,5 @@
+"use client";
+
 import { useMemo } from "react";
 
 import { Card, CardDescription } from "@/app/_components/ui/card";
@@ -9,6 +11,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/app/_components/ui/pagination";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 import { generatePages } from "@/utils/table-helper";
 import { PUBLIC_GUILDMATE_PAGE_SIZE } from "@/app/(public)/guildmates/_constants/public-guildmate-page-size";
 
@@ -23,6 +27,7 @@ export default function PublicGuildmatePagination({
   itemCount,
   onPageChange,
 }: TPublicGuildmatePaginationProps) {
+  const { t } = useT(GUILDMATES_MESSAGES);
   const pages = useMemo(
     () => generatePages({ currentPage: page, totalPages: pageCount }),
     [page, pageCount],
@@ -43,16 +48,20 @@ export default function PublicGuildmatePagination({
       className="flex-col-reverse items-center justify-between gap-3 rounded-md px-3 shadow-none sm:flex-row sm:px-4"
     >
       <CardDescription className="text-xs sm:text-sm">
-        Showing {indexStart}–{indexEnd} of {rowCount} guildmates
+        {t("pagination.showing", {
+          start: indexStart,
+          end: indexEnd,
+          total: rowCount,
+        })}
       </CardDescription>
 
-      <Pagination aria-label="Guildmates pages" className="mx-0 w-auto">
+      <Pagination aria-label={t("pagination.pagesAria")} className="mx-0 w-auto">
         <PaginationContent className="flex-wrap justify-center gap-0.5 sm:gap-1">
           <PaginationItem>
             <PaginationPrevious
               href="#"
               text=""
-              aria-label="Previous page"
+              aria-label={t("pagination.previous")}
               aria-disabled={page <= 1}
               className={page <= 1 ? DISABLED : undefined}
               onClick={go(page - 1)}
@@ -75,7 +84,7 @@ export default function PublicGuildmatePagination({
             <PaginationNext
               href="#"
               text=""
-              aria-label="Next page"
+              aria-label={t("pagination.next")}
               aria-disabled={page >= pageCount}
               className={page >= pageCount ? DISABLED : undefined}
               onClick={go(page + 1)}

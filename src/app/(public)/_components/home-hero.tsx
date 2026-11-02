@@ -13,6 +13,8 @@ import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
 import { ItemDescription } from "@/app/_components/ui/item";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { useT } from "@/app/_hooks/use-t";
+import { HOME_MESSAGES } from "@/app/(public)/_messages";
 
 import { HOME_GUILD_PHOTOS } from "@/app/(public)/_constants/home-guild-photos";
 
@@ -21,6 +23,7 @@ const HERO_PHOTO = HOME_GUILD_PHOTOS[1] ?? HOME_GUILD_PHOTOS[0];
 
 export default function HomeHero() {
   const { auth } = useAuthContext();
+  const { t } = useT(HOME_MESSAGES);
 
   return (
     <section
@@ -45,17 +48,16 @@ export default function HomeHero() {
           variant="outline"
           className="border-white/40 bg-black/30 tracking-[0.2em] text-white uppercase"
         >
-          A tabletop RPG guild
+          {t("hero.badge")}
         </Badge>
         <h1
           id="home-hero-title"
           className="max-w-3xl font-heading text-4xl leading-tight text-white sm:text-6xl lg:text-7xl"
         >
-          Gather your party. Your legend starts here.
+          {t("hero.title")}
         </h1>
         <ItemDescription className="line-clamp-none max-w-xl text-base text-white/85 sm:text-xl">
-          Find a table, follow your Dungeon Master and write your name into the
-          chronicles of YukMainDnD.
+          {t("hero.description")}
         </ItemDescription>
         <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
           {auth ? (
@@ -65,7 +67,7 @@ export default function HomeHero() {
               render={<Link href="/dashboard" />}
               nativeButton={false}
             >
-              <LayoutDashboard /> Open my Board
+              <LayoutDashboard /> {t("hero.openBoard")}
             </Button>
           ) : (
             <Button
@@ -74,7 +76,7 @@ export default function HomeHero() {
               render={<Link href="/login" />}
               nativeButton={false}
             >
-              <UserPlus /> Join the guild
+              <UserPlus /> {t("hero.joinGuild")}
             </Button>
           )}
           <Button
@@ -84,7 +86,7 @@ export default function HomeHero() {
             render={<Link href="/stories" />}
             nativeButton={false}
           >
-            <ScrollText /> See stories <ArrowRight />
+            <ScrollText /> {t("hero.seeStories")} <ArrowRight />
           </Button>
         </div>
       </div>

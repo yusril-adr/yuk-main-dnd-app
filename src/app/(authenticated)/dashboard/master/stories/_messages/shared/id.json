@@ -1,0 +1,58 @@
+{
+  "banner": {
+    "label": "Banner",
+    "chooseFile": "Pilih file",
+    "remove": "Hapus",
+    "previewAlt": "Pratinjau banner story",
+    "description": "Gambar JPG, PNG, atau WebP, maks. {{maxSize}}. Disarankan 16:10 (mis. 1600 × 1000 px) dengan subjek utama di tengah, karena halaman publik memotong pinggirnya.",
+    "errorType": "Banner harus gambar JPG, PNG, atau WebP",
+    "errorSize": "Banner harus {{maxSize}} atau lebih kecil"
+  },
+  "rewardLocked": {
+    "title": "Reward standar",
+    "aboutAria": "Tentang {{label}}"
+  },
+  "toast": {
+    "uploadingBanner": "Mengunggah banner...",
+    "bannerUploaded": "Banner diunggah",
+    "creating": "Membuat story...",
+    "created": "Story dibuat",
+    "updating": "Memperbarui story...",
+    "updated": "Story diperbarui",
+    "completing": "Menyelesaikan story...",
+    "completed": "Story diselesaikan",
+    "addingMembers": "Menambah anggota story...",
+    "membersAdded": "Anggota story ditambahkan",
+    "removingMembers": "Menghapus anggota story...",
+    "membersRemoved": "Anggota story dihapus",
+    "publishing": "Mem-publish story...",
+    "published": "Story dipublish",
+    "archiving": "Mengarsipkan story...",
+    "archived": "Story diarsipkan",
+    "unarchiving": "Membatalkan arsip story...",
+    "unarchived": "Arsip story dibatalkan",
+    "cancelling": "Membatalkan story...",
+    "cancelled": "Story dibatalkan",
+    "deleting": "Menghapus story...",
+    "deleted": "Story dihapus"
+  },
+  "enums": {
+    "memberStatus": {
+      "registered": "Terdaftar",
+      "viewer": "Penonton",
+      "attended": "Hadir"
+    }
+  },
+  "complete": {
+    "title": "Selesaikan story?",
+    "description": "Pilih siapa yang hadir. Anggota yang dicentang ditandai attended dan menerima reward. Anggota yang tidak dicentang ditandai viewer dan tidak menerima reward. Story dan anggotanya tidak bisa diedit setelah ini.",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Anggota party nggak bisa dimuat.",
+    "empty": "Belum ada petualang yang bergabung di party ini.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "tryAgain": "Coba lagi",
+    "cancel": "Batal",
+    "confirm": "Selesaikan story",
+    "errorFallback": "Nggak bisa menyelesaikan story."
+  }
+}

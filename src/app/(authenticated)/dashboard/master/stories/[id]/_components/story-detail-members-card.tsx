@@ -5,9 +5,11 @@ import { UserPlus, UserRoundGroup } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
+import { useT } from "@/app/_hooks/use-t";
 import { useGetStoryMemberPagination } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-member-pagination";
 import { STORY_MEMBER_PREVIEW_COUNT } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-member-preview";
 import type { TStoryDetailMembersCardProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-members-card-props";
+import { MASTER_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/[id]/_messages";
 
 import StoryDetailAddMemberDialog from "./story-detail-add-member-dialog";
 import StoryDetailDeleteMemberDialog from "./story-detail-delete-member-dialog";
@@ -21,6 +23,7 @@ export default function StoryDetailMembersCard({
   canAddMembers,
   canRemoveMembers,
 }: TStoryDetailMembersCardProps) {
+  const { t } = useT(MASTER_STORY_DETAIL_MESSAGES);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -61,18 +64,21 @@ export default function StoryDetailMembersCard({
           <StoryDetailMembersCardSkeleton />
         </Then>
         <Else>
-          <StoryDetailSectionCard icon={UserRoundGroup} title="Party">
+          <StoryDetailSectionCard
+            icon={UserRoundGroup}
+            title={t("party.title")}
+          >
             <If condition={query.isError}>
               <Then>
                 <p className="italic text-muted-foreground">
-                  Couldn&apos;t load party members.
+                  {t("party.loadError")}
                 </p>
               </Then>
               <Else>
                 <If condition={items.length === 0}>
                   <Then>
                     <p className="italic text-muted-foreground">
-                      No adventurers have joined this party yet.
+                      {t("party.empty")}
                     </p>
                     <If condition={canAddMembers}>
                       <Then>
@@ -83,7 +89,7 @@ export default function StoryDetailMembersCard({
                           onClick={onAddMemberClick}
                         >
                           <UserPlus data-icon="inline-start" />
-                          Add member
+                          {t("party.addMember")}
                         </Button>
                       </Then>
                     </If>
@@ -105,7 +111,7 @@ export default function StoryDetailMembersCard({
                       size="sm"
                       onClick={onShowMoreClick}
                     >
-                      Show more
+                      {t("party.showMore")}
                     </Button>
                   </Else>
                 </If>

@@ -22,6 +22,7 @@ import {
   InputGroupInput,
 } from "@/app/_components/ui/input-group";
 import { Spinner } from "@/app/_components/ui/spinner";
+import { useT } from "@/app/_hooks/use-t";
 import { useAddStoryMembers } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-add-story-members";
 import {
   getAvailableStoryUserSearchParam,
@@ -32,20 +33,16 @@ import type { TStoryDetailAddMemberDialogProps } from "@/app/(authenticated)/das
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import CONFIG from "@/common/constants/config";
+import { MASTER_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/[id]/_messages";
 
 import StoryDetailAddMemberRow from "./story-detail-add-member-row";
-
-function getAddButtonLabel(count: number): string {
-  if (count === 0) return "Add";
-  if (count === 1) return "Add 1 member";
-  return `Add ${count} members`;
-}
 
 export default function StoryDetailAddMemberDialog({
   storyId,
   open,
   onOpenChange,
 }: TStoryDetailAddMemberDialogProps) {
+  const { t } = useT(MASTER_STORY_DETAIL_MESSAGES);
   const queryClient = useQueryClient();
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
@@ -118,7 +115,7 @@ export default function StoryDetailAddMemberDialog({
       // 400 validation arrays are not. Stay open and keep the selection.
       if (mutationError instanceof MainAPIValidationError) {
         toast.error(
-          mutationError.errors[0]?.messages[0] ?? "Couldn't add story members.",
+          mutationError.errors[0]?.messages[0] ?? t("addMember.errorFallback"),
         );
       }
     },
@@ -149,17 +146,20 @@ export default function StoryDetailAddMemberDialog({
     void query.fetchNextPage();
   }, [query]);
 
-  const onUserCheckedChange = useCallback((userId: string, checked: boolean) => {
-    setSelectedUserIds((current) => {
-      if (checked && !current.includes(userId)) {
-        return [...current, userId];
-      }
-      if (!checked) {
-        return current.filter((id) => id !== userId);
-      }
-      return current;
-    });
-  }, []);
+  const onUserCheckedChange = useCallback(
+    (userId: string, checked: boolean) => {
+      setSelectedUserIds((current) => {
+        if (checked && !current.includes(userId)) {
+          return [...current, userId];
+        }
+        if (!checked) {
+          return current.filter((id) => id !== userId);
+        }
+        return current;
+      });
+    },
+    [],
+  );
 
   const onCancelClick = useCallback(() => {
     onDialogOpenChange(false);
@@ -195,15 +195,15 @@ export default function StoryDetailAddMemberDialog({
     <Dialog open={open} onOpenChange={onDialogOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add member</DialogTitle>
+          <DialogTitle>{t("addMember.title")}</DialogTitle>
           <DialogDescription className="sr-only">
-            Add adventurers to this party
+            {t("addMember.description")}
           </DialogDescription>
         </DialogHeader>
         <InputGroup>
           <InputGroupInput
             value={searchInput}
-            placeholder="Type minimum 3 characters to search ..."
+            placeholder={t("addMember.searchPlaceholder")}
             onChange={onSearchInputChange}
           />
           <InputGroupAddon>
@@ -221,7 +221,7 @@ export default function StoryDetailAddMemberDialog({
               <If condition={query.isError}>
                 <Then>
                   <p className="italic text-muted-foreground">
-                    Couldn&apos;t load available adventurers.
+                    {t("addMember.loadError")}
                   </p>
                 </Then>
                 <Else>
@@ -230,12 +230,12 @@ export default function StoryDetailAddMemberDialog({
                       <If condition={isSearching}>
                         <Then>
                           <p className="italic text-muted-foreground">
-                            No adventurers match this search.
+                            {t("addMember.emptySearch")}
                           </p>
                         </Then>
                         <Else>
                           <p className="italic text-muted-foreground">
-                            No adventurers are available to join.
+                            {t("addMember.empty")}
                           </p>
                         </Else>
                       </If>
@@ -274,7 +274,7 @@ export default function StoryDetailAddMemberDialog({
                 size="sm"
                 onClick={onTryAgainClick}
               >
-                Try again
+                {t("addMember.tryAgain")}
               </Button>
             </Then>
           </If>
@@ -282,7 +282,7 @@ export default function StoryDetailAddMemberDialog({
         </div>
         <DialogFooter>
           <Button type="button" variant="outline" onClick={onCancelClick}>
-            Cancel
+            {t("addMember.cancel")}
           </Button>
           <Button
             type="button"
@@ -294,7 +294,7 @@ export default function StoryDetailAddMemberDialog({
                 <Spinner data-icon="inline-start" />
               </Then>
             </If>
-            {getAddButtonLabel(selectedUserIds.length)}
+            {t("addMember.submit", { count: selectedUserIds.length })}
           </Button>
         </DialogFooter>
       </DialogContent>

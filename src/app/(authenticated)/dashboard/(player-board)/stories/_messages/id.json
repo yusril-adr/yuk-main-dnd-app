@@ -1,0 +1,52 @@
+{
+  "breadcrumb": "Stories Saya",
+  "title": "Stories Saya",
+  "description": "Stories yang sudah kamu ikuti, sebagai player atau penonton.",
+  "filters": {
+    "searchAria": "Cari stories saya",
+    "searchPlaceholder": "Cari berdasarkan judul (min. 3 karakter)…",
+    "statusAria": "Status story",
+    "memberStatusAria": "Status keanggotaan saya",
+    "allStatuses": "Semua status",
+    "anySeat": "Semua kursi"
+  },
+  "enums": {
+    "status": {
+      "draft": "Draf",
+      "published": "Published",
+      "archived": "Diarsipkan",
+      "cancelled": "Dibatalkan",
+      "completed": "Selesai"
+    },
+    "memberStatus": {
+      "registered": "Terdaftar",
+      "viewer": "Penonton",
+      "attended": "Hadir"
+    }
+  },
+  "card": {
+    "dungeonMaster": "Dungeon Master",
+    "unknownDm": "DM tidak diketahui",
+    "starts": "Mulai",
+    "dateTba": "Tanggal menyusul",
+    "members": "Anggota"
+  },
+  "pagination": {
+    "showing": "Menampilkan {{start}}–{{end}} dari {{total}}",
+    "pagesAria": "Halaman stories",
+    "previous": "Halaman sebelumnya",
+    "next": "Halaman berikutnya"
+  },
+  "empty": {
+    "filteredTitle": "Tidak ada story yang cocok",
+    "title": "Belum ada stories",
+    "filteredDescription": "Coba judul lain atau longgarkan filter.",
+    "description": "Gabung story dari papan stories, nanti muncul di sini.",
+    "clearFilters": "Hapus filter",
+    "browse": "Jelajahi stories"
+  },
+  "error": {
+    "title": "Stories kamu nggak bisa dimuat",
+    "description": "Ada yang salah di perjalanan. Coba lagi ya."
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "toast": {
+    "creating": "Membuat role...",
+    "created": "Role dibuat",
+    "updating": "Memperbarui role...",
+    "updated": "Role diperbarui",
+    "deleting": "Menghapus role...",
+    "deleted": "Role dihapus"
+  }
+}

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 import {
@@ -24,15 +26,23 @@ import {
 } from "@/utils/user-helper";
 import { StoryMemberStatusEnum } from "@/api/main/modules/master/stories/enums/story-member-status";
 
-import {
-  PUBLIC_STORY_MEMBER_STATUS_BADGE_VARIANT,
-  PUBLIC_STORY_MEMBER_STATUS_LABEL,
-} from "@/app/(public)/stories/[slug]/_constants/public-story-member";
+import { PUBLIC_STORY_MEMBER_STATUS_BADGE_VARIANT } from "@/app/(public)/stories/[slug]/_constants/public-story-member";
+import { STORY_DETAIL_MESSAGES } from "@/app/(public)/stories/[slug]/_messages";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
 import type { TPublicStoryPartyMemberProps } from "@/app/(public)/stories/[slug]/_types/public-story-party-member-props";
+
+const MEMBER_STATUS_KEY = {
+  [StoryMemberStatusEnum.REGISTERED]: "enums.memberStatus.registered",
+  [StoryMemberStatusEnum.ATTENDED]: "enums.memberStatus.attended",
+  [StoryMemberStatusEnum.VIEWER]: "enums.memberStatus.viewer",
+} as const;
 
 export default function PublicStoryPartyMember({
   member,
 }: TPublicStoryPartyMemberProps) {
+  const { t } = useT(STORY_DETAIL_MESSAGES);
+  const { locale } = useLocale();
   const { user } = member;
   return (
     <Item
@@ -66,7 +76,9 @@ export default function PublicStoryPartyMember({
         </ItemTitle>
         <ItemDescription className="truncate text-foreground/75">
           {user.username ? `@${user.username} · ` : ""}
-          Joined {dayjs(member.created_at).format("D MMM YYYY")}
+          {t("party.joinedOn", {
+            date: dayjs(member.created_at).locale(locale).format("D MMM YYYY"),
+          })}
         </ItemDescription>
       </ItemContent>
 
@@ -79,7 +91,7 @@ export default function PublicStoryPartyMember({
               "border-destructive/50 text-destructive",
           )}
         >
-          {PUBLIC_STORY_MEMBER_STATUS_LABEL[member.status]}
+          {t(MEMBER_STATUS_KEY[member.status])}
         </Badge>
       </ItemActions>
     </Item>

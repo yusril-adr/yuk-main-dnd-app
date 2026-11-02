@@ -1,3 +1,5 @@
+"use client";
+
 import { TriangleAlert } from "lucide-react";
 
 import { Button } from "@/app/_components/ui/button";
@@ -9,13 +11,18 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/app/_components/ui/empty";
+import { useT } from "@/app/_hooks/use-t";
+import { COMMON_MESSAGES } from "@/messages/common";
 
 import type { TBoardStoryErrorStateProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/_types/board-story-components-props";
 
 export default function BoardStoryErrorState({
-  title = "Could not load your stories",
+  title,
+  description,
   onRetry,
 }: TBoardStoryErrorStateProps) {
+  const { t: tCommon } = useT(COMMON_MESSAGES);
+
   return (
     <Empty
       role="alert"
@@ -26,13 +33,11 @@ export default function BoardStoryErrorState({
           <TriangleAlert className="size-10" />
         </EmptyMedia>
         <EmptyTitle className="font-heading text-xl">{title}</EmptyTitle>
-        <EmptyDescription>
-          Something went wrong on the way. Please try again.
-        </EmptyDescription>
+        <EmptyDescription>{description}</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <Button variant="outline" onClick={onRetry}>
-          Try again
+          {tCommon("actions.tryAgain")}
         </Button>
       </EmptyContent>
     </Empty>

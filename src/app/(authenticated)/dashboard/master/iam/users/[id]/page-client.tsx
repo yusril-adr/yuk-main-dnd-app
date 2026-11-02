@@ -33,9 +33,13 @@ import CONFIG from "@/common/constants/config";
 import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import dayjs from "@/libs/dayjs";
+import { localeToBcp47 } from "@/libs/i18n/locales";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
 
 import { useGetUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-by-id";
 import { useDeleteUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-delete-user-by-id";
+import { MASTER_USERS_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/[id]/_messages";
 import UserDetailActions from "./_components/user-detail-actions";
 
 function DetailRow({
@@ -54,6 +58,9 @@ function DetailRow({
 }
 
 export default function UserDetailPageClient() {
+  const { t } = useT(MASTER_USERS_DETAIL_MESSAGES);
+  const { locale } = useLocale();
+  const numberLocale = localeToBcp47(locale);
   const { id } = useParams();
   const router = useRouter();
   const userId = id as string;
@@ -87,6 +94,10 @@ export default function UserDetailPageClient() {
       return <Skeleton className="h-6 w-full" />;
     }
 
+    if (typeof value === "number") {
+      return value.toLocaleString(numberLocale);
+    }
+
     return value ?? "-";
   };
 
@@ -98,10 +109,10 @@ export default function UserDetailPageClient() {
 
   const breadcrumbItems = useMemo(
     () => [
-      { name: "Users", link: "/dashboard/master/iam/users" },
-      { name: user?.display_name ?? "Detail" },
+      { name: t("breadcrumb"), link: "/dashboard/master/iam/users" },
+      { name: user?.display_name ?? t("breadcrumbDetail") },
     ],
-    [user?.display_name],
+    [user?.display_name, t],
   );
 
   const onDeleteHandler = () => {
@@ -118,7 +129,7 @@ export default function UserDetailPageClient() {
           <Link href="/dashboard/master/iam/users">
             <ArrowLeft />
           </Link>
-          <h1 className="font-heading text-2xl">User Detail</h1>
+          <h1 className="font-heading text-2xl">{t("title")}</h1>
           {user && (canViewPoints || canUpdateUsers || canDeleteUsers) && (
             <UserDetailActions
               userId={userId}
@@ -135,7 +146,7 @@ export default function UserDetailPageClient() {
             <CardContent className="flex flex-col items-center gap-6">
               {/* Guild stamp ornament */}
               <div className="text-muted-foreground/40 text-xs tracking-[0.3em] uppercase select-none">
-                &#9830; Guild Record &#9830;
+                {t("guildStamp")}
               </div>
 
               {/* Avatar */}
@@ -176,7 +187,7 @@ export default function UserDetailPageClient() {
                     <p className="text-sm text-muted-foreground mt-0.5">
                       <If condition={!!user?.username}>
                         <Then>@{user?.username}</Then>
-                        <Else>(username not set)</Else>
+                        <Else>{t("usernameUnset")}</Else>
                       </If>
                     </p>
                   </Else>
@@ -215,18 +226,20 @@ export default function UserDetailPageClient() {
                   <ItemGroup className="grid w-full grid-cols-3 gap-2 sm:gap-4">
                     <UserStatItem
                       size="lg"
-                      label="Player EXP"
-                      value={(user?.player_exp ?? 0).toLocaleString()}
+                      label={t("fields.playerExp")}
+                      value={(user?.player_exp ?? 0).toLocaleString(
+                        numberLocale,
+                      )}
                     />
                     <UserStatItem
                       size="lg"
-                      label="DM EXP"
-                      value={(user?.dm_exp ?? 0).toLocaleString()}
+                      label={t("fields.dmExp")}
+                      value={(user?.dm_exp ?? 0).toLocaleString(numberLocale)}
                     />
                     <UserStatItem
                       size="lg"
-                      label="Gold"
-                      value={(user?.points ?? 0).toLocaleString()}
+                      label={t("fields.gold")}
+                      value={(user?.points ?? 0).toLocaleString(numberLocale)}
                     />
                   </ItemGroup>
                 </Else>
@@ -248,46 +261,53 @@ export default function UserDetailPageClient() {
                     </div>
                   </Then>
                   <Else>
-                    <DetailRow label="Email" value={renderValue(user?.email)} />
                     <DetailRow
-                      label="Bio"
+                      label={t("fields.email")}
+                      value={renderValue(user?.email)}
+                    />
+                    <DetailRow
+                      label={t("fields.bio")}
                       value={
                         <If condition={!!user?.bio}>
                           <Then>{user?.bio}</Then>
                           <Else>
                             <span className="text-muted-foreground italic">
-                              No bio provided
+                              {t("fields.bioEmpty")}
                             </span>
                           </Else>
                         </If>
                       }
                     />
                     <DetailRow
-                      label="Player EXP"
+                      label={t("fields.playerExp")}
                       value={renderValue(user?.player_exp)}
                     />
                     <DetailRow
-                      label="DM EXP"
+                      label={t("fields.dmExp")}
                       value={renderValue(user?.dm_exp)}
                     />
                     <Separator className="my-2" />
                     <DetailRow
-                      label="Enrolled"
+                      label={t("fields.enrolled")}
                       value={
                         userQuery.isLoading ? (
                           <Skeleton className="h-6 w-full" />
                         ) : (
-                          dayjs(user?.created_at).format("YYYY-MM-DD HH:mm:ss")
+                          dayjs(user?.created_at)
+                            .locale(locale)
+                            .format("YYYY-MM-DD HH:mm:ss")
                         )
                       }
                     />
                     <DetailRow
-                      label="Last Updated"
+                      label={t("fields.lastUpdated")}
                       value={
                         userQuery.isLoading ? (
                           <Skeleton className="h-6 w-full" />
                         ) : (
-                          dayjs(user?.updated_at).format("YYYY-MM-DD HH:mm:ss")
+                          dayjs(user?.updated_at)
+                            .locale(locale)
+                            .format("YYYY-MM-DD HH:mm:ss")
                         )
                       }
                     />
@@ -312,20 +332,19 @@ export default function UserDetailPageClient() {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete user?</AlertDialogTitle>
+            <AlertDialogTitle>{t("dialogs.deleteTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. The user will be permanently removed
-              from the system.
+              {t("dialogs.deleteDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
               disabled={deleteUserMutation.isPending}
               onClick={onDeleteHandler}
             >
-              Delete
+              {t("dialogs.deleteConfirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

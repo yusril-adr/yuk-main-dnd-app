@@ -1,43 +1,11 @@
-import type { LucideIcon } from "lucide-react";
-
 import type { TPublicUserPaginationResponse } from "@/api/main/modules/users/types/public-user-pagination-response";
-
-export type TPublicGuildmateLegendKind = "dm" | "player";
-
-export type TPublicGuildmateLegendEntry = {
-  rank: number;
-  user: TPublicUserPaginationResponse;
-  gainedExp: number;
-};
-
-export type TPublicGuildmateLegendBoardProps = {
-  kind: TPublicGuildmateLegendKind;
-  title: string;
-  icon: LucideIcon;
-  // Current UTC month in English, e.g. "October"; null before hydration
-  monthName: string | null;
-  entries: TPublicGuildmateLegendEntry[];
-  isLoading: boolean;
-  isError: boolean;
-  onRetry: () => void;
-};
-
-export type TPublicGuildmateLegendViewProps = {
-  kind: TPublicGuildmateLegendKind;
-  entries: TPublicGuildmateLegendEntry[];
-};
+import type { TPublicLegendBoardData } from "@/app/(public)/_types/public-legend-components-props";
 
 export type TPublicGuildmateLegendsSectionProps = {
   monthName: string | null;
   monthLabel: string | null;
-  dmBoard: Omit<
-    TPublicGuildmateLegendBoardProps,
-    "kind" | "title" | "icon" | "monthName"
-  >;
-  playerBoard: Omit<
-    TPublicGuildmateLegendBoardProps,
-    "kind" | "title" | "icon" | "monthName"
-  >;
+  dmBoard: TPublicLegendBoardData;
+  playerBoard: TPublicLegendBoardData;
 };
 
 export type TPublicGuildmateHeroProps = {
@@ -68,8 +36,8 @@ export type TPublicGuildmateEmptyStateProps = {
 };
 
 export type TPublicGuildmateErrorStateProps = {
-  title?: string;
-  description?: string;
+  title: string;
+  description: string;
   onRetry: () => void;
   compact?: boolean;
 };

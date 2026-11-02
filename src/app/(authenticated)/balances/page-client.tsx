@@ -12,6 +12,7 @@ import {
   TabsTrigger,
 } from "@/app/_components/ui/tabs";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
+import { useT } from "@/app/_hooks/use-t";
 
 import BalanceSummary from "@/app/(authenticated)/balances/_components/balance-summary";
 import BalanceExperiencePanel from "@/app/(authenticated)/balances/_components/balance-experience-panel";
@@ -20,9 +21,11 @@ import {
   BALANCE_TAB,
   BALANCE_TAB_OPTIONS,
 } from "@/app/(authenticated)/balances/_constants/balance";
+import { BALANCES_MESSAGES } from "@/app/(authenticated)/balances/_messages";
 import type { TBalanceTab } from "@/app/(authenticated)/balances/_types/balance-components-props";
 
 export default function BalancesPageClient() {
+  const { t } = useT(BALANCES_MESSAGES);
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     tab: parseAsStringLiteral(BALANCE_TAB_OPTIONS).withDefault(
       BALANCE_TAB.EXPERIENCE,
@@ -74,13 +77,11 @@ export default function BalancesPageClient() {
   return (
     <div className="w-full flex justify-center min-w-0">
       <main className="w-full max-w-5xl flex flex-col px-4 pb-10 sm:px-6 lg:px-10">
-        <AppBreadcrumb items={[{ name: "Balances" }]} />
+        <AppBreadcrumb items={[{ name: t("breadcrumb") }]} />
 
         <div className="mt-4 mb-6 flex flex-col gap-1">
-          <h1 className="font-heading text-2xl">Balances</h1>
-          <p className="text-sm text-muted-foreground">
-            Your ledger of experience and gold pieces.
-          </p>
+          <h1 className="font-heading text-2xl">{t("title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("description")}</p>
         </div>
 
         <div className="flex flex-col gap-6">
@@ -93,11 +94,11 @@ export default function BalancesPageClient() {
             <TabsList className="w-full sm:w-fit">
               <TabsTrigger value={BALANCE_TAB.EXPERIENCE}>
                 <Sparkles />
-                Experience
+                {t("tabs.experience")}
               </TabsTrigger>
               <TabsTrigger value={BALANCE_TAB.GOLD}>
                 <Coins />
-                Gold Pieces
+                {t("tabs.gold")}
               </TabsTrigger>
             </TabsList>
             <TabsContent value={BALANCE_TAB.EXPERIENCE} className="pt-2">

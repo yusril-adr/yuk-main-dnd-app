@@ -1,0 +1,84 @@
+{
+  "breadcrumb": "Stories Saya",
+  "breadcrumbDetail": "Detail",
+  "backAria": "Kembali ke Stories Saya",
+  "title": "Detail Story",
+  "enums": {
+    "status": {
+      "draft": "Draf",
+      "published": "Published",
+      "archived": "Diarsipkan",
+      "cancelled": "Dibatalkan",
+      "completed": "Selesai"
+    },
+    "type": {
+      "oneshot": "Oneshot",
+      "campaign": "Campaign"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "memberStatus": {
+      "registered": "Terdaftar",
+      "viewer": "Penonton",
+      "attended": "Hadir"
+    }
+  },
+  "quest": {
+    "title": "Detail Story",
+    "empty": "Belum ada deskripsi untuk story ini.",
+    "copyAria": "Salin deskripsi untuk Discord",
+    "copyTitle": "Salin untuk Discord",
+    "copySuccess": "Deskripsi disalin",
+    "copyError": "Nggak bisa menyalin deskripsi"
+  },
+  "adventure": {
+    "title": "Info Petualangan",
+    "gameSystem": "Sistem Game",
+    "anySystem": "Sistem apa saja",
+    "partySize": "Ukuran Party",
+    "partySizeValue_one": "Maksimal {{count}} petualang",
+    "partySizeValue_other": "Maksimal {{count}} petualang",
+    "noLimit": "Tidak ada batas",
+    "rewards": "Rewards",
+    "noRewards": "Tidak ada reward",
+    "exp": "{{count}} EXP",
+    "gp": "{{count}} GP",
+    "starts": "Mulai",
+    "notScheduled": "Belum dijadwalkan",
+    "location": "Lokasi · {{type}}",
+    "openMap": "Buka peta lokasi",
+    "discord": "Channel Discord",
+    "openDiscord": "Buka channel Discord",
+    "feedback": "Form Feedback",
+    "openFeedback": "Buka form feedback"
+  },
+  "chronicle": {
+    "title": "Chronicle",
+    "writtenBy": "Ditulis Oleh",
+    "unknown": "Tidak diketahui",
+    "recorded": "Dicatat",
+    "lastUpdated": "Terakhir Diperbarui"
+  },
+  "party": {
+    "title": "Party",
+    "dialogDescription": "Daftar lengkap anggota story",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Anggota party nggak bisa dimuat.",
+    "empty": "Belum ada petualang yang bergabung di party ini.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "showMore": "Tampilkan lebih banyak"
+  },
+  "slug": {
+    "viewPublic": "Lihat halaman publik",
+    "viewPublicSr": "Lihat halaman publik (membuka tab baru)"
+  },
+  "external": {
+    "opensInNewTab": "(membuka tab baru)"
+  },
+  "error": {
+    "title": "Story ini nggak bisa dimuat",
+    "description": "Ada yang salah di perjalanan. Coba lagi ya."
+  }
+}

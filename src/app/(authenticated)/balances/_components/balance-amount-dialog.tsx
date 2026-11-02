@@ -10,8 +10,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/app/_components/ui/alert-dialog";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
+import { localeToBcp47 } from "@/libs/i18n/locales";
 import { formatCompactBalance } from "@/utils/format-number";
 
+import { BALANCES_MESSAGES } from "@/app/(authenticated)/balances/_messages";
 import type { TBalanceAmountDialogProps } from "@/app/(authenticated)/balances/_types/balance-components-props";
 
 export default function BalanceAmountDialog({
@@ -21,9 +25,11 @@ export default function BalanceAmountDialog({
   isSigned = false,
   className,
 }: TBalanceAmountDialogProps) {
+  const { t } = useT(BALANCES_MESSAGES);
+  const { locale } = useLocale();
   const sign = isSigned ? (value < 0 ? "−" : "+") : value < 0 ? "-" : "";
   const abs = Math.abs(value);
-  const exact = `${sign}${abs.toLocaleString("en-US")}`;
+  const exact = `${sign}${abs.toLocaleString(localeToBcp47(locale))}`;
   const compact = `${sign}${formatCompactBalance(abs)}`;
 
   if (compact === exact) {
@@ -33,7 +39,7 @@ export default function BalanceAmountDialog({
   return (
     <AlertDialog>
       <AlertDialogTrigger
-        aria-label={`Show exact ${label}`}
+        aria-label={t("amount.showExactAria", { label })}
         className={cn(
           "cursor-pointer underline decoration-dotted underline-offset-4",
           className,
@@ -52,7 +58,9 @@ export default function BalanceAmountDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="col-span-2">Close</AlertDialogCancel>
+          <AlertDialogCancel className="col-span-2">
+            {t("amount.close")}
+          </AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

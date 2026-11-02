@@ -15,9 +15,13 @@ import { useGetTopDmExperience } from "@/app/(public)/guildmates/_hooks/use-get-
 import { useGetTopPlayerExperience } from "@/app/(public)/guildmates/_hooks/use-get-top-player-experience";
 import { useCurrentMonthRange } from "@/app/(public)/guildmates/_hooks/use-current-month-range";
 import { PUBLIC_GUILDMATE_PAGE_SIZE } from "@/app/(public)/guildmates/_constants/public-guildmate-page-size";
-import type { TPublicGuildmateLegendEntry } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
+import type { TPublicLegendEntry } from "@/app/(public)/_types/public-legend-components-props";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 
 export default function GuildMatesPageClient() {
+  const { t } = useT(GUILDMATES_MESSAGES);
+
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
     search: parseAsString.withDefault(""),
@@ -30,7 +34,7 @@ export default function GuildMatesPageClient() {
     monthRange?.payload ?? null,
   );
 
-  const dmEntries: TPublicGuildmateLegendEntry[] = useMemo(
+  const dmEntries: TPublicLegendEntry[] = useMemo(
     () =>
       (topDmQuery.data?.data?.data ?? []).slice(0, 3).map((user, idx) => ({
         rank: idx + 1,
@@ -39,7 +43,7 @@ export default function GuildMatesPageClient() {
       })),
     [topDmQuery.data],
   );
-  const playerEntries: TPublicGuildmateLegendEntry[] = useMemo(
+  const playerEntries: TPublicLegendEntry[] = useMemo(
     () =>
       (topPlayerQuery.data?.data?.data ?? []).slice(0, 3).map((user, idx) => ({
         rank: idx + 1,
@@ -132,10 +136,10 @@ export default function GuildMatesPageClient() {
               id="guildmates-heading"
               className="scroll-mt-20 font-heading text-2xl sm:text-3xl"
             >
-              The Guild Roll
+              {t("roll.title")}
             </h2>
             <p className="text-sm text-muted-foreground">
-              Every adventurer sworn to the guild.
+              {t("roll.description")}
             </p>
           </div>
 

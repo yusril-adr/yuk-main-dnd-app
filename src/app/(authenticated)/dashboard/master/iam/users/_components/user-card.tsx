@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { HandCoins, EllipsisVertical, Eye, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
+import { Else, If, Then } from "react-if";
 
 import {
   Card,
@@ -38,12 +39,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
+import { localeToBcp47 } from "@/libs/i18n/locales";
 import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
+import { MASTER_USERS_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/_messages";
 
 import type { TUserCardProps } from "@/app/(authenticated)/dashboard/master/iam/users/_types/user-card-props";
-import { Else, If, Then } from "react-if";
 
 export default function UserCard({ user, onDelete }: TUserCardProps) {
+  const { t } = useT(MASTER_USERS_MESSAGES);
+  const { locale } = useLocale();
+  const numberLocale = localeToBcp47(locale);
   const canUpdateUsers = user.action_list.is_can_update;
   const canDeleteUsers = user.action_list.is_can_delete;
   const canViewPoints = user.action_list.is_can_view_balances;
@@ -54,7 +61,7 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
       onDelete(confirmDeleteId);
     }
     setConfirmDeleteId(null);
-  }, [confirmDeleteId, onDelete]);
+  }, [confirmDeleteId, onDelete, setConfirmDeleteId]);
 
   return (
     <>
@@ -93,7 +100,7 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
                     </Then>
 
                     <Else>
-                      <span>(username is not set)</span>
+                      <span>{t("card.usernameUnset")}</span>
                     </Else>
                   </If>
                 </CardDescription>
@@ -116,7 +123,7 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
                     }
                   >
                     <Eye />
-                    View
+                    {t("card.view")}
                   </DropdownMenuItem>
                   {canViewPoints && (
                     <DropdownMenuItem
@@ -127,7 +134,7 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
                       }
                     >
                       <HandCoins />
-                      Balances
+                      {t("card.balances")}
                     </DropdownMenuItem>
                   )}
                   {canUpdateUsers && (
@@ -139,7 +146,7 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
                       }
                     >
                       <Pencil />
-                      Edit
+                      {t("card.edit")}
                     </DropdownMenuItem>
                   )}
                   {canDeleteUsers && onDelete && (
@@ -148,7 +155,7 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
                       onClick={() => setConfirmDeleteId(user.id)}
                     >
                       <Trash />
-                      Delete
+                      {t("card.delete")}
                     </DropdownMenuItem>
                   )}
                 </DropdownMenuGroup>
@@ -160,16 +167,16 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
         <CardContent>
           <ItemGroup className="mt-3 grid grid-cols-3 gap-2">
             <UserStatItem
-              label="Player EXP"
-              value={(user.player_exp ?? 0).toLocaleString()}
+              label={t("card.playerExp")}
+              value={(user.player_exp ?? 0).toLocaleString(numberLocale)}
             />
             <UserStatItem
-              label="DM EXP"
-              value={(user.dm_exp ?? 0).toLocaleString()}
+              label={t("card.dmExp")}
+              value={(user.dm_exp ?? 0).toLocaleString(numberLocale)}
             />
             <UserStatItem
-              label="Gold"
-              value={(user.points ?? 0).toLocaleString()}
+              label={t("card.gold")}
+              value={(user.points ?? 0).toLocaleString(numberLocale)}
             />
           </ItemGroup>
         </CardContent>
@@ -197,16 +204,15 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete user?</AlertDialogTitle>
+            <AlertDialogTitle>{t("dialogs.deleteTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. The user will be permanently removed
-              from the system.
+              {t("dialogs.deleteDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
             <AlertDialogAction variant="destructive" onClick={onDeleteConfirm}>
-              Delete
+              {t("dialogs.deleteConfirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

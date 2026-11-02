@@ -1,0 +1,38 @@
+{
+  "breadcrumb": "Roles",
+  "title": "Roles",
+  "addRole": "Tambah Role",
+  "columns": {
+    "no": "No.",
+    "name": "Nama",
+    "description": "Deskripsi",
+    "showInPublic": "Tampil di Publik",
+    "createdAt": "Dibuat Pada",
+    "action": "Aksi"
+  },
+  "filters": {
+    "filter": "Filter",
+    "showInPublic": "Tampil di Publik",
+    "clear": "Hapus",
+    "apply": "Terapkan",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ..."
+  },
+  "enums": {
+    "showInPublic": {
+      "all": "Semua",
+      "yes": "Ya",
+      "no": "Tidak"
+    }
+  },
+  "actions": {
+    "view": "Lihat",
+    "edit": "Edit",
+    "delete": "Hapus"
+  },
+  "dialogs": {
+    "cancel": "Batal",
+    "deleteTitle": "Hapus role?",
+    "deleteDescription": "Aksi ini tidak bisa diurungkan. Role akan dihapus dari sistem.",
+    "deleteConfirm": "Hapus"
+  }
+}

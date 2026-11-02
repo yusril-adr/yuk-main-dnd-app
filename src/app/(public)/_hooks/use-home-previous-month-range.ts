@@ -1,5 +1,6 @@
 import { useMemo, useSyncExternalStore } from "react";
 
+import { useLocale } from "@/app/_hooks/use-locale";
 import {
   getHomeMonthRange,
   getHomePreviousMonthKey,
@@ -12,6 +13,7 @@ const subscribe = () => () => {};
 // time, so the server snapshot is null (no month baked into the HTML) and the
 // real month is read on the client after hydration, avoiding a mismatch.
 export function useHomePreviousMonthRange() {
+  const { locale } = useLocale();
   const monthKey = useSyncExternalStore(
     subscribe,
     getHomePreviousMonthKey,
@@ -19,7 +21,7 @@ export function useHomePreviousMonthRange() {
   );
 
   return useMemo(
-    () => (monthKey ? getHomeMonthRange(monthKey) : null),
-    [monthKey],
+    () => (monthKey ? getHomeMonthRange(monthKey, locale) : null),
+    [monthKey, locale],
   );
 }

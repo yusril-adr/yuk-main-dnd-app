@@ -1,0 +1,27 @@
+{
+  "breadcrumb": {
+    "roles": "Roles",
+    "edit": "Edit"
+  },
+  "title": "Edit Role",
+  "fields": {
+    "name": "Nama",
+    "namePlaceholder": "Masukkan nama role",
+    "description": "Deskripsi",
+    "descriptionPlaceholder": "Masukkan deskripsi role",
+    "showInPublic": "Tampil di Publik",
+    "permissions": "Permissions"
+  },
+  "actions": {
+    "cancel": "Batal",
+    "save": "Simpan"
+  },
+  "toast": {
+    "editForbidden": "Kamu tidak punya izin untuk mengedit role ini"
+  },
+  "validation": {
+    "nameRequired": "Nama wajib diisi",
+    "nameMax": "Nama maksimal {{max}} karakter",
+    "nameAlphanumeric": "Nama harus mengandung minimal satu huruf atau angka"
+  }
+}

@@ -1,3 +1,5 @@
+"use client";
+
 import { RotateCw, TriangleAlert } from "lucide-react";
 
 import { Button } from "@/app/_components/ui/button";
@@ -8,6 +10,8 @@ import {
   EmptyHeader,
   EmptyMedia,
 } from "@/app/_components/ui/empty";
+import { useT } from "@/app/_hooks/use-t";
+import { COMMON_MESSAGES } from "@/messages/common";
 
 import type { THomeErrorStateProps } from "@/app/(public)/_types/home-components-props";
 
@@ -15,6 +19,8 @@ export default function HomeErrorState({
   text,
   onRetry,
 }: THomeErrorStateProps) {
+  const { t } = useT(COMMON_MESSAGES);
+
   return (
     <Empty role="alert" className="border border-destructive/30 bg-card py-10">
       <EmptyHeader>
@@ -25,7 +31,7 @@ export default function HomeErrorState({
       </EmptyHeader>
       <EmptyContent>
         <Button variant="outline" size="sm" onClick={onRetry}>
-          <RotateCw /> Try again
+          <RotateCw /> {t("actions.tryAgain")}
         </Button>
       </EmptyContent>
     </Empty>

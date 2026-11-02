@@ -5,4 +5,5 @@ export type TStoryDetailDeleteMemberRowProps = {
   checked: boolean;
   disabled: boolean;
   onCheckedChange: (userId: string, checked: boolean) => void;
+  statusLabel?: string;
 };

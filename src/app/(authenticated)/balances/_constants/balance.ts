@@ -32,22 +32,3 @@ export const BALANCE_POINT_TYPE_OPTIONS = [
   UserPointLogTypeEnum.INCOME,
   UserPointLogTypeEnum.EXPENSE,
 ] as const;
-
-// Human labels shown on each log row
-export const BALANCE_EXP_TYPE_LABEL: Record<UserExpLogTypeEnum, string> = {
-  [UserExpLogTypeEnum.PLAYER]: "Player EXP",
-  [UserExpLogTypeEnum.DM]: "Dungeon Master EXP",
-};
-
-export const BALANCE_EXP_DIRECTION_LABEL: Record<
-  UserExpLogDirectionEnum,
-  string
-> = {
-  [UserExpLogDirectionEnum.INCREMENT]: "EXP increments",
-  [UserExpLogDirectionEnum.DECREMENT]: "EXP decrements",
-};
-
-export const BALANCE_POINT_TYPE_LABEL: Record<UserPointLogTypeEnum, string> = {
-  [UserPointLogTypeEnum.INCOME]: "Gold earned",
-  [UserPointLogTypeEnum.EXPENSE]: "Gold spent",
-};

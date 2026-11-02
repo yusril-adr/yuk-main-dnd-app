@@ -1,7 +1,11 @@
+"use client";
+
 import { Else, If, Then } from "react-if";
 
+import { useT } from "@/app/_hooks/use-t";
 import { PUBLIC_STORY_PAGE_SIZE } from "@/app/(public)/stories/_constants/public-story-page-size";
 import { PUBLIC_STORY_EAGER_CARD_COUNT } from "@/app/(public)/stories/_constants/public-story-page-size";
+import { STORIES_MESSAGES } from "@/app/(public)/stories/_messages";
 import PublicStoryCard from "./public-story-card";
 import PublicStoryCardSkeleton from "./public-story-card-skeleton";
 import PublicStoryEmptyState from "./public-story-empty-state";
@@ -20,6 +24,7 @@ export default function PublicStoryCardList({
   queryTable,
   onActionHandler,
 }: TPublicStoryCardListProps) {
+  const { t } = useT(STORIES_MESSAGES);
   const isFiltered =
     !!queryTable.search ||
     queryTable.status != null ||
@@ -30,7 +35,11 @@ export default function PublicStoryCardList({
     <div className="flex flex-col gap-6 sm:gap-8">
       <If condition={isError && !isLoading}>
         <Then>
-          <PublicStoryErrorState onRetry={onRetry} />
+          <PublicStoryErrorState
+            title={t("error.title")}
+            description={t("error.description")}
+            onRetry={onRetry}
+          />
         </Then>
         <Else>
           <If condition={!isLoading && data.length === 0}>

@@ -1,14 +1,24 @@
 import Link from "next/link";
 import { Save } from "lucide-react";
-import { If, Then, Else } from "react-if";
+import { Else, If, Then } from "react-if";
 
 import { Button } from "@/app/_components/ui/button";
 import { Field, FieldGroup } from "@/app/_components/ui/field";
 import { Spinner } from "@/app/_components/ui/spinner";
-import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import StoryStatusBadge from "@/app/(authenticated)/dashboard/master/stories/_components/story-status-badge";
+import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
+import { useT } from "@/app/_hooks/use-t";
+import { MASTER_STORIES_EDIT_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/[id]/edit/_messages";
 
 import type { TStoryEditFormActionsProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/edit/_types/story-edit-form-actions-props";
+
+const STATUS_MESSAGE_KEY = {
+  [StoryStatusEnum.DRAFT]: "enums.status.draft",
+  [StoryStatusEnum.PUBLISHED]: "enums.status.published",
+  [StoryStatusEnum.ARCHIVED]: "enums.status.archived",
+  [StoryStatusEnum.CANCELLED]: "enums.status.cancelled",
+  [StoryStatusEnum.COMPLETED]: "enums.status.completed",
+} as const;
 
 export default function StoryEditFormActions({
   cancelHref,
@@ -17,6 +27,12 @@ export default function StoryEditFormActions({
   currentStatus,
   onSave,
 }: TStoryEditFormActionsProps) {
+  const { t } = useT(MASTER_STORIES_EDIT_MESSAGES);
+  const statusLabel =
+    currentStatus != null
+      ? t(STATUS_MESSAGE_KEY[currentStatus as StoryStatusEnum])
+      : undefined;
+
   return (
     <FieldGroup>
       <Field
@@ -26,8 +42,11 @@ export default function StoryEditFormActions({
         <If condition={!!currentStatus}>
           <Then>
             <span className="flex items-center gap-2 text-sm text-muted-foreground">
-              Current status:
-              <StoryStatusBadge status={currentStatus as StoryStatusEnum} />
+              {t("actions.currentStatus")}
+              <StoryStatusBadge
+                status={currentStatus as StoryStatusEnum}
+                label={statusLabel}
+              />
             </span>
           </Then>
         </If>
@@ -40,7 +59,7 @@ export default function StoryEditFormActions({
             disabled={disabled}
             nativeButton={false}
           >
-            Cancel
+            {t("actions.cancel")}
           </Button>
           <Button
             className="w-full sm:w-auto"
@@ -56,7 +75,7 @@ export default function StoryEditFormActions({
                 <Save data-icon="inline-start" />
               </Else>
             </If>
-            Save
+            {t("actions.save")}
           </Button>
         </div>
       </Field>

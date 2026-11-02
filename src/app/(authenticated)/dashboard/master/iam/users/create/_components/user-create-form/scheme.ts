@@ -1,24 +1,30 @@
 import * as z from "zod";
 
-export const UserCreateFormSchema = z.object({
-  email: z
-    .string("Email is required")
-    .min(1, "Email is required")
-    .email("Invalid email"),
-  password: z
-    .string("Password is required")
-    .min(1, "Password is required")
-    .min(8, "Password must be at least 8 characters"),
-  username: z
-    .string()
-    .regex(/^\S*$/, "Username must not contain spaces")
-    .optional(),
-  displayName: z
-    .string("Display name is required")
-    .min(1, "Display name is required"),
-  avatarFileId: z.string().optional(),
-  bio: z.string().max(50, "Max 50 characters").optional(),
-  roleIds: z.array(z.string()).min(1, "At least one role is required"),
-});
+import type { TUserCreateTranslate } from "@/app/(authenticated)/dashboard/master/iam/users/create/_types/user-create-translate";
 
-export type TUserCreateFormSchema = z.infer<typeof UserCreateFormSchema>;
+export function createUserCreateFormSchema(t: TUserCreateTranslate) {
+  return z.object({
+    email: z
+      .string(t("validation.emailRequired"))
+      .min(1, t("validation.emailRequired"))
+      .email(t("validation.emailInvalid")),
+    password: z
+      .string(t("validation.passwordRequired"))
+      .min(1, t("validation.passwordRequired"))
+      .min(8, t("validation.passwordMin", { min: 8 })),
+    username: z
+      .string()
+      .regex(/^\S*$/, t("validation.usernameNoSpaces"))
+      .optional(),
+    displayName: z
+      .string(t("validation.displayNameRequired"))
+      .min(1, t("validation.displayNameRequired")),
+    avatarFileId: z.string().optional(),
+    bio: z.string().max(50, t("validation.bioMax", { max: 50 })).optional(),
+    roleIds: z.array(z.string()).min(1, t("validation.rolesRequired")),
+  });
+}
+
+export type TUserCreateFormSchema = z.infer<
+  ReturnType<typeof createUserCreateFormSchema>
+>;

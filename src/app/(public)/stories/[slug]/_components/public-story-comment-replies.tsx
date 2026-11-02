@@ -14,6 +14,8 @@ import { ItemGroup } from "@/app/_components/ui/item";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { Spinner } from "@/app/_components/ui/spinner";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { useT } from "@/app/_hooks/use-t";
+import { COMMON_MESSAGES } from "@/messages/common";
 
 import PublicStoryCommentForm from "./public-story-comment-form";
 import PublicStoryCommentItem from "./public-story-comment-item";
@@ -23,6 +25,7 @@ import { useGetPublicStoryCommentReplyPagination } from "@/app/(public)/stories/
 import { useRefreshPublicStoryComments } from "@/app/(public)/stories/[slug]/_hooks/use-refresh-public-story-comments";
 import { hasPublicStoryCommentReactions } from "@/app/(public)/stories/[slug]/_utils/public-story-comment-reaction-helper";
 import { PUBLIC_STORY_COMMENT_REPLY_PER_PAGE } from "@/app/(public)/stories/[slug]/_constants/public-story-comment";
+import { STORY_DETAIL_MESSAGES } from "@/app/(public)/stories/[slug]/_messages";
 import type { TPublicStoryCommentRepliesProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-replies-props";
 
 // Thread under a top-level comment: Reply action, lazy replies (oldest
@@ -32,6 +35,8 @@ export default function PublicStoryCommentReplies({
   comment,
   isCanReply,
 }: TPublicStoryCommentRepliesProps) {
+  const { t } = useT(STORY_DETAIL_MESSAGES);
+  const { t: tCommon } = useT(COMMON_MESSAGES);
   const { auth } = useAuthContext();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
@@ -75,7 +80,8 @@ export default function PublicStoryCommentReplies({
 
   // The API rejects replies to a deleted comment
   const canReply = isCanReply && !comment.is_deleted;
-  const authorName = comment.author?.display_name ?? "a deleted comment";
+  const authorName =
+    comment.author?.display_name ?? t("comments.deletedAuthor");
   const repliesId = `comment-replies-${comment.id}`;
   const formId = `comment-reply-${comment.id}`;
 
@@ -114,7 +120,7 @@ export default function PublicStoryCommentReplies({
               aria-controls={isReplying ? `${formId}-panel` : undefined}
               onClick={() => (isReplying ? closeForm() : setIsReplying(true))}
             >
-              <MessageSquareReply /> Reply
+              <MessageSquareReply /> {t("comments.reply")}
             </Button>
           </Then>
         </If>
@@ -129,8 +135,13 @@ export default function PublicStoryCommentReplies({
             >
               {isOpen ? <ChevronUp /> : <ChevronDown />}
               {isOpen
-                ? "Hide replies"
-                : `View ${replyCount} ${replyCount === 1 ? "reply" : "replies"}`}
+                ? t("comments.hideReplies")
+                : t(
+                    replyCount === 1
+                      ? "comments.viewReplies_one"
+                      : "comments.viewReplies_other",
+                    { count: replyCount },
+                  )}
             </Button>
           </Then>
         </If>
@@ -147,7 +158,7 @@ export default function PublicStoryCommentReplies({
                 <div
                   className="flex flex-col gap-3 py-2"
                   aria-busy="true"
-                  aria-label="Loading replies"
+                  aria-label={t("comments.loadingRepliesAria")}
                 >
                   {Array.from({ length: Math.min(replyCount, 2) }).map(
                     (_, idx) => (
@@ -166,20 +177,20 @@ export default function PublicStoryCommentReplies({
                 <If condition={repliesQuery.isError}>
                   <Then>
                     <div className="flex flex-wrap items-center gap-2 py-2 text-sm text-destructive">
-                      The replies could not be read.
+                      {t("comments.repliesError")}
                       <Button
                         variant="outline"
                         size="xs"
                         onClick={() => repliesQuery.refetch()}
                       >
-                        <RotateCw /> Try again
+                        <RotateCw /> {tCommon("actions.tryAgain")}
                       </Button>
                     </div>
                   </Then>
                   <Else>
                     <ItemGroup
                       className="flex flex-col"
-                      aria-label={`Replies to ${authorName}`}
+                      aria-label={t("comments.repliesAria", { name: authorName })}
                     >
                       {replies.map((reply) => (
                         <PublicStoryCommentItem
@@ -211,7 +222,9 @@ export default function PublicStoryCommentReplies({
                                     <Button
                                       variant="ghost"
                                       size="xs"
-                                      aria-label={`Reply to @${reply.author?.username}`}
+                                      aria-label={t("comments.replyToAria", {
+                                        username: reply.author?.username ?? "",
+                                      })}
                                       aria-controls={
                                         isReplying
                                           ? `${formId}-panel`
@@ -223,7 +236,7 @@ export default function PublicStoryCommentReplies({
                                         )
                                       }
                                     >
-                                      <MessageSquareReply /> Reply
+                                      <MessageSquareReply /> {t("comments.reply")}
                                     </Button>
                                   </Then>
                                 </If>
@@ -249,8 +262,10 @@ export default function PublicStoryCommentReplies({
                             <ChevronDown />
                           )}
                           {repliesQuery.isFetchingNextPage
-                            ? "Loading replies..."
-                            : `Load more replies (${remaining} more)`}
+                            ? t("comments.loadingReplies")
+                            : t("comments.loadMoreReplies", {
+                                count: remaining,
+                              })}
                         </Button>
                       </Then>
                     </If>
@@ -270,9 +285,9 @@ export default function PublicStoryCommentReplies({
           >
             <PublicStoryCommentForm
               id={formId}
-              label={`Reply to ${authorName}`}
-              placeholder="Write a reply..."
-              submitLabel="Post reply"
+              label={t("comments.replyToLabel", { name: authorName })}
+              placeholder={t("comments.replyPlaceholder")}
+              submitLabel={t("comments.postReply")}
               isShowGuideline
               isPending={createMutation.isPending}
               autoFocus

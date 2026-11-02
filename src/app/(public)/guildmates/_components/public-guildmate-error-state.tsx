@@ -1,3 +1,5 @@
+"use client";
+
 import { RotateCw, TriangleAlert } from "lucide-react";
 import { cn } from "cn";
 
@@ -10,14 +12,18 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/app/_components/ui/empty";
+import { useT } from "@/app/_hooks/use-t";
+import { COMMON_MESSAGES } from "@/messages/common";
 import type { TPublicGuildmateErrorStateProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 export default function PublicGuildmateErrorState({
-  title = "The guild roll could not be fetched",
-  description = "Something went wrong while loading guildmates. Please try again.",
+  title,
+  description,
   onRetry,
   compact = false,
 }: TPublicGuildmateErrorStateProps) {
+  const { t: tCommon } = useT(COMMON_MESSAGES);
+
   return (
     <Empty
       role="alert"
@@ -38,7 +44,7 @@ export default function PublicGuildmateErrorState({
       </EmptyHeader>
       <EmptyContent>
         <Button variant="outline" onClick={onRetry}>
-          <RotateCw /> Try again
+          <RotateCw /> {tCommon("actions.tryAgain")}
         </Button>
       </EmptyContent>
     </Empty>

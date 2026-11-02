@@ -12,6 +12,8 @@ import {
 } from "@/app/_components/ui/empty";
 import { Spinner } from "@/app/_components/ui/spinner";
 import { Tabs, TabsList, TabsTrigger } from "@/app/_components/ui/tabs";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATE_DETAIL_MESSAGES } from "@/app/(public)/guildmates/[slug]/_messages";
 import PublicGuildmateStoryCard from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-story-card";
 import PublicGuildmateStoryCardSkeleton from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-story-card-skeleton";
 import PublicGuildmateErrorState from "@/app/(public)/guildmates/_components/public-guildmate-error-state";
@@ -25,6 +27,7 @@ type TStoryTab = "led" | "joined";
 export default function PublicGuildmateStoriesSection({
   identifier,
 }: TPublicGuildmateStoriesSectionProps) {
+  const { t } = useT(GUILDMATE_DETAIL_MESSAGES);
   const [tab, setTab] = useState<TStoryTab>("joined");
   const createdQuery = useGetPublicGuildmateCreatedStories(
     identifier,
@@ -45,7 +48,7 @@ export default function PublicGuildmateStoriesSection({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="flex items-center gap-2 font-heading text-xl sm:text-2xl [&>svg]:size-5 [&>svg]:text-primary">
           <ScrollText aria-hidden />
-          Quest Log
+          {t("questLog.title")}
         </h2>
         <Tabs value={tab} onValueChange={(value) => setTab(value as TStoryTab)}>
           <TabsList>
@@ -53,13 +56,13 @@ export default function PublicGuildmateStoriesSection({
               value="joined"
               className="text-foreground/90 data-active:text-foreground dark:text-foreground/90 dark:data-active:text-foreground"
             >
-              Stories joined
+              {t("questLog.storiesJoined")}
             </TabsTrigger>
             <TabsTrigger
               value="led"
               className="text-foreground/90 data-active:text-foreground dark:text-foreground/90 dark:data-active:text-foreground"
             >
-              Stories led
+              {t("questLog.storiesLed")}
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -69,8 +72,8 @@ export default function PublicGuildmateStoriesSection({
         <Then>
           <PublicGuildmateErrorState
             compact
-            title="The quest log could not be fetched"
-            description="Something went wrong while loading stories. Please try again."
+            title={t("error.questLogTitle")}
+            description={t("error.questLogDescription")}
             onRetry={() => query.refetch()}
           />
         </Then>
@@ -81,8 +84,8 @@ export default function PublicGuildmateStoriesSection({
                 <EmptyHeader>
                   <EmptyDescription className="italic">
                     {tab === "led"
-                      ? "No stories led yet. Their first tale awaits."
-                      : "No stories joined yet. The road is still open."}
+                      ? t("questLog.emptyLed")
+                      : t("questLog.emptyJoined")}
                   </EmptyDescription>
                 </EmptyHeader>
               </Empty>
@@ -100,7 +103,9 @@ export default function PublicGuildmateStoriesSection({
                     ))}
                 {query.isFetchingNextPage &&
                   Array.from({ length: 3 }).map((_, idx) => (
-                    <PublicGuildmateStoryCardSkeleton key={`next-skeleton-${idx}`} />
+                    <PublicGuildmateStoryCardSkeleton
+                      key={`next-skeleton-${idx}`}
+                    />
                   ))}
               </div>
               <If condition={query.hasNextPage && !query.isLoading}>
@@ -113,10 +118,10 @@ export default function PublicGuildmateStoriesSection({
                     >
                       <If condition={query.isFetchingNextPage}>
                         <Then>
-                          <Spinner /> Loading…
+                          <Spinner /> {t("questLog.loading")}
                         </Then>
                         <Else>
-                          <ChevronDown /> Load more
+                          <ChevronDown /> {t("questLog.loadMore")}
                         </Else>
                       </If>
                     </Button>

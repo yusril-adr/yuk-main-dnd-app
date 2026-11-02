@@ -1,0 +1,27 @@
+{
+  "breadcrumb": {
+    "roles": "Roles",
+    "edit": "Edit"
+  },
+  "title": "Edit Role",
+  "fields": {
+    "name": "Name",
+    "namePlaceholder": "Input role name",
+    "description": "Description",
+    "descriptionPlaceholder": "Input role description",
+    "showInPublic": "Show in Public",
+    "permissions": "Permissions"
+  },
+  "actions": {
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "toast": {
+    "editForbidden": "You don't have permission to edit this role"
+  },
+  "validation": {
+    "nameRequired": "Name is required",
+    "nameMax": "Name must be at most {{max}} characters",
+    "nameAlphanumeric": "Name must contain at least one letter or number"
+  }
+}

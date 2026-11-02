@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,15 +16,17 @@ import { Textarea } from "@/app/_components/ui/textarea";
 import { Checkbox } from "@/app/_components/ui/checkbox";
 import { Button } from "@/app/_components/ui/button";
 import { Spinner } from "@/app/_components/ui/spinner";
+import { useT } from "@/app/_hooks/use-t";
 
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import {
-  RoleCreateFormSchema,
+  createRoleCreateFormSchema,
   type TRoleCreateFormSchema,
 } from "./scheme";
 import type { TRoleCreateFormProps } from "../../_types/role-create-form-props";
 import RoleCreatePermissionChecboxInput from "../role-create-permission-checbox-input";
+import { MASTER_ROLES_CREATE_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/roles/create/_messages";
 
 export default function RoleCreateForm({
   permissions,
@@ -34,16 +36,17 @@ export default function RoleCreateForm({
   isPending,
   isPaused,
 }: TRoleCreateFormProps) {
-  const { control, handleSubmit, setError } =
-    useForm<TRoleCreateFormSchema>({
-      resolver: zodResolver(RoleCreateFormSchema),
-      defaultValues: {
-        name: "",
-        description: "",
-        isShowInPublic: true,
-        permissionIds: [],
-      },
-    });
+  const { t } = useT(MASTER_ROLES_CREATE_MESSAGES);
+  const schema = useMemo(() => createRoleCreateFormSchema(t), [t]);
+  const { control, handleSubmit, setError } = useForm<TRoleCreateFormSchema>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: "",
+      description: "",
+      isShowInPublic: true,
+      permissionIds: [],
+    },
+  });
 
   useEffect(() => {
     if (mutationError instanceof MainAPIValidationError) {
@@ -83,11 +86,13 @@ export default function RoleCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="name">Name</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="name">
+                    {t("fields.name")}
+                  </RequiredFieldLabel>
                   <Input
                     aria-required
                     id="name"
-                    placeholder="Input role name"
+                    placeholder={t("fields.namePlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -103,10 +108,12 @@ export default function RoleCreateForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="description">Description</FieldLabel>
+                  <FieldLabel htmlFor="description">
+                    {t("fields.description")}
+                  </FieldLabel>
                   <Textarea
                     id="description"
-                    placeholder="Input role description"
+                    placeholder={t("fields.descriptionPlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -133,7 +140,7 @@ export default function RoleCreateForm({
                     disabled={isFormDisabled}
                   />
                   <FieldLabel htmlFor="isShowInPublic">
-                    Show in public
+                    {t("fields.showInPublic")}
                   </FieldLabel>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -148,7 +155,7 @@ export default function RoleCreateForm({
               render={({ field, fieldState }) => {
                 return (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>Permissions</FieldLabel>
+                    <FieldLabel>{t("fields.permissions")}</FieldLabel>
                     <RoleCreatePermissionChecboxInput
                       permissions={permissions}
                       value={field.value}
@@ -176,12 +183,12 @@ export default function RoleCreateForm({
                 disabled={isFormDisabled}
                 nativeButton={false}
               >
-                Cancel
+                {t("actions.cancel")}
                 {isFormDisabled && <Spinner />}
               </Button>
 
               <Button type="submit" disabled={isFormDisabled}>
-                Save
+                {t("actions.save")}
                 {isFormDisabled && <Spinner />}
               </Button>
             </Field>

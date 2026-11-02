@@ -1,3 +1,5 @@
+"use client";
+
 import { Else, If, Then } from "react-if";
 
 import PublicGuildmateCard from "./public-guildmate-card";
@@ -6,6 +8,8 @@ import PublicGuildmateEmptyState from "./public-guildmate-empty-state";
 import PublicGuildmateErrorState from "./public-guildmate-error-state";
 import PublicGuildmatePagination from "./public-guildmate-pagination";
 import { PUBLIC_GUILDMATE_PAGE_SIZE } from "@/app/(public)/guildmates/_constants/public-guildmate-page-size";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 import type { TPublicGuildmateCardListProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 export default function PublicGuildmateCardList({
@@ -20,11 +24,17 @@ export default function PublicGuildmateCardList({
   search,
   onPageChange,
 }: TPublicGuildmateCardListProps) {
+  const { t } = useT(GUILDMATES_MESSAGES);
+
   return (
     <div className="flex flex-col gap-6 sm:gap-8">
       <If condition={isError && !isLoading}>
         <Then>
-          <PublicGuildmateErrorState onRetry={onRetry} />
+          <PublicGuildmateErrorState
+            title={t("error.rollTitle")}
+            description={t("error.rollDescription")}
+            onRetry={onRetry}
+          />
         </Then>
         <Else>
           <If condition={!isLoading && data.length === 0}>

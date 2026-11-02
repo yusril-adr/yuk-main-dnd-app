@@ -1,0 +1,22 @@
+{
+  "breadcrumb": "Permissions",
+  "title": "Permissions",
+  "columns": {
+    "no": "No.",
+    "module": "Modul",
+    "action": "Aksi",
+    "key": "Key",
+    "createdAt": "Dibuat Pada"
+  },
+  "filters": {
+    "filter": "Filter",
+    "module": "Modul",
+    "action": "Aksi",
+    "selectModule": "Pilih modul",
+    "selectAction": "Pilih aksi",
+    "noItemsFound": "Tidak ada item.",
+    "clear": "Hapus",
+    "apply": "Terapkan",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ..."
+  }
+}

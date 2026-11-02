@@ -6,12 +6,15 @@ import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
+import { useT } from "@/app/_hooks/use-t";
 import CONFIG from "@/common/constants/config";
 import RoleCreateForm from "./_components/role-create-form";
 import { useCreateRole } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-create-role";
 import { useGetPermissionOptions } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-permission-options";
+import { MASTER_ROLES_CREATE_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/roles/create/_messages";
 
 export default function RoleCreatePageClient() {
+  const { t } = useT(MASTER_ROLES_CREATE_MESSAGES);
   const router = useRouter();
   const queryClient = useQueryClient();
   const permissionsQuery = useGetPermissionOptions();
@@ -29,8 +32,11 @@ export default function RoleCreatePageClient() {
       <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
         <AppBreadcrumb
           items={[
-            { name: "Roles", link: "/dashboard/master/iam/roles" },
-            { name: "Create" },
+            {
+              name: t("breadcrumb.roles"),
+              link: "/dashboard/master/iam/roles",
+            },
+            { name: t("breadcrumb.create") },
           ]}
         />
 
@@ -38,7 +44,7 @@ export default function RoleCreatePageClient() {
           <Link href="/dashboard/master/iam/roles">
             <ArrowLeft />
           </Link>
-          <h1 className="font-heading text-2xl">Create Role</h1>
+          <h1 className="font-heading text-2xl">{t("title")}</h1>
         </div>
 
         <RoleCreateForm

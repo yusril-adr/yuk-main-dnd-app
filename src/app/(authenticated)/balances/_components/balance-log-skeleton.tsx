@@ -9,12 +9,21 @@ import {
   ItemSeparator,
 } from "@/app/_components/ui/item";
 import { Skeleton } from "@/app/_components/ui/skeleton";
+import { useT } from "@/app/_hooks/use-t";
 
 import { BALANCE_PAGE_SIZE } from "@/app/(authenticated)/balances/_constants/balance";
+import { BALANCES_MESSAGES } from "@/app/(authenticated)/balances/_messages";
 
 export default function BalanceLogSkeleton() {
+  const { t } = useT(BALANCES_MESSAGES);
+
   return (
-    <Card size="sm" className="py-0" aria-busy="true" aria-label="Loading logs">
+    <Card
+      size="sm"
+      className="py-0"
+      aria-busy="true"
+      aria-label={t("skeleton.loadingAria")}
+    >
       <ItemGroup className="gap-0">
         {Array.from({ length: BALANCE_PAGE_SIZE }).map((_, index) => (
           <Fragment key={index}>

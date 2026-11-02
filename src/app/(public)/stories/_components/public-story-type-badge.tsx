@@ -1,12 +1,12 @@
 import { Badge } from "@/app/_components/ui/badge";
 import { cn } from "cn";
-import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 
 import { PUBLIC_STORY_TYPE_ICON } from "@/app/(public)/stories/_constants/public-story-icons";
 import type { TPublicStoryTypeBadgeProps } from "@/app/(public)/stories/_types/public-story-components-props";
 
 export default function PublicStoryTypeBadge({
   type,
+  label,
   className,
 }: TPublicStoryTypeBadgeProps) {
   const Icon = PUBLIC_STORY_TYPE_ICON[type];
@@ -17,7 +17,7 @@ export default function PublicStoryTypeBadge({
       className={cn("gap-1 rounded-sm px-2 [&>svg]:size-3", className)}
     >
       <Icon />
-      {STORY_TYPE_LABEL[type]}
+      {label}
     </Badge>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import { ScrollText } from "lucide-react";
 import Link from "next/link";
 
@@ -10,13 +12,17 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/app/_components/ui/empty";
+import { useT } from "@/app/_hooks/use-t";
 
+import { BOARD_STORIES_MESSAGES } from "@/app/(authenticated)/dashboard/(player-board)/stories/_messages";
 import type { TBoardStoryEmptyStateProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/_types/board-story-components-props";
 
 export default function BoardStoryEmptyState({
   isFiltered,
   onReset,
 }: TBoardStoryEmptyStateProps) {
+  const { t } = useT(BOARD_STORIES_MESSAGES);
+
   return (
     <Empty className="rounded-xl border bg-card px-6 py-12">
       <EmptyHeader>
@@ -24,22 +30,22 @@ export default function BoardStoryEmptyState({
           <ScrollText className="size-10" />
         </EmptyMedia>
         <EmptyTitle className="font-heading text-xl">
-          {isFiltered ? "No stories match" : "No stories yet"}
+          {isFiltered ? t("empty.filteredTitle") : t("empty.title")}
         </EmptyTitle>
         <EmptyDescription>
           {isFiltered
-            ? "Try another title or loosen the filters."
-            : "Join a story from the stories board and it will show up here."}
+            ? t("empty.filteredDescription")
+            : t("empty.description")}
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         {isFiltered ? (
           <Button variant="outline" onClick={onReset}>
-            Clear filters
+            {t("empty.clearFilters")}
           </Button>
         ) : (
           <Button render={<Link href="/stories" />} nativeButton={false}>
-            Browse stories
+            {t("empty.browse")}
           </Button>
         )}
       </EmptyContent>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Alegreya_Sans, DM_Mono, Eczar } from "next/font/google";
+import { cookies } from "next/headers";
 import "./globals.css";
 import { cn } from "cn";
 import {
@@ -7,6 +8,8 @@ import {
   SITE_NAME,
   SITE_URL,
 } from "@/utils/seo-helper";
+import CONFIG from "@/common/constants/config";
+import { parseLocale } from "@/libs/i18n/locale-cookie";
 import { Providers } from "./providers";
 
 const eczarHeading = Eczar({
@@ -54,14 +57,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const initialLocale = parseLocale(
+    cookieStore.get(CONFIG.COOKIE.LOCALE_KEY)?.value,
+  );
+
   return (
     <html
-      lang="en"
+      lang={initialLocale}
       className={cn(
         "h-full",
         "antialiased",
@@ -77,7 +85,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body className="min-h-full flex flex-col">
-        <Providers>{children}</Providers>
+        <Providers initialLocale={initialLocale}>{children}</Providers>
       </body>
     </html>
   );

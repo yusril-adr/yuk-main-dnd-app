@@ -6,6 +6,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "@/app/_components/ui/sidebar";
+import { LanguageSwitcher } from "@/app/_components/language-switcher";
 import { ThemeToggler } from "@/app/_components/theme-toggler";
 import type { TNavSidebar } from "@/app/(authenticated)/_types/nav-sidebar";
 import { NavSidebar } from "./nav-sidebar";
@@ -53,13 +54,16 @@ export function AppSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <div className="flex justify-between items-center pl-1.5">
-              <Link href="/" className="flex items-center gap-2">
-                <YmdndLogo aria-hidden className="size-8 shrink-0 text-primary" />
-                <span className="font-heading text-xl">YukMainDnD</span>
+            <div className="flex justify-between items-center gap-1 pl-1.5">
+              <Link href="/" className="flex min-w-0 items-center gap-1.5">
+                <YmdndLogo aria-hidden className="size-7 shrink-0 text-primary" />
+                <span className="truncate font-heading text-xl">YukMainDnD</span>
               </Link>
 
-              {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler />}
+              <div className="flex shrink-0 items-center">
+                <LanguageSwitcher size="icon-sm" />
+                {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler size="icon-sm" />}
+              </div>
             </div>
           </SidebarMenuItem>
         </SidebarMenu>

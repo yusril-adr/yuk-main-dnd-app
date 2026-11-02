@@ -5,6 +5,7 @@ import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { useFilter } from "@/app/_hooks/use-filter";
+import { useT } from "@/app/_hooks/use-t";
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import { OrderKeyEnum } from "@/common/enums/order-key";
@@ -16,10 +17,12 @@ import PermissionTable from "@/app/(authenticated)/dashboard/master/iam/permissi
 import { useGetPermissionPagination } from "@/app/(authenticated)/dashboard/master/iam/permissions/_hooks/use-get-permission-pagination";
 import type { TPermissionTableFilterValues } from "@/app/(authenticated)/dashboard/master/iam/permissions/_types/permission-table-props";
 import type { TPermissionTableSortBy } from "@/app/(authenticated)/dashboard/master/iam/permissions/_types/permission-table-sort-by";
+import { MASTER_PERMISSIONS_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/permissions/_messages";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 
 export default function PermissionsPageClient() {
+  const { t } = useT(MASTER_PERMISSIONS_MESSAGES);
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
     pageSize: parseAsInteger.withDefault(10),
@@ -139,7 +142,7 @@ export default function PermissionsPageClient() {
 
   const breadcrumbItems = [
     {
-      name: "Permissions",
+      name: t("breadcrumb"),
     },
   ];
 
@@ -150,7 +153,7 @@ export default function PermissionsPageClient() {
           <AppBreadcrumb items={breadcrumbItems} />
 
           <div className="flex justify-between items-center mt-4 mb-6">
-            <h1 className="font-heading text-2xl">Permissions</h1>
+            <h1 className="font-heading text-2xl">{t("title")}</h1>
           </div>
         </div>
 

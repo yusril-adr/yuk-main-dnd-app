@@ -34,8 +34,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/_components/ui/select";
+import { useT } from "@/app/_hooks/use-t";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import { generatePages } from "@/utils/table-helper";
+import { DATA_TABLE_MESSAGES } from "@/app/_messages/data-table";
+import { MASTER_USERS_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/_messages";
 
 import UserCard from "./user-card";
 import UserCardSkeleton from "./user-card-skeleton";
@@ -45,27 +48,27 @@ import type { TUserCardListSortBy } from "@/app/(authenticated)/dashboard/master
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 let debounceRoleSearchTimeoutId: NodeJS.Timeout | number | null = null;
 
-const PAGE_SIZE_OPTIONS = [
-  { label: "6 / page", value: 6 },
-  { label: "12 / page", value: 12 },
-  { label: "24 / page", value: 24 },
-  { label: "48 / page", value: 48 },
+const PAGE_SIZE_VALUES = [6, 12, 24, 48] as const;
+
+const SORT_BY_VALUES: TUserCardListSortBy[] = [
+  "display_name",
+  "username",
+  "email",
+  "dm_exp",
+  "player_exp",
+  "created_at",
+  "updated_at",
 ];
 
-const SORT_BY_OPTIONS = [
-  { label: "Display Name", value: "display_name" },
-  { label: "Username", value: "username" },
-  { label: "Email", value: "email" },
-  { label: "DM EXP", value: "dm_exp" },
-  { label: "Player EXP", value: "player_exp" },
-  { label: "Created At", value: "created_at" },
-  { label: "Updated At", value: "updated_at" },
-];
-
-const SORT_ORDER_OPTIONS = [
-  { label: "Ascending", value: OrderKeyEnum.ASC },
-  { label: "Descending", value: OrderKeyEnum.DESC },
-];
+const SORT_BY_MESSAGE_KEY = {
+  display_name: "sort.displayName",
+  username: "sort.username",
+  email: "sort.email",
+  dm_exp: "sort.dmExp",
+  player_exp: "sort.playerExp",
+  created_at: "sort.createdAt",
+  updated_at: "sort.updatedAt",
+} as const satisfies Record<TUserCardListSortBy, string>;
 
 export default function UserCardList({
   data,
@@ -77,6 +80,8 @@ export default function UserCardList({
   onRoleSearchChange,
   onActionHandler,
 }: TUserCardListProps) {
+  const { t } = useT(MASTER_USERS_MESSAGES);
+  const { t: tTable } = useT(DATA_TABLE_MESSAGES);
   const [filterSortBy, setFilterSortBy] = useState<TUserCardListSortBy | null>(
     queryTable.sortBy ?? null,
   );
@@ -85,6 +90,32 @@ export default function UserCardList({
   );
   const [filterRoleIds, setFilterRoleIds] = useState<string[]>(
     queryTable.roleIds ?? [],
+  );
+
+  const sortByOptions = useMemo(
+    () =>
+      SORT_BY_VALUES.map((value) => ({
+        label: t(SORT_BY_MESSAGE_KEY[value]),
+        value,
+      })),
+    [t],
+  );
+
+  const sortOrderOptions = useMemo(
+    () => [
+      { label: t("sort.asc"), value: OrderKeyEnum.ASC },
+      { label: t("sort.desc"), value: OrderKeyEnum.DESC },
+    ],
+    [t],
+  );
+
+  const pageSizeOptions = useMemo(
+    () =>
+      PAGE_SIZE_VALUES.map((value) => ({
+        label: tTable("perPage", { count: value }),
+        value,
+      })),
+    [tTable],
   );
 
   const pages = useMemo(
@@ -171,24 +202,24 @@ export default function UserCardList({
         <Popover>
           <PopoverTrigger render={<Button variant="outline" />}>
             <Funnel />
-            Filter
+            {t("filters.filter")}
           </PopoverTrigger>
           <PopoverContent align="start">
             <div className="flex flex-col gap-4 md:gap-2">
               <FieldGroup className="flex flex-col md:flex-row gap-4 md:gap-2">
                 <Field className="grid gap-2">
-                  <FieldLabel>Sort By</FieldLabel>
+                  <FieldLabel>{t("filters.sortBy")}</FieldLabel>
                   <Select
-                    items={SORT_BY_OPTIONS}
+                    items={sortByOptions}
                     value={filterSortBy ?? undefined}
                     onValueChange={(val) => setFilterSortBy(val || null)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select field" />
+                      <SelectValue placeholder={t("filters.selectField")} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {SORT_BY_OPTIONS.map((item) => (
+                        {sortByOptions.map((item) => (
                           <SelectItem key={item.value} value={item.value}>
                             {item.label}
                           </SelectItem>
@@ -199,18 +230,18 @@ export default function UserCardList({
                 </Field>
 
                 <Field className="grid gap-2">
-                  <FieldLabel>Sort Order</FieldLabel>
+                  <FieldLabel>{t("filters.sortOrder")}</FieldLabel>
                   <Select
-                    items={SORT_ORDER_OPTIONS}
+                    items={sortOrderOptions}
                     value={filterOrder ?? undefined}
                     onValueChange={(val) => setFilterOrder(val || null)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select order" />
+                      <SelectValue placeholder={t("filters.selectOrder")} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {SORT_ORDER_OPTIONS.map((item) => (
+                        {sortOrderOptions.map((item) => (
                           <SelectItem key={item.value} value={item.value}>
                             {item.label}
                           </SelectItem>
@@ -223,7 +254,7 @@ export default function UserCardList({
 
               <FieldGroup>
                 <Field className="grid gap-2">
-                  <FieldLabel>Roles</FieldLabel>
+                  <FieldLabel>{t("filters.roles")}</FieldLabel>
                   <Combobox
                     multiple
                     items={roleItems}
@@ -253,10 +284,12 @@ export default function UserCardList({
                           </ComboboxChip>
                         );
                       })}
-                      <ComboboxChipsInput placeholder="Search roles" />
+                      <ComboboxChipsInput
+                        placeholder={t("filters.searchRoles")}
+                      />
                     </ComboboxChips>
                     <ComboboxContent>
-                      <ComboboxEmpty>No roles found.</ComboboxEmpty>
+                      <ComboboxEmpty>{t("filters.noRolesFound")}</ComboboxEmpty>
                       <ComboboxList>
                         {(item: { value: string; label: string }) => (
                           <ComboboxItem key={item.value} value={item}>
@@ -276,9 +309,9 @@ export default function UserCardList({
                     variant="outline"
                     onClick={onFilterClear}
                   >
-                    Clear
+                    {t("filters.clear")}
                   </Button>
-                  <Button onClick={onFilterApply}>Apply</Button>
+                  <Button onClick={onFilterApply}>{t("filters.apply")}</Button>
                 </Field>
               </FieldGroup>
             </div>
@@ -287,7 +320,7 @@ export default function UserCardList({
 
         <InputGroup>
           <InputGroupInput
-            placeholder="Type minimum 3 characters to search ..."
+            placeholder={t("filters.searchPlaceholder")}
             onChange={(event) => onSearchChange(event.target.value)}
             defaultValue={queryTable.search}
           />
@@ -316,7 +349,11 @@ export default function UserCardList({
       {!isLoading && (
         <div className="flex flex-col md:flex-row justify-end items-center gap-2 mt-6">
           <span>
-            {indexStart} - {indexEnd} of {rowCount} items
+            {tTable("range", {
+              start: indexStart,
+              end: indexEnd,
+              total: rowCount,
+            })}
           </span>
 
           <ButtonGroup>
@@ -352,7 +389,7 @@ export default function UserCardList({
           </ButtonGroup>
 
           <Select
-            items={PAGE_SIZE_OPTIONS}
+            items={pageSizeOptions}
             value={Number(queryTable.pageSize)}
             onValueChange={(val) =>
               handlePageSizeChange(val || queryTable.pageSize)
@@ -363,7 +400,7 @@ export default function UserCardList({
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {PAGE_SIZE_OPTIONS.map((item) => (
+                {pageSizeOptions.map((item) => (
                   <SelectItem key={item.value} value={item.value.toString()}>
                     {item.label}
                   </SelectItem>

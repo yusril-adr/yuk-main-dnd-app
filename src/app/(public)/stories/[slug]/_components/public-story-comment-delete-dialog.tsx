@@ -1,3 +1,5 @@
+"use client";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,7 +10,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
+import { useT } from "@/app/_hooks/use-t";
 
+import { STORY_DETAIL_MESSAGES } from "@/app/(public)/stories/[slug]/_messages";
 import type { TPublicStoryCommentDeleteDialogProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-delete-dialog-props";
 
 export default function PublicStoryCommentDeleteDialog({
@@ -18,24 +22,26 @@ export default function PublicStoryCommentDeleteDialog({
   onConfirm,
   noun = "comment",
 }: TPublicStoryCommentDeleteDialogProps) {
+  const { t } = useT(STORY_DETAIL_MESSAGES);
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete this {noun}?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {t("comments.deleteTitle", { noun })}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            The {noun} will be removed from the story for everyone. This cannot
-            be undone.
+            {t("comments.deleteDescription", { noun })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="sm:grid sm:grid-cols-2">
-          <AlertDialogCancel>Keep it</AlertDialogCancel>
+          <AlertDialogCancel>{t("comments.keepIt")}</AlertDialogCancel>
           <AlertDialogAction
             variant="destructive"
             disabled={isPending}
             onClick={onConfirm}
           >
-            Delete {noun}
+            {t("comments.deleteAction", { noun })}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

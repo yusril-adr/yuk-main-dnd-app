@@ -1,0 +1,5 @@
+{
+  "title": "Dashboard",
+  "welcome": "Selamat datang, {{name}}",
+  "loggedAs": "Kamu sedang masuk sebagai"
+}

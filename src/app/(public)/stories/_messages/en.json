@@ -1,0 +1,62 @@
+{
+  "hero": {
+    "badge": "The Quest Board",
+    "title": "Seek thy next adventure",
+    "description": "Oneshots and campaigns posted by the guild. Pick a story, join the party, and roll for initiative.",
+    "count_one": "story pinned to the board",
+    "count_other": "stories pinned to the board"
+  },
+  "filters": {
+    "searchPlaceholder": "Search stories by title (min. 3 characters)…",
+    "filters": "Filters",
+    "status": "Status",
+    "location": "Location",
+    "allStatuses": "All statuses",
+    "anywhere": "Anywhere",
+    "allTypes": "All",
+    "clear": "Clear",
+    "apply": "Apply"
+  },
+  "enums": {
+    "status": {
+      "recruiting": "Recruiting",
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "type": {
+      "oneshot": "Oneshot",
+      "campaign": "Campaign"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    }
+  },
+  "card": {
+    "taleYetWritten": "The tale is yet to be written…",
+    "dateTba": "Date to be proclaimed",
+    "joined": "{{count}} joined",
+    "rewardSlots_one": "Only {{count}} hero can play, others join as viewers",
+    "rewardSlots_other": "Only {{count}} heroes can play, others join as viewers",
+    "noPlayerLimit": "No player limit set",
+    "dungeonMaster": "Dungeon Master"
+  },
+  "pagination": {
+    "showing": "Showing {{start}}–{{end}} of {{total}} stories",
+    "previous": "Previous page",
+    "next": "Next page"
+  },
+  "empty": {
+    "title": "No stories found",
+    "filtered": "No tale matches your search. Try different keywords or clear the filters.",
+    "default": "The quest board is empty for now. Return soon, adventurer.",
+    "clearFilters": "Clear search & filters"
+  },
+  "error": {
+    "title": "The scrolls could not be fetched",
+    "description": "Something went wrong while loading stories. Please try again."
+  }
+}

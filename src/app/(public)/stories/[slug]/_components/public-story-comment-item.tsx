@@ -44,6 +44,8 @@ import {
 } from "@/app/_components/ui/popover";
 import { cn } from "cn";
 import dayjs from "@/libs/dayjs";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
 import {
   getGuildmateHref,
   getInitials,
@@ -58,6 +60,7 @@ import { usePinPublicStoryComment } from "@/app/(public)/stories/[slug]/_hooks/u
 import { useUnpinPublicStoryComment } from "@/app/(public)/stories/[slug]/_hooks/use-unpin-public-story-comment";
 import { useRefreshPublicStoryComments } from "@/app/(public)/stories/[slug]/_hooks/use-refresh-public-story-comments";
 import { PUBLIC_STORY_DETAIL_DATE_FORMAT } from "@/app/(public)/stories/[slug]/_constants/public-story-detail-date-format";
+import { STORY_DETAIL_MESSAGES } from "@/app/(public)/stories/[slug]/_messages";
 import type { TPublicStoryCommentItemProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-item-props";
 
 export default function PublicStoryCommentItem({
@@ -66,6 +69,8 @@ export default function PublicStoryCommentItem({
   isReply = false,
   children,
 }: TPublicStoryCommentItemProps) {
+  const { t } = useT(STORY_DETAIL_MESSAGES);
+  const { locale } = useLocale();
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { refreshComments, onCommentError } = useRefreshPublicStoryComments();
@@ -98,11 +103,11 @@ export default function PublicStoryCommentItem({
     actions.is_can_pin ||
     actions.is_can_unpin;
   const ids = { storyId, commentId: comment.id };
-  const authorName = author?.display_name ?? "Deleted comment";
-  const noun = isReply ? "reply" : "comment";
+  const authorName = author?.display_name ?? t("comments.deletedAuthor");
+  const noun = t(isReply ? "comments.nounReply" : "comments.nounComment");
   // Smaller below sm so nested replies keep a readable text column
   const avatarSize = isReply ? "size-6 sm:size-8" : "size-8 sm:size-10";
-  const createdAt = dayjs(comment.created_at);
+  const createdAt = dayjs(comment.created_at).locale(locale);
 
   return (
     <Item
@@ -178,7 +183,7 @@ export default function PublicStoryCommentItem({
                 variant="secondary"
                 className="gap-1 rounded-sm text-primary shadow-none"
               >
-                <Pin className="size-3" aria-hidden /> Pinned
+                <Pin className="size-3" aria-hidden /> {t("comments.pinned")}
               </Badge>
             </Then>
           </If>
@@ -217,9 +222,11 @@ export default function PublicStoryCommentItem({
             <div className="mt-2">
               <PublicStoryCommentForm
                 id={`comment-edit-${comment.id}`}
-                label={isReply ? "Edit reply" : "Edit comment"}
+                label={t(
+                  isReply ? "comments.editReply" : "comments.editComment",
+                )}
                 defaultContent={comment.content ?? ""}
-                submitLabel="Save"
+                submitLabel={t("comments.save")}
                 isPending={updateMutation.isPending}
                 autoFocus
                 onCancel={() => setIsEditing(false)}
@@ -233,7 +240,7 @@ export default function PublicStoryCommentItem({
             <If condition={comment.is_deleted}>
               <Then>
                 <p className="mt-1 text-sm text-muted-foreground italic">
-                  This comment was deleted.
+                  {t("comments.deletedBody")}
                 </p>
               </Then>
               <Else>
@@ -262,7 +269,7 @@ export default function PublicStoryCommentItem({
                     variant="ghost"
                     size="icon-sm"
                     disabled={isBusy}
-                    aria-label={`Actions for ${noun} by ${authorName}`}
+                    aria-label={t("comments.actionsAria", { noun, name: authorName })}
                   >
                     {isBusy ? <Spinner /> : <EllipsisVertical />}
                   </Button>
@@ -273,14 +280,14 @@ export default function PublicStoryCommentItem({
                   <If condition={actions.is_can_update}>
                     <Then>
                       <DropdownMenuItem onClick={() => setIsEditing(true)}>
-                        <Pencil /> Edit
+                        <Pencil /> {t("comments.edit")}
                       </DropdownMenuItem>
                     </Then>
                   </If>
                   <If condition={actions.is_can_pin}>
                     <Then>
                       <DropdownMenuItem onClick={() => pinMutation.mutate(ids)}>
-                        <Pin /> Pin to top
+                        <Pin /> {t("comments.pin")}
                       </DropdownMenuItem>
                     </Then>
                   </If>
@@ -289,7 +296,7 @@ export default function PublicStoryCommentItem({
                       <DropdownMenuItem
                         onClick={() => unpinMutation.mutate(ids)}
                       >
-                        <PinOff /> Unpin
+                        <PinOff /> {t("comments.unpin")}
                       </DropdownMenuItem>
                     </Then>
                   </If>
@@ -312,7 +319,7 @@ export default function PublicStoryCommentItem({
                         variant="destructive"
                         onClick={() => setIsDeleteDialogOpen(true)}
                       >
-                        <Trash2 /> Delete
+                        <Trash2 /> {t("comments.delete")}
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                   </Then>

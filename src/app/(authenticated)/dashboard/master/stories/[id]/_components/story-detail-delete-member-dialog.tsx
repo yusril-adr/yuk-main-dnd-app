@@ -22,6 +22,7 @@ import {
   InputGroupInput,
 } from "@/app/_components/ui/input-group";
 import { Spinner } from "@/app/_components/ui/spinner";
+import { useT } from "@/app/_hooks/use-t";
 import { useDeleteStoryMembers } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-members";
 import {
   getStoryMemberSearchParam,
@@ -32,20 +33,23 @@ import type { TStoryDetailDeleteMemberDialogProps } from "@/app/(authenticated)/
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import CONFIG from "@/common/constants/config";
+import { StoryMemberStatusEnum } from "@/api/main/modules/master/stories/enums/story-member-status";
+import { MASTER_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/[id]/_messages";
 
 import StoryDetailDeleteMemberRow from "@/app/(authenticated)/dashboard/master/stories/_components/story-detail-delete-member-row";
 
-function getRemoveButtonLabel(count: number): string {
-  if (count === 0) return "Remove";
-  if (count === 1) return "Remove 1 member";
-  return `Remove ${count} members`;
-}
+const MEMBER_STATUS_KEY = {
+  [StoryMemberStatusEnum.REGISTERED]: "enums.memberStatus.registered",
+  [StoryMemberStatusEnum.VIEWER]: "enums.memberStatus.viewer",
+  [StoryMemberStatusEnum.ATTENDED]: "enums.memberStatus.attended",
+} as const;
 
 export default function StoryDetailDeleteMemberDialog({
   storyId,
   open,
   onOpenChange,
 }: TStoryDetailDeleteMemberDialogProps) {
+  const { t } = useT(MASTER_STORY_DETAIL_MESSAGES);
   const queryClient = useQueryClient();
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
@@ -116,15 +120,13 @@ export default function StoryDetailDeleteMemberDialog({
           router.push("/dashboard/master/stories");
           return;
         }
-        toast.error(
-          mutationError.message || "Couldn't remove story members.",
-        );
+        toast.error(mutationError.message || t("removeMember.errorFallback"));
         return;
       }
       if (mutationError instanceof MainAPIValidationError) {
         toast.error(
           mutationError.errors[0]?.messages[0] ??
-            "Couldn't remove story members.",
+            t("removeMember.errorFallback"),
         );
       }
     },
@@ -155,17 +157,20 @@ export default function StoryDetailDeleteMemberDialog({
     void query.fetchNextPage();
   }, [query]);
 
-  const onUserCheckedChange = useCallback((userId: string, checked: boolean) => {
-    setSelectedUserIds((current) => {
-      if (checked && !current.includes(userId)) {
-        return [...current, userId];
-      }
-      if (!checked) {
-        return current.filter((id) => id !== userId);
-      }
-      return current;
-    });
-  }, []);
+  const onUserCheckedChange = useCallback(
+    (userId: string, checked: boolean) => {
+      setSelectedUserIds((current) => {
+        if (checked && !current.includes(userId)) {
+          return [...current, userId];
+        }
+        if (!checked) {
+          return current.filter((id) => id !== userId);
+        }
+        return current;
+      });
+    },
+    [],
+  );
 
   const onCancelClick = useCallback(() => {
     onDialogOpenChange(false);
@@ -201,15 +206,15 @@ export default function StoryDetailDeleteMemberDialog({
     <Dialog open={open} onOpenChange={onDialogOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Remove members</DialogTitle>
+          <DialogTitle>{t("removeMember.title")}</DialogTitle>
           <DialogDescription className="sr-only">
-            Remove adventurers from this party
+            {t("removeMember.description")}
           </DialogDescription>
         </DialogHeader>
         <InputGroup>
           <InputGroupInput
             value={searchInput}
-            placeholder="Type minimum 3 characters to search ..."
+            placeholder={t("removeMember.searchPlaceholder")}
             onChange={onSearchInputChange}
           />
           <InputGroupAddon>
@@ -227,7 +232,7 @@ export default function StoryDetailDeleteMemberDialog({
               <If condition={query.isError}>
                 <Then>
                   <p className="italic text-muted-foreground">
-                    Couldn&apos;t load party members.
+                    {t("removeMember.loadError")}
                   </p>
                 </Then>
                 <Else>
@@ -236,12 +241,12 @@ export default function StoryDetailDeleteMemberDialog({
                       <If condition={isSearching}>
                         <Then>
                           <p className="italic text-muted-foreground">
-                            No adventurers match this search.
+                            {t("removeMember.emptySearch")}
                           </p>
                         </Then>
                         <Else>
                           <p className="italic text-muted-foreground">
-                            No adventurers have joined this party yet.
+                            {t("removeMember.empty")}
                           </p>
                         </Else>
                       </If>
@@ -255,6 +260,7 @@ export default function StoryDetailDeleteMemberDialog({
                               checked={selectedUserIds.includes(member.user.id)}
                               disabled={isRemoving}
                               onCheckedChange={onUserCheckedChange}
+                              statusLabel={t(MEMBER_STATUS_KEY[member.status])}
                             />
                           </li>
                         ))}
@@ -280,7 +286,7 @@ export default function StoryDetailDeleteMemberDialog({
                 size="sm"
                 onClick={onTryAgainClick}
               >
-                Try again
+                {t("removeMember.tryAgain")}
               </Button>
             </Then>
           </If>
@@ -288,7 +294,7 @@ export default function StoryDetailDeleteMemberDialog({
         </div>
         <DialogFooter>
           <Button type="button" variant="outline" onClick={onCancelClick}>
-            Cancel
+            {t("removeMember.cancel")}
           </Button>
           <Button
             type="button"
@@ -301,7 +307,7 @@ export default function StoryDetailDeleteMemberDialog({
                 <Spinner data-icon="inline-start" />
               </Then>
             </If>
-            {getRemoveButtonLabel(selectedUserIds.length)}
+            {t("removeMember.submit", { count: selectedUserIds.length })}
           </Button>
         </DialogFooter>
       </DialogContent>

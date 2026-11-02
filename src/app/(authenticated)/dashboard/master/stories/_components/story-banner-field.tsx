@@ -16,6 +16,8 @@ import {
   STORY_BANNER_MAX_FILE_SIZE_BYTES,
 } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-banner";
 import type { TStoryBannerFieldProps } from "@/app/(authenticated)/dashboard/master/stories/_types/story-banner-field-props";
+import { useT } from "@/app/_hooks/use-t";
+import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages/shared";
 
 export default function StoryBannerField({
   previewUrl,
@@ -26,7 +28,9 @@ export default function StoryBannerField({
   onFileError,
   onRemove,
 }: TStoryBannerFieldProps) {
+  const { t } = useT(MASTER_STORIES_SHARED_MESSAGES);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const maxSizeLabel = formatFileSize(STORY_BANNER_MAX_FILE_SIZE_BYTES);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -35,13 +39,11 @@ export default function StoryBannerField({
     if (!file) return;
 
     if (!STORY_BANNER_ACCEPTED_TYPES.includes(file.type)) {
-      onFileError("Banner must be a JPG, PNG, or WebP image");
+      onFileError(t("banner.errorType"));
       return;
     }
     if (file.size > STORY_BANNER_MAX_FILE_SIZE_BYTES) {
-      onFileError(
-        `Banner must be ${formatFileSize(STORY_BANNER_MAX_FILE_SIZE_BYTES)} or smaller`,
-      );
+      onFileError(t("banner.errorSize", { maxSize: maxSizeLabel }));
       return;
     }
 
@@ -50,7 +52,7 @@ export default function StoryBannerField({
 
   return (
     <Field data-invalid={!!error}>
-      <FieldLabel>Banner</FieldLabel>
+      <FieldLabel>{t("banner.label")}</FieldLabel>
       <div className="flex flex-col sm:flex-row sm:items-start gap-4">
         <div className="w-full sm:w-72 overflow-hidden rounded-lg border bg-muted">
           <If condition={!!previewUrl}>
@@ -60,7 +62,7 @@ export default function StoryBannerField({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={previewUrl ?? undefined}
-                alt="Story banner preview"
+                alt={t("banner.previewAlt")}
                 className="block aspect-[16/10] w-full object-cover"
               />
             </Then>
@@ -88,7 +90,7 @@ export default function StoryBannerField({
                   <Upload data-icon="inline-start" />
                 </Else>
               </If>
-              Choose file
+              {t("banner.chooseFile")}
             </Button>
 
             <If condition={!!previewUrl}>
@@ -100,7 +102,7 @@ export default function StoryBannerField({
                   onClick={onRemove}
                 >
                   <Trash data-icon="inline-start" />
-                  Remove
+                  {t("banner.remove")}
                 </Button>
               </Then>
             </If>
@@ -114,10 +116,7 @@ export default function StoryBannerField({
             onChange={handleFileChange}
           />
           <FieldDescription>
-            JPG, PNG, or WebP image, max{" "}
-            {formatFileSize(STORY_BANNER_MAX_FILE_SIZE_BYTES)}. Recommended
-            16:10 (e.g. 1600 &times; 1000 px) with the main subject centered,
-            since the public pages crop the edges.
+            {t("banner.description", { maxSize: maxSizeLabel })}
           </FieldDescription>
         </div>
       </div>

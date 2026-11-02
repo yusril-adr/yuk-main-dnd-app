@@ -21,16 +21,19 @@ export type TPublicStoryBannerProps = {
 
 export type TPublicStoryStatusBadgeProps = {
   status: StoryStatusEnum;
+  label: string;
   className?: string;
 };
 
 export type TPublicStoryTypeBadgeProps = {
   type: StoryTypeEnum;
+  label: string;
   className?: string;
 };
 
 export type TPublicStoryLocationBadgeProps = {
   locationType: StoryLocationTypeEnum;
+  label: string;
   className?: string;
 };
 
@@ -40,8 +43,8 @@ export type TPublicStoryEmptyStateProps = {
 };
 
 export type TPublicStoryErrorStateProps = {
-  title?: string;
-  description?: string;
+  title: string;
+  description: string;
   onRetry: () => void;
 };
 

@@ -1,0 +1,10 @@
+{
+  "toast": {
+    "creating": "Creating role...",
+    "created": "Role created",
+    "updating": "Updating role...",
+    "updated": "Role updated",
+    "deleting": "Deleting role...",
+    "deleted": "Role deleted"
+  }
+}

@@ -39,12 +39,30 @@ import {
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
 import { getRichTextPlainText } from "@/utils/rich-text";
-import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
+import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
+import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
 import { formatStoryReward } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-reward";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
+import { localeToBcp47 } from "@/libs/i18n/locales";
 
 import StoryCardBanner from "./story-card-banner";
 import StoryStatusBadge from "./story-status-badge";
 import type { TStoryCardProps } from "@/app/(authenticated)/dashboard/master/stories/_types/story-card-props";
+import { MASTER_STORIES_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages";
+
+const STATUS_MESSAGE_KEY = {
+  [StoryStatusEnum.DRAFT]: "enums.status.draft",
+  [StoryStatusEnum.PUBLISHED]: "enums.status.published",
+  [StoryStatusEnum.ARCHIVED]: "enums.status.archived",
+  [StoryStatusEnum.CANCELLED]: "enums.status.cancelled",
+  [StoryStatusEnum.COMPLETED]: "enums.status.completed",
+} as const;
+
+const TYPE_MESSAGE_KEY = {
+  [StoryTypeEnum.ONESHOT]: "enums.type.oneshot",
+  [StoryTypeEnum.CAMPAIGN]: "enums.type.campaign",
+} as const;
 
 export default function StoryCard({
   story,
@@ -54,6 +72,8 @@ export default function StoryCard({
   onCancel,
   onDelete,
 }: TStoryCardProps) {
+  const { t } = useT(MASTER_STORIES_MESSAGES);
+  const { locale } = useLocale();
   const canEditStory = story.action_list.is_can_update;
   const canDeleteStoryAction = story.action_list.is_can_delete && !!onDelete;
   const canArchiveStory = story.action_list.is_can_archive && !!onArchive;
@@ -64,8 +84,9 @@ export default function StoryCard({
   // description is empty or only has images
   const descriptionText = getRichTextPlainText(story.description);
   // Reward badges only for rewards above 0
-  const expReward = formatStoryReward(story.exp_awarded, "EXP");
-  const goldReward = formatStoryReward(story.point_awarded, "GP");
+  const bcp47 = localeToBcp47(locale);
+  const expReward = formatStoryReward(story.exp_awarded, "EXP", bcp47);
+  const goldReward = formatStoryReward(story.point_awarded, "GP", bcp47);
   const [confirmArchiveId, setConfirmArchiveId] = useState<string | null>(null);
   const [confirmPublishId, setConfirmPublishId] = useState<string | null>(null);
   const [confirmUnarchiveId, setConfirmUnarchiveId] = useState<string | null>(
@@ -132,7 +153,7 @@ export default function StoryCard({
                 <Button
                   size="icon-sm"
                   variant="ghost"
-                  aria-label="Story actions"
+                  aria-label={t("card.actionsAria")}
                   // Plain ghost like the other ⋯ buttons; the drop shadow keeps the
                   // icon visible on light or busy banner images
                   className="absolute top-2 right-2 [&_svg]:drop-shadow-sm"
@@ -149,7 +170,7 @@ export default function StoryCard({
                   }
                 >
                   <Eye />
-                  View
+                  {t("card.view")}
                 </DropdownMenuItem>
                 {canEditStory && (
                   <DropdownMenuItem
@@ -160,7 +181,7 @@ export default function StoryCard({
                     }
                   >
                     <Pencil />
-                    Edit
+                    {t("card.edit")}
                   </DropdownMenuItem>
                 )}
                 <If condition={canPublishStory}>
@@ -169,7 +190,7 @@ export default function StoryCard({
                       onClick={() => setConfirmPublishId(story.id)}
                     >
                       <Send />
-                      Publish
+                      {t("card.publish")}
                     </DropdownMenuItem>
                   </Then>
                 </If>
@@ -179,7 +200,7 @@ export default function StoryCard({
                       onClick={() => setConfirmArchiveId(story.id)}
                     >
                       <Archive />
-                      Archive
+                      {t("card.archive")}
                     </DropdownMenuItem>
                   </Then>
                 </If>
@@ -189,7 +210,7 @@ export default function StoryCard({
                       onClick={() => setConfirmUnarchiveId(story.id)}
                     >
                       <ArchiveRestore />
-                      Unarchive
+                      {t("card.unarchive")}
                     </DropdownMenuItem>
                   </Then>
                 </If>
@@ -200,7 +221,7 @@ export default function StoryCard({
                       onClick={() => setConfirmCancelId(story.id)}
                     >
                       <Ban />
-                      Cancel
+                      {t("card.cancel")}
                     </DropdownMenuItem>
                   </Then>
                 </If>
@@ -210,7 +231,7 @@ export default function StoryCard({
                     onClick={() => setConfirmDeleteId(story.id)}
                   >
                     <Trash />
-                    Delete
+                    {t("card.delete")}
                   </DropdownMenuItem>
                 )}
               </DropdownMenuGroup>
@@ -236,7 +257,7 @@ export default function StoryCard({
           <p className="line-clamp-3 min-h-15 text-muted-foreground">
             <If condition={!!descriptionText}>
               <Then>{descriptionText}</Then>
-              <Else>No description.</Else>
+              <Else>{t("card.noDescription")}</Else>
             </If>
           </p>
         </CardContent>
@@ -245,8 +266,13 @@ export default function StoryCard({
           {/* Status / type on the left, rewards on the right (wraps on narrow cards) */}
           <div className="flex w-full flex-wrap items-center justify-between gap-2">
             <div className="flex flex-wrap items-center gap-2">
-              <StoryStatusBadge status={story.status} />
-              <Badge variant="outline">{STORY_TYPE_LABEL[story.type]}</Badge>
+              <StoryStatusBadge
+                status={story.status}
+                label={t(STATUS_MESSAGE_KEY[story.status])}
+              />
+              <Badge variant="outline">
+                {t(TYPE_MESSAGE_KEY[story.type])}
+              </Badge>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <If condition={!!expReward}>
@@ -274,15 +300,15 @@ export default function StoryCard({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Publish story?</AlertDialogTitle>
+            <AlertDialogTitle>{t("dialogs.publishTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              The story will be marked as published.
+              {t("dialogs.publishDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={onPublishConfirm}>
-              Publish
+              {t("dialogs.publishConfirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -298,16 +324,15 @@ export default function StoryCard({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Archive story?</AlertDialogTitle>
+            <AlertDialogTitle>{t("dialogs.archiveTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              The story will be marked as archived. You can unarchive it later
-              to restore its previous status.
+              {t("dialogs.archiveDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={onArchiveConfirm}>
-              Archive
+              {t("dialogs.archiveConfirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -323,16 +348,15 @@ export default function StoryCard({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Unarchive story?</AlertDialogTitle>
+            <AlertDialogTitle>{t("dialogs.unarchiveTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              The story will go back to the status it had before it was archived
-              (Draft or Published).
+              {t("dialogs.unarchiveDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={onUnarchiveConfirm}>
-              Unarchive
+              {t("dialogs.unarchiveConfirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -348,16 +372,15 @@ export default function StoryCard({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Cancel story?</AlertDialogTitle>
+            <AlertDialogTitle>{t("dialogs.cancelTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              The story will be marked as cancelled. This cannot be undone. The
-              story cannot be edited, and members cannot be added or removed.
+              {t("dialogs.cancelDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
             <AlertDialogAction variant="destructive" onClick={onCancelConfirm}>
-              Cancel story
+              {t("dialogs.cancelConfirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -373,16 +396,15 @@ export default function StoryCard({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete story?</AlertDialogTitle>
+            <AlertDialogTitle>{t("dialogs.deleteTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. The story will be removed from the
-              system.
+              {t("dialogs.deleteDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
             <AlertDialogAction variant="destructive" onClick={onDeleteConfirm}>
-              Delete
+              {t("dialogs.deleteConfirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

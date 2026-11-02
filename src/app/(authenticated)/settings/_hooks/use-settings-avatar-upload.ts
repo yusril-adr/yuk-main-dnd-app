@@ -7,6 +7,9 @@ import { FilePurposesEnum } from "@/api/main/modules/files/enums/file-upload-pur
 import type { TFileUploadPayload } from "@/api/main/modules/files/types/file-upload-payload";
 import type { TFileResponse } from "@/api/main/modules/files/types/file-response";
 import type { TMainApiResponse } from "@/api/main/types/response";
+import { useT } from "@/app/_hooks/use-t";
+
+import { SETTINGS_MESSAGES } from "../_messages";
 
 // Local copy of the IAM avatar-upload hook so Settings does not import from
 // the users/_hooks folder
@@ -20,17 +23,19 @@ export function useSettingsAvatarUpload(
     "mutationFn"
   >,
 ) {
+  const { t } = useT(SETTINGS_MESSAGES);
+
   return useMutation({
     ...options,
     mutationFn: (payload) =>
       uploadFile({ ...payload, purpose: FilePurposesEnum.USER_AVATAR }),
     onMutate: (...args) => {
-      toast.loading("Uploading avatar...");
+      toast.loading(t("toast.uploadingAvatar"));
       options?.onMutate?.(...args);
     },
     onSuccess: (...args) => {
       toast.dismiss();
-      toast.success("Avatar uploaded");
+      toast.success(t("toast.avatarUploaded"));
       options?.onSuccess?.(...args);
     },
   });

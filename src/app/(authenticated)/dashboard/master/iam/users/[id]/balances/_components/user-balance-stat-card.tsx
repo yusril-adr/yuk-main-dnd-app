@@ -17,8 +17,12 @@ import {
   DialogTitle,
 } from "@/app/_components/ui/dialog";
 import { Skeleton } from "@/app/_components/ui/skeleton";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
+import { localeToBcp47 } from "@/libs/i18n/locales";
 import { formatCompactBalance } from "@/utils/format-number";
 
+import { MASTER_USERS_BALANCES_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/[id]/balances/_messages";
 import type { TUserBalanceStatCardProps } from "../_types/user-balance-stat-card-props";
 
 const VALUE_CLASS = "font-heading text-xl tabular-nums sm:text-3xl";
@@ -31,9 +35,13 @@ export default function UserBalanceStatCard({
   value,
   isLoading = false,
 }: TUserBalanceStatCardProps) {
+  const { t } = useT(MASTER_USERS_BALANCES_MESSAGES);
+  const { locale } = useLocale();
   const [open, setOpen] = useState(false);
   const hasValue = value != null && Number.isFinite(value);
-  const exact = hasValue ? value.toLocaleString() : "-";
+  const exact = hasValue
+    ? value.toLocaleString(localeToBcp47(locale))
+    : "-";
   const compact = hasValue ? formatCompactBalance(value) : "-";
   const abbreviated = compact !== exact;
 
@@ -53,7 +61,7 @@ export default function UserBalanceStatCard({
             type="button"
             variant="link"
             className={`h-auto p-0 text-foreground decoration-dotted underline-offset-4 ${VALUE_CLASS} underline`}
-            aria-label={`Show exact ${label}`}
+            aria-label={t("amount.showExactAria", { label })}
             onClick={() => setOpen(true)}
           >
             {compact}

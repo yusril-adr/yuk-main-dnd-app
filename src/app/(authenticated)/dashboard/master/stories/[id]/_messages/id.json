@@ -1,0 +1,139 @@
+{
+  "breadcrumb": "Stories",
+  "breadcrumbDetail": "Detail",
+  "title": "Detail Story",
+  "enums": {
+    "status": {
+      "draft": "Draf",
+      "published": "Published",
+      "archived": "Diarsipkan",
+      "cancelled": "Dibatalkan",
+      "completed": "Selesai"
+    },
+    "type": {
+      "oneshot": "Oneshot",
+      "campaign": "Campaign"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "memberStatus": {
+      "registered": "Terdaftar",
+      "viewer": "Penonton",
+      "attended": "Hadir"
+    }
+  },
+  "actions": {
+    "edit": "Edit",
+    "publish": "Publish",
+    "complete": "Selesaikan",
+    "archive": "Arsipkan",
+    "unarchive": "Batalkan arsip",
+    "cancel": "Batalkan",
+    "delete": "Hapus",
+    "actionsAria": "Aksi story"
+  },
+  "dialogs": {
+    "cancel": "Batal",
+    "publishTitle": "Publish story?",
+    "publishDescription": "Story akan ditandai sebagai Published.",
+    "publishConfirm": "Publish",
+    "archiveTitle": "Arsipkan story?",
+    "archiveDescription": "Story akan ditandai sebagai diarsipkan. Kamu bisa membatalkan arsip nanti untuk mengembalikan status sebelumnya.",
+    "archiveConfirm": "Arsipkan",
+    "unarchiveTitle": "Batalkan arsip story?",
+    "unarchiveDescription": "Story akan kembali ke status sebelum diarsipkan (Draf atau Published).",
+    "unarchiveConfirm": "Batalkan arsip",
+    "cancelTitle": "Batalkan story?",
+    "cancelDescription": "Story akan ditandai sebagai dibatalkan. Ini tidak bisa diurungkan. Story tidak bisa diedit, dan anggota tidak bisa ditambah atau dihapus.",
+    "cancelConfirm": "Batalkan story",
+    "deleteTitle": "Hapus story?",
+    "deleteDescription": "Aksi ini tidak bisa diurungkan. Story akan dihapus dari sistem.",
+    "deleteConfirm": "Hapus"
+  },
+  "quest": {
+    "title": "Detail Story",
+    "empty": "Belum ada deskripsi untuk story ini.",
+    "copyAria": "Salin deskripsi untuk Discord",
+    "copyTitle": "Salin untuk Discord",
+    "copySuccess": "Deskripsi disalin",
+    "copyError": "Nggak bisa menyalin deskripsi"
+  },
+  "adventure": {
+    "title": "Info Petualangan",
+    "gameSystem": "Sistem Game",
+    "anySystem": "Sistem apa saja",
+    "partySize": "Ukuran Party",
+    "partySizeValue_one": "Maksimal {{count}} petualang",
+    "partySizeValue_other": "Maksimal {{count}} petualang",
+    "noLimit": "Tidak ada batas",
+    "rewards": "Rewards",
+    "noRewards": "Tidak ada reward",
+    "exp": "{{count}} EXP",
+    "gp": "{{count}} GP",
+    "starts": "Mulai",
+    "notScheduled": "Belum dijadwalkan",
+    "location": "Lokasi · {{type}}",
+    "openMap": "Buka peta lokasi",
+    "discord": "Channel Discord",
+    "openDiscord": "Buka channel Discord",
+    "feedback": "Form Feedback",
+    "openFeedback": "Buka form feedback"
+  },
+  "chronicle": {
+    "title": "Chronicle",
+    "writtenBy": "Ditulis Oleh",
+    "unknown": "Tidak diketahui",
+    "recorded": "Dicatat",
+    "lastUpdated": "Terakhir Diperbarui"
+  },
+  "party": {
+    "title": "Party",
+    "dialogDescription": "Daftar lengkap anggota story",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Anggota party nggak bisa dimuat.",
+    "empty": "Belum ada petualang yang bergabung di party ini.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "showMore": "Tampilkan lebih banyak",
+    "addMember": "Tambah anggota",
+    "remove": "Hapus",
+    "add": "Tambah",
+    "tryAgain": "Coba lagi"
+  },
+  "addMember": {
+    "title": "Tambah anggota",
+    "description": "Tambah petualang ke party ini",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Petualang yang tersedia nggak bisa dimuat.",
+    "empty": "Tidak ada petualang yang tersedia untuk bergabung.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "tryAgain": "Coba lagi",
+    "cancel": "Batal",
+    "submit_zero": "Tambah",
+    "submit_one": "Tambah {{count}} anggota",
+    "submit_other": "Tambah {{count}} anggota",
+    "errorFallback": "Nggak bisa menambah anggota story."
+  },
+  "removeMember": {
+    "title": "Hapus anggota",
+    "description": "Hapus petualang dari party ini",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Anggota party nggak bisa dimuat.",
+    "empty": "Belum ada petualang yang bergabung di party ini.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "tryAgain": "Coba lagi",
+    "cancel": "Batal",
+    "submit_zero": "Hapus",
+    "submit_one": "Hapus {{count}} anggota",
+    "submit_other": "Hapus {{count}} anggota",
+    "errorFallback": "Nggak bisa menghapus anggota story."
+  },
+  "slug": {
+    "viewPublic": "Lihat halaman publik",
+    "viewPublicSr": "Lihat halaman publik (membuka tab baru)"
+  },
+  "external": {
+    "opensInNewTab": "(membuka tab baru)"
+  }
+}

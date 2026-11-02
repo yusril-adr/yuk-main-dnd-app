@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 
@@ -6,12 +8,15 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/app/_components/ui/input-group";
+import { useT } from "@/app/_hooks/use-t";
+import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 import type { TPublicGuildmateSearchProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 export default function PublicGuildmateSearch({
   search,
   onSearchChange,
 }: TPublicGuildmateSearchProps) {
+  const { t } = useT(GUILDMATES_MESSAGES);
   // Freeze the initial value: changing defaultValue on an uncontrolled
   // Base UI input after mount triggers a FieldControl warning
   const [initialSearch] = useState(search);
@@ -46,8 +51,8 @@ export default function PublicGuildmateSearch({
         <Search />
       </InputGroupAddon>
       <InputGroupInput
-        placeholder="Search by name or username (min. 3 characters)…"
-        aria-label="Search guildmates"
+        placeholder={t("search.placeholder")}
+        aria-label={t("search.ariaLabel")}
         onChange={(event) => handleSearchChange(event.target.value)}
         defaultValue={initialSearch}
       />
