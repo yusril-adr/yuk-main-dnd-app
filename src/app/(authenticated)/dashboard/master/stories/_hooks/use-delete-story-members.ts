@@ -6,7 +6,7 @@ import { deleteStoryMembers } from "@/api/main/modules/master/stories/[id]/membe
 import type { TStoryMembersUserIdsPayload } from "@/api/main/modules/master/stories/[id]/members/types/story-members-user-ids-payload";
 import { useT } from "@/app/_hooks/use-t";
 
-import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_components/_messages";
+import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages/shared";
 
 // DELETE /:id/members (stories:update or the story's creator).
 // user_ids is required and non-empty. Matching rows are soft-removed.

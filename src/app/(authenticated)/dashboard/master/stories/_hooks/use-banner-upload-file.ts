@@ -8,7 +8,7 @@ import type { TFileUploadPayload } from "@/api/main/modules/files/types/file-upl
 import type { TFileResponse } from "@/api/main/modules/files/types/file-response";
 import type { TMainApiResponse } from "@/api/main/types/response";
 import { useT } from "@/app/_hooks/use-t";
-import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_components/_messages";
+import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages/shared";
 
 export function useBannerUploadFile(
   options?: Omit<

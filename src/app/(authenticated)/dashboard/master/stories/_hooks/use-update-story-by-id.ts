@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { updateStoryById } from "@/api/main/modules/master/stories/[id]";
 import type { TStoryUpdatePayload } from "@/api/main/modules/master/stories/[id]/types/story-update-payload";
 import { useT } from "@/app/_hooks/use-t";
-import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_components/_messages";
+import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages/shared";
 
 export function useUpdateStoryById(
   options?: Omit<

@@ -17,7 +17,7 @@ import {
 } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-banner";
 import type { TStoryBannerFieldProps } from "@/app/(authenticated)/dashboard/master/stories/_types/story-banner-field-props";
 import { useT } from "@/app/_hooks/use-t";
-import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_components/_messages";
+import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages/shared";
 
 export default function StoryBannerField({
   previewUrl,
