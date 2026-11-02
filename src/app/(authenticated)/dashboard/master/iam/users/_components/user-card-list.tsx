@@ -39,6 +39,8 @@ import { OrderKeyEnum } from "@/common/enums/order-key";
 import { generatePages } from "@/utils/table-helper";
 import { DATA_TABLE_MESSAGES } from "@/app/_messages/data-table";
 import { MASTER_USERS_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/_messages";
+import { USER_GUEST_FILTER_OPTIONS } from "@/app/(authenticated)/dashboard/master/iam/users/_constants/user-guest-filter-options";
+import type { UserGuestFilterEnum } from "@/app/(authenticated)/dashboard/master/iam/users/_enums/user-guest-filter";
 
 import UserCard from "./user-card";
 import UserCardSkeleton from "./user-card-skeleton";
@@ -91,6 +93,9 @@ export default function UserCardList({
   const [filterRoleIds, setFilterRoleIds] = useState<string[]>(
     queryTable.roleIds ?? [],
   );
+  const [filterIsGuest, setFilterIsGuest] = useState<UserGuestFilterEnum | null>(
+    queryTable.isGuest ?? null,
+  );
 
   const sortByOptions = useMemo(
     () =>
@@ -106,6 +111,15 @@ export default function UserCardList({
       { label: t("sort.asc"), value: OrderKeyEnum.ASC },
       { label: t("sort.desc"), value: OrderKeyEnum.DESC },
     ],
+    [t],
+  );
+
+  const guestFilterOptions = useMemo(
+    () =>
+      USER_GUEST_FILTER_OPTIONS.map((item) => ({
+        label: t(`enums.guest.${item.labelKey}`),
+        value: item.value,
+      })),
     [t],
   );
 
@@ -169,18 +183,21 @@ export default function UserCardList({
       sortBy: filterSortBy,
       order: filterOrder,
       roleIds: filterRoleIds,
+      isGuest: filterIsGuest,
     });
-  }, [filterSortBy, filterOrder, filterRoleIds, onActionHandler]);
+  }, [filterSortBy, filterOrder, filterRoleIds, filterIsGuest, onActionHandler]);
 
   const onFilterClear = useCallback(() => {
     setFilterSortBy("updated_at");
     setFilterOrder(OrderKeyEnum.DESC);
     setFilterRoleIds([]);
+    setFilterIsGuest(null);
     onRoleSearchChange("");
     onActionHandler.onFilterApply({
       sortBy: null,
       order: null,
       roleIds: [],
+      isGuest: null,
     });
   }, [onRoleSearchChange, onActionHandler]);
 
@@ -299,6 +316,34 @@ export default function UserCardList({
                       </ComboboxList>
                     </ComboboxContent>
                   </Combobox>
+                </Field>
+              </FieldGroup>
+
+              <FieldGroup>
+                <Field className="grid gap-2">
+                  <FieldLabel>{t("filters.guest")}</FieldLabel>
+                  <Select
+                    items={guestFilterOptions}
+                    value={filterIsGuest}
+                    onValueChange={(val) =>
+                      setFilterIsGuest(
+                        (val as UserGuestFilterEnum | null) ?? null,
+                      )
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {guestFilterOptions.map((item) => (
+                          <SelectItem key={item.label} value={item.value}>
+                            {item.label}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                 </Field>
               </FieldGroup>
 

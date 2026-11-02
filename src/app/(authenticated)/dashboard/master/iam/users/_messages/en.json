@@ -13,7 +13,8 @@
     "noRolesFound": "No roles found.",
     "clear": "Clear",
     "apply": "Apply",
-    "searchPlaceholder": "Type minimum 3 characters to search ..."
+    "searchPlaceholder": "Type minimum 3 characters to search ...",
+    "guest": "Guest"
   },
   "sort": {
     "displayName": "Display Name",
@@ -34,12 +35,20 @@
     "view": "View",
     "balances": "Balances",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "guest": "Guest"
   },
   "dialogs": {
     "cancel": "Cancel",
     "deleteTitle": "Delete user?",
     "deleteDescription": "This action cannot be undone. The user will be permanently removed from the system.",
     "deleteConfirm": "Delete"
+  },
+  "enums": {
+    "guest": {
+      "all": "All",
+      "users": "Users",
+      "guests": "Guests"
+    }
   }
 }
