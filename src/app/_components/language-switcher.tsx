@@ -15,13 +15,14 @@ import { useT } from "@/app/_hooks/use-t";
 import { isLocale } from "@/libs/i18n/locales";
 import { COMMON_MESSAGES } from "@/messages/common";
 import type { TLocale } from "@/libs/i18n/types/locale";
+import type { TLanguageSwitcherProps } from "@/app/_types/language-switcher-props";
 
 const LOCALE_LABEL: Record<TLocale, string> = {
   en: "English",
   id: "Indonesia",
 };
 
-export function LanguageSwitcher() {
+export function LanguageSwitcher({ size = "icon" }: TLanguageSwitcherProps) {
   const { locale, setLocale, locales } = useLocale();
   const { t } = useT(COMMON_MESSAGES);
 
@@ -29,7 +30,7 @@ export function LanguageSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <div
-          className={buttonVariants({ variant: "ghost", size: "icon" })}
+          className={buttonVariants({ variant: "ghost", size })}
           aria-label={t("language.switcherLabel")}
         >
           <Languages className="size-[1.2rem]" />

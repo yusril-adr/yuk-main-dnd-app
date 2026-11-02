@@ -3,13 +3,16 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { useT } from "@/app/_hooks/use-t";
+import { DASHBOARD_HOME_MESSAGES } from "@/app/(authenticated)/dashboard/(index)/_messages";
 
 export default function DashboardPageClient() {
   const { auth } = useAuthContext();
+  const { t } = useT(DASHBOARD_HOME_MESSAGES);
 
   const breadcrumbItems = [
     {
-      name: "Dashboard",
+      name: t("title"),
     },
   ];
 
@@ -19,17 +22,17 @@ export default function DashboardPageClient() {
         <div className="mb-2">
           <AppBreadcrumb items={breadcrumbItems} />
         </div>
-        <h1 className="font-heading text-2xl">Dashboard</h1>
+        <h1 className="font-heading text-2xl">{t("title")}</h1>
 
         <div className="w-full my-auto flex justify-center items-center">
           <div className="flex flex-col items-center max-w-lg">
             <DotLottieReact src={"/lotties/wumpus-hi.json"} autoplay loop />
             <h2 className="font-heading text-xl">
-              Welcome, {auth?.display_name ?? "-"}
+              {t("welcome", { name: auth?.display_name ?? "-" })}
             </h2>
 
             <h3>
-              You&apos;re currently logged as{" "}
+              {t("loggedAs")}{" "}
               <span className="font-bold text-primary">
                 {auth?.selected_role?.name ?? "Player"}
               </span>
