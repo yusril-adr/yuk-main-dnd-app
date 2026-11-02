@@ -4,6 +4,8 @@ import { toast } from "sonner";
 
 import { updateStoryById } from "@/api/main/modules/master/stories/[id]";
 import type { TStoryUpdatePayload } from "@/api/main/modules/master/stories/[id]/types/story-update-payload";
+import { useT } from "@/app/_hooks/use-t";
+import { MASTER_STORIES_FORM_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_components/_messages";
 
 export function useUpdateStoryById(
   options?: Omit<
@@ -15,16 +17,18 @@ export function useUpdateStoryById(
     "mutationFn"
   >,
 ) {
+  const { t } = useT(MASTER_STORIES_FORM_SHARED_MESSAGES);
+
   return useMutation({
     ...options,
     mutationFn: updateStoryById,
     onMutate: (...args) => {
-      toast.loading("Updating story...");
+      toast.loading(t("toast.updating"));
       options?.onMutate?.(...args);
     },
     onSuccess: (...args) => {
       toast.dismiss();
-      toast.success("Story updated");
+      toast.success(t("toast.updated"));
       options?.onSuccess?.(...args);
     },
   });

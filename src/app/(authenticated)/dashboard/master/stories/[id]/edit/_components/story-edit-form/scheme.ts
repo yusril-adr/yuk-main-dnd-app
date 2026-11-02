@@ -5,65 +5,98 @@ import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/s
 import { countRichTextCharacters } from "@/utils/rich-text";
 import { STORY_DESCRIPTION_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-description";
 import { STORY_REWARD_MAX } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-reward";
+import { STORY_LINK_MAX_LENGTH } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-link";
 import {
-  storyDiscordChannelLinkSchema,
-  storyLocationLinkSchema,
-  storyFeedbackFormLinkSchema,
+  createStoryDiscordChannelLinkSchema,
+  createStoryLocationLinkSchema,
+  createStoryFeedbackFormLinkSchema,
 } from "@/app/(authenticated)/dashboard/master/stories/_utils/story-link";
+import type { TStoryEditTranslate } from "@/app/(authenticated)/dashboard/master/stories/[id]/edit/_types/story-edit-translate";
 
 // Kept as the raw input string ("" = 0); whole number between 0 and the DB max
-const storyRewardSchema = (label: string) =>
-  z
+function storyRewardSchema(
+  t: TStoryEditTranslate,
+  label: string,
+  locale: string,
+) {
+  return z
     .string()
-    .regex(/^\d*$/, `${label} must be a whole number of 0 or more`)
+    .regex(/^\d*$/, t("validation.rewardWhole", { label }))
     .refine(
       (value) => !value || Number(value) <= STORY_REWARD_MAX,
-      `${label} must be at most ${STORY_REWARD_MAX.toLocaleString("en-US")}`,
+      t("validation.rewardMax", {
+        label,
+        max: STORY_REWARD_MAX.toLocaleString(locale),
+      }),
     );
+}
 
-export const StoryEditFormSchema = z.object({
-  // Newly uploaded banner file id ("" = unchanged or removed)
-  bannerFileId: z.string(),
-  // The existing banner was removed: sent as banner_file_id: null
-  isBannerRemoved: z.boolean(),
-  title: z
-    .string("Title is required")
-    .min(1, "Title is required")
-    .max(150, "Title must be at most 150 characters")
-    .regex(/\S/, "Title must not be empty"),
-  // Markdown ("" = empty). Counted like the editor: visible text (no
-  // Markdown syntax), line breaks 1, nothing between paragraphs
-  description: z
-    .string()
-    .refine(
-      (value) => countRichTextCharacters(value) <= STORY_DESCRIPTION_MAX_LENGTH,
-      `Description must be at most ${STORY_DESCRIPTION_MAX_LENGTH} characters`,
-    )
-    .optional(),
-  type: z.nativeEnum(StoryTypeEnum, "Type is required"),
-  gameSystem: z
-    .string()
-    .max(100, "Game system must be at most 100 characters")
-    .optional(),
-  // Kept as the raw input string; converted to a number on submit ("" = not set)
-  maxMembers: z
-    .string()
-    .regex(/^([1-9]\d*)?$/, "Max members must be a whole number of at least 1"),
-  expAwarded: storyRewardSchema("EXP awarded"),
-  pointAwarded: storyRewardSchema("Gold awarded"),
-  // datetime-local input value ("" = not set)
-  startAt: z.string(),
-  locationType: z.nativeEnum(
-    StoryLocationTypeEnum,
-    "Location type is required",
-  ),
-  locationDetail: z
-    .string("Location detail is required")
-    .min(1, "Location detail is required"),
-  // Optional https links ("" = not set)
-  locationLink: storyLocationLinkSchema,
-  discordChannelLink: storyDiscordChannelLinkSchema,
-  feedbackFormLink: storyFeedbackFormLinkSchema,
-});
+export function createStoryEditFormSchema(
+  t: TStoryEditTranslate,
+  locale: string = "en-US",
+) {
+  return z.object({
+    // Newly uploaded banner file id ("" = unchanged or removed)
+    bannerFileId: z.string(),
+    // The existing banner was removed: sent as banner_file_id: null
+    isBannerRemoved: z.boolean(),
+    title: z
+      .string(t("validation.titleRequired"))
+      .min(1, t("validation.titleRequired"))
+      .max(150, t("validation.titleMax", { max: 150 }))
+      .regex(/\S/, t("validation.titleNotEmpty")),
+    // Markdown ("" = empty). Counted like the editor: visible text (no
+    // Markdown syntax), line breaks 1, nothing between paragraphs
+    description: z
+      .string()
+      .refine(
+        (value) =>
+          countRichTextCharacters(value) <= STORY_DESCRIPTION_MAX_LENGTH,
+        t("validation.descriptionMax", { max: STORY_DESCRIPTION_MAX_LENGTH }),
+      )
+      .optional(),
+    type: z.nativeEnum(StoryTypeEnum, t("validation.typeRequired")),
+    gameSystem: z
+      .string()
+      .max(100, t("validation.gameSystemMax", { max: 100 }))
+      .optional(),
+    // Kept as the raw input string; converted to a number on submit ("" = not set)
+    maxMembers: z
+      .string()
+      .regex(/^([1-9]\d*)?$/, t("validation.maxMembersWhole")),
+    expAwarded: storyRewardSchema(t, t("validation.rewardLabelExp"), locale),
+    pointAwarded: storyRewardSchema(t, t("validation.rewardLabelGold"), locale),
+    // datetime-local input value ("" = not set)
+    startAt: z.string(),
+    locationType: z.nativeEnum(
+      StoryLocationTypeEnum,
+      t("validation.locationTypeRequired"),
+    ),
+    locationDetail: z
+      .string(t("validation.locationDetailRequired"))
+      .min(1, t("validation.locationDetailRequired")),
+    // Optional https links ("" = not set)
+    locationLink: createStoryLocationLinkSchema({
+      maxLength: t("validation.locationLinkMax", {
+        max: STORY_LINK_MAX_LENGTH,
+      }),
+      httpsRequired: t("validation.locationLinkHttps"),
+    }),
+    discordChannelLink: createStoryDiscordChannelLinkSchema({
+      maxLength: t("validation.discordLinkMax", {
+        max: STORY_LINK_MAX_LENGTH,
+      }),
+      httpsRequired: t("validation.discordLinkHttps"),
+    }),
+    feedbackFormLink: createStoryFeedbackFormLinkSchema({
+      maxLength: t("validation.feedbackLinkMax", {
+        max: STORY_LINK_MAX_LENGTH,
+      }),
+      httpsRequired: t("validation.feedbackLinkHttps"),
+    }),
+  });
+}
 
-export type TStoryEditFormSchema = z.infer<typeof StoryEditFormSchema>;
+export type TStoryEditFormSchema = z.infer<
+  ReturnType<typeof createStoryEditFormSchema>
+>;

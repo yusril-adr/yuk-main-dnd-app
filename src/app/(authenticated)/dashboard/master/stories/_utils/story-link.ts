@@ -17,40 +17,40 @@ function parseHttpsUrl(value: string): URL | null {
   }
 }
 
+type TStoryLinkMessages = {
+  maxLength: string;
+  httpsRequired: string;
+};
+
 // Optional link kept as the raw input string ("" = not set)
-export const storyLocationLinkSchema = z
-  .string()
-  .trim()
-  .max(
-    STORY_LINK_MAX_LENGTH,
-    `Location link must be at most ${STORY_LINK_MAX_LENGTH} characters`,
-  )
-  .refine(
-    (value) => !value || !!parseHttpsUrl(value),
-    "Location link must be an https link",
-  );
+export function createStoryLocationLinkSchema(messages: TStoryLinkMessages) {
+  return z
+    .string()
+    .trim()
+    .max(STORY_LINK_MAX_LENGTH, messages.maxLength)
+    .refine((value) => !value || !!parseHttpsUrl(value), messages.httpsRequired);
+}
 
-export const storyDiscordChannelLinkSchema = z
-  .string()
-  .trim()
-  .max(
-    STORY_LINK_MAX_LENGTH,
-    `Discord channel link must be at most ${STORY_LINK_MAX_LENGTH} characters`,
-  )
-  .refine((value) => {
-    if (!value) return true;
-    const url = parseHttpsUrl(value);
-    return !!url && STORY_DISCORD_LINK_HOSTS.includes(url.hostname);
-  }, "Discord channel link must be an https link on discord.com, discord.gg or discordapp.com");
+export function createStoryDiscordChannelLinkSchema(
+  messages: TStoryLinkMessages,
+) {
+  return z
+    .string()
+    .trim()
+    .max(STORY_LINK_MAX_LENGTH, messages.maxLength)
+    .refine((value) => {
+      if (!value) return true;
+      const url = parseHttpsUrl(value);
+      return !!url && STORY_DISCORD_LINK_HOSTS.includes(url.hostname);
+    }, messages.httpsRequired);
+}
 
-export const storyFeedbackFormLinkSchema = z
-  .string()
-  .trim()
-  .max(
-    STORY_LINK_MAX_LENGTH,
-    `Feedback form link must be at most ${STORY_LINK_MAX_LENGTH} characters`,
-  )
-  .refine(
-    (value) => !value || !!parseHttpsUrl(value),
-    "Feedback form link must be an https link",
-  );
+export function createStoryFeedbackFormLinkSchema(
+  messages: TStoryLinkMessages,
+) {
+  return z
+    .string()
+    .trim()
+    .max(STORY_LINK_MAX_LENGTH, messages.maxLength)
+    .refine((value) => !value || !!parseHttpsUrl(value), messages.httpsRequired);
+}

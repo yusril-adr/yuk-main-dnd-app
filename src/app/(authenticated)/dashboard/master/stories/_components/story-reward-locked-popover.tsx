@@ -9,6 +9,8 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/app/_components/ui/popover";
+import { useT } from "@/app/_hooks/use-t";
+import { MASTER_STORIES_FORM_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_components/_messages";
 
 type TStoryRewardLockedPopoverProps = {
   // Field name, used in the trigger's aria-label
@@ -22,6 +24,8 @@ export default function StoryRewardLockedPopover({
   label,
   description,
 }: TStoryRewardLockedPopoverProps) {
+  const { t } = useT(MASTER_STORIES_FORM_SHARED_MESSAGES);
+
   return (
     <Popover>
       <PopoverTrigger
@@ -30,7 +34,7 @@ export default function StoryRewardLockedPopover({
             type="button"
             variant="ghost"
             size="icon"
-            aria-label={`About ${label}`}
+            aria-label={t("rewardLocked.aboutAria", { label })}
             // -my-2 keeps the label row at text height so the reward inputs
             // stay aligned side by side
             className="-my-2 size-8 text-muted-foreground hover:text-foreground"
@@ -45,7 +49,7 @@ export default function StoryRewardLockedPopover({
       >
         <PopoverHeader>
           <PopoverTitle className="font-heading">
-            Standardized reward
+            {t("rewardLocked.title")}
           </PopoverTitle>
           <PopoverDescription className="text-xs">
             {description}
