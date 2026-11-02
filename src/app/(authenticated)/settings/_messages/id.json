@@ -1,0 +1,59 @@
+{
+  "title": "Pengaturan",
+  "profile": {
+    "avatar": "Avatar",
+    "chooseFile": "Pilih file",
+    "remove": "Hapus",
+    "avatarHint": "Foto profil sebaiknya berukuran rasio 1:1\ndan tidak lebih besar dari {{size}}.",
+    "email": "Email",
+    "emailPlaceholder": "Masukkan email",
+    "username": "Username",
+    "usernamePlaceholder": "Masukkan username",
+    "displayName": "Nama tampilan",
+    "displayNamePlaceholder": "Masukkan nama tampilan",
+    "bio": "Bio",
+    "bioPlaceholder": "Masukkan bio",
+    "changePassword": "Ganti password",
+    "cancel": "Batal",
+    "save": "Simpan"
+  },
+  "password": {
+    "title": "Ganti password",
+    "description": "Masukkan password saat ini dan pilih yang baru. Kamu tetap masuk setelah diganti.",
+    "currentPassword": "Password saat ini",
+    "currentPasswordPlaceholder": "Password saat ini",
+    "newPassword": "Password baru",
+    "newPasswordPlaceholder": "Password baru",
+    "passwordHint": "Minimal 8 karakter, ada huruf besar, huruf kecil, angka, dan simbol.",
+    "confirmPassword": "Konfirmasi password baru",
+    "confirmPasswordPlaceholder": "Konfirmasi password baru",
+    "cancel": "Batal",
+    "update": "Perbarui"
+  },
+  "validation": {
+    "emailRequired": "Email wajib diisi",
+    "emailInvalid": "Email tidak valid",
+    "usernameMax": "Username maksimal {{max}} karakter",
+    "displayNameRequired": "Nama tampilan wajib diisi",
+    "displayNameMax": "Nama tampilan maksimal {{max}} karakter",
+    "bioMax": "Bio maksimal {{max}} karakter",
+    "currentPasswordRequired": "Password saat ini wajib diisi",
+    "passwordMin": "Password minimal {{min}} karakter",
+    "passwordLowercase": "Password harus ada huruf kecil",
+    "passwordUppercase": "Password harus ada huruf besar",
+    "passwordNumber": "Password harus ada angka",
+    "passwordSymbol": "Password harus ada simbol",
+    "confirmPasswordRequired": "Konfirmasi password baru kamu",
+    "passwordsMismatch": "Password tidak cocok"
+  },
+  "toast": {
+    "uploadingAvatar": "Mengunggah avatar...",
+    "avatarUploaded": "Avatar terunggah",
+    "avatarMustBeImage": "Avatar harus berupa file gambar",
+    "avatarTooLarge": "Avatar harus {{size}} atau lebih kecil",
+    "updatingProfile": "Memperbarui profil...",
+    "profileUpdated": "Profil diperbarui",
+    "updatingPassword": "Memperbarui password...",
+    "passwordUpdated": "Password diperbarui"
+  }
+}

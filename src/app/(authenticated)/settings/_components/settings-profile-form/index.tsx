@@ -34,8 +34,11 @@ import {
   USER_AVATAR_MAX_FILE_SIZE_BYTES,
 } from "@/common/constants/user-avatar";
 import { formatFileSize } from "@/utils/file-helper";
+import { useT } from "@/app/_hooks/use-t";
+
+import { SETTINGS_MESSAGES } from "../../_messages";
 import {
-  SettingsProfileFormSchema,
+  createSettingsProfileFormSchema,
   type TSettingsProfileFormSchema,
 } from "./scheme";
 import type { TSettingsProfileFormProps } from "../../_types/settings-profile-form-props";
@@ -58,6 +61,13 @@ export default function SettingsProfileForm({
   onAvatarRemovedChange,
   onChangePasswordClick,
 }: TSettingsProfileFormProps) {
+  const { t } = useT(SETTINGS_MESSAGES);
+  const schema = useMemo(() => createSettingsProfileFormSchema(t), [t]);
+  const avatarMaxSizeLabel = formatFileSize(USER_AVATAR_MAX_FILE_SIZE_BYTES);
+  const avatarHintLines = t("profile.avatarHint", {
+    size: avatarMaxSizeLabel,
+  }).split("\n");
+
   const defaultValues = useMemo(
     () => ({
       email: email || "",
@@ -71,7 +81,7 @@ export default function SettingsProfileForm({
 
   const { control, handleSubmit, setError, setValue } =
     useForm<TSettingsProfileFormSchema>({
-      resolver: zodResolver(SettingsProfileFormSchema),
+      resolver: zodResolver(schema),
       values: defaultValues,
     });
 
@@ -108,15 +118,13 @@ export default function SettingsProfileForm({
       }
 
       if (!file.type.startsWith(USER_AVATAR_ACCEPTED_MIME_PREFIX)) {
-        toast.error("Avatar must be an image file");
+        toast.error(t("toast.avatarMustBeImage"));
         event.target.value = "";
         return;
       }
 
       if (file.size > USER_AVATAR_MAX_FILE_SIZE_BYTES) {
-        toast.error(
-          `Avatar must be ${formatFileSize(USER_AVATAR_MAX_FILE_SIZE_BYTES)} or smaller`,
-        );
+        toast.error(t("toast.avatarTooLarge", { size: avatarMaxSizeLabel }));
         event.target.value = "";
         return;
       }
@@ -128,7 +136,7 @@ export default function SettingsProfileForm({
       onAvatarRemovedChange(false);
       onUploadAvatar(file);
     },
-    [onUploadAvatar, onAvatarRemovedChange, previewUrl],
+    [onUploadAvatar, onAvatarRemovedChange, previewUrl, t, avatarMaxSizeLabel],
   );
 
   const handleRemoveAvatar = useCallback(() => {
@@ -170,7 +178,7 @@ export default function SettingsProfileForm({
               control={control}
               render={({ fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Avatar</FieldLabel>
+                  <FieldLabel>{t("profile.avatar")}</FieldLabel>
                   <div className="flex flex-col items-center gap-4 sm:flex-row">
                     <Avatar className="size-24">
                       <AvatarImage src={shownAvatarUrl} />
@@ -196,7 +204,7 @@ export default function SettingsProfileForm({
                                 <Upload data-icon="inline-start" />
                               </Else>
                             </If>
-                            Choose file
+                            {t("profile.chooseFile")}
                           </Button>
 
                           <If condition={canRemoveAvatar}>
@@ -209,7 +217,7 @@ export default function SettingsProfileForm({
                                 onClick={handleRemoveAvatar}
                               >
                                 <RotateCcwClock data-icon="inline-start" />
-                                Remove
+                                {t("profile.remove")}
                               </Button>
                             </Then>
                           </If>
@@ -223,10 +231,9 @@ export default function SettingsProfileForm({
                         />
                       </div>
                       <FieldDescription className="flex-1">
-                        Your profile image should have a 1:1 ratio
+                        {avatarHintLines[0]}
                         <br />
-                        and be no larger than{" "}
-                        {formatFileSize(USER_AVATAR_MAX_FILE_SIZE_BYTES)}.
+                        {avatarHintLines[1]}
                       </FieldDescription>
                     </div>
                   </div>
@@ -244,12 +251,14 @@ export default function SettingsProfileForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="email">Email</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="email">
+                    {t("profile.email")}
+                  </RequiredFieldLabel>
                   <Input
                     aria-required
                     id="email"
                     type="email"
-                    placeholder="Input email"
+                    placeholder={t("profile.emailPlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -267,10 +276,12 @@ export default function SettingsProfileForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="username">Username</FieldLabel>
+                  <FieldLabel htmlFor="username">
+                    {t("profile.username")}
+                  </FieldLabel>
                   <Input
                     id="username"
-                    placeholder="Input username"
+                    placeholder={t("profile.usernamePlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -288,11 +299,13 @@ export default function SettingsProfileForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="displayName">Display Name</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="displayName">
+                    {t("profile.displayName")}
+                  </RequiredFieldLabel>
                   <Input
                     aria-required
                     id="displayName"
-                    placeholder="Input display name"
+                    placeholder={t("profile.displayNamePlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -310,10 +323,10 @@ export default function SettingsProfileForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="bio">Bio</FieldLabel>
+                  <FieldLabel htmlFor="bio">{t("profile.bio")}</FieldLabel>
                   <Textarea
                     id="bio"
-                    placeholder="Input bio"
+                    placeholder={t("profile.bioPlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -346,7 +359,7 @@ export default function SettingsProfileForm({
                 onClick={onChangePasswordClick}
               >
                 <KeyRound data-icon="inline-start" />
-                Change password
+                {t("profile.changePassword")}
               </Button>
               <Button
                 type="button"
@@ -357,7 +370,7 @@ export default function SettingsProfileForm({
                 onClick={onChangePasswordClick}
               >
                 <KeyRound data-icon="inline-start" />
-                Change password
+                {t("profile.changePassword")}
               </Button>
 
               <div className="flex w-full flex-col gap-3 sm:ms-auto sm:w-auto sm:flex-row">
@@ -369,7 +382,7 @@ export default function SettingsProfileForm({
                   disabled={isFormDisabled || isUploadingAvatar}
                   nativeButton={false}
                 >
-                  Cancel
+                  {t("profile.cancel")}
                 </Button>
 
                 <Button
@@ -382,7 +395,7 @@ export default function SettingsProfileForm({
                       <Spinner data-icon="inline-start" />
                     </Then>
                   </If>
-                  Save
+                  {t("profile.save")}
                 </Button>
               </div>
             </Field>

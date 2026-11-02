@@ -1,0 +1,59 @@
+{
+  "title": "Settings",
+  "profile": {
+    "avatar": "Avatar",
+    "chooseFile": "Choose file",
+    "remove": "Remove",
+    "avatarHint": "Your profile image should have a 1:1 ratio\nand be no larger than {{size}}.",
+    "email": "Email",
+    "emailPlaceholder": "Input email",
+    "username": "Username",
+    "usernamePlaceholder": "Input username",
+    "displayName": "Display Name",
+    "displayNamePlaceholder": "Input display name",
+    "bio": "Bio",
+    "bioPlaceholder": "Input bio",
+    "changePassword": "Change password",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "password": {
+    "title": "Change password",
+    "description": "Enter your current password and choose a new one. You will stay signed in after the change.",
+    "currentPassword": "Current password",
+    "currentPasswordPlaceholder": "Current password",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "New password",
+    "passwordHint": "At least 8 characters, with uppercase, lowercase, a number, and a symbol.",
+    "confirmPassword": "Confirm new password",
+    "confirmPasswordPlaceholder": "Confirm new password",
+    "cancel": "Cancel",
+    "update": "Update"
+  },
+  "validation": {
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email",
+    "usernameMax": "Username must be at most {{max}} characters",
+    "displayNameRequired": "Display name is required",
+    "displayNameMax": "Display name must be at most {{max}} characters",
+    "bioMax": "Bio must be at most {{max}} characters",
+    "currentPasswordRequired": "Current password is required",
+    "passwordMin": "Password must be at least {{min}} characters",
+    "passwordLowercase": "Password must include a lowercase letter",
+    "passwordUppercase": "Password must include an uppercase letter",
+    "passwordNumber": "Password must include a number",
+    "passwordSymbol": "Password must include a symbol",
+    "confirmPasswordRequired": "Confirm your new password",
+    "passwordsMismatch": "Passwords do not match"
+  },
+  "toast": {
+    "uploadingAvatar": "Uploading avatar...",
+    "avatarUploaded": "Avatar uploaded",
+    "avatarMustBeImage": "Avatar must be an image file",
+    "avatarTooLarge": "Avatar must be {{size}} or smaller",
+    "updatingProfile": "Updating profile...",
+    "profileUpdated": "Profile updated",
+    "updatingPassword": "Updating password...",
+    "passwordUpdated": "Password updated"
+  }
+}
