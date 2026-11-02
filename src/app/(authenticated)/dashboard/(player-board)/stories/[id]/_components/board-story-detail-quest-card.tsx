@@ -1,3 +1,5 @@
+"use client";
+
 import { Scroll } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
@@ -7,19 +9,23 @@ import {
   EmptyHeader,
 } from "@/app/_components/ui/empty";
 import RichTextContent from "@/app/_components/rich-text-content";
+import { useT } from "@/app/_hooks/use-t";
 
 import BoardStoryDetailCopyDescriptionButton from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-copy-description-button";
 import BoardStoryDetailSectionCard from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-section-card";
+import { BOARD_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_messages";
 import type { TBoardStoryDetailCardProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_types/board-story-detail-components-props";
 
 export default function BoardStoryDetailQuestCard({
   story,
   className,
 }: TBoardStoryDetailCardProps) {
+  const { t } = useT(BOARD_STORY_DETAIL_MESSAGES);
+
   return (
     <BoardStoryDetailSectionCard
       icon={Scroll}
-      title="Story Details"
+      title={t("quest.title")}
       className={className}
       action={
         story.description ? (
@@ -40,7 +46,7 @@ export default function BoardStoryDetailQuestCard({
           <Empty className="p-6">
             <EmptyHeader>
               <EmptyDescription className="italic">
-                No description has been written for this story yet.
+                {t("quest.empty")}
               </EmptyDescription>
             </EmptyHeader>
           </Empty>

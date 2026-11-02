@@ -1,0 +1,52 @@
+{
+  "breadcrumb": "My Stories",
+  "title": "My Stories",
+  "description": "Stories you have joined, as a player or a viewer.",
+  "filters": {
+    "searchAria": "Search my stories",
+    "searchPlaceholder": "Search by title (min. 3 characters)…",
+    "statusAria": "Story status",
+    "memberStatusAria": "My member status",
+    "allStatuses": "All statuses",
+    "anySeat": "Any seat"
+  },
+  "enums": {
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "memberStatus": {
+      "registered": "Registered",
+      "viewer": "Viewer",
+      "attended": "Attended"
+    }
+  },
+  "card": {
+    "dungeonMaster": "Dungeon Master",
+    "unknownDm": "Unknown DM",
+    "starts": "Starts",
+    "dateTba": "Date to be announced",
+    "members": "Members"
+  },
+  "pagination": {
+    "showing": "Showing {{start}}–{{end}} of {{total}}",
+    "pagesAria": "Stories pages",
+    "previous": "Previous page",
+    "next": "Next page"
+  },
+  "empty": {
+    "filteredTitle": "No stories match",
+    "title": "No stories yet",
+    "filteredDescription": "Try another title or loosen the filters.",
+    "description": "Join a story from the stories board and it will show up here.",
+    "clearFilters": "Clear filters",
+    "browse": "Browse stories"
+  },
+  "error": {
+    "title": "Could not load your stories",
+    "description": "Something went wrong on the way. Please try again."
+  }
+}

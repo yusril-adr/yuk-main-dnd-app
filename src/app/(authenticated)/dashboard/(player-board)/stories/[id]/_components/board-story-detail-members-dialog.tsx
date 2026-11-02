@@ -24,6 +24,8 @@ import {
   InputGroupInput,
 } from "@/app/_components/ui/input-group";
 import { Spinner } from "@/app/_components/ui/spinner";
+import { useT } from "@/app/_hooks/use-t";
+import { COMMON_MESSAGES } from "@/messages/common";
 
 import BoardStoryDetailMemberRow from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-member-row";
 import { BOARD_STORY_MEMBER_DIALOG_PER_PAGE } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_constants/board-story-detail";
@@ -31,6 +33,7 @@ import {
   getBoardStoryMemberSearchParam,
   useGetBoardStoryMemberPagination,
 } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_hooks/use-get-board-story-member-pagination";
+import { BOARD_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_messages";
 import type { TBoardStoryDetailMembersDialogProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_types/board-story-detail-components-props";
 
 // Read-only full party list with search and infinite scroll
@@ -39,6 +42,8 @@ export default function BoardStoryDetailMembersDialog({
   open,
   onOpenChange,
 }: TBoardStoryDetailMembersDialogProps) {
+  const { t } = useT(BOARD_STORY_DETAIL_MESSAGES);
+  const { t: tCommon } = useT(COMMON_MESSAGES);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
@@ -109,15 +114,15 @@ export default function BoardStoryDetailMembersDialog({
     <Dialog open={open} onOpenChange={onDialogOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Party</DialogTitle>
+          <DialogTitle>{t("party.title")}</DialogTitle>
           <DialogDescription className="sr-only">
-            Full list of story members
+            {t("party.dialogDescription")}
           </DialogDescription>
         </DialogHeader>
         <InputGroup>
           <InputGroupInput
             value={searchInput}
-            placeholder="Type minimum 3 characters to search ..."
+            placeholder={t("party.searchPlaceholder")}
             onChange={onSearchInputChange}
           />
           <InputGroupAddon>
@@ -137,7 +142,7 @@ export default function BoardStoryDetailMembersDialog({
                   <Empty className="p-4">
                     <EmptyHeader>
                       <EmptyDescription className="italic">
-                        Couldn&apos;t load party members.
+                        {t("party.loadError")}
                       </EmptyDescription>
                     </EmptyHeader>
                   </Empty>
@@ -149,8 +154,8 @@ export default function BoardStoryDetailMembersDialog({
                         <EmptyHeader>
                           <EmptyDescription className="italic">
                             {isSearching
-                              ? "No adventurers match this search."
-                              : "No adventurers have joined this party yet."}
+                              ? t("party.emptySearch")
+                              : t("party.empty")}
                           </EmptyDescription>
                         </EmptyHeader>
                       </Empty>
@@ -186,7 +191,7 @@ export default function BoardStoryDetailMembersDialog({
                 size="sm"
                 onClick={() => void query.fetchNextPage()}
               >
-                Try again
+                {tCommon("actions.tryAgain")}
               </Button>
             </Then>
           </If>

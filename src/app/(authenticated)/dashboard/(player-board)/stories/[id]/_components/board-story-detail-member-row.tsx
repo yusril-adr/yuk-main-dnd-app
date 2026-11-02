@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 import {
@@ -13,19 +15,29 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/app/_components/ui/item";
-import { STORY_MEMBER_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-member-status-label";
+import { StoryMemberStatusEnum } from "@/api/main/modules/master/stories/enums/story-member-status";
 import {
   getGuildmateHref,
   getInitials,
   makeDefaultAvatarUrl,
 } from "@/utils/user-helper";
+import { useT } from "@/app/_hooks/use-t";
 
+import { BOARD_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_messages";
 import type { TBoardStoryDetailMemberRowProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_types/board-story-detail-components-props";
+
+const MEMBER_STATUS_KEY = {
+  [StoryMemberStatusEnum.REGISTERED]: "enums.memberStatus.registered",
+  [StoryMemberStatusEnum.VIEWER]: "enums.memberStatus.viewer",
+  [StoryMemberStatusEnum.ATTENDED]: "enums.memberStatus.attended",
+} as const;
 
 export default function BoardStoryDetailMemberRow({
   member,
   variant,
 }: TBoardStoryDetailMemberRowProps) {
+  const { t } = useT(BOARD_STORY_DETAIL_MESSAGES);
+
   const avatar = (
     <Avatar className="size-7" title={member.user.display_name}>
       <AvatarImage
@@ -43,7 +55,7 @@ export default function BoardStoryDetailMemberRow({
 
   if (variant === "avatar") return avatar;
 
-  const statusLabel = STORY_MEMBER_STATUS_LABEL[member.status];
+  const statusLabel = t(MEMBER_STATUS_KEY[member.status]);
 
   return (
     <Item role="listitem" size="xs" className="flex-nowrap gap-2 p-0">

@@ -1,5 +1,10 @@
+"use client";
+
 import { ExternalLink } from "lucide-react";
 
+import { useT } from "@/app/_hooks/use-t";
+
+import { BOARD_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_messages";
 import type { TBoardStoryDetailExternalLinkProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_types/board-story-detail-components-props";
 
 // External story link (map, Discord); opens in a new tab
@@ -7,6 +12,8 @@ export default function BoardStoryDetailExternalLink({
   href,
   children,
 }: TBoardStoryDetailExternalLinkProps) {
+  const { t } = useT(BOARD_STORY_DETAIL_MESSAGES);
+
   return (
     <a
       href={href}
@@ -16,7 +23,7 @@ export default function BoardStoryDetailExternalLink({
     >
       {children}
       <ExternalLink aria-hidden className="size-3.5 shrink-0" />
-      <span className="sr-only">(opens in a new tab)</span>
+      <span className="sr-only">{t("external.opensInNewTab")}</span>
     </a>
   );
 }

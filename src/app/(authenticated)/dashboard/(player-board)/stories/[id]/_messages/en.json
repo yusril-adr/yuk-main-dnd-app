@@ -1,0 +1,84 @@
+{
+  "breadcrumb": "My Stories",
+  "breadcrumbDetail": "Detail",
+  "backAria": "Back to My Stories",
+  "title": "Story Detail",
+  "enums": {
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "type": {
+      "oneshot": "Oneshot",
+      "campaign": "Campaign"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "memberStatus": {
+      "registered": "Registered",
+      "viewer": "Viewer",
+      "attended": "Attended"
+    }
+  },
+  "quest": {
+    "title": "Story Details",
+    "empty": "No description has been written for this story yet.",
+    "copyAria": "Copy description for Discord",
+    "copyTitle": "Copy for Discord",
+    "copySuccess": "Description copied",
+    "copyError": "Couldn't copy the description"
+  },
+  "adventure": {
+    "title": "Adventure Info",
+    "gameSystem": "Game System",
+    "anySystem": "Any system",
+    "partySize": "Party Size",
+    "partySizeValue_one": "Up to {{count}} adventurer",
+    "partySizeValue_other": "Up to {{count}} adventurers",
+    "noLimit": "No limit",
+    "rewards": "Rewards",
+    "noRewards": "No rewards",
+    "exp": "{{count}} EXP",
+    "gp": "{{count}} GP",
+    "starts": "Starts",
+    "notScheduled": "Not scheduled yet",
+    "location": "Location · {{type}}",
+    "openMap": "Open location map",
+    "discord": "Discord Channel",
+    "openDiscord": "Open Discord channel",
+    "feedback": "Feedback Form",
+    "openFeedback": "Open feedback form"
+  },
+  "chronicle": {
+    "title": "Chronicle",
+    "writtenBy": "Written By",
+    "unknown": "Unknown",
+    "recorded": "Recorded",
+    "lastUpdated": "Last Updated"
+  },
+  "party": {
+    "title": "Party",
+    "dialogDescription": "Full list of story members",
+    "searchPlaceholder": "Type minimum 3 characters to search ...",
+    "loadError": "Couldn't load party members.",
+    "empty": "No adventurers have joined this party yet.",
+    "emptySearch": "No adventurers match this search.",
+    "showMore": "Show more"
+  },
+  "slug": {
+    "viewPublic": "View public page",
+    "viewPublicSr": "View public page (opens in a new tab)"
+  },
+  "external": {
+    "opensInNewTab": "(opens in a new tab)"
+  },
+  "error": {
+    "title": "Could not load this story",
+    "description": "Something went wrong on the way. Please try again."
+  }
+}

@@ -44,7 +44,8 @@ export type TBoardStoryEmptyStateProps = {
 };
 
 export type TBoardStoryErrorStateProps = {
-  title?: string;
+  title: string;
+  description: string;
   onRetry: () => void;
 };
 
@@ -57,10 +58,12 @@ export type TBoardStoryBannerProps = {
 
 export type TBoardStoryStatusBadgeProps = {
   status: StoryStatusEnum;
+  label: string;
   className?: string;
 };
 
 export type TBoardStoryMemberStatusBadgeProps = {
   memberStatus: StoryMemberStatusEnum;
+  label: string;
   className?: string;
 };

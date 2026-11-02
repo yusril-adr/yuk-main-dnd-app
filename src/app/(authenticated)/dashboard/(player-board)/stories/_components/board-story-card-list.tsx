@@ -1,10 +1,15 @@
+"use client";
+
 import { Case, Default, Switch } from "react-if";
+
+import { useT } from "@/app/_hooks/use-t";
 
 import BoardStoryCard from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-card";
 import BoardStoryCardSkeleton from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-card-skeleton";
 import BoardStoryEmptyState from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-empty-state";
 import BoardStoryErrorState from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-error-state";
 import BoardStoryPagination from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-pagination";
+import { BOARD_STORIES_MESSAGES } from "@/app/(authenticated)/dashboard/(player-board)/stories/_messages";
 import type { TBoardStoryCardListProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/_types/board-story-components-props";
 
 const GRID = "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3";
@@ -21,6 +26,8 @@ export default function BoardStoryCardList({
   onReset,
   onPageChange,
 }: TBoardStoryCardListProps) {
+  const { t } = useT(BOARD_STORIES_MESSAGES);
+
   return (
     <Switch>
       <Case condition={isLoading}>
@@ -31,7 +38,11 @@ export default function BoardStoryCardList({
         </div>
       </Case>
       <Case condition={isError}>
-        <BoardStoryErrorState onRetry={onRetry} />
+        <BoardStoryErrorState
+          title={t("error.title")}
+          description={t("error.description")}
+          onRetry={onRetry}
+        />
       </Case>
       <Case condition={data.length === 0}>
         <BoardStoryEmptyState isFiltered={isFiltered} onReset={onReset} />
