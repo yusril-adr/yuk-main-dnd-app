@@ -3,6 +3,9 @@ import type { AxiosResponse } from "axios";
 import { toast } from "sonner";
 
 import { archiveStoryById } from "@/api/main/modules/master/stories/[id]";
+import { useT } from "@/app/_hooks/use-t";
+
+import { MASTER_STORIES_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages";
 
 // PATCH /:id/archive (stories:update or the story's creator); the API keeps
 // the current status so the story can be unarchived later
@@ -12,16 +15,18 @@ export function useArchiveStoryById(
     "mutationFn"
   >,
 ) {
+  const { t } = useT(MASTER_STORIES_MESSAGES);
+
   return useMutation({
     ...options,
     mutationFn: (id: string) => archiveStoryById(id),
     onMutate: (...args) => {
-      toast.loading("Archiving story...");
+      toast.loading(t("toast.archiving"));
       options?.onMutate?.(...args);
     },
     onSuccess: (...args) => {
       toast.dismiss();
-      toast.success("Story archived");
+      toast.success(t("toast.archived"));
       options?.onSuccess?.(...args);
     },
   });
