@@ -17,7 +17,7 @@ import {
 } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-banner";
 import type { TStoryBannerFieldProps } from "@/app/(authenticated)/dashboard/master/stories/_types/story-banner-field-props";
 import { useT } from "@/app/_hooks/use-t";
-import { MASTER_STORIES_FORM_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_components/_messages";
+import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_components/_messages";
 
 export default function StoryBannerField({
   previewUrl,
@@ -28,7 +28,7 @@ export default function StoryBannerField({
   onFileError,
   onRemove,
 }: TStoryBannerFieldProps) {
-  const { t } = useT(MASTER_STORIES_FORM_SHARED_MESSAGES);
+  const { t } = useT(MASTER_STORIES_SHARED_MESSAGES);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const maxSizeLabel = formatFileSize(STORY_BANNER_MAX_FILE_SIZE_BYTES);
 

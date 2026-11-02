@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { CalendarPlus, Feather, History } from "lucide-react";
 
@@ -12,27 +14,32 @@ import {
   makeDefaultAvatarUrl,
 } from "@/utils/user-helper";
 import dayjs from "@/libs/dayjs";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
 
 import StoryDetailSectionCard from "./story-detail-section-card";
 import StoryDetailInfoRow from "./story-detail-info-row";
 import { STORY_DETAIL_DATE_FORMAT } from "@/app/(authenticated)/dashboard/master/stories/[id]/_constants/story-detail-date-format";
 import type { TStoryDetailCardProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-card-props";
+import { MASTER_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/[id]/_messages";
 
 export default function StoryDetailChronicleCard({
   story,
   className,
 }: TStoryDetailCardProps) {
+  const { t } = useT(MASTER_STORY_DETAIL_MESSAGES);
+  const { locale } = useLocale();
   const creator = story.created_by;
 
   return (
     <StoryDetailSectionCard
       icon={Feather}
-      title="Chronicle"
+      title={t("chronicle.title")}
       className={className}
     >
       <StoryDetailInfoRow
         icon={Feather}
-        label="Written By"
+        label={t("chronicle.writtenBy")}
         value={
           creator?.display_name && (
             <span className="flex items-center gap-2">
@@ -57,18 +64,22 @@ export default function StoryDetailChronicleCard({
             </span>
           )
         }
-        emptyText="Unknown"
+        emptyText={t("chronicle.unknown")}
       />
       <StoryDetailInfoRow
         icon={CalendarPlus}
-        label="Recorded"
-        value={dayjs(story.created_at).format(STORY_DETAIL_DATE_FORMAT)}
+        label={t("chronicle.recorded")}
+        value={dayjs(story.created_at)
+          .locale(locale)
+          .format(STORY_DETAIL_DATE_FORMAT)}
         emptyText="-"
       />
       <StoryDetailInfoRow
         icon={History}
-        label="Last Updated"
-        value={dayjs(story.updated_at).format(STORY_DETAIL_DATE_FORMAT)}
+        label={t("chronicle.lastUpdated")}
+        value={dayjs(story.updated_at)
+          .locale(locale)
+          .format(STORY_DETAIL_DATE_FORMAT)}
         emptyText="-"
       />
     </StoryDetailSectionCard>

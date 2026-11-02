@@ -18,6 +18,31 @@
     "creating": "Membuat story...",
     "created": "Story dibuat",
     "updating": "Memperbarui story...",
-    "updated": "Story diperbarui"
+    "updated": "Story diperbarui",
+    "completing": "Menyelesaikan story...",
+    "completed": "Story diselesaikan",
+    "addingMembers": "Menambah anggota story...",
+    "membersAdded": "Anggota story ditambahkan",
+    "removingMembers": "Menghapus anggota story...",
+    "membersRemoved": "Anggota story dihapus"
+  },
+  "enums": {
+    "memberStatus": {
+      "registered": "Terdaftar",
+      "viewer": "Penonton",
+      "attended": "Hadir"
+    }
+  },
+  "complete": {
+    "title": "Selesaikan story?",
+    "description": "Pilih siapa yang hadir. Anggota yang dicentang ditandai attended dan menerima reward. Anggota yang tidak dicentang ditandai viewer dan tidak menerima reward. Story dan anggotanya tidak bisa diedit setelah ini.",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Anggota party nggak bisa dimuat.",
+    "empty": "Belum ada petualang yang bergabung di party ini.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "tryAgain": "Coba lagi",
+    "cancel": "Batal",
+    "confirm": "Selesaikan story",
+    "errorFallback": "Nggak bisa menyelesaikan story."
   }
 }

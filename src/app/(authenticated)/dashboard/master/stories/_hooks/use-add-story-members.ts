@@ -4,6 +4,9 @@ import { toast } from "sonner";
 
 import { addStoryMembers } from "@/api/main/modules/master/stories/[id]/members";
 import type { TStoryMembersUserIdsPayload } from "@/api/main/modules/master/stories/[id]/members/types/story-members-user-ids-payload";
+import { useT } from "@/app/_hooks/use-t";
+
+import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_components/_messages";
 
 // POST /:id/members (stories:update or the story's creator).
 // user_ids is required and non-empty. Soft-deleted members are restored as REGISTERED.
@@ -17,16 +20,18 @@ export function useAddStoryMembers(
     "mutationFn"
   >,
 ) {
+  const { t } = useT(MASTER_STORIES_SHARED_MESSAGES);
+
   return useMutation({
     ...options,
     mutationFn: addStoryMembers,
     onMutate: (...args) => {
-      toast.loading("Adding story members...");
+      toast.loading(t("toast.addingMembers"));
       options?.onMutate?.(...args);
     },
     onSuccess: (...args) => {
       toast.dismiss();
-      toast.success("Story members added");
+      toast.success(t("toast.membersAdded"));
       options?.onSuccess?.(...args);
     },
   });

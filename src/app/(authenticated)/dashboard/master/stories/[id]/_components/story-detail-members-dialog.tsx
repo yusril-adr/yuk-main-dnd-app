@@ -19,12 +19,14 @@ import {
   InputGroupInput,
 } from "@/app/_components/ui/input-group";
 import { Spinner } from "@/app/_components/ui/spinner";
+import { useT } from "@/app/_hooks/use-t";
 import {
   getStoryMemberSearchParam,
   useGetStoryMemberPagination,
 } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-member-pagination";
 import { STORY_MEMBER_DIALOG_PER_PAGE } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-member-preview";
 import type { TStoryDetailMembersDialogProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-members-dialog-props";
+import { MASTER_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/[id]/_messages";
 
 import StoryDetailMemberRow from "./story-detail-member-row";
 
@@ -37,6 +39,7 @@ export default function StoryDetailMembersDialog({
   onDeleteMember,
   onAddMember,
 }: TStoryDetailMembersDialogProps) {
+  const { t } = useT(MASTER_STORY_DETAIL_MESSAGES);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const searchTimeoutRef = useRef<NodeJS.Timeout | number | undefined>(
@@ -142,15 +145,15 @@ export default function StoryDetailMembersDialog({
     <Dialog open={open} onOpenChange={onDialogOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Party</DialogTitle>
+          <DialogTitle>{t("party.title")}</DialogTitle>
           <DialogDescription className="sr-only">
-            Full list of story members
+            {t("party.dialogDescription")}
           </DialogDescription>
         </DialogHeader>
         <InputGroup>
           <InputGroupInput
             value={searchInput}
-            placeholder="Type minimum 3 characters to search ..."
+            placeholder={t("party.searchPlaceholder")}
             onChange={onSearchInputChange}
           />
           <InputGroupAddon>
@@ -168,7 +171,7 @@ export default function StoryDetailMembersDialog({
               <If condition={query.isError}>
                 <Then>
                   <p className="italic text-muted-foreground">
-                    Couldn&apos;t load party members.
+                    {t("party.loadError")}
                   </p>
                 </Then>
                 <Else>
@@ -177,12 +180,12 @@ export default function StoryDetailMembersDialog({
                       <If condition={isSearching}>
                         <Then>
                           <p className="italic text-muted-foreground">
-                            No adventurers match this search.
+                            {t("party.emptySearch")}
                           </p>
                         </Then>
                         <Else>
                           <p className="italic text-muted-foreground">
-                            No adventurers have joined this party yet.
+                            {t("party.empty")}
                           </p>
                         </Else>
                       </If>
@@ -219,7 +222,7 @@ export default function StoryDetailMembersDialog({
                 size="sm"
                 onClick={onTryAgainClick}
               >
-                Try again
+                {t("party.tryAgain")}
               </Button>
             </Then>
           </If>
@@ -236,7 +239,7 @@ export default function StoryDetailMembersDialog({
                     onClick={onDeleteMemberClick}
                   >
                     <UserMinus data-icon="inline-start" />
-                    Remove
+                    {t("party.remove")}
                   </Button>
                 </Then>
               </If>
@@ -245,7 +248,7 @@ export default function StoryDetailMembersDialog({
                   <div className="flex flex-col-reverse gap-2 sm:ml-auto sm:flex-row sm:justify-end">
                     <Button type="button" onClick={onAddMemberClick}>
                       <UserPlus data-icon="inline-start" />
-                      Add
+                      {t("party.add")}
                     </Button>
                   </div>
                 </Then>

@@ -18,6 +18,31 @@
     "creating": "Creating story...",
     "created": "Story created",
     "updating": "Updating story...",
-    "updated": "Story updated"
+    "updated": "Story updated",
+    "completing": "Completing story...",
+    "completed": "Story completed",
+    "addingMembers": "Adding story members...",
+    "membersAdded": "Story members added",
+    "removingMembers": "Removing story members...",
+    "membersRemoved": "Story members removed"
+  },
+  "enums": {
+    "memberStatus": {
+      "registered": "Registered",
+      "viewer": "Viewer",
+      "attended": "Attended"
+    }
+  },
+  "complete": {
+    "title": "Complete story?",
+    "description": "Choose who attended. Checked members are marked attended and receive rewards. Unchecked members are marked viewer and receive no rewards. The story and its members cannot be edited after this.",
+    "searchPlaceholder": "Type minimum 3 characters to search ...",
+    "loadError": "Couldn't load party members.",
+    "empty": "No adventurers have joined this party yet.",
+    "emptySearch": "No adventurers match this search.",
+    "tryAgain": "Try again",
+    "cancel": "Cancel",
+    "confirm": "Complete story",
+    "errorFallback": "Couldn't complete story."
   }
 }

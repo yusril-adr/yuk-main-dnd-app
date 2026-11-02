@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   Archive,
@@ -19,8 +21,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/app/_components/ui/dropdown-menu";
+import { useT } from "@/app/_hooks/use-t";
 
 import type { TStoryDetailActionsProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-actions-props";
+import { MASTER_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/[id]/_messages";
 
 export default function StoryDetailActions({
   storyId,
@@ -42,6 +46,7 @@ export default function StoryDetailActions({
   onCancelClick,
   onDeleteClick,
 }: TStoryDetailActionsProps) {
+  const { t } = useT(MASTER_STORY_DETAIL_MESSAGES);
   const editHref = `/dashboard/master/stories/${storyId}/edit`;
 
   return (
@@ -51,7 +56,7 @@ export default function StoryDetailActions({
         <If condition={canEdit}>
           <Then>
             <Button render={<Link href={editHref} />} nativeButton={false}>
-              <Pencil /> Edit
+              <Pencil /> {t("actions.edit")}
             </Button>
           </Then>
         </If>
@@ -62,14 +67,14 @@ export default function StoryDetailActions({
               disabled={isPublishPending}
               onClick={onPublishClick}
             >
-              <Send /> Publish
+              <Send /> {t("actions.publish")}
             </Button>
           </Then>
         </If>
         <If condition={canComplete}>
           <Then>
             <Button variant="default" onClick={onCompleteClick}>
-              <CircleCheck /> Complete
+              <CircleCheck /> {t("actions.complete")}
             </Button>
           </Then>
         </If>
@@ -80,7 +85,7 @@ export default function StoryDetailActions({
               disabled={isArchivePending}
               onClick={onArchiveClick}
             >
-              <Archive /> Archive
+              <Archive /> {t("actions.archive")}
             </Button>
           </Then>
         </If>
@@ -91,7 +96,7 @@ export default function StoryDetailActions({
               disabled={isUnarchivePending}
               onClick={onUnarchiveClick}
             >
-              <ArchiveRestore /> Unarchive
+              <ArchiveRestore /> {t("actions.unarchive")}
             </Button>
           </Then>
         </If>
@@ -102,14 +107,14 @@ export default function StoryDetailActions({
               disabled={isCancelPending}
               onClick={onCancelClick}
             >
-              <Ban /> Cancel
+              <Ban /> {t("actions.cancel")}
             </Button>
           </Then>
         </If>
         <If condition={canDelete}>
           <Then>
             <Button variant="destructive" onClick={onDeleteClick}>
-              <Trash /> Delete
+              <Trash /> {t("actions.delete")}
             </Button>
           </Then>
         </If>
@@ -121,7 +126,11 @@ export default function StoryDetailActions({
         <DropdownMenu>
           <DropdownMenuTrigger
             render={
-              <Button size="icon-sm" variant="ghost" aria-label="Story actions">
+              <Button
+                size="icon-sm"
+                variant="ghost"
+                aria-label={t("actions.actionsAria")}
+              >
                 <EllipsisVertical />
               </Button>
             }
@@ -132,7 +141,7 @@ export default function StoryDetailActions({
                 <Then>
                   <DropdownMenuItem render={<Link href={editHref} />}>
                     <Pencil />
-                    Edit
+                    {t("actions.edit")}
                   </DropdownMenuItem>
                 </Then>
               </If>
@@ -143,7 +152,7 @@ export default function StoryDetailActions({
                     onClick={onPublishClick}
                   >
                     <Send />
-                    Publish
+                    {t("actions.publish")}
                   </DropdownMenuItem>
                 </Then>
               </If>
@@ -151,7 +160,7 @@ export default function StoryDetailActions({
                 <Then>
                   <DropdownMenuItem onClick={onCompleteClick}>
                     <CircleCheck />
-                    Complete
+                    {t("actions.complete")}
                   </DropdownMenuItem>
                 </Then>
               </If>
@@ -162,7 +171,7 @@ export default function StoryDetailActions({
                     onClick={onArchiveClick}
                   >
                     <Archive />
-                    Archive
+                    {t("actions.archive")}
                   </DropdownMenuItem>
                 </Then>
               </If>
@@ -173,7 +182,7 @@ export default function StoryDetailActions({
                     onClick={onUnarchiveClick}
                   >
                     <ArchiveRestore />
-                    Unarchive
+                    {t("actions.unarchive")}
                   </DropdownMenuItem>
                 </Then>
               </If>
@@ -185,7 +194,7 @@ export default function StoryDetailActions({
                     onClick={onCancelClick}
                   >
                     <Ban />
-                    Cancel
+                    {t("actions.cancel")}
                   </DropdownMenuItem>
                 </Then>
               </If>
@@ -196,7 +205,7 @@ export default function StoryDetailActions({
                     onClick={onDeleteClick}
                   >
                     <Trash />
-                    Delete
+                    {t("actions.delete")}
                   </DropdownMenuItem>
                 </Then>
               </If>
