@@ -12,6 +12,7 @@ import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { Button } from "@/app/_components/ui/button";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { useFilter } from "@/app/_hooks/use-filter";
+import { useT } from "@/app/_hooks/use-t";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { OrderKeyEnum } from "@/common/enums/order-key";
@@ -26,10 +27,12 @@ import type { TRoleTableFilterValues } from "@/app/(authenticated)/dashboard/mas
 import { RoleShowInPublicFilterEnum } from "@/app/(authenticated)/dashboard/master/iam/roles/_enums/role-show-in-public-filter";
 import { useGetRolePagination } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-role-pagination";
 import { useDeleteRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-delete-role-by-id";
+import { MASTER_ROLES_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/roles/_messages";
 
 let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 
 export default function RolesPageClient() {
+  const { t } = useT(MASTER_ROLES_MESSAGES);
   const router = useRouter();
   const { auth } = useAuthContext();
   const queryClient = useQueryClient();
@@ -180,16 +183,16 @@ export default function RolesPageClient() {
   return (
     <div className="w-full flex justify-center min-w-0">
       <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
-        <AppBreadcrumb items={[{ name: "Roles" }]} />
+        <AppBreadcrumb items={[{ name: t("breadcrumb") }]} />
 
         <div className="flex justify-between items-center mt-4 mb-6">
-          <h1 className="font-heading text-2xl">Roles</h1>
+          <h1 className="font-heading text-2xl">{t("title")}</h1>
           {canCreateRoles && (
             <Button
               render={<Link href="/dashboard/master/iam/roles/create" />}
               nativeButton={false}
             >
-              <Plus /> Add Role
+              <Plus /> {t("addRole")}
             </Button>
           )}
         </div>

@@ -1,0 +1,38 @@
+{
+  "breadcrumb": "Roles",
+  "title": "Roles",
+  "addRole": "Add Role",
+  "columns": {
+    "no": "No.",
+    "name": "Name",
+    "description": "Description",
+    "showInPublic": "Show in Public",
+    "createdAt": "Created At",
+    "action": "Action"
+  },
+  "filters": {
+    "filter": "Filter",
+    "showInPublic": "Show in Public",
+    "clear": "Clear",
+    "apply": "Apply",
+    "searchPlaceholder": "Type minimum 3 characters to search ..."
+  },
+  "enums": {
+    "showInPublic": {
+      "all": "All",
+      "yes": "Yes",
+      "no": "No"
+    }
+  },
+  "actions": {
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "dialogs": {
+    "cancel": "Cancel",
+    "deleteTitle": "Delete role?",
+    "deleteDescription": "This action cannot be undone. The role will be removed from the system.",
+    "deleteConfirm": "Delete"
+  }
+}
