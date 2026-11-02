@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { HandCoins, EllipsisVertical, Pencil, Trash } from "lucide-react";
 import { If, Then } from "react-if";
@@ -10,8 +12,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/app/_components/ui/dropdown-menu";
+import { useT } from "@/app/_hooks/use-t";
 
 import type { TUserDetailActionsProps } from "@/app/(authenticated)/dashboard/master/iam/users/[id]/_types/user-detail-actions-props";
+import { MASTER_USERS_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/[id]/_messages";
 
 export default function UserDetailActions({
   userId,
@@ -20,6 +24,7 @@ export default function UserDetailActions({
   canDelete,
   onDeleteClick,
 }: TUserDetailActionsProps) {
+  const { t } = useT(MASTER_USERS_DETAIL_MESSAGES);
   const editHref = `/dashboard/master/iam/users/${userId}/edit`;
   const balancesHref = `/dashboard/master/iam/users/${userId}/balances`;
 
@@ -34,7 +39,7 @@ export default function UserDetailActions({
               nativeButton={false}
               render={<Link href={balancesHref} />}
             >
-              <HandCoins /> Balances
+              <HandCoins /> {t("actions.balances")}
             </Button>
           </Then>
         </If>
@@ -45,14 +50,14 @@ export default function UserDetailActions({
               nativeButton={false}
               render={<Link href={editHref} />}
             >
-              <Pencil /> Edit
+              <Pencil /> {t("actions.edit")}
             </Button>
           </Then>
         </If>
         <If condition={canDelete}>
           <Then>
             <Button variant="destructive" onClick={onDeleteClick}>
-              <Trash /> Delete
+              <Trash /> {t("actions.delete")}
             </Button>
           </Then>
         </If>
@@ -64,7 +69,11 @@ export default function UserDetailActions({
         <DropdownMenu>
           <DropdownMenuTrigger
             render={
-              <Button size="icon-sm" variant="ghost" aria-label="User actions">
+              <Button
+                size="icon-sm"
+                variant="ghost"
+                aria-label={t("actions.menuLabel")}
+              >
                 <EllipsisVertical />
               </Button>
             }
@@ -75,7 +84,7 @@ export default function UserDetailActions({
                 <Then>
                   <DropdownMenuItem render={<Link href={balancesHref} />}>
                     <HandCoins />
-                    Balances
+                    {t("actions.balances")}
                   </DropdownMenuItem>
                 </Then>
               </If>
@@ -83,7 +92,7 @@ export default function UserDetailActions({
                 <Then>
                   <DropdownMenuItem render={<Link href={editHref} />}>
                     <Pencil />
-                    Edit
+                    {t("actions.edit")}
                   </DropdownMenuItem>
                 </Then>
               </If>
@@ -94,7 +103,7 @@ export default function UserDetailActions({
                     onClick={onDeleteClick}
                   >
                     <Trash />
-                    Delete
+                    {t("actions.delete")}
                   </DropdownMenuItem>
                 </Then>
               </If>

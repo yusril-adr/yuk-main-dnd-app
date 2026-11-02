@@ -1,0 +1,29 @@
+{
+  "breadcrumb": "Users",
+  "breadcrumbDetail": "Detail",
+  "title": "Detail User",
+  "guildStamp": "♦ Catatan Guild ♦",
+  "usernameUnset": "(username belum diatur)",
+  "fields": {
+    "email": "Email",
+    "bio": "Bio",
+    "bioEmpty": "Belum ada bio",
+    "playerExp": "Player EXP",
+    "dmExp": "DM EXP",
+    "gold": "Gold",
+    "enrolled": "Terdaftar",
+    "lastUpdated": "Terakhir Diperbarui"
+  },
+  "actions": {
+    "balances": "Saldo",
+    "edit": "Edit",
+    "delete": "Hapus",
+    "menuLabel": "Aksi user"
+  },
+  "dialogs": {
+    "cancel": "Batal",
+    "deleteTitle": "Hapus user?",
+    "deleteDescription": "Aksi ini tidak bisa diurungkan. User akan dihapus permanen dari sistem.",
+    "deleteConfirm": "Hapus"
+  }
+}
