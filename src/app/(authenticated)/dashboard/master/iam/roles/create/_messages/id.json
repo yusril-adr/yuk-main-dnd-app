@@ -1,0 +1,24 @@
+{
+  "breadcrumb": {
+    "roles": "Roles",
+    "create": "Buat"
+  },
+  "title": "Buat Role",
+  "fields": {
+    "name": "Nama",
+    "namePlaceholder": "Masukkan nama role",
+    "description": "Deskripsi",
+    "descriptionPlaceholder": "Masukkan deskripsi role",
+    "showInPublic": "Tampil di Publik",
+    "permissions": "Permissions"
+  },
+  "actions": {
+    "cancel": "Batal",
+    "save": "Simpan"
+  },
+  "validation": {
+    "nameRequired": "Nama wajib diisi",
+    "nameMax": "Nama maksimal {{max}} karakter",
+    "nameAlphanumeric": "Nama harus mengandung minimal satu huruf atau angka"
+  }
+}
