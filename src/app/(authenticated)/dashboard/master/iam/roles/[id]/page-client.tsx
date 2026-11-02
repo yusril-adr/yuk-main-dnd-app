@@ -28,6 +28,8 @@ import {
   TableRow,
 } from "@/app/_components/ui/table";
 import { Skeleton } from "@/app/_components/ui/skeleton";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import dayjs from "@/libs/dayjs";
 
@@ -35,8 +37,11 @@ import RoleGroupedPermissionList from "./_components/role-grouped-permission-lis
 import { useDeleteRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-delete-role-by-id";
 import { useGetRoleById } from "@/app/(authenticated)/dashboard/master/iam/roles/_hooks/use-get-role-by-id";
 import { groupPermissionsByModule } from "../_utils/group-permissions-by-module";
+import { MASTER_ROLES_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/roles/[id]/_messages";
 
 export default function RoleDetailPageClient() {
+  const { t } = useT(MASTER_ROLES_DETAIL_MESSAGES);
+  const { locale } = useLocale();
   const { id } = useParams();
   const router = useRouter();
   const roleId = id as string;
@@ -76,10 +81,10 @@ export default function RoleDetailPageClient() {
 
   const breadcrumbItems = useMemo(
     () => [
-      { name: "Roles", link: "/dashboard/master/iam/roles" },
-      { name: role?.name ?? "Detail" },
+      { name: t("breadcrumb"), link: "/dashboard/master/iam/roles" },
+      { name: role?.name ?? t("breadcrumbDetail") },
     ],
-    [role?.name],
+    [role?.name, t],
   );
 
   const onDeleteHandler = () => {
@@ -96,7 +101,7 @@ export default function RoleDetailPageClient() {
           <Link href="/dashboard/master/iam/roles">
             <ArrowLeft />
           </Link>
-          <h1 className="font-heading text-2xl">Role Detail</h1>
+          <h1 className="font-heading text-2xl">{t("title")}</h1>
           {role && (canUpdateRoles || canDeleteRoles) && (
             <div className="ms-auto flex gap-2">
               {canUpdateRoles && (
@@ -106,7 +111,7 @@ export default function RoleDetailPageClient() {
                   }
                   nativeButton={false}
                 >
-                  <Pencil /> Edit
+                  <Pencil /> {t("actions.edit")}
                 </Button>
               )}
               {canDeleteRoles && (
@@ -114,7 +119,7 @@ export default function RoleDetailPageClient() {
                   variant="destructive"
                   onClick={() => setIsDeleteDialogOpen(true)}
                 >
-                  <Trash /> Delete
+                  <Trash /> {t("actions.delete")}
                 </Button>
               )}
             </div>
@@ -127,7 +132,7 @@ export default function RoleDetailPageClient() {
               <TableBody>
                 <TableRow>
                   <TableHead className="w-1/3 border bg-secondary px-4 py-6">
-                    Key
+                    {t("fields.key")}
                   </TableHead>
                   <TableCell className="border px-4 py-6">
                     {renderValue(role?.key)}
@@ -135,7 +140,7 @@ export default function RoleDetailPageClient() {
                 </TableRow>
                 <TableRow>
                   <TableHead className="border bg-secondary px-4 py-6">
-                    Name
+                    {t("fields.name")}
                   </TableHead>
                   <TableCell className="border px-4 py-6">
                     {renderValue(role?.name)}
@@ -143,7 +148,7 @@ export default function RoleDetailPageClient() {
                 </TableRow>
                 <TableRow>
                   <TableHead className="border bg-secondary px-4 py-6">
-                    Description
+                    {t("fields.description")}
                   </TableHead>
                   <TableCell className="border px-4 py-6 whitespace-normal break-words">
                     {renderValue(role?.description)}
@@ -151,7 +156,7 @@ export default function RoleDetailPageClient() {
                 </TableRow>
                 <TableRow>
                   <TableHead className="border bg-secondary px-4 py-6">
-                    Show in Public
+                    {t("fields.showInPublic")}
                   </TableHead>
                   <TableCell className="border px-4 py-6">
                     <If condition={roleQuery.isLoading}>
@@ -161,10 +166,12 @@ export default function RoleDetailPageClient() {
                       <Else>
                         <If condition={!!role?.is_show_in_public}>
                           <Then>
-                            <Badge>Yes</Badge>
+                            <Badge>{t("enums.showInPublic.yes")}</Badge>
                           </Then>
                           <Else>
-                            <Badge variant="secondary">No</Badge>
+                            <Badge variant="secondary">
+                              {t("enums.showInPublic.no")}
+                            </Badge>
                           </Else>
                         </If>
                       </Else>
@@ -173,25 +180,29 @@ export default function RoleDetailPageClient() {
                 </TableRow>
                 <TableRow>
                   <TableHead className="border bg-secondary px-4 py-6">
-                    Created At
+                    {t("fields.createdAt")}
                   </TableHead>
                   <TableCell className="border px-4 py-6">
                     {roleQuery.isLoading ? (
                       <Skeleton className="h-6 w-full" />
                     ) : (
-                      dayjs(role?.created_at).format("YYYY-MM-DD HH:mm:ss")
+                      dayjs(role?.created_at)
+                        .locale(locale)
+                        .format("YYYY-MM-DD HH:mm:ss")
                     )}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableHead className="border bg-secondary px-4 py-6">
-                    Updated At
+                    {t("fields.updatedAt")}
                   </TableHead>
                   <TableCell className="border px-4 py-6">
                     {roleQuery.isLoading ? (
                       <Skeleton className="h-6 w-full" />
                     ) : (
-                      dayjs(role?.updated_at).format("YYYY-MM-DD HH:mm:ss")
+                      dayjs(role?.updated_at)
+                        .locale(locale)
+                        .format("YYYY-MM-DD HH:mm:ss")
                     )}
                   </TableCell>
                 </TableRow>
@@ -199,10 +210,12 @@ export default function RoleDetailPageClient() {
             </Table>
 
             <div>
-              <h2 className="mb-3 font-heading text-lg">Permissions</h2>
+              <h2 className="mb-3 font-heading text-lg">
+                {t("permissions.title")}
+              </h2>
               {roleQuery.isLoading && <Skeleton className="h-24 w-full" />}
               {!roleQuery.isLoading && !role?.permissions?.length && (
-                <p>No permissions assigned.</p>
+                <p>{t("permissions.empty")}</p>
               )}
               {!roleQuery.isLoading && (
                 <div className="flex flex-col gap-2">
@@ -225,20 +238,19 @@ export default function RoleDetailPageClient() {
         >
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Delete role?</AlertDialogTitle>
+              <AlertDialogTitle>{t("dialogs.deleteTitle")}</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. The role will be removed from the
-                system.
+                {t("dialogs.deleteDescription")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
               <AlertDialogAction
                 variant="destructive"
                 disabled={deleteRoleMutation.isPending}
                 onClick={onDeleteHandler}
               >
-                Delete
+                {t("dialogs.deleteConfirm")}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

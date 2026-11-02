@@ -1,0 +1,33 @@
+{
+  "breadcrumb": "Roles",
+  "breadcrumbDetail": "Detail",
+  "title": "Role Detail",
+  "fields": {
+    "key": "Key",
+    "name": "Name",
+    "description": "Description",
+    "showInPublic": "Show in Public",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At"
+  },
+  "enums": {
+    "showInPublic": {
+      "yes": "Yes",
+      "no": "No"
+    }
+  },
+  "permissions": {
+    "title": "Permissions",
+    "empty": "No permissions assigned."
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "dialogs": {
+    "cancel": "Cancel",
+    "deleteTitle": "Delete role?",
+    "deleteDescription": "This action cannot be undone. The role will be removed from the system.",
+    "deleteConfirm": "Delete"
+  }
+}
