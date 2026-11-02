@@ -1,6 +1,6 @@
 import { Skeleton } from "@/app/_components/ui/skeleton";
 
-export default function PublicGuildmateLegendSkeleton() {
+export default function PublicLegendSkeleton() {
   return (
     <>
       <div className="flex flex-col gap-2 sm:hidden">

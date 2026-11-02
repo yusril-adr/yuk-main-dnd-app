@@ -23,8 +23,8 @@ import { Separator } from "@/app/_components/ui/separator";
 import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
 import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
-import PublicGuildmateAvatar from "./public-guildmate-avatar";
-import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
+import PublicAvatar from "@/app/(public)/_components/public-avatar";
+import { formatExp } from "@/app/(public)/_utils/public-helper";
 import { getGuildmateHref } from "@/utils/user-helper";
 import type { TPublicGuildmateCardProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
@@ -38,7 +38,7 @@ export default function PublicGuildmateCard({
   return (
     <Card className="h-full gap-3 rounded-md py-4 shadow-none">
       <CardContent className="flex items-center gap-3 px-4">
-        <PublicGuildmateAvatar
+        <PublicAvatar
           name={guildmate.display_name}
           avatarUrl={guildmate.avatar_url}
           className="size-12 ring-1 ring-primary/30 ring-offset-2 ring-offset-card"

@@ -8,7 +8,7 @@ import { Separator } from "@/app/_components/ui/separator";
 import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
 import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
-import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
+import { formatExp } from "@/app/(public)/_utils/public-helper";
 import type { TPublicGuildmateHeroProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 export default function PublicGuildmateHero({

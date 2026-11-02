@@ -10,8 +10,8 @@ import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
 import dayjs from "@/libs/dayjs";
 import { GUILDMATE_DETAIL_MESSAGES } from "@/app/(public)/guildmates/[slug]/_messages";
-import PublicGuildmateAvatar from "@/app/(public)/guildmates/_components/public-guildmate-avatar";
-import { formatExp } from "@/app/(public)/guildmates/_utils/public-guildmate-helper";
+import PublicAvatar from "@/app/(public)/_components/public-avatar";
+import { formatExp } from "@/app/(public)/_utils/public-helper";
 import PublicGuildmateStatRow from "./public-guildmate-stat-row";
 import { PUBLIC_GUILDMATE_MEMBER_SINCE_FORMAT } from "@/app/(public)/guildmates/[slug]/_constants/public-guildmate-detail";
 import {
@@ -45,7 +45,7 @@ export default function PublicGuildmateAdventurerCard({
         </div>
 
         <div className="flex justify-center">
-          <PublicGuildmateAvatar
+          <PublicAvatar
             name={guildmate.display_name}
             avatarUrl={guildmate.avatar_url}
             className="size-[42.4cqw] rounded-md border-2 border-primary/50 p-[1.2cqw] after:hidden [&_img]:rounded-sm"

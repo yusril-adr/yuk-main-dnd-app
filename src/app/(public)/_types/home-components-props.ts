@@ -1,7 +1,4 @@
-import type { LucideIcon } from "lucide-react";
-
 import type { TPublicStoryPaginationResponse } from "@/api/main/modules/stories/types/public-story-pagination-response";
-import type { TPublicUserPaginationResponse } from "@/api/main/modules/users/types/public-user-pagination-response";
 
 export type THomeSectionHeaderProps = {
   id: string;
@@ -21,22 +18,6 @@ export type THomeBandProps = {
 
 export type THomeStoryCardProps = {
   story: TPublicStoryPaginationResponse;
-};
-
-export type THomeLegendEntry = {
-  user: TPublicUserPaginationResponse;
-  gainedExp: number;
-};
-
-export type THomeLegendBoardProps = {
-  title: string;
-  icon: LucideIcon;
-  // Ranked month in English, e.g. "September"; null before hydration
-  monthName: string | null;
-  entries: THomeLegendEntry[];
-  isLoading: boolean;
-  isError: boolean;
-  onRetry: () => void;
 };
 
 export type THomeEmptyStateProps = {

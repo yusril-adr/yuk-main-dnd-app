@@ -1,8 +1,9 @@
 "use client";
 
-import { Feather } from "lucide-react";
+import { Feather, RotateCw, TriangleAlert } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
+import { Button } from "@/app/_components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,29 +12,30 @@ import {
 } from "@/app/_components/ui/card";
 import {
   Empty,
+  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
+  EmptyTitle,
 } from "@/app/_components/ui/empty";
 import { useT } from "@/app/_hooks/use-t";
-import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
-import PublicGuildmateLegendList from "./public-guildmate-legend-list";
-import PublicGuildmateLegendPodium from "./public-guildmate-legend-podium";
-import PublicGuildmateLegendSkeleton from "./public-guildmate-legend-skeleton";
-import PublicGuildmateErrorState from "./public-guildmate-error-state";
-import type { TPublicGuildmateLegendBoardProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
+import { COMMON_MESSAGES } from "@/messages/common";
+import PublicLegendList from "@/app/(public)/_components/public-legend-list";
+import PublicLegendPodium from "@/app/(public)/_components/public-legend-podium";
+import PublicLegendSkeleton from "@/app/(public)/_components/public-legend-skeleton";
+import type { TPublicLegendBoardProps } from "@/app/(public)/_types/public-legend-components-props";
 
-export default function PublicGuildmateLegendBoard({
+export default function PublicLegendBoard({
   kind,
   title,
   icon: Icon,
-  monthName,
   entries,
   isLoading,
   isError,
   onRetry,
-}: TPublicGuildmateLegendBoardProps) {
-  const { t } = useT(GUILDMATES_MESSAGES);
+  copy,
+}: TPublicLegendBoardProps) {
+  const { t: tCommon } = useT(COMMON_MESSAGES);
 
   return (
     // Scroll-like board: double thin frame, solid background
@@ -48,17 +50,35 @@ export default function PublicGuildmateLegendBoard({
         <CardContent className="flex flex-1 flex-col justify-end px-4 sm:px-5">
           <If condition={isLoading}>
             <Then>
-              <PublicGuildmateLegendSkeleton />
+              <PublicLegendSkeleton />
             </Then>
             <Else>
               <If condition={isError}>
                 <Then>
-                  <PublicGuildmateErrorState
-                    compact
-                    title={t("legends.errorTitle")}
-                    description={t("legends.errorDescription")}
-                    onRetry={onRetry}
-                  />
+                  <Empty
+                    role="alert"
+                    className="gap-3 rounded-md border border-solid border-destructive/30 bg-destructive/5 px-4 py-8"
+                  >
+                    <EmptyHeader>
+                      <EmptyMedia
+                        variant="icon"
+                        className="mb-1 size-12 rounded-full bg-destructive/10 text-destructive"
+                      >
+                        <TriangleAlert />
+                      </EmptyMedia>
+                      <EmptyTitle className="font-heading text-lg">
+                        {copy.errorTitle}
+                      </EmptyTitle>
+                      <EmptyDescription>
+                        {copy.errorDescription}
+                      </EmptyDescription>
+                    </EmptyHeader>
+                    <EmptyContent>
+                      <Button variant="outline" onClick={onRetry}>
+                        <RotateCw /> {tCommon("actions.tryAgain")}
+                      </Button>
+                    </EmptyContent>
+                  </Empty>
                 </Then>
                 <Else>
                   <If condition={entries.length === 0}>
@@ -69,26 +89,24 @@ export default function PublicGuildmateLegendBoard({
                             <Feather aria-hidden className="size-6" />
                           </EmptyMedia>
                           <EmptyDescription className="italic">
-                            {monthName
-                              ? t("legends.emptyWithMonth", {
-                                  month: monthName,
-                                })
-                              : t("legends.emptyFallback")}
+                            {copy.empty}
                           </EmptyDescription>
                         </EmptyHeader>
                       </Empty>
                     </Then>
                     <Else>
                       <div className="sm:hidden">
-                        <PublicGuildmateLegendList
+                        <PublicLegendList
                           kind={kind}
                           entries={entries}
+                          copy={copy}
                         />
                       </div>
                       <div className="hidden sm:block">
-                        <PublicGuildmateLegendPodium
+                        <PublicLegendPodium
                           kind={kind}
                           entries={entries}
+                          copy={copy}
                         />
                       </div>
                     </Else>
