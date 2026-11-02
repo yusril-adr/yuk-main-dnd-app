@@ -35,12 +35,23 @@ import type { TStoryCompleteDialogProps } from "@/app/(authenticated)/dashboard/
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import CONFIG from "@/common/constants/config";
+import { StoryMemberStatusEnum } from "@/api/main/modules/master/stories/enums/story-member-status";
+import { useT } from "@/app/_hooks/use-t";
+
+import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages/shared";
+
+const MEMBER_STATUS_KEY = {
+  [StoryMemberStatusEnum.REGISTERED]: "enums.memberStatus.registered",
+  [StoryMemberStatusEnum.VIEWER]: "enums.memberStatus.viewer",
+  [StoryMemberStatusEnum.ATTENDED]: "enums.memberStatus.attended",
+} as const;
 
 export default function StoryCompleteDialog({
   storyId,
   open,
   onOpenChange,
 }: TStoryCompleteDialogProps) {
+  const { t } = useT(MASTER_STORIES_SHARED_MESSAGES);
   const queryClient = useQueryClient();
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
@@ -110,12 +121,12 @@ export default function StoryCompleteDialog({
           router.push("/dashboard/master/stories");
           return;
         }
-        toast.error(mutationError.message || "Couldn't complete story.");
+        toast.error(mutationError.message || t("complete.errorFallback"));
         return;
       }
       if (mutationError instanceof MainAPIValidationError) {
         toast.error(
-          mutationError.errors[0]?.messages[0] ?? "Couldn't complete story.",
+          mutationError.errors[0]?.messages[0] ?? t("complete.errorFallback"),
         );
       }
     },
@@ -146,17 +157,20 @@ export default function StoryCompleteDialog({
     void query.fetchNextPage();
   }, [query]);
 
-  const onUserCheckedChange = useCallback((userId: string, checked: boolean) => {
-    setSelectedUserIds((current) => {
-      if (checked && !current.includes(userId)) {
-        return [...current, userId];
-      }
-      if (!checked) {
-        return current.filter((id) => id !== userId);
-      }
-      return current;
-    });
-  }, []);
+  const onUserCheckedChange = useCallback(
+    (userId: string, checked: boolean) => {
+      setSelectedUserIds((current) => {
+        if (checked && !current.includes(userId)) {
+          return [...current, userId];
+        }
+        if (!checked) {
+          return current.filter((id) => id !== userId);
+        }
+        return current;
+      });
+    },
+    [],
+  );
 
   const onCompleteClick = useCallback(() => {
     if (isCompleting) {
@@ -188,17 +202,15 @@ export default function StoryCompleteDialog({
     <AlertDialog open={open} onOpenChange={onDialogOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Complete story?</AlertDialogTitle>
+          <AlertDialogTitle>{t("complete.title")}</AlertDialogTitle>
           <AlertDialogDescription>
-            Choose who attended. Checked members are marked attended and receive
-            rewards. Unchecked members are marked viewer and receive no rewards.
-            The story and its members cannot be edited after this.
+            {t("complete.description")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <InputGroup>
           <InputGroupInput
             value={searchInput}
-            placeholder="Type minimum 3 characters to search ..."
+            placeholder={t("complete.searchPlaceholder")}
             onChange={onSearchInputChange}
           />
           <InputGroupAddon>
@@ -216,7 +228,7 @@ export default function StoryCompleteDialog({
               <If condition={query.isError}>
                 <Then>
                   <p className="italic text-muted-foreground">
-                    Couldn&apos;t load party members.
+                    {t("complete.loadError")}
                   </p>
                 </Then>
                 <Else>
@@ -225,12 +237,12 @@ export default function StoryCompleteDialog({
                       <If condition={isSearching}>
                         <Then>
                           <p className="italic text-muted-foreground">
-                            No adventurers match this search.
+                            {t("complete.emptySearch")}
                           </p>
                         </Then>
                         <Else>
                           <p className="italic text-muted-foreground">
-                            No adventurers have joined this party yet.
+                            {t("complete.empty")}
                           </p>
                         </Else>
                       </If>
@@ -244,6 +256,7 @@ export default function StoryCompleteDialog({
                               checked={selectedUserIds.includes(member.user.id)}
                               disabled={isCompleting}
                               onCheckedChange={onUserCheckedChange}
+                              statusLabel={t(MEMBER_STATUS_KEY[member.status])}
                             />
                           </li>
                         ))}
@@ -269,14 +282,14 @@ export default function StoryCompleteDialog({
                 size="sm"
                 onClick={onTryAgainClick}
               >
-                Try again
+                {t("complete.tryAgain")}
               </Button>
             </Then>
           </If>
           <div ref={onSentinelRef} className="h-px" />
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t("complete.cancel")}</AlertDialogCancel>
           <AlertDialogAction
             type="button"
             disabled={isCompleting}
@@ -287,7 +300,7 @@ export default function StoryCompleteDialog({
                 <Spinner data-icon="inline-start" />
               </Then>
             </If>
-            Complete story
+            {t("complete.confirm")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

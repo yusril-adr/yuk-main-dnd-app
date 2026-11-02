@@ -5,7 +5,10 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useParams, useRouter, notFound } from "next/navigation";
 import { If, Then, Else } from "react-if";
-import { usePrefetchInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  usePrefetchInfiniteQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import {
@@ -21,6 +24,7 @@ import {
 import CONFIG from "@/common/constants/config";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import type { TStoryPaginationResponse } from "@/api/main/modules/master/stories/types/story-pagination-response";
+import { useT } from "@/app/_hooks/use-t";
 
 import { useDeleteStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-delete-story-by-id";
 import { useGetStoryById } from "@/app/(authenticated)/dashboard/master/stories/_hooks/use-get-story-by-id";
@@ -38,8 +42,10 @@ import StoryDetailMembersCard from "@/app/(authenticated)/dashboard/master/stori
 import StoryDetailSkeleton from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-skeleton";
 import StoryDetailActions from "@/app/(authenticated)/dashboard/master/stories/[id]/_components/story-detail-actions";
 import StoryCompleteDialog from "@/app/(authenticated)/dashboard/master/stories/_components/story-complete-dialog";
+import { MASTER_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/[id]/_messages";
 
 export default function StoryDetailPageClient() {
+  const { t } = useT(MASTER_STORY_DETAIL_MESSAGES);
   const { id } = useParams();
   const router = useRouter();
   const storyId = id as string;
@@ -53,7 +59,9 @@ export default function StoryDetailPageClient() {
   const storyQuery = useGetStoryById(storyId);
   // Start the members card's query alongside the story instead of after it,
   // without subscribing this page to it
-  usePrefetchInfiniteQuery(getStoryMemberPaginationOptions(storyId, STORY_MEMBER_PREVIEW_COUNT));
+  usePrefetchInfiniteQuery(
+    getStoryMemberPaginationOptions(storyId, STORY_MEMBER_PREVIEW_COUNT),
+  );
   const story = storyQuery.data?.data?.data;
   const canEdit = !!story && story.action_list.is_can_update;
   const canPublish = !!story && story.action_list.is_can_publish;
@@ -63,8 +71,7 @@ export default function StoryDetailPageClient() {
   const canCancel = !!story && story.action_list.is_can_cancel;
   const canDelete = !!story && story.action_list.is_can_delete;
   const canAddMembers = !!story && story.action_list.is_can_add_members;
-  const canRemoveMembers =
-    !!story && story.action_list.is_can_remove_members;
+  const canRemoveMembers = !!story && story.action_list.is_can_remove_members;
   const hasStoryActions =
     canEdit ||
     canPublish ||
@@ -151,10 +158,10 @@ export default function StoryDetailPageClient() {
 
   const breadcrumbItems = useMemo(
     () => [
-      { name: "Stories", link: "/dashboard/master/stories" },
-      { name: story?.title ?? "Detail" },
+      { name: t("breadcrumb"), link: "/dashboard/master/stories" },
+      { name: story?.title ?? t("breadcrumbDetail") },
     ],
-    [story?.title],
+    [story?.title, t],
   );
 
   const onPublishHandler = () => {
@@ -191,7 +198,7 @@ export default function StoryDetailPageClient() {
           <Link href="/dashboard/master/stories">
             <ArrowLeft />
           </Link>
-          <h1 className="font-heading text-2xl">Story Detail</h1>
+          <h1 className="font-heading text-2xl">{t("title")}</h1>
           <If condition={hasStoryActions}>
             <Then>
               <StoryDetailActions
@@ -262,18 +269,18 @@ export default function StoryDetailPageClient() {
         >
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Publish story?</AlertDialogTitle>
+              <AlertDialogTitle>{t("dialogs.publishTitle")}</AlertDialogTitle>
               <AlertDialogDescription>
-                The story will be marked as published.
+                {t("dialogs.publishDescription")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
               <AlertDialogAction
                 disabled={publishStoryMutation.isPending}
                 onClick={onPublishHandler}
               >
-                Publish
+                {t("dialogs.publishConfirm")}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -285,19 +292,18 @@ export default function StoryDetailPageClient() {
         >
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Archive story?</AlertDialogTitle>
+              <AlertDialogTitle>{t("dialogs.archiveTitle")}</AlertDialogTitle>
               <AlertDialogDescription>
-                The story will be marked as archived. You can unarchive it later
-                to restore its previous status.
+                {t("dialogs.archiveDescription")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
               <AlertDialogAction
                 disabled={archiveStoryMutation.isPending}
                 onClick={onArchiveHandler}
               >
-                Archive
+                {t("dialogs.archiveConfirm")}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -309,19 +315,18 @@ export default function StoryDetailPageClient() {
         >
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Unarchive story?</AlertDialogTitle>
+              <AlertDialogTitle>{t("dialogs.unarchiveTitle")}</AlertDialogTitle>
               <AlertDialogDescription>
-                The story will go back to the status it had before it was
-                archived (Draft or Published).
+                {t("dialogs.unarchiveDescription")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
               <AlertDialogAction
                 disabled={unarchiveStoryMutation.isPending}
                 onClick={onUnarchiveHandler}
               >
-                Unarchive
+                {t("dialogs.unarchiveConfirm")}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -333,21 +338,19 @@ export default function StoryDetailPageClient() {
         >
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Cancel story?</AlertDialogTitle>
+              <AlertDialogTitle>{t("dialogs.cancelTitle")}</AlertDialogTitle>
               <AlertDialogDescription>
-                The story will be marked as cancelled. This cannot be undone.
-                The story cannot be edited, and members cannot be added or
-                removed.
+                {t("dialogs.cancelDescription")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
               <AlertDialogAction
                 variant="destructive"
                 disabled={cancelStoryMutation.isPending}
                 onClick={onCancelHandler}
               >
-                Cancel story
+                {t("dialogs.cancelConfirm")}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -359,20 +362,19 @@ export default function StoryDetailPageClient() {
         >
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Delete story?</AlertDialogTitle>
+              <AlertDialogTitle>{t("dialogs.deleteTitle")}</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. The story will be removed from the
-                system.
+                {t("dialogs.deleteDescription")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>{t("dialogs.cancel")}</AlertDialogCancel>
               <AlertDialogAction
                 variant="destructive"
                 disabled={deleteStoryMutation.isPending}
                 onClick={onDeleteHandler}
               >
-                Delete
+                {t("dialogs.deleteConfirm")}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

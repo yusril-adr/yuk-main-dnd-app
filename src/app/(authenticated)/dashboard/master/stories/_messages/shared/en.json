@@ -1,0 +1,48 @@
+{
+  "banner": {
+    "label": "Banner",
+    "chooseFile": "Choose file",
+    "remove": "Remove",
+    "previewAlt": "Story banner preview",
+    "description": "JPG, PNG, or WebP image, max {{maxSize}}. Recommended 16:10 (e.g. 1600 × 1000 px) with the main subject centered, since the public pages crop the edges.",
+    "errorType": "Banner must be a JPG, PNG, or WebP image",
+    "errorSize": "Banner must be {{maxSize}} or smaller"
+  },
+  "rewardLocked": {
+    "title": "Standardized reward",
+    "aboutAria": "About {{label}}"
+  },
+  "toast": {
+    "uploadingBanner": "Uploading banner...",
+    "bannerUploaded": "Banner uploaded",
+    "creating": "Creating story...",
+    "created": "Story created",
+    "updating": "Updating story...",
+    "updated": "Story updated",
+    "completing": "Completing story...",
+    "completed": "Story completed",
+    "addingMembers": "Adding story members...",
+    "membersAdded": "Story members added",
+    "removingMembers": "Removing story members...",
+    "membersRemoved": "Story members removed"
+  },
+  "enums": {
+    "memberStatus": {
+      "registered": "Registered",
+      "viewer": "Viewer",
+      "attended": "Attended"
+    }
+  },
+  "complete": {
+    "title": "Complete story?",
+    "description": "Choose who attended. Checked members are marked attended and receive rewards. Unchecked members are marked viewer and receive no rewards. The story and its members cannot be edited after this.",
+    "searchPlaceholder": "Type minimum 3 characters to search ...",
+    "loadError": "Couldn't load party members.",
+    "empty": "No adventurers have joined this party yet.",
+    "emptySearch": "No adventurers match this search.",
+    "tryAgain": "Try again",
+    "cancel": "Cancel",
+    "confirm": "Complete story",
+    "errorFallback": "Couldn't complete story."
+  }
+}

@@ -10,7 +10,7 @@ import {
   PopoverTrigger,
 } from "@/app/_components/ui/popover";
 import { useT } from "@/app/_hooks/use-t";
-import { MASTER_STORIES_FORM_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_components/_messages";
+import { MASTER_STORIES_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_messages/shared";
 
 type TStoryRewardLockedPopoverProps = {
   // Field name, used in the trigger's aria-label
@@ -24,7 +24,7 @@ export default function StoryRewardLockedPopover({
   label,
   description,
 }: TStoryRewardLockedPopoverProps) {
-  const { t } = useT(MASTER_STORIES_FORM_SHARED_MESSAGES);
+  const { t } = useT(MASTER_STORIES_SHARED_MESSAGES);
 
   return (
     <Popover>

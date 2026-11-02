@@ -20,6 +20,7 @@ export default function StoryDetailDeleteMemberRow({
   checked,
   disabled,
   onCheckedChange,
+  statusLabel,
 }: TStoryDetailDeleteMemberRowProps) {
   const onCheckboxCheckedChange = useCallback(
     (nextChecked: boolean) => {
@@ -27,7 +28,8 @@ export default function StoryDetailDeleteMemberRow({
     },
     [onCheckedChange, member.user.id],
   );
-  const statusLabel = STORY_MEMBER_STATUS_LABEL[member.status];
+  const resolvedStatusLabel =
+    statusLabel ?? STORY_MEMBER_STATUS_LABEL[member.status];
 
   return (
     <label className="flex min-w-0 items-center gap-2">
@@ -49,9 +51,9 @@ export default function StoryDetailDeleteMemberRow({
         </AvatarFallback>
       </Avatar>
       <span className="min-w-0 truncate">{member.user.display_name}</span>
-      <If condition={!!statusLabel}>
+      <If condition={!!resolvedStatusLabel}>
         <Then>
-          <Badge variant="outline">{statusLabel}</Badge>
+          <Badge variant="outline">{resolvedStatusLabel}</Badge>
         </Then>
       </If>
     </label>

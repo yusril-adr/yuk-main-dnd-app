@@ -1,20 +1,26 @@
+"use client";
+
 import { Scroll } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
 import RichTextContent from "@/app/_components/rich-text-content";
+import { useT } from "@/app/_hooks/use-t";
 
 import StoryDetailCopyDescriptionButton from "./story-detail-copy-description-button";
 import StoryDetailSectionCard from "./story-detail-section-card";
 import type { TStoryDetailCardProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-card-props";
+import { MASTER_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/[id]/_messages";
 
 export default function StoryDetailQuestCard({
   story,
   className,
 }: TStoryDetailCardProps) {
+  const { t } = useT(MASTER_STORY_DETAIL_MESSAGES);
+
   return (
     <StoryDetailSectionCard
       icon={Scroll}
-      title="Story Details"
+      title={t("quest.title")}
       className={className}
       action={
         story.description ? (
@@ -30,9 +36,7 @@ export default function StoryDetailQuestCard({
           />
         </Then>
         <Else>
-          <p className="italic text-muted-foreground">
-            No description has been written for this story yet.
-          </p>
+          <p className="italic text-muted-foreground">{t("quest.empty")}</p>
         </Else>
       </If>
     </StoryDetailSectionCard>
