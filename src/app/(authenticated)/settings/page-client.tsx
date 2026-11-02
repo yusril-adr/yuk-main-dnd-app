@@ -5,14 +5,17 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import CONFIG from "@/common/constants/config";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { useT } from "@/app/_hooks/use-t";
 
 import SettingsProfileForm from "./_components/settings-profile-form";
 import SettingsPasswordDialog from "./_components/settings-password-dialog";
 import { useUpdateProfile } from "./_hooks/use-update-profile";
 import { useUpdatePassword } from "./_hooks/use-update-password";
 import { useSettingsAvatarUpload } from "./_hooks/use-settings-avatar-upload";
+import { SETTINGS_MESSAGES } from "./_messages";
 
 export default function SettingsPageClient() {
+  const { t } = useT(SETTINGS_MESSAGES);
   const { auth, authQuery } = useAuthContext();
   const queryClient = useQueryClient();
 
@@ -59,7 +62,7 @@ export default function SettingsPageClient() {
     <div className="flex w-full justify-center">
       <main className="flex w-full max-w-7xl flex-col px-10 pb-10">
         <div className="mt-4 mb-6 flex items-center gap-x-2">
-          <h1 className="font-heading text-2xl">Settings</h1>
+          <h1 className="font-heading text-2xl">{t("title")}</h1>
         </div>
 
         {/* <div className="flex w-full max-w-3xl mx-auto items-center justify-center"> */}

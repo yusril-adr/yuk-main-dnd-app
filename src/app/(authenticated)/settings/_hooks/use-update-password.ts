@@ -4,6 +4,9 @@ import { toast } from "sonner";
 
 import { updatePassword } from "@/api/main/modules/auth/password";
 import type { TUpdatePasswordPayload } from "@/api/main/modules/auth/password/types/update-password-payload";
+import { useT } from "@/app/_hooks/use-t";
+
+import { SETTINGS_MESSAGES } from "../_messages";
 
 export function useUpdatePassword(
   options?: Omit<
@@ -11,16 +14,18 @@ export function useUpdatePassword(
     "mutationFn"
   >,
 ) {
+  const { t } = useT(SETTINGS_MESSAGES);
+
   return useMutation({
     ...options,
     mutationFn: updatePassword,
     onMutate: (...args) => {
-      toast.loading("Updating password...");
+      toast.loading(t("toast.updatingPassword"));
       options?.onMutate?.(...args);
     },
     onSuccess: (...args) => {
       toast.dismiss();
-      toast.success("Password updated");
+      toast.success(t("toast.passwordUpdated"));
       options?.onSuccess?.(...args);
     },
   });

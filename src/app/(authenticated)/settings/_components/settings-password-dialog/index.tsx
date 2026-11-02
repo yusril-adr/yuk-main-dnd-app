@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Else, If, Then } from "react-if";
@@ -31,8 +31,11 @@ import { Spinner } from "@/app/_components/ui/spinner";
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
+import { useT } from "@/app/_hooks/use-t";
+
+import { SETTINGS_MESSAGES } from "../../_messages";
 import {
-  SettingsPasswordFormSchema,
+  createSettingsPasswordFormSchema,
   type TSettingsPasswordFormSchema,
 } from "./scheme";
 import type { TSettingsPasswordDialogProps } from "../../_types/settings-password-dialog-props";
@@ -44,9 +47,12 @@ export default function SettingsPasswordDialog({
   mutationError,
   isPending,
 }: TSettingsPasswordDialogProps) {
+  const { t } = useT(SETTINGS_MESSAGES);
+  const schema = useMemo(() => createSettingsPasswordFormSchema(t), [t]);
+
   const { control, handleSubmit, setError, reset } =
     useForm<TSettingsPasswordFormSchema>({
-      resolver: zodResolver(SettingsPasswordFormSchema),
+      resolver: zodResolver(schema),
       defaultValues: {
         currentPassword: "",
         newPassword: "",
@@ -102,10 +108,9 @@ export default function SettingsPasswordDialog({
     <AlertDialog open={open} onOpenChange={handleOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Change password</AlertDialogTitle>
+          <AlertDialogTitle>{t("password.title")}</AlertDialogTitle>
           <AlertDialogDescription>
-            Enter your current password and choose a new one. You will stay
-            signed in after the change.
+            {t("password.description")}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -124,14 +129,14 @@ export default function SettingsPasswordDialog({
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
                   <RequiredFieldLabel required htmlFor="currentPassword">
-                    Current password
+                    {t("password.currentPassword")}
                   </RequiredFieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       aria-required
                       id="currentPassword"
                       type={isShowCurrentPassword ? "text" : "password"}
-                      placeholder="Current password"
+                      placeholder={t("password.currentPasswordPlaceholder")}
                       autoComplete="current-password"
                       disabled={isPending}
                       {...field}
@@ -169,13 +174,15 @@ export default function SettingsPasswordDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="newPassword">New password</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="newPassword">
+                    {t("password.newPassword")}
+                  </RequiredFieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       aria-required
                       id="newPassword"
                       type={isShowNewPassword ? "text" : "password"}
-                      placeholder="New password"
+                      placeholder={t("password.newPasswordPlaceholder")}
                       autoComplete="new-password"
                       disabled={isPending}
                       {...field}
@@ -198,8 +205,7 @@ export default function SettingsPasswordDialog({
                     </InputGroupAddon>
                   </InputGroup>
                   <FieldDescription>
-                    At least 8 characters, with uppercase, lowercase, a number,
-                    and a symbol.
+                    {t("password.passwordHint")}
                   </FieldDescription>
                   <If condition={fieldState.invalid}>
                     <Then>
@@ -215,15 +221,18 @@ export default function SettingsPasswordDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="newPasswordConfirmation">
-                    Confirm new password
+                  <RequiredFieldLabel
+                    required
+                    htmlFor="newPasswordConfirmation"
+                  >
+                    {t("password.confirmPassword")}
                   </RequiredFieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       aria-required
                       id="newPasswordConfirmation"
                       type={isShowConfirmPassword ? "text" : "password"}
-                      placeholder="Confirm new password"
+                      placeholder={t("password.confirmPasswordPlaceholder")}
                       autoComplete="new-password"
                       disabled={isPending}
                       {...field}
@@ -259,7 +268,7 @@ export default function SettingsPasswordDialog({
 
           <AlertDialogFooter className="mt-4">
             <AlertDialogCancel type="button" disabled={isPending}>
-              Cancel
+              {t("password.cancel")}
             </AlertDialogCancel>
             <Button type="submit" disabled={isPending}>
               <If condition={isPending}>
@@ -267,7 +276,7 @@ export default function SettingsPasswordDialog({
                   <Spinner data-icon="inline-start" />
                 </Then>
               </If>
-              Update
+              {t("password.update")}
             </Button>
           </AlertDialogFooter>
         </form>
