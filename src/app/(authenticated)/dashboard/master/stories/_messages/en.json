@@ -1,0 +1,105 @@
+{
+  "breadcrumb": "Stories",
+  "title": "Stories",
+  "addStory": "Add Story",
+  "filters": {
+    "filter": "Filter",
+    "sortBy": "Sort By",
+    "sortOrder": "Sort Order",
+    "selectField": "Select field",
+    "selectOrder": "Select order",
+    "status": "Status",
+    "selectStatus": "Select status",
+    "type": "Type",
+    "selectType": "Select type",
+    "location": "Location",
+    "selectLocation": "Select location",
+    "createdBy": "Created By",
+    "searchUser": "Search user",
+    "noItemsFound": "No items found.",
+    "noUsersFound": "No users found.",
+    "clear": "Clear",
+    "apply": "Apply",
+    "searchPlaceholder": "Type minimum 3 characters to search ..."
+  },
+  "sort": {
+    "title": "Title",
+    "status": "Status",
+    "type": "Type",
+    "gameSystem": "Game System",
+    "maxMembers": "Max Members",
+    "expAwarded": "EXP Awarded",
+    "goldAwarded": "Gold Awarded",
+    "startAt": "Start At",
+    "location": "Location",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "asc": "Ascending",
+    "desc": "Descending"
+  },
+  "pagination": {
+    "range": "{{start}} - {{end}} of {{total}} items",
+    "perPage": "{{count}} / page"
+  },
+  "empty": {
+    "title": "No stories found."
+  },
+  "enums": {
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "type": {
+      "oneshot": "Oneshot",
+      "campaign": "Campaign"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    }
+  },
+  "card": {
+    "actionsAria": "Story actions",
+    "view": "View",
+    "edit": "Edit",
+    "publish": "Publish",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "noDescription": "No description."
+  },
+  "dialogs": {
+    "cancel": "Cancel",
+    "publishTitle": "Publish story?",
+    "publishDescription": "The story will be marked as published.",
+    "publishConfirm": "Publish",
+    "archiveTitle": "Archive story?",
+    "archiveDescription": "The story will be marked as archived. You can unarchive it later to restore its previous status.",
+    "archiveConfirm": "Archive",
+    "unarchiveTitle": "Unarchive story?",
+    "unarchiveDescription": "The story will go back to the status it had before it was archived (Draft or Published).",
+    "unarchiveConfirm": "Unarchive",
+    "cancelTitle": "Cancel story?",
+    "cancelDescription": "The story will be marked as cancelled. This cannot be undone. The story cannot be edited, and members cannot be added or removed.",
+    "cancelConfirm": "Cancel story",
+    "deleteTitle": "Delete story?",
+    "deleteDescription": "This action cannot be undone. The story will be removed from the system.",
+    "deleteConfirm": "Delete"
+  },
+  "toast": {
+    "publishing": "Publishing story...",
+    "published": "Story published",
+    "archiving": "Archiving story...",
+    "archived": "Story archived",
+    "unarchiving": "Unarchiving story...",
+    "unarchived": "Story unarchived",
+    "cancelling": "Cancelling story...",
+    "cancelled": "Story cancelled",
+    "deleting": "Deleting story...",
+    "deleted": "Story deleted"
+  }
+}
