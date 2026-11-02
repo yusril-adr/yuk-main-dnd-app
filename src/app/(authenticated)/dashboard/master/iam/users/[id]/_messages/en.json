@@ -1,0 +1,29 @@
+{
+  "breadcrumb": "Users",
+  "breadcrumbDetail": "Detail",
+  "title": "User Detail",
+  "guildStamp": "♦ Guild Record ♦",
+  "usernameUnset": "(username is not set)",
+  "fields": {
+    "email": "Email",
+    "bio": "Bio",
+    "bioEmpty": "No bio provided",
+    "playerExp": "Player EXP",
+    "dmExp": "DM EXP",
+    "gold": "Gold",
+    "enrolled": "Enrolled",
+    "lastUpdated": "Last Updated"
+  },
+  "actions": {
+    "balances": "Balances",
+    "edit": "Edit",
+    "delete": "Delete",
+    "menuLabel": "User actions"
+  },
+  "dialogs": {
+    "cancel": "Cancel",
+    "deleteTitle": "Delete user?",
+    "deleteDescription": "This action cannot be undone. The user will be permanently removed from the system.",
+    "deleteConfirm": "Delete"
+  }
+}
