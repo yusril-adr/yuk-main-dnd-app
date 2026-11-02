@@ -1,0 +1,33 @@
+{
+  "breadcrumb": "Roles",
+  "breadcrumbDetail": "Detail",
+  "title": "Detail Role",
+  "fields": {
+    "key": "Key",
+    "name": "Nama",
+    "description": "Deskripsi",
+    "showInPublic": "Tampil di Publik",
+    "createdAt": "Dibuat Pada",
+    "updatedAt": "Diperbarui Pada"
+  },
+  "enums": {
+    "showInPublic": {
+      "yes": "Ya",
+      "no": "Tidak"
+    }
+  },
+  "permissions": {
+    "title": "Permissions",
+    "empty": "Belum ada permissions yang ditetapkan."
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Hapus"
+  },
+  "dialogs": {
+    "cancel": "Batal",
+    "deleteTitle": "Hapus role?",
+    "deleteDescription": "Aksi ini tidak bisa diurungkan. Role akan dihapus dari sistem.",
+    "deleteConfirm": "Hapus"
+  }
+}
