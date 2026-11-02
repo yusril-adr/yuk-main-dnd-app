@@ -37,29 +37,29 @@ export default function PublicGuildmateCard({
 
   return (
     <Card className="h-full gap-3 rounded-md py-4 shadow-none">
-      <CardContent className="flex items-center gap-3 px-4">
-        <PublicAvatar
-          name={guildmate.display_name}
-          avatarUrl={guildmate.avatar_url}
-          className="size-12 ring-1 ring-primary/30 ring-offset-2 ring-offset-card"
-        />
-        <div className="flex min-w-0 flex-col">
-          <CardTitle className="truncate font-heading text-base">
-            <Link
-              href={getGuildmateHref(guildmate)}
-              className="rounded-sm underline-offset-4 hover:text-primary hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-            >
+      <CardContent className="px-4">
+        <Link
+          href={getGuildmateHref(guildmate)}
+          className="group flex w-full flex-col items-center gap-3 rounded-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+        >
+          <PublicAvatar
+            name={guildmate.display_name}
+            avatarUrl={guildmate.avatar_url}
+            className="size-12 ring-1 ring-primary/30 ring-offset-2 ring-offset-card"
+          />
+          <div className="flex w-full min-w-0 flex-col items-center text-center">
+            <CardTitle className="max-w-full truncate font-heading text-base underline-offset-4 group-hover:text-primary group-hover:underline">
               {guildmate.display_name}
-            </Link>
-          </CardTitle>
-          <If condition={!!username}>
-            <Then>
-              <span className="truncate text-xs text-foreground/70">
-                @{username}
-              </span>
-            </Then>
-          </If>
-        </div>
+            </CardTitle>
+            <If condition={!!username}>
+              <Then>
+                <span className="max-w-full truncate text-xs text-foreground/70">
+                  @{username}
+                </span>
+              </Then>
+            </If>
+          </div>
+        </Link>
       </CardContent>
 
       <If condition={guildmate.roles.length > 0}>
