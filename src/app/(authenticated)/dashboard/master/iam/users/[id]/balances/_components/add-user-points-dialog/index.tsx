@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { ArrowDownLeft, ArrowUpRight, type LucideIcon } from "lucide-react";
 import { If, Then } from "react-if";
@@ -27,33 +27,17 @@ import { Input } from "@/app/_components/ui/input";
 import { Spinner } from "@/app/_components/ui/spinner";
 import { Textarea } from "@/app/_components/ui/textarea";
 import { UserPointLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/points/enums/user-point-log-type";
-import { USER_POINT_LOG_TYPE_LABEL } from "@/api/main/modules/master/iam/users/[id]/points/enums/user-point-log-type-label";
 import MainAPIValidationError from "@/api/main/errors/validation-error";
+import { useT } from "@/app/_hooks/use-t";
 import { toCamelCase } from "@/utils/format-text";
 import { applyValidationErrors } from "@/utils/validation-helper";
 
+import { MASTER_USERS_BALANCES_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/[id]/balances/_messages";
 import type { TAddUserPointsDialogProps } from "../../_types/add-user-points-dialog-props";
 import {
-  AddUserPointsFormSchema,
+  createAddUserPointsFormSchema,
   type TAddUserPointsFormSchema,
 } from "./scheme";
-
-const TYPE_OPTIONS: {
-  value: UserPointLogTypeEnum;
-  label: string;
-  icon: LucideIcon;
-}[] = [
-  {
-    value: UserPointLogTypeEnum.INCOME,
-    label: USER_POINT_LOG_TYPE_LABEL[UserPointLogTypeEnum.INCOME],
-    icon: ArrowDownLeft,
-  },
-  {
-    value: UserPointLogTypeEnum.EXPENSE,
-    label: USER_POINT_LOG_TYPE_LABEL[UserPointLogTypeEnum.EXPENSE],
-    icon: ArrowUpRight,
-  },
-];
 
 export default function AddUserPointsDialog({
   open,
@@ -62,9 +46,32 @@ export default function AddUserPointsDialog({
   mutationError,
   isPending,
 }: TAddUserPointsDialogProps) {
+  const { t } = useT(MASTER_USERS_BALANCES_MESSAGES);
+  const schema = useMemo(() => createAddUserPointsFormSchema(t), [t]);
+
+  const typeOptions = useMemo(
+    (): {
+      value: UserPointLogTypeEnum;
+      label: string;
+      icon: LucideIcon;
+    }[] => [
+      {
+        value: UserPointLogTypeEnum.INCOME,
+        label: t("enums.pointType.income"),
+        icon: ArrowDownLeft,
+      },
+      {
+        value: UserPointLogTypeEnum.EXPENSE,
+        label: t("enums.pointType.expense"),
+        icon: ArrowUpRight,
+      },
+    ],
+    [t],
+  );
+
   const { control, handleSubmit, setError, reset } =
     useForm<TAddUserPointsFormSchema>({
-      resolver: zodResolver(AddUserPointsFormSchema),
+      resolver: zodResolver(schema),
       defaultValues: {
         type: UserPointLogTypeEnum.INCOME,
         amount: "",
@@ -115,10 +122,9 @@ export default function AddUserPointsDialog({
     <AlertDialog open={open} onOpenChange={handleOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Add gold pieces</AlertDialogTitle>
+          <AlertDialogTitle>{t("dialogs.goldTitle")}</AlertDialogTitle>
           <AlertDialogDescription>
-            Income adds gold pieces. Expense subtracts them. The amount stays
-            positive.
+            {t("dialogs.goldDescription")}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -137,9 +143,11 @@ export default function AddUserPointsDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required>Type</RequiredFieldLabel>
+                  <RequiredFieldLabel required>
+                    {t("dialogs.type")}
+                  </RequiredFieldLabel>
                   <div className="grid grid-cols-2 gap-2">
-                    {TYPE_OPTIONS.map((option) => (
+                    {typeOptions.map((option) => (
                       <Button
                         key={option.value}
                         type="button"
@@ -169,7 +177,9 @@ export default function AddUserPointsDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="point-amount">Amount</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="point-amount">
+                    {t("dialogs.amount")}
+                  </RequiredFieldLabel>
                   <Input
                     aria-required
                     id="point-amount"
@@ -177,7 +187,7 @@ export default function AddUserPointsDialog({
                     inputMode="numeric"
                     min={1}
                     step={1}
-                    placeholder="Enter amount"
+                    placeholder={t("dialogs.amountPlaceholder")}
                     disabled={isPending}
                     className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                     {...field}
@@ -197,11 +207,11 @@ export default function AddUserPointsDialog({
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="point-description">
-                    Description
+                    {t("dialogs.description")}
                   </FieldLabel>
                   <Textarea
                     id="point-description"
-                    placeholder="Optional"
+                    placeholder={t("dialogs.descriptionPlaceholder")}
                     disabled={isPending}
                     {...field}
                   />
@@ -217,7 +227,7 @@ export default function AddUserPointsDialog({
 
           <AlertDialogFooter className="mt-4">
             <AlertDialogCancel type="button" disabled={isPending}>
-              Cancel
+              {t("dialogs.cancel")}
             </AlertDialogCancel>
             <Button type="submit" disabled={isPending}>
               <If condition={isPending}>
@@ -225,7 +235,7 @@ export default function AddUserPointsDialog({
                   <Spinner data-icon="inline-start" />
                 </Then>
               </If>
-              Add
+              {t("dialogs.add")}
             </Button>
           </AlertDialogFooter>
         </form>
