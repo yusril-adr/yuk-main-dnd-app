@@ -12,6 +12,8 @@ import {
   EmptyDescription,
   EmptyHeader,
 } from "@/app/_components/ui/empty";
+import { useT } from "@/app/_hooks/use-t";
+import { COMMON_MESSAGES } from "@/messages/common";
 
 import BoardStoryDetailMemberRow from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-member-row";
 import BoardStoryDetailMembersCardSkeleton from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-members-card-skeleton";
@@ -19,12 +21,15 @@ import BoardStoryDetailMembersDialog from "@/app/(authenticated)/dashboard/(play
 import BoardStoryDetailSectionCard from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-section-card";
 import { BOARD_STORY_MEMBER_PREVIEW_COUNT } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_constants/board-story-detail";
 import { useGetBoardStoryMemberPagination } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_hooks/use-get-board-story-member-pagination";
+import { BOARD_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_messages";
 import type { TBoardStoryDetailMembersCardProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_types/board-story-detail-components-props";
 
 // Read-only: avatar preview, full list in a dialog
 export default function BoardStoryDetailMembersCard({
   storyId,
 }: TBoardStoryDetailMembersCardProps) {
+  const { t } = useT(BOARD_STORY_DETAIL_MESSAGES);
+  const { t: tCommon } = useT(COMMON_MESSAGES);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const query = useGetBoardStoryMemberPagination(
     storyId,
@@ -39,13 +44,16 @@ export default function BoardStoryDetailMembersCard({
           <BoardStoryDetailMembersCardSkeleton />
         </Then>
         <Else>
-          <BoardStoryDetailSectionCard icon={UserRoundGroup} title="Party">
+          <BoardStoryDetailSectionCard
+            icon={UserRoundGroup}
+            title={t("party.title")}
+          >
             <If condition={query.isError}>
               <Then>
                 <Empty className="gap-3 p-4">
                   <EmptyHeader>
                     <EmptyDescription className="italic">
-                      Couldn&apos;t load party members.
+                      {t("party.loadError")}
                     </EmptyDescription>
                   </EmptyHeader>
                   <EmptyContent>
@@ -55,7 +63,7 @@ export default function BoardStoryDetailMembersCard({
                       size="sm"
                       onClick={() => query.refetch()}
                     >
-                      Try again
+                      {tCommon("actions.tryAgain")}
                     </Button>
                   </EmptyContent>
                 </Empty>
@@ -66,7 +74,7 @@ export default function BoardStoryDetailMembersCard({
                     <Empty className="p-4">
                       <EmptyHeader>
                         <EmptyDescription className="italic">
-                          No adventurers have joined this party yet.
+                          {t("party.empty")}
                         </EmptyDescription>
                       </EmptyHeader>
                     </Empty>
@@ -87,7 +95,7 @@ export default function BoardStoryDetailMembersCard({
                       size="sm"
                       onClick={() => setIsDialogOpen(true)}
                     >
-                      Show more
+                      {t("party.showMore")}
                     </Button>
                   </Else>
                 </If>

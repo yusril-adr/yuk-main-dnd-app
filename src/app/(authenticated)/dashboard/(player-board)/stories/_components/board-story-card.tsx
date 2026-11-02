@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { CalendarDays, Crown, Users } from "lucide-react";
 
@@ -9,21 +11,43 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
+import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
+import { StoryMemberStatusEnum } from "@/api/main/modules/master/stories/enums/story-member-status";
 import dayjs from "@/libs/dayjs";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
 
 import BoardStoryBanner from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-banner";
 import BoardStoryStatusBadge from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-status-badge";
 import BoardStoryMemberStatusBadge from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-member-status-badge";
 import { BOARD_STORY_START_AT_FORMAT } from "@/app/(authenticated)/dashboard/(player-board)/stories/_constants/board-story";
+import { BOARD_STORIES_MESSAGES } from "@/app/(authenticated)/dashboard/(player-board)/stories/_messages";
 import {
   formatBoardStoryMembers,
   getBoardStoryHref,
 } from "@/app/(authenticated)/dashboard/(player-board)/stories/_utils/board-story-helper";
 import type { TBoardStoryCardProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/_types/board-story-components-props";
 
+const STATUS_KEY = {
+  [StoryStatusEnum.DRAFT]: "enums.status.draft",
+  [StoryStatusEnum.PUBLISHED]: "enums.status.published",
+  [StoryStatusEnum.ARCHIVED]: "enums.status.archived",
+  [StoryStatusEnum.CANCELLED]: "enums.status.cancelled",
+  [StoryStatusEnum.COMPLETED]: "enums.status.completed",
+} as const;
+
+const MEMBER_STATUS_KEY = {
+  [StoryMemberStatusEnum.REGISTERED]: "enums.memberStatus.registered",
+  [StoryMemberStatusEnum.VIEWER]: "enums.memberStatus.viewer",
+  [StoryMemberStatusEnum.ATTENDED]: "enums.memberStatus.attended",
+} as const;
+
 // The title link is stretched over the whole card (after:inset-0), so the
 // card stays one click target without wrapping block content in <a>
 export default function BoardStoryCard({ story }: TBoardStoryCardProps) {
+  const { t } = useT(BOARD_STORIES_MESSAGES);
+  const { locale } = useLocale();
+
   return (
     <Card
       size="sm"
@@ -33,6 +57,7 @@ export default function BoardStoryCard({ story }: TBoardStoryCardProps) {
         <BoardStoryBanner bannerUrl={story.banner_url} title={story.title} />
         <BoardStoryStatusBadge
           status={story.status}
+          label={t(STATUS_KEY[story.status])}
           className="absolute top-2 left-2 bg-card"
         />
       </AspectRatio>
@@ -56,28 +81,33 @@ export default function BoardStoryCard({ story }: TBoardStoryCardProps) {
         <dl className="flex flex-col gap-1.5 text-sm text-foreground/80">
           <div className="flex items-center gap-2">
             <Crown className="size-4 shrink-0 text-primary" />
-            <dt className="sr-only">Dungeon Master</dt>
+            <dt className="sr-only">{t("card.dungeonMaster")}</dt>
             <dd className="truncate">
-              {story.created_by?.display_name ?? "Unknown DM"}
+              {story.created_by?.display_name ?? t("card.unknownDm")}
             </dd>
           </div>
           <div className="flex items-center gap-2">
             <CalendarDays className="size-4 shrink-0 text-primary" />
-            <dt className="sr-only">Starts</dt>
+            <dt className="sr-only">{t("card.starts")}</dt>
             <dd>
               {story.start_at
-                ? dayjs(story.start_at).format(BOARD_STORY_START_AT_FORMAT)
-                : "Date to be announced"}
+                ? dayjs(story.start_at)
+                    .locale(locale)
+                    .format(BOARD_STORY_START_AT_FORMAT)
+                : t("card.dateTba")}
             </dd>
           </div>
         </dl>
       </CardContent>
 
       <CardFooter className="mt-auto justify-between gap-2 border-t">
-        <BoardStoryMemberStatusBadge memberStatus={story.member_status} />
+        <BoardStoryMemberStatusBadge
+          memberStatus={story.member_status}
+          label={t(MEMBER_STATUS_KEY[story.member_status])}
+        />
         <span className="flex items-center gap-1.5 text-sm text-foreground/80">
           <Users className="size-4 text-primary" />
-          <span className="sr-only">Members</span>
+          <span className="sr-only">{t("card.members")}</span>
           {formatBoardStoryMembers(story.joined_members, story.max_members)}
         </span>
       </CardFooter>

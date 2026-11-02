@@ -10,6 +10,7 @@ import { Case, Default, Switch } from "react-if";
 import { Button } from "@/app/_components/ui/button";
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
+import { useT } from "@/app/_hooks/use-t";
 
 import BoardStoryErrorState from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-error-state";
 import BoardStoryDetailHero from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_components/board-story-detail-hero";
@@ -21,15 +22,22 @@ import BoardStoryDetailSkeleton from "@/app/(authenticated)/dashboard/(player-bo
 import { useGetBoardStoryById } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_hooks/use-get-board-story-by-id";
 import { getBoardStoryMemberPaginationOptions } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_hooks/use-get-board-story-member-pagination";
 import { BOARD_STORY_MEMBER_PREVIEW_COUNT } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_constants/board-story-detail";
+import { BOARD_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/(player-board)/stories/[id]/_messages";
 
 export default function BoardStoryDetailPageClient() {
+  const { t } = useT(BOARD_STORY_DETAIL_MESSAGES);
   const { id } = useParams();
   const storyId = id as string;
 
   const storyQuery = useGetBoardStoryById(storyId);
   // Start the members card's query alongside the story instead of after it,
   // without subscribing this page to it
-  usePrefetchInfiniteQuery(getBoardStoryMemberPaginationOptions(storyId, BOARD_STORY_MEMBER_PREVIEW_COUNT));
+  usePrefetchInfiniteQuery(
+    getBoardStoryMemberPaginationOptions(
+      storyId,
+      BOARD_STORY_MEMBER_PREVIEW_COUNT,
+    ),
+  );
   const story = storyQuery.data?.data?.data;
   const isNotFound =
     storyQuery.isError && storyQuery.error instanceof MainAPINotFoundError;
@@ -44,8 +52,8 @@ export default function BoardStoryDetailPageClient() {
       <main className="w-full max-w-7xl flex flex-col px-4 pb-10 sm:px-6 lg:px-10">
         <AppBreadcrumb
           items={[
-            { name: "My Stories", link: "/dashboard/stories" },
-            { name: story?.title ?? "Detail" },
+            { name: t("breadcrumb"), link: "/dashboard/stories" },
+            { name: story?.title ?? t("breadcrumbDetail") },
           ]}
         />
 
@@ -53,13 +61,13 @@ export default function BoardStoryDetailPageClient() {
           <Button
             variant="ghost"
             size="icon-sm"
-            aria-label="Back to My Stories"
+            aria-label={t("backAria")}
             render={<Link href="/dashboard/stories" />}
             nativeButton={false}
           >
             <ArrowLeft />
           </Button>
-          <h1 className="font-heading text-2xl">Story Detail</h1>
+          <h1 className="font-heading text-2xl">{t("title")}</h1>
         </div>
 
         <Switch>
@@ -68,7 +76,8 @@ export default function BoardStoryDetailPageClient() {
           </Case>
           <Case condition={!story && !isNotFound}>
             <BoardStoryErrorState
-              title="Could not load this story"
+              title={t("error.title")}
+              description={t("error.description")}
               onRetry={() => storyQuery.refetch()}
             />
           </Case>

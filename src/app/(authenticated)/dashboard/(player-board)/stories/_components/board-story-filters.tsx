@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+"use client";
+
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Search } from "lucide-react";
 
 import {
@@ -14,33 +16,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/_components/ui/select";
-import type { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
-import { STORY_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-status-label";
-import type { StoryMemberStatusEnum } from "@/api/main/modules/master/stories/enums/story-member-status";
-import { STORY_MEMBER_STATUS_LABEL } from "@/api/main/modules/master/stories/enums/story-member-status-label";
+import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
+import { StoryMemberStatusEnum } from "@/api/main/modules/master/stories/enums/story-member-status";
+import { useT } from "@/app/_hooks/use-t";
 
 import {
   BOARD_STORY_FILTER_ALL,
   BOARD_STORY_MEMBER_STATUS_OPTIONS,
   BOARD_STORY_STATUS_OPTIONS,
 } from "@/app/(authenticated)/dashboard/(player-board)/stories/_constants/board-story";
+import { BOARD_STORIES_MESSAGES } from "@/app/(authenticated)/dashboard/(player-board)/stories/_messages";
 import type { TBoardStoryFiltersProps } from "@/app/(authenticated)/dashboard/(player-board)/stories/_types/board-story-components-props";
 
-const STATUS_ITEMS = [
-  { label: "All statuses", value: BOARD_STORY_FILTER_ALL },
-  ...BOARD_STORY_STATUS_OPTIONS.map((status) => ({
-    label: STORY_STATUS_LABEL[status],
-    value: String(status),
-  })),
-];
+const STATUS_KEY = {
+  [StoryStatusEnum.DRAFT]: "enums.status.draft",
+  [StoryStatusEnum.PUBLISHED]: "enums.status.published",
+  [StoryStatusEnum.ARCHIVED]: "enums.status.archived",
+  [StoryStatusEnum.CANCELLED]: "enums.status.cancelled",
+  [StoryStatusEnum.COMPLETED]: "enums.status.completed",
+} as const;
 
-const MEMBER_STATUS_ITEMS = [
-  { label: "Any seat", value: BOARD_STORY_FILTER_ALL },
-  ...BOARD_STORY_MEMBER_STATUS_OPTIONS.map((status) => ({
-    label: STORY_MEMBER_STATUS_LABEL[status],
-    value: String(status),
-  })),
-];
+const MEMBER_STATUS_KEY = {
+  [StoryMemberStatusEnum.REGISTERED]: "enums.memberStatus.registered",
+  [StoryMemberStatusEnum.VIEWER]: "enums.memberStatus.viewer",
+  [StoryMemberStatusEnum.ATTENDED]: "enums.memberStatus.attended",
+} as const;
 
 function toNumberOrNull<T extends number>(value: string | null) {
   return !value || value === BOARD_STORY_FILTER_ALL
@@ -55,9 +55,32 @@ export default function BoardStoryFilters({
   onSearchChange,
   onFilterChange,
 }: TBoardStoryFiltersProps) {
+  const { t } = useT(BOARD_STORIES_MESSAGES);
   // Controlled from the first render so Base UI never sees it switch modes
   const [searchValue, setSearchValue] = useState(search ?? "");
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const statusItems = useMemo(
+    () => [
+      { label: t("filters.allStatuses"), value: BOARD_STORY_FILTER_ALL },
+      ...BOARD_STORY_STATUS_OPTIONS.map((item) => ({
+        label: t(STATUS_KEY[item]),
+        value: String(item),
+      })),
+    ],
+    [t],
+  );
+
+  const memberStatusItems = useMemo(
+    () => [
+      { label: t("filters.anySeat"), value: BOARD_STORY_FILTER_ALL },
+      ...BOARD_STORY_MEMBER_STATUS_OPTIONS.map((item) => ({
+        label: t(MEMBER_STATUS_KEY[item]),
+        value: String(item),
+      })),
+    ],
+    [t],
+  );
 
   useEffect(
     () => () => {
@@ -83,8 +106,8 @@ export default function BoardStoryFilters({
           <Search />
         </InputGroupAddon>
         <InputGroupInput
-          aria-label="Search my stories"
-          placeholder="Search by title (min. 3 characters)…"
+          aria-label={t("filters.searchAria")}
+          placeholder={t("filters.searchPlaceholder")}
           value={searchValue}
           onChange={(event) => {
             setSearchValue(event.target.value);
@@ -95,7 +118,7 @@ export default function BoardStoryFilters({
 
       <div className="grid grid-cols-2 gap-2 md:flex">
         <Select
-          items={STATUS_ITEMS}
+          items={statusItems}
           value={status != null ? String(status) : BOARD_STORY_FILTER_ALL}
           onValueChange={(value) =>
             onFilterChange({
@@ -105,14 +128,14 @@ export default function BoardStoryFilters({
           }
         >
           <SelectTrigger
-            aria-label="Story status"
+            aria-label={t("filters.statusAria")}
             className="h-10! w-full bg-card md:w-44"
           >
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {STATUS_ITEMS.map((item) => (
+              {statusItems.map((item) => (
                 <SelectItem key={item.value} value={item.value}>
                   {item.label}
                 </SelectItem>
@@ -122,7 +145,7 @@ export default function BoardStoryFilters({
         </Select>
 
         <Select
-          items={MEMBER_STATUS_ITEMS}
+          items={memberStatusItems}
           value={
             memberStatus != null ? String(memberStatus) : BOARD_STORY_FILTER_ALL
           }
@@ -134,14 +157,14 @@ export default function BoardStoryFilters({
           }
         >
           <SelectTrigger
-            aria-label="My member status"
+            aria-label={t("filters.memberStatusAria")}
             className="h-10! w-full bg-card md:w-44"
           >
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {MEMBER_STATUS_ITEMS.map((item) => (
+              {memberStatusItems.map((item) => (
                 <SelectItem key={item.value} value={item.value}>
                   {item.label}
                 </SelectItem>

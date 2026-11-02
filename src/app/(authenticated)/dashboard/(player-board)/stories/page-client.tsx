@@ -7,6 +7,7 @@ import type { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/st
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import type { TBoardStoryPaginationPayload } from "@/api/main/modules/board/stories/types/board-story-pagination-payload";
+import { useT } from "@/app/_hooks/use-t";
 
 import BoardStoryFilters from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-filters";
 import BoardStoryCardList from "@/app/(authenticated)/dashboard/(player-board)/stories/_components/board-story-card-list";
@@ -16,6 +17,7 @@ import {
   BOARD_STORY_PAGE_SIZE,
   BOARD_STORY_STATUS_OPTIONS,
 } from "@/app/(authenticated)/dashboard/(player-board)/stories/_constants/board-story";
+import { BOARD_STORIES_MESSAGES } from "@/app/(authenticated)/dashboard/(player-board)/stories/_messages";
 import type { TBoardStoryFilterValues } from "@/app/(authenticated)/dashboard/(player-board)/stories/_types/board-story-components-props";
 
 function parseAsNumericValues<T extends number>(values: readonly T[]) {
@@ -29,6 +31,7 @@ function parseAsNumericValues<T extends number>(values: readonly T[]) {
 }
 
 export default function StoriesPageClient() {
+  const { t } = useT(BOARD_STORIES_MESSAGES);
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
     search: parseAsString.withDefault(""),
@@ -87,13 +90,11 @@ export default function StoriesPageClient() {
   return (
     <div className="w-full flex justify-center min-w-0">
       <main className="w-full max-w-7xl flex flex-col px-4 pb-10 sm:px-6 lg:px-10">
-        <AppBreadcrumb items={[{ name: "My Stories" }]} />
+        <AppBreadcrumb items={[{ name: t("breadcrumb") }]} />
 
         <div className="mt-4 mb-6 flex flex-col gap-1">
-          <h1 className="font-heading text-2xl">My Stories</h1>
-          <p className="text-sm text-muted-foreground">
-            Stories you have joined, as a player or a viewer.
-          </p>
+          <h1 className="font-heading text-2xl">{t("title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("description")}</p>
         </div>
 
         <div className="flex flex-col gap-4">
