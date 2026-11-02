@@ -1,0 +1,73 @@
+{
+  "breadcrumb": "Balances",
+  "title": "Balances",
+  "description": "Your ledger of experience and gold pieces.",
+  "tabs": {
+    "experience": "Experience",
+    "gold": "Gold Pieces"
+  },
+  "summary": {
+    "aria": "Current balances",
+    "playerExp": "Player EXP",
+    "dmExp": "DM EXP",
+    "goldPieces": "Gold Pieces"
+  },
+  "units": {
+    "exp": "EXP",
+    "gp": "GP"
+  },
+  "filters": {
+    "allExperience": "All experience",
+    "allChanges": "All changes",
+    "allGold": "All gold",
+    "expTypeAria": "Experience type",
+    "expDirectionAria": "Experience direction",
+    "goldTypeAria": "Gold type"
+  },
+  "enums": {
+    "expType": {
+      "player": "Player EXP",
+      "dm": "Dungeon Master EXP",
+      "fallback": "Experience"
+    },
+    "expDirection": {
+      "increment": "EXP increments",
+      "decrement": "EXP decrements"
+    },
+    "pointType": {
+      "income": "Gold earned",
+      "expense": "Gold spent",
+      "fallback": "Gold"
+    }
+  },
+  "empty": {
+    "filteredTitle": "No entries match",
+    "filteredDescription": "Try another type filter.",
+    "clearFilter": "Clear filter",
+    "expTitle": "No experience yet",
+    "expDescription": "EXP you earn or spend as a player or dungeon master will be recorded here.",
+    "goldTitle": "No gold yet",
+    "goldDescription": "Gold you earn or spend will be recorded here."
+  },
+  "error": {
+    "title": "Could not load the ledger",
+    "description": "Something went wrong on the way. Please try again.",
+    "retry": "Try again"
+  },
+  "pagination": {
+    "showing": "Showing {{start}}–{{end}} of {{total}}",
+    "pagesAria": "Ledger pages",
+    "previous": "Previous page",
+    "next": "Next page"
+  },
+  "amount": {
+    "showExactAria": "Show exact {{label}}",
+    "close": "Close"
+  },
+  "skeleton": {
+    "loadingAria": "Loading logs"
+  },
+  "log": {
+    "noDescription": "—"
+  }
+}

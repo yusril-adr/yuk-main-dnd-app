@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { BookOpen, ChessKnight, Coins } from "lucide-react";
 
 import {
@@ -8,26 +9,42 @@ import {
 } from "@/app/_components/ui/card";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { useT } from "@/app/_hooks/use-t";
 
 import BalanceAmountDialog from "@/app/(authenticated)/balances/_components/balance-amount-dialog";
+import { BALANCES_MESSAGES } from "@/app/(authenticated)/balances/_messages";
 
 export default function BalanceSummary() {
   const { auth } = useAuthContext();
+  const { t } = useT(BALANCES_MESSAGES);
 
-  const items = [
-    {
-      label: "Player EXP",
-      unit: "EXP",
-      value: auth?.player_exp,
-      icon: ChessKnight,
-    },
-    { label: "DM EXP", unit: "EXP", value: auth?.dm_exp, icon: BookOpen },
-    { label: "Gold Pieces", unit: "GP", value: auth?.points, icon: Coins },
-  ];
+  const items = useMemo(
+    () => [
+      {
+        label: t("summary.playerExp"),
+        unit: t("units.exp"),
+        value: auth?.player_exp,
+        icon: ChessKnight,
+      },
+      {
+        label: t("summary.dmExp"),
+        unit: t("units.exp"),
+        value: auth?.dm_exp,
+        icon: BookOpen,
+      },
+      {
+        label: t("summary.goldPieces"),
+        unit: t("units.gp"),
+        value: auth?.points,
+        icon: Coins,
+      },
+    ],
+    [auth?.dm_exp, auth?.player_exp, auth?.points, t],
+  );
 
   return (
     <section
-      aria-label="Current balances"
+      aria-label={t("summary.aria")}
       className="grid grid-cols-3 gap-2 sm:gap-4"
     >
       {items.map(({ label, unit, value, icon: Icon }) => (
