@@ -31,17 +31,17 @@ import {
   TabsTrigger,
 } from "@/app/_components/ui/tabs";
 import { useGetUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-by-id";
+import { useT } from "@/app/_hooks/use-t";
 import { UserExpLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type";
-import { USER_EXP_LOG_TYPE_LABEL } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type-label";
 import { UserExpLogDirectionEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-direction";
-import { USER_EXP_LOG_DIRECTION_LABEL } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-direction-label";
 import type { TAddUserExperiencePointsPayload } from "@/api/main/modules/master/iam/users/[id]/experience-points/types/add-user-experience-points-payload";
 import { UserPointLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/points/enums/user-point-log-type";
-import { USER_POINT_LOG_TYPE_LABEL } from "@/api/main/modules/master/iam/users/[id]/points/enums/user-point-log-type-label";
 import type { TAddUserPointsPayload } from "@/api/main/modules/master/iam/users/[id]/points/types/add-user-points-payload";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import CONFIG from "@/common/constants/config";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
+
+import { MASTER_USERS_BALANCES_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/[id]/balances/_messages";
 import AddUserExperiencePointsDialog from "./_components/add-user-experience-points-dialog";
 import UserBalanceStatCard from "./_components/user-balance-stat-card";
 import AddUserPointsDialog from "./_components/add-user-points-dialog";
@@ -104,6 +104,7 @@ const POINT_LOG_TYPE_ICONS: Record<UserPointLogTypeEnum, LucideIcon> = {
 const LOG_PAGE_SIZE = 10;
 
 export default function UserBalancesPageClient() {
+  const { t } = useT(MASTER_USERS_BALANCES_MESSAGES);
   const { id } = useParams();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -161,6 +162,28 @@ export default function UserBalancesPageClient() {
   const expMeta = expQuery.data?.data?.data?.meta;
   const pointItems = pointQuery.data?.data?.data?.items ?? [];
   const pointMeta = pointQuery.data?.data?.data?.meta;
+
+  const expTypeLabels = useMemo(
+    (): Record<UserExpLogTypeEnum, string> => ({
+      [UserExpLogTypeEnum.PLAYER]: t("enums.expType.player"),
+      [UserExpLogTypeEnum.DM]: t("enums.expType.dm"),
+    }),
+    [t],
+  );
+  const expDirectionLabels = useMemo(
+    (): Record<number, string> => ({
+      [UserExpLogDirectionEnum.INCREMENT]: t("enums.expDirection.increment"),
+      [UserExpLogDirectionEnum.DECREMENT]: t("enums.expDirection.decrement"),
+    }),
+    [t],
+  );
+  const pointTypeLabels = useMemo(
+    (): Record<UserPointLogTypeEnum, string> => ({
+      [UserPointLogTypeEnum.INCOME]: t("enums.pointType.income"),
+      [UserPointLogTypeEnum.EXPENSE]: t("enums.pointType.expense"),
+    }),
+    [t],
+  );
 
   const onAddSuccess = () => {
     queryClient.invalidateQueries({
@@ -269,14 +292,17 @@ export default function UserBalancesPageClient() {
 
   const breadcrumbItems = useMemo(
     () => [
-      { name: "Users", link: "/dashboard/master/iam/users" },
       {
-        name: user?.display_name ?? "Detail",
+        name: t("breadcrumb.users"),
+        link: "/dashboard/master/iam/users",
+      },
+      {
+        name: user?.display_name ?? t("breadcrumb.detail"),
         link: `/dashboard/master/iam/users/${userId}`,
       },
-      { name: "Balances" },
+      { name: t("breadcrumb.balances") },
     ],
-    [user?.display_name, userId],
+    [t, user?.display_name, userId],
   );
 
   const queryTable = {
@@ -296,17 +322,17 @@ export default function UserBalancesPageClient() {
             <Button
               variant="ghost"
               size="icon-sm"
-              aria-label="Back to user"
+              aria-label={t("backAria")}
               render={<Link href={`/dashboard/master/iam/users/${userId}`} />}
               nativeButton={false}
             >
               <ArrowLeft />
             </Button>
             <div className="flex min-w-0 flex-col">
-              <h1 className="font-heading text-2xl">Balances</h1>
+              <h1 className="font-heading text-2xl">{t("title")}</h1>
               {user?.display_name && (
                 <p className="truncate text-sm text-muted-foreground">
-                  Ledger of {user.display_name}
+                  {t("subtitle", { name: user.display_name })}
                 </p>
               )}
             </div>
@@ -326,15 +352,17 @@ export default function UserBalancesPageClient() {
               <Plus />
               {queryStates.tab === UserBalanceTabEnum.EXPERIENCE_POINTS ? (
                 <>
-                  <span className="md:hidden">Add EXP</span>
+                  <span className="md:hidden">{t("actions.addExpShort")}</span>
                   <span className="hidden md:inline">
-                    Add Experience Points
+                    {t("actions.addExp")}
                   </span>
                 </>
               ) : (
                 <>
-                  <span className="md:hidden">Add GP</span>
-                  <span className="hidden md:inline">Add Gold Pieces</span>
+                  <span className="md:hidden">{t("actions.addGpShort")}</span>
+                  <span className="hidden md:inline">
+                    {t("actions.addGp")}
+                  </span>
                 </>
               )}
             </Button>
@@ -342,26 +370,26 @@ export default function UserBalancesPageClient() {
         </div>
 
         <section
-          aria-label="Current balances"
+          aria-label={t("summary.aria")}
           className="mb-6 grid w-full grid-cols-3 gap-2 sm:gap-4"
         >
           <UserBalanceStatCard
-            label="Player EXP"
-            unit="EXP"
+            label={t("summary.playerExp")}
+            unit={t("units.exp")}
             icon={ChessKnight}
             value={user?.player_exp}
             isLoading={userQuery.isLoading}
           />
           <UserBalanceStatCard
-            label="DM EXP"
-            unit="EXP"
+            label={t("summary.dmExp")}
+            unit={t("units.exp")}
             icon={BookOpen}
             value={user?.dm_exp}
             isLoading={userQuery.isLoading}
           />
           <UserBalanceStatCard
-            label="Gold Pieces"
-            unit="GP"
+            label={t("summary.goldPieces")}
+            unit={t("units.gp")}
             icon={Coins}
             value={user?.points}
             isLoading={userQuery.isLoading}
@@ -377,11 +405,11 @@ export default function UserBalancesPageClient() {
             <TabsList className="w-full sm:w-fit">
               <TabsTrigger value={UserBalanceTabEnum.EXPERIENCE_POINTS}>
                 <Sparkles />
-                Experience Points
+                {t("tabs.experience")}
               </TabsTrigger>
               <TabsTrigger value={UserBalanceTabEnum.GOLD_PIECES}>
                 <Coins />
-                Gold Pieces
+                {t("tabs.gold")}
               </TabsTrigger>
             </TabsList>
             <TabsContent value={UserBalanceTabEnum.EXPERIENCE_POINTS}>
@@ -392,16 +420,18 @@ export default function UserBalancesPageClient() {
                   isLogsPending || expQuery.isLoading || expQuery.isFetching
                 }
                 isError={expQuery.isError}
-                unit="EXP"
+                unit={t("units.exp")}
+                emptyTitle={t("empty.expTitle")}
+                emptyDescription={t("empty.expDescription")}
                 onRetry={() => expQuery.refetch()}
                 pageCount={expMeta?.total_page || 1}
                 rowCount={expMeta?.total_all_data || 0}
                 queryTable={queryTable}
                 typeOptions={[UserExpLogTypeEnum.PLAYER, UserExpLogTypeEnum.DM]}
-                typeLabels={USER_EXP_LOG_TYPE_LABEL}
+                typeLabels={expTypeLabels}
                 typeIcons={EXP_LOG_TYPE_ICONS}
                 directionOptions={EXP_LOG_DIRECTION_OPTIONS}
-                directionLabels={USER_EXP_LOG_DIRECTION_LABEL}
+                directionLabels={expDirectionLabels}
                 isNegative={(row) =>
                   row.direction === UserExpLogDirectionEnum.DECREMENT
                 }
@@ -418,7 +448,9 @@ export default function UserBalancesPageClient() {
                   isLogsPending || pointQuery.isLoading || pointQuery.isFetching
                 }
                 isError={pointQuery.isError}
-                unit="GP"
+                unit={t("units.gp")}
+                emptyTitle={t("empty.goldTitle")}
+                emptyDescription={t("empty.goldDescription")}
                 onRetry={() => pointQuery.refetch()}
                 pageCount={pointMeta?.total_page || 1}
                 rowCount={pointMeta?.total_all_data || 0}
@@ -427,7 +459,7 @@ export default function UserBalancesPageClient() {
                   UserPointLogTypeEnum.INCOME,
                   UserPointLogTypeEnum.EXPENSE,
                 ]}
-                typeLabels={USER_POINT_LOG_TYPE_LABEL}
+                typeLabels={pointTypeLabels}
                 typeIcons={POINT_LOG_TYPE_ICONS}
                 isNegative={(row) => row.type === UserPointLogTypeEnum.EXPENSE}
                 onPageChange={onPageChange}

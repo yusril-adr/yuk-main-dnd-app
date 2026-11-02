@@ -1,0 +1,111 @@
+{
+  "breadcrumb": {
+    "users": "Users",
+    "detail": "Detail",
+    "balances": "Balances"
+  },
+  "title": "Balances",
+  "subtitle": "Ledger of {{name}}",
+  "backAria": "Back to user",
+  "actions": {
+    "addExpShort": "Add EXP",
+    "addExp": "Add Experience Points",
+    "addGpShort": "Add GP",
+    "addGp": "Add Gold Pieces"
+  },
+  "summary": {
+    "aria": "Current balances",
+    "playerExp": "Player EXP",
+    "dmExp": "DM EXP",
+    "goldPieces": "Gold Pieces"
+  },
+  "units": {
+    "exp": "EXP",
+    "gp": "GP"
+  },
+  "tabs": {
+    "experience": "Experience",
+    "gold": "Gold Pieces"
+  },
+  "filters": {
+    "filter": "Filter",
+    "type": "Type",
+    "direction": "Direction",
+    "selectType": "Select type",
+    "selectDirection": "Select direction",
+    "noItems": "No items found.",
+    "clear": "Clear",
+    "apply": "Apply",
+    "searchAria": "Search descriptions",
+    "searchPlaceholder": "Search descriptions (min. 3 characters)…"
+  },
+  "enums": {
+    "expType": {
+      "player": "Player EXP",
+      "dm": "Dungeon Master EXP",
+      "fallback": "Experience"
+    },
+    "expDirection": {
+      "increment": "EXP increments",
+      "decrement": "EXP decrements"
+    },
+    "pointType": {
+      "income": "Gold earned",
+      "expense": "Gold spent",
+      "fallback": "Gold"
+    }
+  },
+  "empty": {
+    "filteredTitle": "No entries match",
+    "filteredDescription": "Try another search or clear the filter.",
+    "clearFilter": "Clear filter",
+    "expTitle": "No experience yet",
+    "expDescription": "EXP this user earns or spends as a player or dungeon master will be recorded here.",
+    "goldTitle": "No gold yet",
+    "goldDescription": "Gold this user earns or spends will be recorded here."
+  },
+  "error": {
+    "title": "Could not load the ledger",
+    "description": "Something went wrong on the way. Please try again.",
+    "retry": "Try again"
+  },
+  "pagination": {
+    "pagesAria": "Ledger pages",
+    "previous": "Previous page",
+    "next": "Next page"
+  },
+  "amount": {
+    "showExactAria": "Show exact {{label}}"
+  },
+  "log": {
+    "noDescription": "—"
+  },
+  "dialogs": {
+    "expTitle": "Add experience points",
+    "expDescription": "Pick player EXP or DM EXP. Increment adds EXP. Decrement subtracts it. The amount stays positive.",
+    "goldTitle": "Add gold pieces",
+    "goldDescription": "Income adds gold pieces. Expense subtracts them. The amount stays positive.",
+    "type": "Type",
+    "direction": "Direction",
+    "amount": "Amount",
+    "amountPlaceholder": "Enter amount",
+    "description": "Description",
+    "descriptionPlaceholder": "Optional",
+    "cancel": "Cancel",
+    "add": "Add",
+    "increment": "Increment",
+    "decrement": "Decrement"
+  },
+  "validation": {
+    "typeRequired": "Type is required",
+    "directionRequired": "Direction is required",
+    "amountWhole": "Amount must be a whole number of at least 1",
+    "amountMax": "Amount must be at most {{max}}"
+  },
+  "toast": {
+    "addingExp": "Adding experience points...",
+    "expAdded": "Experience points added",
+    "addingGold": "Adding gold pieces...",
+    "goldAdded": "Gold pieces added"
+  }
+}

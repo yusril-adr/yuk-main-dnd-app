@@ -58,9 +58,13 @@ import {
   PopoverTrigger,
 } from "@/app/_components/ui/popover";
 import { Skeleton } from "@/app/_components/ui/skeleton";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
 import dayjs from "@/libs/dayjs";
+import { localeToBcp47 } from "@/libs/i18n/locales";
 import { generatePages } from "@/utils/table-helper";
 
+import { MASTER_USERS_BALANCES_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/[id]/balances/_messages";
 import type { TUserBalanceLogListProps } from "../_types/user-balance-log-list-props";
 
 const DISABLED = "pointer-events-none opacity-50";
@@ -70,6 +74,8 @@ export default function UserBalanceLogList<TType extends number>({
   isLoading,
   isError,
   unit,
+  emptyTitle,
+  emptyDescription,
   onRetry,
   pageCount,
   rowCount,
@@ -84,6 +90,8 @@ export default function UserBalanceLogList<TType extends number>({
   onSearchChange,
   onFilterApply,
 }: TUserBalanceLogListProps<TType>) {
+  const { t } = useT(MASTER_USERS_BALANCES_MESSAGES);
+  const { locale } = useLocale();
   const [draftType, setDraftType] = useState<TType | null>(
     queryTable.type as TType | null,
   );
@@ -144,7 +152,7 @@ export default function UserBalanceLogList<TType extends number>({
             render={<Button variant="outline" className="h-10 self-start" />}
           >
             <Funnel />
-            Filter
+            {t("filters.filter")}
             {activeFilterCount > 0 && (
               <Badge variant="secondary" className="ms-1">
                 {activeFilterCount}
@@ -158,7 +166,7 @@ export default function UserBalanceLogList<TType extends number>({
             >
               <FieldGroup>
                 <Field className="grid gap-2">
-                  <FieldLabel htmlFor="type">Type</FieldLabel>
+                  <FieldLabel htmlFor="type">{t("filters.type")}</FieldLabel>
                   <Combobox
                     id="type"
                     items={typeOptions}
@@ -166,9 +174,12 @@ export default function UserBalanceLogList<TType extends number>({
                     itemToStringLabel={(item) => typeLabels[item]}
                     onValueChange={(value) => setDraftType(value || null)}
                   >
-                    <ComboboxInput placeholder="Select type" showClear />
+                    <ComboboxInput
+                      placeholder={t("filters.selectType")}
+                      showClear
+                    />
                     <ComboboxContent>
-                      <ComboboxEmpty>No items found.</ComboboxEmpty>
+                      <ComboboxEmpty>{t("filters.noItems")}</ComboboxEmpty>
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
@@ -181,17 +192,24 @@ export default function UserBalanceLogList<TType extends number>({
                 </Field>
                 {directionOptions && directionLabels && (
                   <Field className="grid gap-2">
-                    <FieldLabel htmlFor="direction">Direction</FieldLabel>
+                    <FieldLabel htmlFor="direction">
+                      {t("filters.direction")}
+                    </FieldLabel>
                     <Combobox
                       id="direction"
                       items={directionOptions}
                       value={draftDirection}
                       itemToStringLabel={(item) => directionLabels[item]}
-                      onValueChange={(value) => setDraftDirection(value || null)}
+                      onValueChange={(value) =>
+                        setDraftDirection(value || null)
+                      }
                     >
-                      <ComboboxInput placeholder="Select direction" showClear />
+                      <ComboboxInput
+                        placeholder={t("filters.selectDirection")}
+                        showClear
+                      />
                       <ComboboxContent>
-                        <ComboboxEmpty>No items found.</ComboboxEmpty>
+                        <ComboboxEmpty>{t("filters.noItems")}</ComboboxEmpty>
                         <ComboboxList>
                           {(item) => (
                             <ComboboxItem key={item} value={item}>
@@ -212,9 +230,9 @@ export default function UserBalanceLogList<TType extends number>({
                     type="reset"
                     onClick={onFilterClear}
                   >
-                    Clear
+                    {t("filters.clear")}
                   </Button>
-                  <Button type="submit">Apply</Button>
+                  <Button type="submit">{t("filters.apply")}</Button>
                 </Field>
               </FieldGroup>
             </form>
@@ -225,8 +243,8 @@ export default function UserBalanceLogList<TType extends number>({
             <Search />
           </InputGroupAddon>
           <InputGroupInput
-            aria-label="Search descriptions"
-            placeholder="Search descriptions (min. 3 characters)…"
+            aria-label={t("filters.searchAria")}
+            placeholder={t("filters.searchPlaceholder")}
             onChange={onSearchInputChange}
             defaultValue={queryTable.search}
           />
@@ -240,15 +258,13 @@ export default function UserBalanceLogList<TType extends number>({
               <TriangleAlert className="text-destructive" />
             </EmptyMedia>
             <EmptyTitle className="font-heading text-xl">
-              Could not load the ledger
+              {t("error.title")}
             </EmptyTitle>
-            <EmptyDescription>
-              Something went wrong on the way. Please try again.
-            </EmptyDescription>
+            <EmptyDescription>{t("error.description")}</EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
             <Button variant="outline" onClick={onRetry}>
-              Try again
+              {t("error.retry")}
             </Button>
           </EmptyContent>
         </Empty>
@@ -259,18 +275,18 @@ export default function UserBalanceLogList<TType extends number>({
               <ScrollText />
             </EmptyMedia>
             <EmptyTitle className="font-heading text-xl">
-              {isFiltered ? "No entries match" : "No entries yet"}
+              {isFiltered ? t("empty.filteredTitle") : emptyTitle}
             </EmptyTitle>
             <EmptyDescription>
               {isFiltered
-                ? "Try another search or clear the filter."
-                : "No balance has been recorded for this user yet."}
+                ? t("empty.filteredDescription")
+                : emptyDescription}
             </EmptyDescription>
           </EmptyHeader>
           {activeFilterCount > 0 && (
             <EmptyContent>
               <Button variant="outline" onClick={onFilterClear}>
-                Clear filter
+                {t("empty.clearFilter")}
               </Button>
             </EmptyContent>
           )}
@@ -318,13 +334,13 @@ export default function UserBalanceLogList<TType extends number>({
                               dateTime={row.created_at}
                               className="text-xs font-normal text-muted-foreground"
                             >
-                              {dayjs(row.created_at).format(
-                                "YYYY-MM-DD HH:mm:ss",
-                              )}
+                              {dayjs(row.created_at)
+                                .locale(locale)
+                                .format("YYYY-MM-DD HH:mm:ss")}
                             </time>
                           </ItemTitle>
                           <ItemDescription className="line-clamp-2">
-                            {row.description || "—"}
+                            {row.description || t("log.noDescription")}
                           </ItemDescription>
                         </ItemContent>
                         <ItemActions className="font-heading text-base tabular-nums">
@@ -336,7 +352,7 @@ export default function UserBalanceLogList<TType extends number>({
                             }
                           >
                             {negative ? "−" : "+"}
-                            {row.amount.toLocaleString()}
+                            {row.amount.toLocaleString(localeToBcp47(locale))}
                           </span>
                           <ItemDescription className="text-xs">
                             {unit}
@@ -352,13 +368,16 @@ export default function UserBalanceLogList<TType extends number>({
 
       {!isLoading && !isError && rowCount > 0 && (
         <Card size="sm" className="items-center px-3 sm:px-4">
-          <Pagination aria-label="Ledger pages" className="mx-0 w-auto">
+          <Pagination
+            aria-label={t("pagination.pagesAria")}
+            className="mx-0 w-auto"
+          >
             <PaginationContent className="flex-wrap justify-center">
               <PaginationItem>
                 <PaginationPrevious
                   href="#"
                   text=""
-                  aria-label="Previous page"
+                  aria-label={t("pagination.previous")}
                   aria-disabled={isFirstPage}
                   className={isFirstPage ? DISABLED : undefined}
                   onClick={go(queryTable.page - 1)}
@@ -380,7 +399,7 @@ export default function UserBalanceLogList<TType extends number>({
                 <PaginationNext
                   href="#"
                   text=""
-                  aria-label="Next page"
+                  aria-label={t("pagination.next")}
                   aria-disabled={isLastPage}
                   className={isLastPage ? DISABLED : undefined}
                   onClick={go(queryTable.page + 1)}

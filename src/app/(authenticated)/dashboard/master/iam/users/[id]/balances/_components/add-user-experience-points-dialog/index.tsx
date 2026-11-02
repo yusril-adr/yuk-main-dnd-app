@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import {
   ArrowDown,
@@ -33,52 +33,18 @@ import { Input } from "@/app/_components/ui/input";
 import { Spinner } from "@/app/_components/ui/spinner";
 import { Textarea } from "@/app/_components/ui/textarea";
 import { UserExpLogDirectionEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-direction";
-import { USER_EXP_LOG_DIRECTION_LABEL } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-direction-label";
 import { UserExpLogTypeEnum } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type";
-import { USER_EXP_LOG_TYPE_LABEL } from "@/api/main/modules/master/iam/users/[id]/experience-points/enums/user-exp-log-type-label";
 import MainAPIValidationError from "@/api/main/errors/validation-error";
+import { useT } from "@/app/_hooks/use-t";
 import { toCamelCase } from "@/utils/format-text";
 import { applyValidationErrors } from "@/utils/validation-helper";
 
+import { MASTER_USERS_BALANCES_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/[id]/balances/_messages";
 import type { TAddUserExperiencePointsDialogProps } from "../../_types/add-user-experience-points-dialog-props";
 import {
-  AddUserExperiencePointsFormSchema,
+  createAddUserExperiencePointsFormSchema,
   type TAddUserExperiencePointsFormSchema,
 } from "./scheme";
-
-const TYPE_OPTIONS: {
-  value: UserExpLogTypeEnum;
-  label: string;
-  icon: LucideIcon;
-}[] = [
-  {
-    value: UserExpLogTypeEnum.PLAYER,
-    label: USER_EXP_LOG_TYPE_LABEL[UserExpLogTypeEnum.PLAYER],
-    icon: ChessKnight,
-  },
-  {
-    value: UserExpLogTypeEnum.DM,
-    label: USER_EXP_LOG_TYPE_LABEL[UserExpLogTypeEnum.DM],
-    icon: BookOpen,
-  },
-];
-
-const DIRECTION_OPTIONS: {
-  value: UserExpLogDirectionEnum;
-  label: string;
-  icon: LucideIcon;
-}[] = [
-  {
-    value: UserExpLogDirectionEnum.INCREMENT,
-    label: USER_EXP_LOG_DIRECTION_LABEL[UserExpLogDirectionEnum.INCREMENT],
-    icon: ArrowUp,
-  },
-  {
-    value: UserExpLogDirectionEnum.DECREMENT,
-    label: USER_EXP_LOG_DIRECTION_LABEL[UserExpLogDirectionEnum.DECREMENT],
-    icon: ArrowDown,
-  },
-];
 
 export default function AddUserExperiencePointsDialog({
   open,
@@ -87,9 +53,55 @@ export default function AddUserExperiencePointsDialog({
   mutationError,
   isPending,
 }: TAddUserExperiencePointsDialogProps) {
+  const { t } = useT(MASTER_USERS_BALANCES_MESSAGES);
+  const schema = useMemo(
+    () => createAddUserExperiencePointsFormSchema(t),
+    [t],
+  );
+
+  const typeOptions = useMemo(
+    (): {
+      value: UserExpLogTypeEnum;
+      label: string;
+      icon: LucideIcon;
+    }[] => [
+      {
+        value: UserExpLogTypeEnum.PLAYER,
+        label: t("enums.expType.player"),
+        icon: ChessKnight,
+      },
+      {
+        value: UserExpLogTypeEnum.DM,
+        label: t("enums.expType.dm"),
+        icon: BookOpen,
+      },
+    ],
+    [t],
+  );
+
+  const directionOptions = useMemo(
+    (): {
+      value: UserExpLogDirectionEnum;
+      label: string;
+      icon: LucideIcon;
+    }[] => [
+      {
+        value: UserExpLogDirectionEnum.INCREMENT,
+        label: t("dialogs.increment"),
+        icon: ArrowUp,
+      },
+      {
+        value: UserExpLogDirectionEnum.DECREMENT,
+        label: t("dialogs.decrement"),
+        icon: ArrowDown,
+      },
+    ],
+    [t],
+  );
+
   const { control, handleSubmit, setError, reset } =
     useForm<TAddUserExperiencePointsFormSchema>({
-      resolver: zodResolver(AddUserExperiencePointsFormSchema),
+      resolver: zodResolver(schema),
       defaultValues: {
         type: UserExpLogTypeEnum.PLAYER,
         direction: UserExpLogDirectionEnum.INCREMENT,
@@ -144,10 +156,9 @@ export default function AddUserExperiencePointsDialog({
     <AlertDialog open={open} onOpenChange={handleOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Add experience points</AlertDialogTitle>
+          <AlertDialogTitle>{t("dialogs.expTitle")}</AlertDialogTitle>
           <AlertDialogDescription>
-            Pick player EXP or DM EXP. Increment adds EXP. Decrement subtracts it.
-            The amount stays positive.
+            {t("dialogs.expDescription")}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -166,9 +177,11 @@ export default function AddUserExperiencePointsDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required>Type</RequiredFieldLabel>
+                  <RequiredFieldLabel required>
+                    {t("dialogs.type")}
+                  </RequiredFieldLabel>
                   <div className="grid grid-cols-2 gap-2">
-                    {TYPE_OPTIONS.map((option) => (
+                    {typeOptions.map((option) => (
                       <Button
                         key={option.value}
                         type="button"
@@ -198,9 +211,11 @@ export default function AddUserExperiencePointsDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required>Direction</RequiredFieldLabel>
+                  <RequiredFieldLabel required>
+                    {t("dialogs.direction")}
+                  </RequiredFieldLabel>
                   <div className="grid grid-cols-2 gap-2">
-                    {DIRECTION_OPTIONS.map((option) => (
+                    {directionOptions.map((option) => (
                       <Button
                         key={option.value}
                         type="button"
@@ -230,7 +245,9 @@ export default function AddUserExperiencePointsDialog({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="experience-amount">Amount</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="experience-amount">
+                    {t("dialogs.amount")}
+                  </RequiredFieldLabel>
                   <Input
                     aria-required
                     id="experience-amount"
@@ -238,7 +255,7 @@ export default function AddUserExperiencePointsDialog({
                     inputMode="numeric"
                     min={1}
                     step={1}
-                    placeholder="Enter amount"
+                    placeholder={t("dialogs.amountPlaceholder")}
                     disabled={isPending}
                     className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                     {...field}
@@ -258,11 +275,11 @@ export default function AddUserExperiencePointsDialog({
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="experience-description">
-                    Description
+                    {t("dialogs.description")}
                   </FieldLabel>
                   <Textarea
                     id="experience-description"
-                    placeholder="Optional"
+                    placeholder={t("dialogs.descriptionPlaceholder")}
                     disabled={isPending}
                     {...field}
                   />
@@ -278,7 +295,7 @@ export default function AddUserExperiencePointsDialog({
 
           <AlertDialogFooter className="mt-4">
             <AlertDialogCancel type="button" disabled={isPending}>
-              Cancel
+              {t("dialogs.cancel")}
             </AlertDialogCancel>
             <Button type="submit" disabled={isPending}>
               <If condition={isPending}>
@@ -286,7 +303,7 @@ export default function AddUserExperiencePointsDialog({
                   <Spinner data-icon="inline-start" />
                 </Then>
               </If>
-              Add
+              {t("dialogs.add")}
             </Button>
           </AlertDialogFooter>
         </form>

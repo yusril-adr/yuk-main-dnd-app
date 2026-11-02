@@ -23,6 +23,8 @@ export type TUserBalanceLogListProps<TType extends number> = {
   isLoading: boolean;
   isError: boolean;
   unit: string;
+  emptyTitle: string;
+  emptyDescription: string;
   onRetry: () => void;
   pageCount: number;
   rowCount: number;

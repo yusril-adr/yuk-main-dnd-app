@@ -4,6 +4,9 @@ import { toast } from "sonner";
 
 import { addUserExperiencePoints } from "@/api/main/modules/master/iam/users/[id]/experience-points";
 import type { TAddUserExperiencePointsPayload } from "@/api/main/modules/master/iam/users/[id]/experience-points/types/add-user-experience-points-payload";
+import { useT } from "@/app/_hooks/use-t";
+
+import { MASTER_USERS_BALANCES_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/[id]/balances/_messages";
 
 export function useAddUserExperiencePoints(
   options?: Omit<
@@ -15,16 +18,18 @@ export function useAddUserExperiencePoints(
     "mutationFn"
   >,
 ) {
+  const { t } = useT(MASTER_USERS_BALANCES_MESSAGES);
+
   return useMutation({
     ...options,
     mutationFn: addUserExperiencePoints,
     onMutate: (...args) => {
-      toast.loading("Adding experience points...");
+      toast.loading(t("toast.addingExp"));
       options?.onMutate?.(...args);
     },
     onSuccess: (...args) => {
       toast.dismiss();
-      toast.success("Experience points added");
+      toast.success(t("toast.expAdded"));
       options?.onSuccess?.(...args);
     },
   });
