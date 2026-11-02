@@ -13,6 +13,7 @@ import {
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
+import { useT } from "@/app/_hooks/use-t";
 import { Button } from "@/app/_components/ui/button";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
@@ -26,8 +27,10 @@ import { useGetUserPagination } from "@/app/(authenticated)/dashboard/master/iam
 import { useDeleteUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-delete-user-by-id";
 import { useGetRoleOptions } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-role-options";
 import CONFIG from "@/common/constants/config";
+import { MASTER_USERS_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/_messages";
 
 export default function UsersPageClient() {
+  const { t } = useT(MASTER_USERS_MESSAGES);
   const { auth } = useAuthContext();
   const canCreateUsers = auth?.permissions.includes(
     PermissionEnum.USERS_CREATE,
@@ -140,16 +143,16 @@ export default function UsersPageClient() {
   return (
     <div className="w-full flex justify-center min-w-0">
       <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
-        <AppBreadcrumb items={[{ name: "Users" }]} />
+        <AppBreadcrumb items={[{ name: t("breadcrumb") }]} />
 
         <div className="flex justify-between items-center mt-4 mb-6">
-          <h1 className="font-heading text-2xl">Users</h1>
+          <h1 className="font-heading text-2xl">{t("title")}</h1>
           {canCreateUsers && (
             <Button
               render={<Link href="/dashboard/master/iam/users/create" />}
               nativeButton={false}
             >
-              <Plus /> Add User
+              <Plus /> {t("addUser")}
             </Button>
           )}
         </div>
