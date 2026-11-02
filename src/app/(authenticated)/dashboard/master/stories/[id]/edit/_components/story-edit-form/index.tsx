@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
+import { enUS, id as idLocale } from "date-fns/locale";
 import { CalendarDays as CalendarIcon, XIcon } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
@@ -33,9 +33,7 @@ import { Button } from "@/app/_components/ui/button";
 
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
-import { STORY_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-type-label";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
-import { STORY_LOCATION_TYPE_LABEL } from "@/api/main/modules/master/stories/enums/story-location-type-label";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import { toCamelCase } from "@/utils/format-text";
 import dayjs from "@/libs/dayjs";
@@ -48,8 +46,25 @@ import { toStoryRewardPayload } from "@/app/(authenticated)/dashboard/master/sto
 import { STORY_REWARD_FIELD_CONFIG } from "@/app/(authenticated)/dashboard/master/stories/_constants/story-reward-field";
 import StoryEditXpGuidePopover from "./story-edit-xp-guide-popover";
 import StoryRewardLockedPopover from "@/app/(authenticated)/dashboard/master/stories/_components/story-reward-locked-popover";
-import { StoryEditFormSchema, type TStoryEditFormSchema } from "./scheme";
+import {
+  createStoryEditFormSchema,
+  type TStoryEditFormSchema,
+} from "./scheme";
 import type { TStoryEditFormProps } from "../../_types/story-edit-form-props";
+import { useT } from "@/app/_hooks/use-t";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { localeToBcp47 } from "@/libs/i18n/locales";
+import { MASTER_STORIES_EDIT_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/[id]/edit/_messages";
+
+const TYPE_MESSAGE_KEY = {
+  [StoryTypeEnum.ONESHOT]: "enums.type.oneshot",
+  [StoryTypeEnum.CAMPAIGN]: "enums.type.campaign",
+} as const;
+
+const LOCATION_MESSAGE_KEY = {
+  [StoryLocationTypeEnum.ONLINE]: "enums.location.online",
+  [StoryLocationTypeEnum.OFFLINE]: "enums.location.offline",
+} as const;
 
 export default function StoryEditForm({
   story,
@@ -61,6 +76,23 @@ export default function StoryEditForm({
   onUploadBanner,
   isUploadingBanner,
 }: TStoryEditFormProps) {
+  const { t } = useT(MASTER_STORIES_EDIT_MESSAGES);
+  const { locale } = useLocale();
+  const bcp47 = localeToBcp47(locale);
+  const dateFnsLocale = locale === "id" ? idLocale : enUS;
+  const schema = useMemo(
+    () => createStoryEditFormSchema(t, bcp47),
+    [t, bcp47],
+  );
+  const typeLabel = useCallback(
+    (type: StoryTypeEnum) => t(TYPE_MESSAGE_KEY[type]),
+    [t],
+  );
+  const locationLabel = useCallback(
+    (location: StoryLocationTypeEnum) => t(LOCATION_MESSAGE_KEY[location]),
+    [t],
+  );
+
   const values = useMemo(
     () => ({
       bannerFileId: "",
@@ -97,7 +129,7 @@ export default function StoryEditForm({
 
   const { control, handleSubmit, setError, setValue, clearErrors } =
     useForm<TStoryEditFormSchema>({
-      resolver: zodResolver(StoryEditFormSchema),
+      resolver: zodResolver(schema),
       values,
     });
 
@@ -254,11 +286,11 @@ export default function StoryEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="title">Title</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="title">{t("fields.title")}</RequiredFieldLabel>
                   <Input
                     aria-required
                     id="title"
-                    placeholder="Input story title"
+                    placeholder={t("fields.titlePlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -274,14 +306,14 @@ export default function StoryEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel id="description-label">Description</FieldLabel>
+                  <FieldLabel id="description-label">{t("fields.description")}</FieldLabel>
                   <RichTextEditor
                     id="description"
                     ariaLabelledBy="description-label"
                     value={field.value ?? ""}
                     onChange={field.onChange}
                     onBlur={field.onBlur}
-                    placeholder="Describe the story: the hook, the setting, what players should expect..."
+                    placeholder={t("fields.descriptionPlaceholder")}
                     maxLength={STORY_DESCRIPTION_MAX_LENGTH}
                     disabled={isFormDisabled}
                     isInvalid={fieldState.invalid}
@@ -298,7 +330,7 @@ export default function StoryEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="type">Type</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="type">{t("fields.type")}</RequiredFieldLabel>
                   <Combobox
                     id="type"
                     items={Object.values(StoryTypeEnum).filter(
@@ -311,15 +343,15 @@ export default function StoryEditForm({
                     // (and on create until picked); null = no selection for Base UI
                     value={field.value ?? null}
                     // Same labels as the detail page (e.g. "oneshot" -> "Oneshot")
-                    itemToStringLabel={(item) => STORY_TYPE_LABEL[item]}
+                    itemToStringLabel={(item) => typeLabel(item)}
                   >
-                    <ComboboxInput aria-required placeholder="Select type" />
+                    <ComboboxInput aria-required placeholder={t("fields.selectType")} />
                     <ComboboxContent>
-                      <ComboboxEmpty>No items found.</ComboboxEmpty>
+                      <ComboboxEmpty>{t("fields.noItemsFound")}</ComboboxEmpty>
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {STORY_TYPE_LABEL[item as StoryTypeEnum]}
+                            {typeLabel(item as StoryTypeEnum)}
                           </ComboboxItem>
                         )}
                       </ComboboxList>
@@ -337,10 +369,10 @@ export default function StoryEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="gameSystem">Game System</FieldLabel>
+                  <FieldLabel htmlFor="gameSystem">{t("fields.gameSystem")}</FieldLabel>
                   <Input
                     id="gameSystem"
-                    placeholder="e.g. DnD 5e 2014"
+                    placeholder={t("fields.gameSystemPlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -356,12 +388,12 @@ export default function StoryEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="maxMembers">Max Members</FieldLabel>
+                  <FieldLabel htmlFor="maxMembers">{t("fields.maxMembers")}</FieldLabel>
                   <Input
                     id="maxMembers"
                     type="number"
                     min={1}
-                    placeholder="Input max members"
+                    placeholder={t("fields.maxMembersPlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -380,15 +412,13 @@ export default function StoryEditForm({
                 render={({ field, fieldState }) => (
                   <Field className="grid" data-invalid={fieldState.invalid}>
                     <div className="flex items-center gap-1">
-                      <FieldLabel htmlFor="expAwarded">EXP Awarded</FieldLabel>
+                      <FieldLabel htmlFor="expAwarded">{t("fields.expAwarded")}</FieldLabel>
                       {STORY_REWARD_FIELD_CONFIG.playerExp.isEditable ? (
                         <StoryEditXpGuidePopover />
                       ) : (
                         <StoryRewardLockedPopover
-                          label="EXP Awarded"
-                          description={
-                            STORY_REWARD_FIELD_CONFIG.playerExp.lockedNote
-                          }
+                          label={t("fields.expAwarded")}
+                          description={t("rewards.expLockedNote")}
                         />
                       )}
                     </div>
@@ -424,14 +454,12 @@ export default function StoryEditForm({
                   <Field className="grid" data-invalid={fieldState.invalid}>
                     <div className="flex items-center gap-1">
                       <FieldLabel htmlFor="pointAwarded">
-                        Gold Awarded (GP)
+                        {t("fields.goldAwarded")}
                       </FieldLabel>
                       {!STORY_REWARD_FIELD_CONFIG.gold.isEditable && (
                         <StoryRewardLockedPopover
-                          label="Gold Awarded"
-                          description={
-                            STORY_REWARD_FIELD_CONFIG.gold.lockedNote
-                          }
+                          label={t("fields.goldAwardedShort")}
+                          description={t("rewards.goldLockedNote")}
                         />
                       )}
                     </div>
@@ -467,7 +495,7 @@ export default function StoryEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel>Start At</FieldLabel>
+                  <FieldLabel>{t("fields.startAt")}</FieldLabel>
                   <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-4">
                     <Popover open={dateOpen} onOpenChange={setDateOpen}>
                       <PopoverTrigger
@@ -484,11 +512,11 @@ export default function StoryEditForm({
                         <If condition={!!field.value}>
                           <Then>
                             {field.value
-                              ? format(new Date(field.value), "PPP")
+                              ? dayjs(field.value).locale(locale).format("D MMMM YYYY")
                               : null}
                           </Then>
                           <Else>
-                            <span>Pick a date</span>
+                            <span>{t("fields.pickDate")}</span>
                           </Else>
                         </If>
                       </PopoverTrigger>
@@ -496,6 +524,7 @@ export default function StoryEditForm({
                         <Calendar
                           mode="single"
                           captionLayout="dropdown"
+                          locale={dateFnsLocale}
                           selected={
                             field.value ? new Date(field.value) : undefined
                           }
@@ -511,7 +540,7 @@ export default function StoryEditForm({
                         disabled={isFormDisabled}
                         value={
                           field.value
-                            ? format(new Date(field.value), "HH:mm")
+                            ? dayjs(field.value).format("HH:mm")
                             : ""
                         }
                         onChange={(e) =>
@@ -546,7 +575,7 @@ export default function StoryEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="locationType">Location Type</RequiredFieldLabel>
+                  <RequiredFieldLabel required htmlFor="locationType">{t("fields.locationType")}</RequiredFieldLabel>
                   <Combobox
                     id="locationType"
                     items={Object.values(StoryLocationTypeEnum).filter(
@@ -559,21 +588,15 @@ export default function StoryEditForm({
                     // (and on create until picked); null = no selection for Base UI
                     value={field.value ?? null}
                     // Same labels as the detail page (e.g. "oneshot" -> "Oneshot")
-                    itemToStringLabel={(item) =>
-                      STORY_LOCATION_TYPE_LABEL[item as StoryLocationTypeEnum]
-                    }
+                    itemToStringLabel={(item) => locationLabel(item)}
                   >
-                    <ComboboxInput aria-required placeholder="Select location type" />
+                    <ComboboxInput aria-required placeholder={t("fields.selectLocationType")} />
                     <ComboboxContent>
-                      <ComboboxEmpty>No items found.</ComboboxEmpty>
+                      <ComboboxEmpty>{t("fields.noItemsFound")}</ComboboxEmpty>
                       <ComboboxList>
                         {(item) => (
                           <ComboboxItem key={item} value={item}>
-                            {
-                              STORY_LOCATION_TYPE_LABEL[
-                                item as StoryLocationTypeEnum
-                              ]
-                            }
+                            {locationLabel(item as StoryLocationTypeEnum)}
                           </ComboboxItem>
                         )}
                       </ComboboxList>
@@ -592,12 +615,12 @@ export default function StoryEditForm({
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
                   <RequiredFieldLabel required htmlFor="locationDetail">
-                    Location Detail
+                    {t("fields.locationDetail")}
                   </RequiredFieldLabel>
                   <Textarea
                     aria-required
                     id="locationDetail"
-                    placeholder="e.g. Venue name and address"
+                    placeholder={t("fields.locationDetailPlaceholder")}
                     disabled={isFormDisabled}
                     {...field}
                   />
@@ -613,7 +636,7 @@ export default function StoryEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="locationLink">Location Link</FieldLabel>
+                  <FieldLabel htmlFor="locationLink">{t("fields.locationLink")}</FieldLabel>
                   <Input
                     id="locationLink"
                     type="url"
@@ -635,7 +658,7 @@ export default function StoryEditForm({
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="discordChannelLink">
-                    Discord Channel Link
+                    {t("fields.discordChannelLink")}
                   </FieldLabel>
                   <Input
                     id="discordChannelLink"
@@ -658,7 +681,7 @@ export default function StoryEditForm({
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="feedbackFormLink">
-                    Feedback Form Link
+                    {t("fields.feedbackFormLink")}
                   </FieldLabel>
                   <Input
                     id="feedbackFormLink"

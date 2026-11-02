@@ -6,6 +6,8 @@ import { Button } from "@/app/_components/ui/button";
 import { Field, FieldGroup } from "@/app/_components/ui/field";
 import { Spinner } from "@/app/_components/ui/spinner";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
+import { useT } from "@/app/_hooks/use-t";
+import { MASTER_STORIES_CREATE_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/create/_messages";
 
 import type { TStoryCreateFormActionsProps } from "@/app/(authenticated)/dashboard/master/stories/create/_types/story-create-form-actions-props";
 
@@ -16,6 +18,7 @@ export default function StoryCreateFormActions({
   submittingStatus,
   onSubmitWithStatus,
 }: TStoryCreateFormActionsProps) {
+  const { t } = useT(MASTER_STORIES_CREATE_MESSAGES);
   const isSubmitting = (status: StoryStatusEnum) =>
     isPending && submittingStatus === status;
 
@@ -35,7 +38,7 @@ export default function StoryCreateFormActions({
             disabled={disabled}
             nativeButton={false}
           >
-            Cancel
+            {t("actions.cancel")}
           </Button>
 
           <Button
@@ -53,7 +56,7 @@ export default function StoryCreateFormActions({
                 <FilePen data-icon="inline-start" />
               </Else>
             </If>
-            Save as Draft
+            {t("actions.saveAsDraft")}
           </Button>
 
           <Button
@@ -70,7 +73,7 @@ export default function StoryCreateFormActions({
                 <Send data-icon="inline-start" />
               </Else>
             </If>
-            Publish
+            {t("actions.publish")}
           </Button>
         </div>
       </Field>

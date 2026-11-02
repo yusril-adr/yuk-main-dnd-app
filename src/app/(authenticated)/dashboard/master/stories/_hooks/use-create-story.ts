@@ -4,6 +4,8 @@ import { toast } from "sonner";
 
 import { createStory } from "@/api/main/modules/master/stories";
 import type { TStoryCreatePayload } from "@/api/main/modules/master/stories/types/story-create-payload";
+import { useT } from "@/app/_hooks/use-t";
+import { MASTER_STORIES_FORM_SHARED_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/_components/_messages";
 
 export function useCreateStory(
   options?: Omit<
@@ -11,16 +13,18 @@ export function useCreateStory(
     "mutationFn"
   >,
 ) {
+  const { t } = useT(MASTER_STORIES_FORM_SHARED_MESSAGES);
+
   return useMutation({
     ...options,
     mutationFn: createStory,
     onMutate: (...args) => {
-      toast.loading("Creating story...");
+      toast.loading(t("toast.creating"));
       options?.onMutate?.(...args);
     },
     onSuccess: (...args) => {
       toast.dismiss();
-      toast.success("Story created");
+      toast.success(t("toast.created"));
       options?.onSuccess?.(...args);
     },
   });

@@ -1,0 +1,100 @@
+{
+  "breadcrumb": {
+    "stories": "Stories",
+    "create": "Buat",
+    "edit": "Edit"
+  },
+  "title": {
+    "create": "Buat Story",
+    "edit": "Edit Story"
+  },
+  "fields": {
+    "title": "Judul",
+    "titlePlaceholder": "Masukkan judul story",
+    "description": "Deskripsi",
+    "descriptionPlaceholder": "Jelaskan story: hook-nya, setting-nya, dan apa yang bisa diharapkan pemain...",
+    "type": "Tipe",
+    "selectType": "Pilih tipe",
+    "noItemsFound": "Tidak ada item.",
+    "gameSystem": "Sistem Game",
+    "gameSystemPlaceholder": "mis. DnD 5e 2014",
+    "maxMembers": "Maks. Anggota",
+    "maxMembersPlaceholder": "Masukkan maks. anggota",
+    "expAwarded": "EXP Diberikan",
+    "goldAwarded": "Gold Diberikan (GP)",
+    "goldAwardedShort": "Gold Diberikan",
+    "startAt": "Waktu Mulai",
+    "pickDate": "Pilih tanggal",
+    "locationType": "Tipe Lokasi",
+    "selectLocationType": "Pilih tipe lokasi",
+    "locationDetail": "Detail Lokasi",
+    "locationDetailPlaceholder": "mis. Nama dan alamat venue",
+    "locationLink": "Link Lokasi",
+    "discordChannelLink": "Link Channel Discord",
+    "feedbackFormLink": "Link Form Feedback"
+  },
+  "enums": {
+    "type": {
+      "oneshot": "Oneshot",
+      "campaign": "Campaign"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "status": {
+      "draft": "Draf",
+      "published": "Published",
+      "archived": "Diarsipkan",
+      "cancelled": "Dibatalkan",
+      "completed": "Selesai"
+    }
+  },
+  "rewards": {
+    "expLockedNote": "Reward EXP sudah distandarkan: setiap pemain yang hadir mendapat 1 EXP per story, jadi tidak bisa diisi di sini. DM otomatis mendapat 1 DM EXP, kecuali mereka juga ikut bermain.",
+    "goldLockedNote": "Reward Gold sudah distandarkan untuk sekarang, jadi tidak bisa diisi di sini."
+  },
+  "xpGuide": {
+    "aria": "Panduan EXP",
+    "title": "Panduan EXP menurut kesulitan",
+    "note": "Hanya panduan. DM boleh memasukkan nilai apa pun.",
+    "easy": "Mudah",
+    "medium": "Sedang",
+    "hard": "Sulit",
+    "xpValue": "{{count}} EXP"
+  },
+  "actions": {
+    "cancel": "Batal",
+    "saveAsDraft": "Simpan sebagai Draf",
+    "publish": "Publish",
+    "save": "Simpan",
+    "currentStatus": "Status saat ini:"
+  },
+  "toast": {
+    "creating": "Membuat story...",
+    "created": "Story dibuat",
+    "completedBlocked": "Story yang sudah Selesai tidak bisa diedit",
+    "editForbidden": "Kamu tidak punya izin untuk mengedit story ini"
+  },
+  "validation": {
+    "titleRequired": "Judul wajib diisi",
+    "titleMax": "Judul maksimal {{max}} karakter",
+    "titleNotEmpty": "Judul tidak boleh kosong",
+    "descriptionMax": "Deskripsi maksimal {{max}} karakter",
+    "typeRequired": "Tipe wajib diisi",
+    "gameSystemMax": "Sistem game maksimal {{max}} karakter",
+    "maxMembersWhole": "Maks. anggota harus bilangan bulat minimal 1",
+    "rewardWhole": "{{label}} harus bilangan bulat 0 atau lebih",
+    "rewardMax": "{{label}} maksimal {{max}}",
+    "locationTypeRequired": "Tipe lokasi wajib diisi",
+    "locationDetailRequired": "Detail lokasi wajib diisi",
+    "locationLinkMax": "Link lokasi maksimal {{max}} karakter",
+    "locationLinkHttps": "Link lokasi harus berupa link https",
+    "discordLinkMax": "Link channel Discord maksimal {{max}} karakter",
+    "discordLinkHttps": "Link channel Discord harus link https di discord.com, discord.gg, atau discordapp.com",
+    "feedbackLinkMax": "Link form feedback maksimal {{max}} karakter",
+    "feedbackLinkHttps": "Link form feedback harus berupa link https",
+    "rewardLabelExp": "EXP diberikan",
+    "rewardLabelGold": "Gold diberikan"
+  }
+}

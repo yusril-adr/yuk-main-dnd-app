@@ -16,8 +16,11 @@ import type { TStoryBannerUploadHandler } from "@/app/(authenticated)/dashboard/
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import CONFIG from "@/common/constants/config";
+import { useT } from "@/app/_hooks/use-t";
+import { MASTER_STORIES_EDIT_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/[id]/edit/_messages";
 
 export default function StoryEditPageClient() {
+  const { t } = useT(MASTER_STORIES_EDIT_MESSAGES);
   const { id } = useParams();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -71,18 +74,21 @@ export default function StoryEditPageClient() {
 
     toast.error(
       isCompletedEditBlocked
-        ? "Completed stories can't be edited"
-        : "You don't have permission to edit this story",
+        ? t("toast.completedBlocked")
+        : t("toast.editForbidden"),
     );
     router.replace(`/dashboard/master/stories/${storyId}`);
-  }, [isCompletedEditBlocked, isEditForbidden, router, storyId]);
+  }, [isCompletedEditBlocked, isEditForbidden, router, storyId, t]);
 
   return (
     <div className="w-full flex justify-center">
       <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
         <AppBreadcrumb
           items={[
-            { name: "Stories", link: "/dashboard/master/stories" },
+            {
+              name: t("breadcrumb.stories"),
+              link: "/dashboard/master/stories",
+            },
             ...(story
               ? [
                   {
@@ -91,7 +97,7 @@ export default function StoryEditPageClient() {
                   },
                 ]
               : []),
-            { name: "Edit" },
+            { name: t("breadcrumb.edit") },
           ]}
         />
 
@@ -99,7 +105,7 @@ export default function StoryEditPageClient() {
           <Link href={`/dashboard/master/stories/${storyId}`}>
             <ArrowLeft />
           </Link>
-          <h1 className="font-heading text-2xl">Edit Story</h1>
+          <h1 className="font-heading text-2xl">{t("title.edit")}</h1>
         </div>
 
         <StoryEditForm
