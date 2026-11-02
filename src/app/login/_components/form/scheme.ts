@@ -1,8 +1,14 @@
 import * as z from "zod";
 
-export const LoginFormSchema = z.object({
-  identifier: z.string("Username/Email is required"),
-  password: z.string("Password is required"),
-});
+import type { TLoginTranslate } from "@/app/login/_types/login-translate";
 
-export type TLoginFormSchema = z.infer<typeof LoginFormSchema>;
+export function createLoginFormSchema(t: TLoginTranslate) {
+  return z.object({
+    identifier: z.string().min(1, t("validation.identifierRequired")),
+    password: z.string().min(1, t("validation.passwordRequired")),
+  });
+}
+
+export type TLoginFormSchema = z.infer<
+  ReturnType<typeof createLoginFormSchema>
+>;

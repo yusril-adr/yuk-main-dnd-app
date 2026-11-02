@@ -1,7 +1,13 @@
 import * as z from "zod";
 
-export const SwitchFormSchema = z.object({
-  role: z.string().min(1, "Role is required"),
-});
+import type { TSwitchRoleTranslate } from "@/app/(authenticated)/switch-role/_types/switch-role-translate";
 
-export type TSwitchFormSchema = z.infer<typeof SwitchFormSchema>;
+export function createSwitchFormSchema(t: TSwitchRoleTranslate) {
+  return z.object({
+    role: z.string().min(1, t("validation.roleRequired")),
+  });
+}
+
+export type TSwitchFormSchema = z.infer<
+  ReturnType<typeof createSwitchFormSchema>
+>;

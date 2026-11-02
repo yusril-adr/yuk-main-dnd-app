@@ -1,3 +1,5 @@
+"use client";
+
 import { EyeOffIcon, EyeIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
@@ -25,9 +27,11 @@ import { Spinner } from "@/app/_components/ui/spinner";
 import type { TMainApiErrorResponse } from "@/api/main/types/response";
 import type { TLoginPayload } from "@/api/main/modules/auth/login/types/login-payload";
 import type { TLoginFormProps } from "@/app/login/_types/login-form-props";
-import { LoginFormSchema, type TLoginFormSchema } from "./scheme";
+import { createLoginFormSchema, type TLoginFormSchema } from "./scheme";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import MainAPIValidationError from "@/api/main/errors/validation-error";
+import { useT } from "@/app/_hooks/use-t";
+import { LOGIN_MESSAGES } from "@/app/login/_messages";
 
 export function LoginForm({
   onSubmitPayload,
@@ -35,10 +39,13 @@ export function LoginForm({
   isPending,
   isPaused,
 }: TLoginFormProps) {
+  const { t } = useT(LOGIN_MESSAGES);
   const [isShowPassword, setIsShowPassword] = useState(false);
 
+  const schema = useMemo(() => createLoginFormSchema(t), [t]);
+
   const { control, handleSubmit, setError } = useForm<TLoginFormSchema>({
-    resolver: zodResolver(LoginFormSchema),
+    resolver: zodResolver(schema),
     defaultValues: { identifier: "", password: "" },
   });
 
@@ -71,10 +78,8 @@ export function LoginForm({
     >
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>
-            Enter your username or email below to login to your account
-          </CardDescription>
+          <CardTitle>{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
 
         <CardContent>
@@ -84,11 +89,11 @@ export function LoginForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid gap-2" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="identifier">Username/Email</FieldLabel>
+                  <FieldLabel htmlFor="identifier">{t("identifier")}</FieldLabel>
                   <Input
                     id="identifier"
                     type="identifier"
-                    placeholder="user@example.com"
+                    placeholder={t("identifierPlaceholder")}
                     {...field}
                   />
 
@@ -104,12 +109,12 @@ export function LoginForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid gap-2" data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <FieldLabel htmlFor="password">{t("password")}</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       id="password"
                       type={isShowPassword ? "text" : "password"}
-                      placeholder="Enter password"
+                      placeholder={t("passwordPlaceholder")}
                       autoComplete="off"
                       {...field}
                     />
@@ -117,11 +122,18 @@ export function LoginForm({
                       <button
                         className="btn btn-ghost btn-square btn-sm"
                         type="button"
+                        aria-label={
+                          isShowPassword ? t("hidePassword") : t("showPassword")
+                        }
                         onClick={() => setIsShowPassword(!isShowPassword)}
                       >
                         <If condition={isShowPassword}>
-                          <Then><EyeOffIcon /></Then>
-                          <Else><EyeIcon /></Else>
+                          <Then>
+                            <EyeOffIcon />
+                          </Then>
+                          <Else>
+                            <EyeIcon />
+                          </Else>
                         </If>
                       </button>
                     </InputGroupAddon>
@@ -137,10 +149,12 @@ export function LoginForm({
         </CardContent>
 
         <CardFooter className="flex-col gap-2">
-            <Button type="submit" className="w-full" disabled={isFormDisabled}>
+          <Button type="submit" className="w-full" disabled={isFormDisabled}>
             <If condition={isFormDisabled}>
-              <Then><Spinner /></Then>
-              <Else>Login</Else>
+              <Then>
+                <Spinner />
+              </Then>
+              <Else>{t("submit")}</Else>
             </If>
           </Button>
         </CardFooter>

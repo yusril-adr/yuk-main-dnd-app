@@ -1,0 +1,14 @@
+{
+  "description": "Pilih role untuk melanjutkan.",
+  "role": "Role",
+  "rolePlaceholder": "Pilih role",
+  "noRoles": "Tidak ada role untuk akun ini.",
+  "submit": "Ganti role",
+  "validation": {
+    "roleRequired": "Role wajib dipilih"
+  },
+  "toast": {
+    "switching": "Mengganti role...",
+    "success": "Role berhasil diganti"
+  }
+}

@@ -38,10 +38,12 @@ import { Spinner } from "@/app/_components/ui/spinner";
 import type { TMainApiErrorResponse } from "@/api/main/types/response";
 import type { TSwitchRolePayload } from "@/api/main/modules/auth/switch-role/types/switch-role-payload";
 import type { TSwitchRoleFormProps } from "@/app/(authenticated)/switch-role/_types/switch-role-form-props";
-import { SwitchFormSchema, type TSwitchFormSchema } from "./scheme";
+import { createSwitchFormSchema, type TSwitchFormSchema } from "./scheme";
 import { applyValidationErrors } from "@/utils/validation-helper";
 import MainAPIValidationError from "@/api/main/errors/validation-error";
 import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
+import { useT } from "@/app/_hooks/use-t";
+import { SWITCH_ROLE_MESSAGES } from "@/app/(authenticated)/switch-role/_messages";
 
 export function SwitchRoleForm({
   user,
@@ -50,10 +52,13 @@ export function SwitchRoleForm({
   isPending,
   isPaused,
 }: TSwitchRoleFormProps) {
+  const { t } = useT(SWITCH_ROLE_MESSAGES);
   const roles = user.roles ?? [];
 
+  const schema = useMemo(() => createSwitchFormSchema(t), [t]);
+
   const { control, handleSubmit, setError } = useForm<TSwitchFormSchema>({
-    resolver: zodResolver(SwitchFormSchema),
+    resolver: zodResolver(schema),
     defaultValues: { role: user.selected_role?.key ?? roles[0]?.key ?? "" },
   });
 
@@ -92,7 +97,7 @@ export function SwitchRoleForm({
             </Avatar>
           </div>
           <CardTitle>{user.display_name}</CardTitle>
-          <CardDescription>Choose a role to continue.</CardDescription>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
 
         <CardContent>
@@ -101,17 +106,19 @@ export function SwitchRoleForm({
             control={control}
             render={({ field, fieldState }) => (
               <Field className="grid gap-2" data-invalid={fieldState.invalid}>
-                <RequiredFieldLabel required htmlFor="role">Role</RequiredFieldLabel>
+                <RequiredFieldLabel required htmlFor="role">
+                  {t("role")}
+                </RequiredFieldLabel>
                 <Select
                   value={field.value}
                   onValueChange={(value) => field.onChange(value ?? "")}
                   disabled={isFormDisabled}
                 >
                   <SelectTrigger aria-required id="role" className="w-full">
-                    <SelectValue placeholder="Select a role">
+                    <SelectValue placeholder={t("rolePlaceholder")}>
                       {(value: string | null) =>
                         roles.find((role) => role.key === value)?.name ??
-                        "Select a role"
+                        t("rolePlaceholder")
                       }
                     </SelectValue>
                   </SelectTrigger>
@@ -127,9 +134,7 @@ export function SwitchRoleForm({
                 </Select>
 
                 {roles.length === 0 && (
-                  <FieldDescription>
-                    No roles are available for this account.
-                  </FieldDescription>
+                  <FieldDescription>{t("noRoles")}</FieldDescription>
                 )}
 
                 {fieldState.invalid && (
@@ -143,8 +148,10 @@ export function SwitchRoleForm({
         <CardFooter>
           <Button type="submit" className="w-full" disabled={isFormDisabled}>
             <If condition={isPending || isPaused}>
-              <Then><Spinner /></Then>
-              <Else>Switch role</Else>
+              <Then>
+                <Spinner />
+              </Then>
+              <Else>{t("submit")}</Else>
             </If>
           </Button>
         </CardFooter>

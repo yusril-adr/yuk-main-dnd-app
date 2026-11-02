@@ -1,0 +1,14 @@
+{
+  "description": "Choose a role to continue.",
+  "role": "Role",
+  "rolePlaceholder": "Select a role",
+  "noRoles": "No roles are available for this account.",
+  "submit": "Switch role",
+  "validation": {
+    "roleRequired": "Role is required"
+  },
+  "toast": {
+    "switching": "Switching role...",
+    "success": "Role switched successfully"
+  }
+}
