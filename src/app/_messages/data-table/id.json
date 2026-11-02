@@ -1,0 +1,4 @@
+{
+  "range": "{{start}} - {{end}} dari {{total}} item",
+  "perPage": "{{count}} / halaman"
+}

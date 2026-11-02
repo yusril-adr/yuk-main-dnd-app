@@ -1,0 +1,22 @@
+{
+  "breadcrumb": "Permissions",
+  "title": "Permissions",
+  "columns": {
+    "no": "No.",
+    "module": "Module",
+    "action": "Action",
+    "key": "Key",
+    "createdAt": "Created At"
+  },
+  "filters": {
+    "filter": "Filter",
+    "module": "Module",
+    "action": "Action",
+    "selectModule": "Select module",
+    "selectAction": "Select action",
+    "noItemsFound": "No items found.",
+    "clear": "Clear",
+    "apply": "Apply",
+    "searchPlaceholder": "Type minimum 3 characters to search ..."
+  }
+}

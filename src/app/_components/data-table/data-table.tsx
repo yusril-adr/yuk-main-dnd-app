@@ -26,15 +26,11 @@ import {
 } from "@/app/_components/ui/select";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { generatePages } from "@/utils/table-helper";
+import { useT } from "@/app/_hooks/use-t";
+import { DATA_TABLE_MESSAGES } from "@/app/_messages/data-table";
 import type { TDataTableProps } from "@/app/_types/data-table-props";
 
-const PAGE_SIZE_OPTIONS = [
-  { label: "5 / page", value: 5 },
-  { label: "10 / page", value: 10 },
-  { label: "20 / page", value: 20 },
-  { label: "50 / page", value: 50 },
-  { label: "100 / page", value: 100 },
-];
+const PAGE_SIZES = [5, 10, 20, 50, 100];
 
 export function DataTable<TData>({
   data,
@@ -44,6 +40,11 @@ export function DataTable<TData>({
   children,
   tableOptions,
 }: TDataTableProps<TData>) {
+  const { t } = useT(DATA_TABLE_MESSAGES);
+  const pageSizeOptions = PAGE_SIZES.map((value) => ({
+    label: t("perPage", { count: value }),
+    value,
+  }));
   const {
     state: tableOptionsState,
     columns = [],
@@ -141,7 +142,11 @@ export function DataTable<TData>({
         {!isLoading && (
           <div className="flex flex-col md:flex-row justify-end items-center gap-2">
             <span>
-              {indexStart} - {indexEnd} of {rowCount} items
+              {t("range", {
+                start: indexStart,
+                end: indexEnd,
+                total: rowCount,
+              })}
             </span>
 
             <ButtonGroup>
@@ -177,7 +182,7 @@ export function DataTable<TData>({
             </ButtonGroup>
 
             <Select
-              items={PAGE_SIZE_OPTIONS}
+              items={pageSizeOptions}
               value={Number(pageSize)}
               onValueChange={(val) => onPageSizeChange?.(val || pageSize)}
             >
@@ -186,7 +191,7 @@ export function DataTable<TData>({
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  {PAGE_SIZE_OPTIONS.map((item) => (
+                  {pageSizeOptions.map((item) => (
                     <SelectItem key={item.value} value={item.value.toString()}>
                       {item.label}
                     </SelectItem>

@@ -35,6 +35,9 @@ import {
 import { PermissionModuleEnum } from "@/api/main/modules/master/iam/permissions/enums/permission-module";
 import { PermissionActionEnum } from "@/api/main/modules/master/iam/permissions/enums/permission-action";
 import dayjs from "@/libs/dayjs";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
+import { MASTER_PERMISSIONS_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/permissions/_messages";
 
 export default function PermissionTable({
   data,
@@ -45,13 +48,15 @@ export default function PermissionTable({
   columnFilters,
   onActionHandler,
 }: TPermissionTableProps) {
+  const { t } = useT(MASTER_PERMISSIONS_MESSAGES);
+  const { locale } = useLocale();
   const filterForm = onActionHandler.onFilterForm!;
 
   const columnHelper = createColumnHelper<TPermissionTableCol>();
   const columns = [
     columnHelper.display({
       id: "no",
-      header: "No.",
+      header: t("columns.no"),
       cell: ({ row, table }) => {
         const pageIndex = table.getState().pagination.pageIndex;
         const pageSize = table.getState().pagination.pageSize;
@@ -63,7 +68,7 @@ export default function PermissionTable({
     columnHelper.accessor("module", {
       header: () => (
         <DataTableSortableColHeader
-          label="Module"
+          label={t("columns.module")}
           sortKey="module"
           sortBy={queryTable.sortBy}
           order={queryTable.order}
@@ -76,7 +81,7 @@ export default function PermissionTable({
     columnHelper.accessor("action", {
       header: () => (
         <DataTableSortableColHeader
-          label="Action"
+          label={t("columns.action")}
           sortKey="action"
           sortBy={queryTable.sortBy}
           order={queryTable.order}
@@ -89,7 +94,7 @@ export default function PermissionTable({
     columnHelper.accessor("key", {
       header: () => (
         <DataTableSortableColHeader
-          label="Key"
+          label={t("columns.key")}
           sortKey="key"
           sortBy={queryTable.sortBy}
           order={queryTable.order}
@@ -102,14 +107,15 @@ export default function PermissionTable({
     columnHelper.accessor("created_at", {
       header: () => (
         <DataTableSortableColHeader
-          label="Created At"
+          label={t("columns.createdAt")}
           sortKey="created_at"
           sortBy={queryTable.sortBy}
           order={queryTable.order}
           onClick={() => onActionHandler.onSortingChange?.("created_at")}
         />
       ),
-      cell: (info) => dayjs(info.getValue()).format("YYYY-MM-DD HH:mm:ss"),
+      cell: (info) =>
+        dayjs(info.getValue()).locale(locale).format("YYYY-MM-DD HH:mm:ss"),
     }),
   ];
 
@@ -150,7 +156,7 @@ export default function PermissionTable({
         <Popover>
           <PopoverTrigger render={<Button variant="outline" />}>
             <Funnel />
-            Filter
+            {t("filters.filter")}
           </PopoverTrigger>
           <PopoverContent align="start">
             <form
@@ -166,7 +172,9 @@ export default function PermissionTable({
                       className="grid gap-2"
                       data-invalid={fieldState.invalid}
                     >
-                      <FieldLabel htmlFor="module">Module</FieldLabel>
+                      <FieldLabel htmlFor="module">
+                        {t("filters.module")}
+                      </FieldLabel>
                       <Combobox
                         id="module"
                         items={Object.values(PermissionModuleEnum)}
@@ -175,9 +183,14 @@ export default function PermissionTable({
                         }}
                         {...field}
                       >
-                        <ComboboxInput placeholder="Select module" showClear />
+                        <ComboboxInput
+                          placeholder={t("filters.selectModule")}
+                          showClear
+                        />
                         <ComboboxContent>
-                          <ComboboxEmpty>No items found.</ComboboxEmpty>
+                          <ComboboxEmpty>
+                            {t("filters.noItemsFound")}
+                          </ComboboxEmpty>
                           <ComboboxList>
                             {(item) => (
                               <ComboboxItem key={item} value={item}>
@@ -199,7 +212,9 @@ export default function PermissionTable({
                       className="grid gap-2"
                       data-invalid={fieldState.invalid}
                     >
-                      <FieldLabel htmlFor="action">Action</FieldLabel>
+                      <FieldLabel htmlFor="action">
+                        {t("filters.action")}
+                      </FieldLabel>
                       <Combobox
                         id="action"
                         items={Object.values(PermissionActionEnum)}
@@ -208,9 +223,14 @@ export default function PermissionTable({
                         }}
                         {...field}
                       >
-                        <ComboboxInput placeholder="Select action" showClear />
+                        <ComboboxInput
+                          placeholder={t("filters.selectAction")}
+                          showClear
+                        />
                         <ComboboxContent>
-                          <ComboboxEmpty>No items found.</ComboboxEmpty>
+                          <ComboboxEmpty>
+                            {t("filters.noItemsFound")}
+                          </ComboboxEmpty>
                           <ComboboxList>
                             {(item) => (
                               <ComboboxItem key={item} value={item}>
@@ -233,10 +253,10 @@ export default function PermissionTable({
                     type="reset"
                     onClick={filterForm.onFilterReset}
                   >
-                    Clear
+                    {t("filters.clear")}
                   </Button>
 
-                  <Button type="submit">Apply</Button>
+                  <Button type="submit">{t("filters.apply")}</Button>
                 </Field>
               </FieldGroup>
             </form>
@@ -245,7 +265,7 @@ export default function PermissionTable({
 
         <InputGroup>
           <InputGroupInput
-            placeholder="Type minimum 3 characters to search ..."
+            placeholder={t("filters.searchPlaceholder")}
             onChange={(val) =>
               onActionHandler.onSearchChange?.(val.target.value)
             }
