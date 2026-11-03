@@ -89,7 +89,7 @@ export default function UserDetailPageClient() {
     },
   });
 
-  const renderValue = (value: string | number | undefined) => {
+  const renderValue = (value: string | number | null | undefined) => {
     if (userQuery.isLoading) {
       return <Skeleton className="h-6 w-full" />;
     }
@@ -181,9 +181,14 @@ export default function UserDetailPageClient() {
                     <Skeleton className="h-4 w-28 mx-auto" />
                   </Then>
                   <Else>
-                    <h2 className="font-heading text-xl font-medium">
-                      {user?.display_name}
-                    </h2>
+                    <div className="flex flex-wrap items-center justify-center gap-2">
+                      <h2 className="font-heading text-xl font-medium">
+                        {user?.display_name}
+                      </h2>
+                      {user?.is_guest && (
+                        <Badge data-testid="guest-badge">{t("guest")}</Badge>
+                      )}
+                    </div>
                     <p className="text-sm text-muted-foreground mt-0.5">
                       <If condition={!!user?.username}>
                         <Then>@{user?.username}</Then>

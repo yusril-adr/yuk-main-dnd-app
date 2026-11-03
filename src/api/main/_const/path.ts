@@ -60,6 +60,9 @@ const MAIN_API_PATH = {
       USER: {
         DEFAULT: "/api/v1/master/iam/users",
         OPTIONS: "/api/v1/master/iam/users/options",
+        GUESTS: "/api/v1/master/iam/users/guests",
+        LINK_GUEST: (id: string) =>
+          `/api/v1/master/iam/users/guests/${id}/link`,
         DETAIL: (id: string) => `/api/v1/master/iam/users/${id}`,
         EXPERIENCE_POINTS: (id: string) =>
           `/api/v1/master/iam/users/${id}/experience-points`,

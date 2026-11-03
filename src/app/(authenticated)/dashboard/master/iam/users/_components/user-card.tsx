@@ -81,18 +81,23 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
                 </AvatarFallback>
               </Avatar>
               <div className="min-w-0 flex-1">
-                <CardTitle className="truncate">
-                  <Button
-                    variant="link"
-                    className="p-0 h-auto text-base"
-                    render={
-                      <Link href={`/dashboard/master/iam/users/${user.id}`} />
-                    }
-                    nativeButton={false}
-                  >
-                    {user.display_name}
-                  </Button>
-                </CardTitle>
+                <div className="flex items-center gap-2 min-w-0">
+                  <CardTitle className="truncate">
+                    <Button
+                      variant="link"
+                      className="p-0 h-auto text-base"
+                      render={
+                        <Link href={`/dashboard/master/iam/users/${user.id}`} />
+                      }
+                      nativeButton={false}
+                    >
+                      {user.display_name}
+                    </Button>
+                  </CardTitle>
+                  {user.is_guest && (
+                    <Badge>{t("card.guest")}</Badge>
+                  )}
+                </div>
                 <CardDescription className="truncate">
                   <If condition={user.username}>
                     <Then>

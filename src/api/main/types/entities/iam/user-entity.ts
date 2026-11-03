@@ -3,10 +3,11 @@ import { TRoleEntity } from "./role-entity";
 
 export type TUserEntity = TBaseEntity & {
   username?: string;
-  email: string;
+  email: string | null;
   display_name: string;
   avatar_url?: string;
   bio?: string;
+  is_guest: boolean;
   player_exp: number;
   player_level: number;
   dm_exp: number;

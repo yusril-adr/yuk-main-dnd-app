@@ -11,6 +11,7 @@ export type TUserEditFormProps = {
   bio: string | undefined;
   avatarUrl: string | undefined;
   roleIds: string[] | undefined;
+  isGuest?: boolean;
   isLoading: boolean;
   onSubmitPayload: (payload: TUserUpdatePayload) => void;
   mutationError: Error | null;

@@ -70,6 +70,7 @@ export default function UserEditForm({
   bio,
   avatarUrl,
   roleIds,
+  isGuest = false,
   isLoading,
   onSubmitPayload,
   mutationError,
@@ -80,7 +81,10 @@ export default function UserEditForm({
   avatarFileId,
 }: TUserEditFormProps) {
   const { t } = useT(MASTER_USERS_EDIT_MESSAGES);
-  const schema = useMemo(() => createUserEditFormSchema(t), [t]);
+  const schema = useMemo(
+    () => createUserEditFormSchema(t, { isGuest }),
+    [t, isGuest],
+  );
   const avatarHintLines = t("fields.avatarHint", {
     size: formatFileSize(USER_AVATAR_MAX_FILE_SIZE_BYTES),
   }).split("\n");
@@ -161,6 +165,16 @@ export default function UserEditForm({
   }, [previewUrl, setValue]);
 
   const onSubmit: SubmitHandler<TUserEditFormSchema> = (data) => {
+    if (isGuest) {
+      onSubmitPayload({
+        display_name: data.displayName,
+        username: emptyToNull(data.username),
+        avatar_file_id: data.avatarFileId || undefined,
+        bio: emptyToNull(data.bio),
+      });
+      return;
+    }
+
     onSubmitPayload({
       email: data.email,
       password: data.password || undefined,
@@ -168,7 +182,7 @@ export default function UserEditForm({
       username: emptyToNull(data.username),
       avatar_file_id: data.avatarFileId || undefined,
       bio: emptyToNull(data.bio),
-      role_ids: data.roleIds.length > 0 ? data.roleIds : undefined,
+      role_ids: data.roleIds && data.roleIds.length > 0 ? data.roleIds : undefined,
     });
   };
 
@@ -179,6 +193,11 @@ export default function UserEditForm({
       <Card>
         <CardContent>
           <FieldGroup>
+            {isGuest && (
+              <FieldDescription data-testid="guest-edit-hint">
+                {t("guestHint")}
+              </FieldDescription>
+            )}
             <Controller
               name="avatarFileId"
               control={control}
@@ -253,15 +272,15 @@ export default function UserEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field className="grid" data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required htmlFor="email">
+                  <RequiredFieldLabel required={!isGuest} htmlFor="email">
                     {t("fields.email")}
                   </RequiredFieldLabel>
                   <Input
-                    aria-required
+                    aria-required={!isGuest}
                     id="email"
                     type="email"
                     placeholder={t("fields.emailPlaceholder")}
-                    disabled={isFormDisabled}
+                    disabled={isFormDisabled || isGuest}
                     {...field}
                   />
                   {fieldState.invalid && (
@@ -305,7 +324,7 @@ export default function UserEditForm({
                       id="password"
                       type={isShowPassword ? "text" : "password"}
                       placeholder={t("fields.passwordPlaceholder")}
-                      disabled={isFormDisabled}
+                      disabled={isFormDisabled || isGuest}
                       autoComplete="off"
                       {...field}
                     />
@@ -379,13 +398,14 @@ export default function UserEditForm({
               control={control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <RequiredFieldLabel required>
+                  <RequiredFieldLabel required={!isGuest}>
                     {t("fields.roles")}
                   </RequiredFieldLabel>
                   <Combobox
                     multiple
+                    disabled={isFormDisabled || isGuest}
                     items={roles}
-                    value={field.value.map(
+                    value={(field.value ?? []).map(
                       (id) =>
                         roles.find((r) => r.value === id) ?? {
                           value: id,
@@ -400,19 +420,21 @@ export default function UserEditForm({
                     }
                   >
                     <ComboboxChips>
-                      {field.value.map((id) => {
+                      {(field.value ?? []).map((id) => {
                         const role = roles.find((r) => r.value === id);
                         return (
                           <ComboboxChip
                             key={id}
                             className="bg-accent text-accent-foreground"
+                            showRemove={!isGuest}
                           >
                             {role?.label ?? id}
                           </ComboboxChip>
                         );
                       })}
                       <ComboboxChipsInput
-                        aria-required
+                        aria-required={!isGuest}
+                        disabled={isFormDisabled || isGuest}
                         placeholder={t("fields.rolesPlaceholder")}
                       />
                     </ComboboxChips>

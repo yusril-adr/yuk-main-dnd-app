@@ -34,7 +34,9 @@
     "cancelling": "Cancelling story...",
     "cancelled": "Story cancelled",
     "deleting": "Deleting story...",
-    "deleted": "Story deleted"
+    "deleted": "Story deleted",
+    "creatingGuest": "Creating guest...",
+    "guestCreated": "Guest created"
   },
   "enums": {
     "memberStatus": {
