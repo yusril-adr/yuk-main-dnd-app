@@ -1,8 +1,8 @@
 import { Badge } from "@/app/_components/ui/badge";
 import { cn } from "cn";
 
-import { PUBLIC_STORY_LOCATION_TYPE_ICON } from "@/app/(public)/stories/_constants/public-story-icons";
-import type { TPublicStoryLocationBadgeProps } from "@/app/(public)/stories/_types/public-story-components-props";
+import { PUBLIC_STORY_LOCATION_TYPE_ICON } from "@/app/(public)/_constants/public-story-icons";
+import type { TPublicStoryLocationBadgeProps } from "@/app/(public)/_types/public-story-location-badge-props";
 
 export default function PublicStoryLocationBadge({
   locationType,

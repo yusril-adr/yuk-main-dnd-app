@@ -2,11 +2,6 @@ import dayjs from "@/libs/dayjs";
 import { DEFAULT_LOCALE } from "@/libs/i18n/locales";
 import type { TLocale } from "@/libs/i18n/types/locale";
 
-// Public story detail accepts the slug (falls back to the id)
-export function getHomeStoryHref(story: { slug?: string | null; id: string }) {
-  return `/stories/${story.slug || story.id}`;
-}
-
 // Home legends rank the previous full UTC calendar month (the API ranks by
 // UTC dates). Returned as "YYYY-MM" so the query range and the month label
 // are both derived from this one value and can never disagree. Starting from

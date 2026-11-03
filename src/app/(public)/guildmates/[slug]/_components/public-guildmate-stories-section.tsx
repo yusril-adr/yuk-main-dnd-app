@@ -14,8 +14,8 @@ import { Spinner } from "@/app/_components/ui/spinner";
 import { Tabs, TabsList, TabsTrigger } from "@/app/_components/ui/tabs";
 import { useT } from "@/app/_hooks/use-t";
 import { GUILDMATE_DETAIL_MESSAGES } from "@/app/(public)/guildmates/[slug]/_messages";
-import PublicGuildmateStoryCard from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-story-card";
-import PublicGuildmateStoryCardSkeleton from "@/app/(public)/guildmates/[slug]/_components/public-guildmate-story-card-skeleton";
+import PublicStoryCard from "@/app/(public)/_components/public-story-card";
+import PublicStoryCardSkeleton from "@/app/(public)/_components/public-story-card-skeleton";
 import PublicGuildmateErrorState from "@/app/(public)/guildmates/_components/public-guildmate-error-state";
 import { useGetPublicGuildmateCreatedStories } from "@/app/(public)/guildmates/[slug]/_hooks/use-get-public-guildmate-created-stories";
 import { useGetPublicGuildmateJoinedStories } from "@/app/(public)/guildmates/[slug]/_hooks/use-get-public-guildmate-joined-stories";
@@ -96,14 +96,14 @@ export default function PublicGuildmateStoriesSection({
                   ? Array.from({
                       length: PUBLIC_GUILDMATE_STORY_PAGE_SIZE,
                     }).map((_, idx) => (
-                      <PublicGuildmateStoryCardSkeleton key={`skeleton-${idx}`} />
+                      <PublicStoryCardSkeleton key={`skeleton-${idx}`} />
                     ))
                   : stories.map((story) => (
-                      <PublicGuildmateStoryCard key={story.id} story={story} />
+                      <PublicStoryCard key={story.id} story={story} />
                     ))}
                 {query.isFetchingNextPage &&
                   Array.from({ length: 3 }).map((_, idx) => (
-                    <PublicGuildmateStoryCardSkeleton
+                    <PublicStoryCardSkeleton
                       key={`next-skeleton-${idx}`}
                     />
                   ))}

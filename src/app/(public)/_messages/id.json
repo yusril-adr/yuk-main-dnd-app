@@ -29,12 +29,7 @@
     "description": "Meja yang masih nyari petualang. Ambil tempatmu sebelum party berangkat.",
     "seeAll": "Lihat semua stories",
     "error": "Papan quest-nya nggak kebaca.",
-    "empty": "Belum ada story di papan sekarang. Cek lagi nanti ya.",
-    "unknownDm": "DM tidak diketahui",
-    "dateTba": "Tanggal menyusul",
-    "anySystem": "Sistem apa saja",
-    "member_one": "{{count}} member",
-    "member_other": "{{count}} members"
+    "empty": "Belum ada story di papan sekarang. Cek lagi nanti ya."
   },
   "legends": {
     "titleWithMonth": "Legends {{month}}",

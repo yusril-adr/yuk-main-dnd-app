@@ -1,5 +1,3 @@
-import type { TPublicStoryPaginationResponse } from "@/api/main/modules/stories/types/public-story-pagination-response";
-
 export type THomeSectionHeaderProps = {
   id: string;
   title: string;
@@ -14,10 +12,6 @@ export type THomeBandProps = {
   muted?: boolean;
   className?: string;
   children: React.ReactNode;
-};
-
-export type THomeStoryCardProps = {
-  story: TPublicStoryPaginationResponse;
 };
 
 export type THomeEmptyStateProps = {
