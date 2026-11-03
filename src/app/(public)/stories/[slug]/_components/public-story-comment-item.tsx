@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import {
   EllipsisVertical,
-  MessageSquareOff,
   Pencil,
   Pin,
   PinOff,
@@ -12,11 +10,6 @@ import {
 } from "lucide-react";
 import { Else, If, Then } from "react-if";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/app/_components/ui/avatar";
 import { Badge } from "@/app/_components/ui/badge";
 import RichTextContent from "@/app/_components/rich-text-content";
 import { Button } from "@/app/_components/ui/button";
@@ -33,8 +26,6 @@ import {
   ItemActions,
   ItemContent,
   ItemDescription,
-  ItemMedia,
-  ItemTitle,
 } from "@/app/_components/ui/item";
 import { Spinner } from "@/app/_components/ui/spinner";
 import {
@@ -46,13 +37,8 @@ import { cn } from "cn";
 import dayjs from "@/libs/dayjs";
 import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
-import {
-  getGuildmateHref,
-  getInitials,
-  makeDefaultAvatarUrl,
-} from "@/utils/user-helper";
-
 import PublicStoryCommentForm from "./public-story-comment-form";
+import PublicStoryCommentAuthor from "./public-story-comment-author";
 import PublicStoryCommentDeleteDialog from "./public-story-comment-delete-dialog";
 import { useUpdatePublicStoryComment } from "@/app/(public)/stories/[slug]/_hooks/use-update-public-story-comment";
 import { useDeletePublicStoryComment } from "@/app/(public)/stories/[slug]/_hooks/use-delete-public-story-comment";
@@ -121,62 +107,14 @@ export default function PublicStoryCommentItem({
         isBusy && "opacity-70",
       )}
     >
-      <ItemMedia>
-        <If condition={!!author}>
-          <Then>
-            {author && (
-              <Avatar
-                className={cn(
-                  avatarSize,
-                  "shrink-0 border-2 border-primary/40",
-                )}
-              >
-                <AvatarImage
-                  src={
-                    author.avatar_url ??
-                    makeDefaultAvatarUrl(author.display_name)
-                  }
-                  alt=""
-                  loading="lazy"
-                  className="object-cover"
-                />
-                <AvatarFallback
-                  className={cn("font-heading", isReply && "max-sm:text-xs")}
-                >
-                  {getInitials(author.display_name)}
-                </AvatarFallback>
-              </Avatar>
-            )}
-          </Then>
-          <Else>
-            <Avatar className={cn(avatarSize, "shrink-0")}>
-              <AvatarFallback aria-hidden>
-                <MessageSquareOff className="size-4 text-muted-foreground" />
-              </AvatarFallback>
-            </Avatar>
-          </Else>
-        </If>
-      </ItemMedia>
-
       <ItemContent className="min-w-0 gap-1">
-        <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
-          <ItemTitle className="min-w-0 truncate text-sm text-foreground">
-            <If condition={!!author}>
-              <Then>
-                {author && (
-                  <Link
-                    href={getGuildmateHref(author)}
-                    className="underline-offset-4 hover:text-primary hover:underline"
-                  >
-                    {author.display_name}
-                  </Link>
-                )}
-              </Then>
-              <Else>
-                <span className="text-muted-foreground">{authorName}</span>
-              </Else>
-            </If>
-          </ItemTitle>
+        <div className="flex min-w-0 flex-wrap items-start gap-x-2 gap-y-1">
+          <PublicStoryCommentAuthor
+            author={author}
+            avatarSize={avatarSize}
+            isReply={isReply}
+            deletedLabel={authorName}
+          />
           <If condition={comment.is_pinned}>
             <Then>
               <Badge
@@ -188,15 +126,13 @@ export default function PublicStoryCommentItem({
             </Then>
           </If>
         </div>
-        {/* Wraps between handle and time instead of clamping */}
-        <ItemDescription className="line-clamp-none flex flex-wrap items-baseline gap-x-1 text-xs text-foreground/70">
-          <If condition={!!author?.username}>
-            <Then>
-              <span className="min-w-0 break-all">@{author?.username}</span>
-              <span aria-hidden>·</span>
-            </Then>
-          </If>
-          {/* Relative time; tap, click or hover shows the absolute date (also read by screen readers) */}
+        {/* Relative time; tap, click or hover shows the absolute date (also read by screen readers) */}
+        <ItemDescription
+          className={cn(
+            "line-clamp-none flex flex-wrap items-baseline gap-x-1 text-xs text-foreground/70",
+            isReply ? "ps-8 sm:ps-10.5" : "ps-10 sm:ps-12.5",
+          )}
+        >
           <Popover>
             <PopoverTrigger
               openOnHover
@@ -219,7 +155,12 @@ export default function PublicStoryCommentItem({
 
         <If condition={isEditing}>
           <Then>
-            <div className="mt-2">
+            <div
+              className={cn(
+                "mt-2",
+                isReply ? "ps-8 sm:ps-10.5" : "ps-10 sm:ps-12.5",
+              )}
+            >
               <PublicStoryCommentForm
                 id={`comment-edit-${comment.id}`}
                 label={t(
@@ -239,7 +180,12 @@ export default function PublicStoryCommentItem({
           <Else>
             <If condition={comment.is_deleted}>
               <Then>
-                <p className="mt-1 text-sm text-muted-foreground italic">
+                <p
+                  className={cn(
+                    "mt-1 text-sm text-muted-foreground italic",
+                    isReply ? "ps-8 sm:ps-10.5" : "ps-10 sm:ps-12.5",
+                  )}
+                >
                   {t("comments.deletedBody")}
                 </p>
               </Then>
@@ -251,7 +197,10 @@ export default function PublicStoryCommentItem({
                   variant="comment"
                   value={comment.content ?? ""}
                   highlightLeadingMention={isReply}
-                  className="mt-1 text-sm text-foreground [&_p]:my-1.5"
+                  className={cn(
+                    "mt-1 text-sm text-foreground [&_p]:my-1.5",
+                    isReply ? "ps-8 sm:ps-10.5" : "ps-10 sm:ps-12.5",
+                  )}
                 />
               </Else>
             </If>

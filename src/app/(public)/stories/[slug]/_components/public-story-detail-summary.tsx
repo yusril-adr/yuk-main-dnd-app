@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   CalendarDays,
   ClipboardList,
@@ -13,20 +12,13 @@ import DiscordIcon from "@/assets/icons/discord.svg";
 import { If, Then } from "react-if";
 
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/app/_components/ui/avatar";
-import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
 import { cn } from "cn";
 import dayjs from "@/libs/dayjs";
-import { getGuildmateHref, makeDefaultAvatarUrl } from "@/utils/user-helper";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 import { useLocale } from "@/app/_hooks/use-locale";
@@ -34,6 +26,7 @@ import { useT } from "@/app/_hooks/use-t";
 import { localeToBcp47 } from "@/libs/i18n/locales";
 
 import PublicStoryJoinActions from "./public-story-join-actions";
+import PublicStoryDetailDungeonMaster from "./public-story-detail-dungeon-master";
 import PublicStoryDetailInfoRow from "./public-story-detail-info-row";
 import PublicStoryDetailExternalLink from "./public-story-detail-external-link";
 import PublicStoryStatusBadge from "@/app/(public)/_components/public-story-status-badge";
@@ -215,36 +208,7 @@ export default function PublicStoryDetailSummary({
 
       <PublicStoryJoinActions story={story} />
 
-      <If condition={!!creator}>
-        <Then>
-          <CardFooter className="-mb-(--card-spacing) gap-3 border-t bg-muted/30 py-4">
-            <Avatar className="size-10 ring-2 ring-primary/30">
-              <AvatarImage
-                src={
-                  creator?.avatar_url ??
-                  makeDefaultAvatarUrl(creator?.display_name)
-                }
-                alt={creator?.display_name}
-                loading="lazy"
-              />
-              <AvatarFallback>
-                {creator?.display_name?.charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex min-w-0 flex-col">
-              <span className="text-xs text-muted-foreground">
-                {t("summary.dungeonMaster")}
-              </span>
-              <Link
-                href={getGuildmateHref(creator!)}
-                className="truncate font-medium underline-offset-4 hover:text-primary hover:underline"
-              >
-                {creator?.display_name}
-              </Link>
-            </div>
-          </CardFooter>
-        </Then>
-      </If>
+      <PublicStoryDetailDungeonMaster creator={creator} />
     </Card>
   );
 }
