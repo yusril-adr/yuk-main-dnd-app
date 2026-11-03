@@ -25,8 +25,7 @@
   },
   "actions": {
     "cancel": "Cancel",
-    "save": "Save",
-    "linkToUser": "Link to user"
+    "save": "Save"
   },
   "toast": {
     "editForbidden": "You don't have permission to edit this user"
@@ -39,15 +38,5 @@
     "displayNameRequired": "Display name is required",
     "bioMax": "Bio must be at most {{max}} characters",
     "rolesRequired": "At least one role is required"
-  },
-  "guestHint": "A guest can't have email, password, or roles. Link them to a real user instead.",
-  "link": {
-    "title": "Link guest to a user?",
-    "description": "This guest's story memberships, EXP and points history, comments, and reactions will move to the user you pick. The guest account is then removed.",
-    "userLabel": "Link to",
-    "userPlaceholder": "Search a real user",
-    "noUsersFound": "No users found.",
-    "cancel": "Cancel",
-    "confirm": "Link guest"
   }
 }

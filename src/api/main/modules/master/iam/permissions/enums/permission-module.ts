@@ -1,6 +1,5 @@
 export enum PermissionModuleEnum {
   USERS = "users",
-  GUESTS = "guests",
   ROLES = "roles",
   PERMISSIONS = "permissions",
   STORIES = "stories",

@@ -25,6 +25,5 @@
     "deleteTitle": "Delete user?",
     "deleteDescription": "This action cannot be undone. The user will be permanently removed from the system.",
     "deleteConfirm": "Delete"
-  },
-  "guest": "Guest"
+  }
 }
