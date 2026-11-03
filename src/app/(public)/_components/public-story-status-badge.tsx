@@ -4,7 +4,7 @@ import { Badge } from "@/app/_components/ui/badge";
 import { cn } from "cn";
 import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-status";
 
-import type { TPublicStoryStatusBadgeProps } from "@/app/(public)/stories/_types/public-story-components-props";
+import type { TPublicStoryStatusBadgeProps } from "@/app/(public)/_types/public-story-status-badge-props";
 
 export default function PublicStoryStatusBadge({
   status,

@@ -29,12 +29,7 @@
     "description": "Tables still seeking brave adventurers. Claim your seat before the party sets out.",
     "seeAll": "See all stories",
     "error": "The quest board could not be read.",
-    "empty": "No stories are posted on the board right now. Check back soon.",
-    "unknownDm": "Unknown DM",
-    "dateTba": "Date to be announced",
-    "anySystem": "Any system",
-    "member_one": "{{count}} member",
-    "member_other": "{{count}} members"
+    "empty": "No stories are posted on the board right now. Check back soon."
   },
   "legends": {
     "titleWithMonth": "Legends of {{month}}",

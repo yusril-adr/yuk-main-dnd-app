@@ -35,15 +35,6 @@
       "offline": "Offline"
     }
   },
-  "card": {
-    "taleYetWritten": "Kisahnya belum ditulis…",
-    "dateTba": "Tanggal menyusul",
-    "joined": "{{count}} bergabung",
-    "rewardSlots_one": "Hanya {{count}} hero yang bisa main, lainnya ikut sebagai penonton",
-    "rewardSlots_other": "Hanya {{count}} heroes yang bisa main, lainnya ikut sebagai penonton",
-    "noPlayerLimit": "Tidak ada batas player",
-    "dungeonMaster": "Dungeon Master"
-  },
   "pagination": {
     "showing": "Menampilkan {{start}}–{{end}} dari {{total}} stories",
     "previous": "Halaman sebelumnya",

@@ -23,16 +23,6 @@
     "loadMore": "Muat lagi",
     "loading": "Memuat…"
   },
-  "story": {
-    "recruiting": "Rekrutmen",
-    "taleYetWritten": "Kisahnya belum ditulis…",
-    "dateTba": "Tanggal menyusul",
-    "joined": "{{count}} bergabung",
-    "rewardSlots_one": "Hanya {{count}} hero yang bisa main, lainnya ikut sebagai penonton",
-    "rewardSlots_other": "Hanya {{count}} heroes yang bisa main, lainnya ikut sebagai penonton",
-    "noPlayerLimit": "Tidak ada batas player",
-    "dungeonMaster": "Dungeon Master"
-  },
   "error": {
     "detailTitle": "Petualang ini nggak bisa dipanggil",
     "detailDescription": "Ada yang salah saat memuat guildmate ini. Coba lagi ya.",

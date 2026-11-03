@@ -4,7 +4,7 @@ import { Else, If, Then } from "react-if";
 
 import { cn } from "cn";
 
-import type { TPublicStoryBannerProps } from "@/app/(public)/stories/_types/public-story-components-props";
+import type { TPublicStoryBannerProps } from "@/app/(public)/_types/public-story-banner-props";
 
 // Fills its (relative, sized) parent. `unoptimized`: the browser loads the
 // public storage URL directly (like the dashboard's <img>), skipping the

@@ -6,14 +6,14 @@ import { HOME_MESSAGES } from "@/app/(public)/_messages";
 
 import HomeBand from "@/app/(public)/_components/home-band";
 import HomeSectionHeader from "@/app/(public)/_components/home-section-header";
-import HomeStoryCard from "@/app/(public)/_components/home-story-card";
-import HomeStoryCardSkeleton from "@/app/(public)/_components/home-story-card-skeleton";
+import PublicStoryCard from "@/app/(public)/_components/public-story-card";
+import PublicStoryCardSkeleton from "@/app/(public)/_components/public-story-card-skeleton";
 import HomeEmptyState from "@/app/(public)/_components/home-empty-state";
 import HomeErrorState from "@/app/(public)/_components/home-error-state";
 import { useGetHomeStories } from "@/app/(public)/_hooks/use-get-home-stories";
 import { HOME_STORY_LIMIT } from "@/app/(public)/_constants/home";
 
-const GRID = "grid grid-cols-1 gap-6 md:grid-cols-3";
+const GRID = "grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3";
 
 export default function HomeStoriesSection() {
   const { t } = useT(HOME_MESSAGES);
@@ -32,7 +32,7 @@ export default function HomeStoriesSection() {
     content = (
       <div className={GRID} aria-busy>
         {Array.from({ length: HOME_STORY_LIMIT }, (_, i) => (
-          <HomeStoryCardSkeleton key={i} />
+          <PublicStoryCardSkeleton key={i} />
         ))}
       </div>
     );
@@ -48,8 +48,12 @@ export default function HomeStoriesSection() {
   } else {
     content = (
       <div className={GRID}>
-        {stories.map((story) => (
-          <HomeStoryCard key={story.id} story={story} />
+        {stories.map((story, idx) => (
+          <PublicStoryCard
+            key={story.id}
+            story={story}
+            priority={idx < HOME_STORY_LIMIT}
+          />
         ))}
       </div>
     );

@@ -30,7 +30,7 @@ import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-s
 import { useT } from "@/app/_hooks/use-t";
 
 import { PUBLIC_STORY_STATUS_OPTIONS } from "@/app/(public)/stories/_constants/public-story-status-options";
-import { PUBLIC_STORY_TYPE_ICON } from "@/app/(public)/stories/_constants/public-story-icons";
+import { PUBLIC_STORY_TYPE_ICON } from "@/app/(public)/_constants/public-story-icons";
 import { STORIES_MESSAGES } from "@/app/(public)/stories/_messages";
 import type { TPublicStoryStatus } from "@/app/(public)/stories/_types/public-story-card-list-props";
 import type { TPublicStoryFiltersProps } from "@/app/(public)/stories/_types/public-story-filters-props";

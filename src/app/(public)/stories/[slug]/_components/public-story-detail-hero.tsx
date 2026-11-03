@@ -8,10 +8,10 @@ import { StoryStatusEnum } from "@/api/main/modules/master/stories/enums/story-s
 import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-type";
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
 import { useT } from "@/app/_hooks/use-t";
-import PublicStoryBanner from "@/app/(public)/stories/_components/public-story-banner";
-import PublicStoryStatusBadge from "@/app/(public)/stories/_components/public-story-status-badge";
-import PublicStoryTypeBadge from "@/app/(public)/stories/_components/public-story-type-badge";
-import PublicStoryLocationBadge from "@/app/(public)/stories/_components/public-story-location-badge";
+import PublicStoryBanner from "@/app/(public)/_components/public-story-banner";
+import PublicStoryStatusBadge from "@/app/(public)/_components/public-story-status-badge";
+import PublicStoryTypeBadge from "@/app/(public)/_components/public-story-type-badge";
+import PublicStoryLocationBadge from "@/app/(public)/_components/public-story-location-badge";
 import { STORY_DETAIL_MESSAGES } from "@/app/(public)/stories/[slug]/_messages";
 import type { TPublicStoryDetailProps } from "@/app/(public)/stories/[slug]/_types/public-story-detail-props";
 
