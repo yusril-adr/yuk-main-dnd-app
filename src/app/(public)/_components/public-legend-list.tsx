@@ -86,40 +86,40 @@ export default function PublicLegendList({
         return (
           <li key={user.id}>
             <Item variant="outline" size="sm" className="bg-muted/20">
-              <ItemMedia className="relative">
-                <PublicAvatar
-                  name={user.display_name}
-                  avatarUrl={user.avatar_url}
-                  className={cn(
-                    "size-11 ring-2 ring-offset-2 ring-offset-card",
-                    style.ring,
-                  )}
-                />
-                <Badge
-                  className={cn(
-                    "absolute -right-2 -bottom-1 size-5 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-[11px] leading-none font-bold lining-nums proportional-nums",
-                    style.badge,
-                    rank === 1 && "pl-px",
-                  )}
-                >
-                  {rank}
-                </Badge>
-              </ItemMedia>
-              <ItemContent className="min-w-0">
-                <ItemTitle className="w-full">
-                  <Link
-                    href={getGuildmateHref(user)}
-                    className="truncate rounded-sm font-heading underline-offset-4 hover:text-primary hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              <Link
+                href={getGuildmateHref(user)}
+                className="group flex min-w-0 flex-1 items-center gap-2.5 rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              >
+                <ItemMedia className="relative">
+                  <PublicAvatar
+                    name={user.display_name}
+                    avatarUrl={user.avatar_url}
+                    className={cn(
+                      "size-11 ring-2 ring-offset-2 ring-offset-card",
+                      style.ring,
+                    )}
+                  />
+                  <Badge
+                    className={cn(
+                      "absolute -right-2 -bottom-1 size-5 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-[11px] leading-none font-bold lining-nums proportional-nums",
+                      style.badge,
+                      rank === 1 && "pl-px",
+                    )}
                   >
+                    {rank}
+                  </Badge>
+                </ItemMedia>
+                <ItemContent className="min-w-0">
+                  <ItemTitle className="w-full font-heading underline-offset-4 group-hover:text-primary group-hover:underline">
                     {user.display_name}
-                  </Link>
-                </ItemTitle>
-                <ItemDescription className="text-xs text-foreground/80">
-                  {isDm
-                    ? copy.dmExpTotal(formatExp(user.dm_exp, locale))
-                    : copy.playerExpTotal(formatExp(user.player_exp, locale))}
-                </ItemDescription>
-              </ItemContent>
+                  </ItemTitle>
+                  <ItemDescription className="text-xs text-foreground/80">
+                    {isDm
+                      ? copy.dmExpTotal(formatExp(user.dm_exp, locale))
+                      : copy.playerExpTotal(formatExp(user.player_exp, locale))}
+                  </ItemDescription>
+                </ItemContent>
+              </Link>
               <ItemActions className="flex-col items-end gap-0">
                 <span className="font-heading text-base font-semibold text-primary">
                   {copy.gainedExp(formatExp(gainedExp, locale))}

@@ -88,35 +88,37 @@ export default function PublicLegendPodium({
             key={rank}
             className="flex min-w-0 flex-col items-center gap-2 text-center"
           >
-            <div className="relative">
-              <PublicAvatar
-                name={user.display_name}
-                avatarUrl={user.avatar_url}
-                className={cn(
-                  "ring-2 ring-offset-2 ring-offset-card",
-                  style.ring,
-                  rank === 1 ? "size-16 lg:size-20" : "size-12 lg:size-14",
-                )}
-              />
-              <Badge
-                className={cn(
-                  "absolute -bottom-2 left-1/2 size-5 -translate-x-1/2 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-[11px] leading-none font-bold lining-nums proportional-nums",
-                  style.badge,
-                  rank === 1 && "pl-px",
-                )}
-                aria-label={copy.place(rank)}
-              >
-                {rank}
-              </Badge>
-            </div>
-            <div className="mt-1 flex w-full min-w-0 flex-col gap-0.5">
+            <div className="flex w-full min-w-0 flex-col items-center">
               <Link
                 href={getGuildmateHref(user)}
-                className="truncate rounded-sm font-heading text-sm underline-offset-4 hover:text-primary hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none lg:text-base"
+                className="group flex w-full min-w-0 flex-col items-center rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
               >
-                {user.display_name}
+                <div className="relative">
+                  <PublicAvatar
+                    name={user.display_name}
+                    avatarUrl={user.avatar_url}
+                    className={cn(
+                      "ring-2 ring-offset-2 ring-offset-card",
+                      style.ring,
+                      rank === 1 ? "size-16 lg:size-20" : "size-12 lg:size-14",
+                    )}
+                  />
+                  <Badge
+                    className={cn(
+                      "absolute -bottom-2 left-1/2 size-5 -translate-x-1/2 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-[11px] leading-none font-bold lining-nums proportional-nums",
+                      style.badge,
+                      rank === 1 && "pl-px",
+                    )}
+                    aria-label={copy.place(rank)}
+                  >
+                    {rank}
+                  </Badge>
+                </div>
+                <span className="mt-1 w-full truncate font-heading text-sm underline-offset-4 group-hover:text-primary group-hover:underline lg:text-base">
+                  {user.display_name}
+                </span>
               </Link>
-              <span className="text-xs font-medium text-foreground/80">
+              <span className="mt-0.5 text-xs font-medium text-foreground/80">
                 {isDm
                   ? copy.dmExp(formatExp(user.dm_exp, locale))
                   : copy.playerExp(formatExp(user.player_exp, locale))}
