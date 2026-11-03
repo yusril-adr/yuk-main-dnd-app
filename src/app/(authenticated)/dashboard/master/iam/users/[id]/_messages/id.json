@@ -25,5 +25,6 @@
     "deleteTitle": "Hapus user?",
     "deleteDescription": "Aksi ini tidak bisa diurungkan. User akan dihapus permanen dari sistem.",
     "deleteConfirm": "Hapus"
-  }
+  },
+  "guest": "Tamu"
 }

@@ -7,6 +7,8 @@
     "deleting": "Menghapus user...",
     "deleted": "User dihapus",
     "uploadingAvatar": "Mengunggah avatar...",
-    "avatarUploaded": "Avatar terunggah"
+    "avatarUploaded": "Avatar terunggah",
+    "linking": "Menghubungkan tamu...",
+    "linked": "Tamu terhubung ke user"
   }
 }

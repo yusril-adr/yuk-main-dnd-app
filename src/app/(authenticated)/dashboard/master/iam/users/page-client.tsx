@@ -19,6 +19,7 @@ import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { OrderKeyEnum } from "@/common/enums/order-key";
 import { PermissionEnum } from "@/common/enums/permission";
+import { UserGuestFilterEnum } from "@/app/(authenticated)/dashboard/master/iam/users/_enums/user-guest-filter";
 import type { TUserPaginationPayload } from "@/api/main/modules/master/iam/users/types/user-pagination-payload";
 
 import UserCardList from "@/app/(authenticated)/dashboard/master/iam/users/_components/user-card-list";
@@ -56,6 +57,9 @@ export default function UsersPageClient() {
       Object.values(OrderKeyEnum),
     ).withDefault(OrderKeyEnum.DESC),
     roleIds: parseAsArrayOf(parseAsString).withDefault([]),
+    isGuest: parseAsStringEnum<UserGuestFilterEnum>(
+      Object.values(UserGuestFilterEnum),
+    ),
   });
 
   const queryStatesIntoPayload: TUserPaginationPayload = useMemo(
@@ -67,6 +71,10 @@ export default function UsersPageClient() {
       order: queryStates.order ?? undefined,
       role_ids:
         queryStates.roleIds.length > 0 ? queryStates.roleIds : undefined,
+      // URL stores the filter as "true"/"false"; API expects a boolean (undefined = all)
+      is_guest: queryStates.isGuest
+        ? queryStates.isGuest === UserGuestFilterEnum.GUESTS
+        : undefined,
     }),
     [queryStates],
   );
@@ -122,11 +130,13 @@ export default function UsersPageClient() {
       sortBy: TUserCardListSortBy | null;
       order: OrderKeyEnum | null;
       roleIds: string[];
+      isGuest: UserGuestFilterEnum | null;
     }) => {
       setQueryStates({
         sortBy: filters.sortBy,
         order: filters.order,
         roleIds: filters.roleIds.length > 0 ? filters.roleIds : null,
+        isGuest: filters.isGuest,
         page: 1,
       });
     },
@@ -169,6 +179,7 @@ export default function UsersPageClient() {
             sortBy: queryStates.sortBy,
             order: queryStates.order,
             roleIds: queryStates.roleIds,
+            isGuest: queryStates.isGuest,
           }}
           roleItems={roleItems}
           onRoleSearchChange={setRoleSearch}
