@@ -15,7 +15,7 @@ import { useGetTopDmExperience } from "@/app/(public)/guildmates/_hooks/use-get-
 import { useGetTopPlayerExperience } from "@/app/(public)/guildmates/_hooks/use-get-top-player-experience";
 import { useCurrentMonthRange } from "@/app/(public)/guildmates/_hooks/use-current-month-range";
 import { PUBLIC_GUILDMATE_PAGE_SIZE } from "@/app/(public)/guildmates/_constants/public-guildmate-page-size";
-import type { TPublicLegendEntry } from "@/app/(public)/_types/public-legend-components-props";
+import type { TPublicLegendEntry } from "@/app/(public)/_types/public-legend-entry";
 import { useT } from "@/app/_hooks/use-t";
 import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 

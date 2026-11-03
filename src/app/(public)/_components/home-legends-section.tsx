@@ -13,7 +13,7 @@ import {
   useGetHomeTopPlayers,
 } from "@/app/(public)/_hooks/use-get-home-top-experience";
 import { useHomePreviousMonthRange } from "@/app/(public)/_hooks/use-home-previous-month-range";
-import type { TPublicLegendEntry } from "@/app/(public)/_types/public-legend-components-props";
+import type { TPublicLegendEntry } from "@/app/(public)/_types/public-legend-entry";
 
 export default function HomeLegendsSection() {
   const { t } = useT(HOME_MESSAGES);

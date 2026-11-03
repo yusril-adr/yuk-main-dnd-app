@@ -9,7 +9,7 @@ import {
   TabsTrigger,
 } from "@/app/_components/ui/tabs";
 import PublicLegendBoard from "@/app/(public)/_components/public-legend-board";
-import type { TPublicLegendBoardsProps } from "@/app/(public)/_types/public-legend-components-props";
+import type { TPublicLegendBoardsProps } from "@/app/(public)/_types/public-legend-boards-props";
 
 // Shared DM / Heroes boards: tabs below md, side by side from md up
 export default function PublicLegendBoards({

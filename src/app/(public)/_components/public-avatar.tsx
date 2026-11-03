@@ -6,7 +6,7 @@ import {
   AvatarImage,
 } from "@/app/_components/ui/avatar";
 import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
-import type { TPublicAvatarProps } from "@/app/(public)/_types/public-legend-components-props";
+import type { TPublicAvatarProps } from "@/app/(public)/_types/public-avatar-props";
 
 export default function PublicAvatar({
   name,
