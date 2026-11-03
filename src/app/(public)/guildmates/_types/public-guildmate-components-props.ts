@@ -1,5 +1,5 @@
 import type { TPublicUserPaginationResponse } from "@/api/main/modules/users/types/public-user-pagination-response";
-import type { TPublicLegendBoardData } from "@/app/(public)/_types/public-legend-components-props";
+import type { TPublicLegendBoardData } from "@/app/(public)/_types/public-legend-board-data";
 
 export type TPublicGuildmateLegendsSectionProps = {
   monthName: string | null;

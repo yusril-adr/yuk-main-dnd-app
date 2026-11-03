@@ -12,7 +12,7 @@ import PublicAvatar from "@/app/(public)/_components/public-avatar";
 import { PUBLIC_LEGEND_RANK_STYLE } from "@/app/(public)/_constants/public-legend-rank";
 import { formatExp } from "@/app/(public)/_utils/public-helper";
 import { getGuildmateHref } from "@/utils/user-helper";
-import type { TPublicLegendPodiumSlotProps } from "@/app/(public)/_types/public-legend-components-props";
+import type { TPublicLegendPodiumSlotProps } from "@/app/(public)/_types/public-legend-podium-slot-props";
 
 export default function PublicLegendPodiumSlot({
   rank,

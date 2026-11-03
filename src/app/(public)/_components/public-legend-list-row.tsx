@@ -20,7 +20,7 @@ import PublicAvatar from "@/app/(public)/_components/public-avatar";
 import { PUBLIC_LEGEND_RANK_STYLE } from "@/app/(public)/_constants/public-legend-rank";
 import { formatExp } from "@/app/(public)/_utils/public-helper";
 import { getGuildmateHref } from "@/utils/user-helper";
-import type { TPublicLegendListRowProps } from "@/app/(public)/_types/public-legend-components-props";
+import type { TPublicLegendListRowProps } from "@/app/(public)/_types/public-legend-list-row-props";
 
 export default function PublicLegendListRow({
   rank,

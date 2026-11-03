@@ -1,7 +1,7 @@
 "use client";
 
 import PublicLegendListRow from "@/app/(public)/_components/public-legend-list-row";
-import type { TPublicLegendViewProps } from "@/app/(public)/_types/public-legend-components-props";
+import type { TPublicLegendViewProps } from "@/app/(public)/_types/public-legend-view-props";
 
 // Phones: a plain ranked list, 1 to 3 top to bottom
 export default function PublicLegendList({

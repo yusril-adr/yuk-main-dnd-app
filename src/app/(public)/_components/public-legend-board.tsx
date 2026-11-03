@@ -23,7 +23,7 @@ import { COMMON_MESSAGES } from "@/messages/common";
 import PublicLegendList from "@/app/(public)/_components/public-legend-list";
 import PublicLegendPodium from "@/app/(public)/_components/public-legend-podium";
 import PublicLegendSkeleton from "@/app/(public)/_components/public-legend-skeleton";
-import type { TPublicLegendBoardProps } from "@/app/(public)/_types/public-legend-components-props";
+import type { TPublicLegendBoardProps } from "@/app/(public)/_types/public-legend-board-props";
 
 export default function PublicLegendBoard({
   kind,
