@@ -63,3 +63,17 @@ export type TPublicAvatarProps = {
   avatarUrl: string | null;
   className?: string;
 };
+
+export type TPublicLegendListRowProps = {
+  rank: number;
+  kind: TPublicLegendKind;
+  entry: TPublicLegendEntry | undefined;
+  copy: TPublicLegendCopy;
+};
+
+export type TPublicLegendPodiumSlotProps = {
+  rank: number;
+  kind: TPublicLegendKind;
+  entry: TPublicLegendEntry | undefined;
+  copy: TPublicLegendCopy;
+};
