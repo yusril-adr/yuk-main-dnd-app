@@ -54,13 +54,24 @@ export default function PublicGuildmateStoryCard({
   const rewardSlots = story.max_members;
   const creator = story.created_by;
 
+  // Slug URL, falling back to the id (the API accepts both)
+  const storyHref = `/stories/${story.slug || story.id}`;
+
   return (
-    // h-full + flex column (Card default) + mt-auto footer keeps cards in a
-    // grid row equal height
-    <Card className="h-full gap-3 pt-0">
+    // YouTube-style card: whole card hits story detail; only the DM block
+    // hits the guildmate. h-full + flex column + mt-auto footer keeps a grid
+    // row equal height.
+    <Card className="group relative h-full gap-3 pt-0 transition-[background-color,box-shadow] hover:bg-muted/40 hover:shadow-md has-focus-visible:ring-2 has-focus-visible:ring-ring">
+      <Link
+        href={storyHref}
+        aria-label={story.title}
+        className="absolute inset-0 z-0 rounded-[inherit] focus-visible:outline-none"
+      />
+
       {/* Cover image; title and game system sit on a translucent solid panel
-          (no gradient overlay) so they stay legible over any banner */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+          (no gradient overlay) so they stay legible over any banner.
+          pointer-events-none lets clicks reach the stretched story link. */}
+      <div className="pointer-events-none relative aspect-[16/10] overflow-hidden bg-muted">
         <PublicGuildmateStoryBanner
           bannerUrl={story.banner_url}
           title={story.title}
@@ -79,19 +90,13 @@ export default function PublicGuildmateStoryCard({
               </span>
             </Then>
           </If>
-          <CardTitle className="line-clamp-2 text-lg leading-tight sm:text-xl">
-            <Link
-              // Slug URL, falling back to the id (the API accepts both)
-              href={`/stories/${story.slug || story.id}`}
-              className="rounded-sm underline-offset-4 hover:text-primary hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-            >
-              {story.title}
-            </Link>
+          <CardTitle className="line-clamp-2 text-lg leading-tight group-hover:text-primary sm:text-xl">
+            {story.title}
           </CardTitle>
         </div>
       </div>
 
-      <CardContent className="flex flex-col gap-3 sm:gap-4">
+      <CardContent className="pointer-events-none flex flex-col gap-3 sm:gap-4">
         <div className="flex flex-wrap items-center gap-1.5">
           <PublicGuildmateStoryTypeBadge type={story.type} />
           <PublicGuildmateStoryLocationBadge locationType={story.location_type} />
@@ -109,7 +114,7 @@ export default function PublicGuildmateStoryCard({
       </CardContent>
 
       <CardFooter className="mt-auto flex-col items-stretch gap-3 border-t">
-        <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs text-muted-foreground">
+        <div className="pointer-events-none flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs text-muted-foreground">
           <span className="flex items-center gap-1.5 [&>svg]:size-3.5">
             <CalendarDays />
             {story.start_at
@@ -126,7 +131,7 @@ export default function PublicGuildmateStoryCard({
 
         {/* Always rendered (with a fallback) so every card has the same
               footer height and descriptions line up across the grid */}
-        <span className="flex items-center gap-1.5 text-xs text-foreground/80 [&>svg]:size-3.5 [&>svg]:text-primary">
+        <span className="pointer-events-none flex items-center gap-1.5 text-xs text-foreground/80 [&>svg]:size-3.5 [&>svg]:text-primary">
           <Trophy />
           {rewardSlots
             ? t("story.rewardSlots", { count: rewardSlots })
@@ -135,10 +140,12 @@ export default function PublicGuildmateStoryCard({
 
         <If condition={!!creator}>
           <Then>
+            {/* z-10 above the stretched story link — YouTube channel chip */}
             <Item
               variant="muted"
               size="sm"
-              className="flex-nowrap rounded-sm border-primary/20 px-2.5 py-2"
+              render={<Link href={getGuildmateHref(creator!)} />}
+              className="relative z-10 flex-nowrap rounded-sm border-primary/20 px-2.5 py-2 focus-visible:ring-2 focus-visible:ring-ring"
             >
               <ItemMedia>
                 <Avatar className="size-9 border-2 border-primary/40">
@@ -161,13 +168,8 @@ export default function PublicGuildmateStoryCard({
                   <Crown />
                   {t("story.dungeonMaster")}
                 </ItemDescription>
-                <ItemTitle className="block w-full truncate font-heading text-sm text-foreground">
-                  <Link
-                    href={getGuildmateHref(creator!)}
-                    className="underline-offset-4 hover:text-primary hover:underline"
-                  >
-                    {creator?.display_name}
-                  </Link>
+                <ItemTitle className="block w-full truncate font-heading text-sm text-foreground underline-offset-4 group-hover/item:text-primary group-hover/item:underline">
+                  {creator?.display_name}
                 </ItemTitle>
               </ItemContent>
             </Item>
