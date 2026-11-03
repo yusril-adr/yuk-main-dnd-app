@@ -45,6 +45,7 @@ export function AppTopBar() {
 
         <div className="hidden items-center gap-2 lg:flex">
           <LanguageSwitcher />
+          <ThemeToggler />
           {showLoading && <Skeleton className="h-9 w-24 rounded-md" />}
           {!showLoading &&
             (auth ? (
@@ -57,7 +58,7 @@ export function AppTopBar() {
             ))}
         </div>
 
-        {/* Mobile: language (+ theme) sit left of the hamburger; desktop unchanged above */}
+        {/* Mobile: language + theme sit left of the hamburger */}
         <div className="flex items-center gap-1 lg:hidden">
           <LanguageSwitcher size="icon-sm" />
           <ThemeToggler size="icon-sm" />
