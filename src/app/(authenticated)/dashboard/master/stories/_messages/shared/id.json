@@ -34,7 +34,9 @@
     "cancelling": "Membatalkan story...",
     "cancelled": "Story dibatalkan",
     "deleting": "Menghapus story...",
-    "deleted": "Story dihapus"
+    "deleted": "Story dihapus",
+    "creatingGuest": "Membuat tamu...",
+    "guestCreated": "Tamu dibuat"
   },
   "enums": {
     "memberStatus": {

@@ -135,5 +135,27 @@
   },
   "external": {
     "opensInNewTab": "(opens in a new tab)"
+  },
+  "guest": {
+    "badge": "Guest"
+  },
+  "createGuest": {
+    "entry": "Create guest",
+    "title": "Create guest",
+    "description": "Create a guest adventurer and add them to this party",
+    "username": "Username",
+    "usernamePlaceholder": "Input username",
+    "displayName": "Display Name",
+    "displayNamePlaceholder": "Input display name",
+    "cancel": "Back",
+    "submit": "Create & add",
+    "validation": {
+      "usernameRequired": "Username is required",
+      "usernameNoSpaces": "Username must not contain spaces",
+      "usernameMax": "Username must be at most {{max}} characters",
+      "displayNameRequired": "Display name is required",
+      "displayNameMax": "Display name must be at most {{max}} characters"
+    },
+    "errorFallback": "Couldn't create guest."
   }
 }

@@ -13,7 +13,8 @@
     "noRolesFound": "Tidak ada roles.",
     "clear": "Hapus",
     "apply": "Terapkan",
-    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ..."
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "guest": "Tamu"
   },
   "sort": {
     "displayName": "Nama Tampilan",
@@ -34,12 +35,20 @@
     "view": "Lihat",
     "balances": "Saldo",
     "edit": "Edit",
-    "delete": "Hapus"
+    "delete": "Hapus",
+    "guest": "Tamu"
   },
   "dialogs": {
     "cancel": "Batal",
     "deleteTitle": "Hapus user?",
     "deleteDescription": "Aksi ini tidak bisa diurungkan. User akan dihapus permanen dari sistem.",
     "deleteConfirm": "Hapus"
+  },
+  "enums": {
+    "guest": {
+      "all": "Semua",
+      "users": "Pengguna",
+      "guests": "Tamu"
+    }
   }
 }

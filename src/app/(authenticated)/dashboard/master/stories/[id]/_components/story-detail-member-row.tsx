@@ -62,6 +62,11 @@ export default function StoryDetailMemberRow({
       >
         {member.user.display_name}
       </Link>
+      <If condition={member.user.is_guest}>
+        <Then>
+          <Badge className="shrink-0">{t("guest.badge")}</Badge>
+        </Then>
+      </If>
       {/* Per-member actions (attended, viewer) mount here, beside the status badge. */}
       <span className="ms-auto flex shrink-0 items-center gap-2">
         <If condition={!!statusLabel}>
