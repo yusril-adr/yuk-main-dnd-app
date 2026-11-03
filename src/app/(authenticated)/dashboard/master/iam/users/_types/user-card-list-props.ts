@@ -1,6 +1,5 @@
 import type { OrderKeyEnum } from "@/common/enums/order-key";
 import type { TUserPaginationResponse } from "@/api/main/modules/master/iam/users/types/user-pagination-response";
-import type { UserGuestFilterEnum } from "@/app/(authenticated)/dashboard/master/iam/users/_enums/user-guest-filter";
 import type { TUserCardListSortBy } from "./user-card-list-sort-by";
 
 export type TUserCardListQueryTable = {
@@ -10,7 +9,6 @@ export type TUserCardListQueryTable = {
   sortBy: TUserCardListSortBy | null;
   order: OrderKeyEnum | null;
   roleIds: string[];
-  isGuest: UserGuestFilterEnum | null;
 };
 
 export type TUserCardListActionHandler = {
@@ -21,7 +19,6 @@ export type TUserCardListActionHandler = {
     sortBy: TUserCardListSortBy | null;
     order: OrderKeyEnum | null;
     roleIds: string[];
-    isGuest: UserGuestFilterEnum | null;
   }) => void;
   onDeleteUser: (id: string) => void;
 };

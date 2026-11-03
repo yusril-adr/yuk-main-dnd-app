@@ -1,19 +1,16 @@
 "use client";
 
 import { useCallback } from "react";
-import { If, Then } from "react-if";
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@/app/_components/ui/avatar";
-import { Badge } from "@/app/_components/ui/badge";
 import { Checkbox } from "@/app/_components/ui/checkbox";
-import { useT } from "@/app/_hooks/use-t";
-import { MASTER_STORY_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/stories/[id]/_messages";
-import type { TStoryDetailAddMemberRowProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-add-member-row-props";
 import { getInitials, makeDefaultAvatarUrl } from "@/utils/user-helper";
+
+import type { TStoryDetailAddMemberRowProps } from "@/app/(authenticated)/dashboard/master/stories/[id]/_types/story-detail-add-member-row-props";
 
 export default function StoryDetailAddMemberRow({
   user,
@@ -21,7 +18,6 @@ export default function StoryDetailAddMemberRow({
   disabled,
   onCheckedChange,
 }: TStoryDetailAddMemberRowProps) {
-  const { t } = useT(MASTER_STORY_DETAIL_MESSAGES);
   const onCheckboxCheckedChange = useCallback(
     (nextChecked: boolean) => {
       onCheckedChange(user.id, nextChecked);
@@ -46,11 +42,6 @@ export default function StoryDetailAddMemberRow({
         </AvatarFallback>
       </Avatar>
       <span className="min-w-0 truncate">{user.display_name}</span>
-      <If condition={user.is_guest}>
-        <Then>
-          <Badge className="shrink-0">{t("guest.badge")}</Badge>
-        </Then>
-      </If>
     </label>
   );
 }
