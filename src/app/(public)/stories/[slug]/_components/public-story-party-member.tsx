@@ -18,6 +18,7 @@ import {
   ItemTitle,
 } from "@/app/_components/ui/item";
 import { cn } from "cn";
+import { If, Then } from "react-if";
 import dayjs from "@/libs/dayjs";
 import {
   getGuildmateHref,
@@ -44,6 +45,8 @@ export default function PublicStoryPartyMember({
   const { t } = useT(STORY_DETAIL_MESSAGES);
   const { locale } = useLocale();
   const { user } = member;
+  const username = user.username?.trim();
+
   return (
     <Item
       role="listitem"
@@ -51,36 +54,40 @@ export default function PublicStoryPartyMember({
       size="sm"
       className="flex-nowrap bg-background"
     >
-      <ItemMedia>
-        <Avatar className="size-11 shrink-0 border-2 border-primary/40">
-          <AvatarImage
-            src={user.avatar_url ?? makeDefaultAvatarUrl(user.display_name)}
-            alt={user.display_name}
-            loading="lazy"
-            className="object-cover"
-          />
-          <AvatarFallback className="font-heading text-lg">
-            {getInitials(user.display_name)}
-          </AvatarFallback>
-        </Avatar>
-      </ItemMedia>
+      <Link
+        href={getGuildmateHref(user)}
+        className="group flex min-w-0 flex-1 items-center gap-2.5 rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+      >
+        <ItemMedia>
+          <Avatar className="size-11 shrink-0 border-2 border-primary/40">
+            <AvatarImage
+              src={user.avatar_url ?? makeDefaultAvatarUrl(user.display_name)}
+              alt={user.display_name}
+              loading="lazy"
+              className="object-cover"
+            />
+            <AvatarFallback className="font-heading text-lg">
+              {getInitials(user.display_name)}
+            </AvatarFallback>
+          </Avatar>
+        </ItemMedia>
 
-      <ItemContent className="min-w-0 gap-0">
-        <ItemTitle className="block w-full truncate text-base text-foreground">
-          <Link
-            href={getGuildmateHref(user)}
-            className="underline-offset-4 hover:text-primary hover:underline"
-          >
+        <ItemContent className="min-w-0 gap-0">
+          <ItemTitle className="block w-full truncate text-base text-foreground underline-offset-4 group-hover:text-primary group-hover:underline">
             {user.display_name}
-          </Link>
-        </ItemTitle>
-        <ItemDescription className="truncate text-foreground/75">
-          {user.username ? `@${user.username} · ` : ""}
-          {t("party.joinedOn", {
-            date: dayjs(member.created_at).locale(locale).format("D MMM YYYY"),
-          })}
-        </ItemDescription>
-      </ItemContent>
+          </ItemTitle>
+          <ItemDescription className="truncate text-foreground/75">
+            <If condition={!!username}>
+              <Then>
+                <span>@{username} · </span>
+              </Then>
+            </If>
+            {t("party.joinedOn", {
+              date: dayjs(member.created_at).locale(locale).format("D MMM YYYY"),
+            })}
+          </ItemDescription>
+        </ItemContent>
+      </Link>
 
       <ItemActions className="shrink-0">
         <Badge
