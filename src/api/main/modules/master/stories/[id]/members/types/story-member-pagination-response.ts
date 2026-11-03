@@ -5,5 +5,5 @@ export type TStoryMemberPaginationResponse = Omit<
   TStoryMemberEntity,
   "updated_at" | "user"
 > & {
-  user: Pick<TUserEntity, "id" | "display_name" | "username" | "avatar_url" | "is_guest">;
+  user: Pick<TUserEntity, "id" | "display_name" | "username" | "avatar_url">;
 };

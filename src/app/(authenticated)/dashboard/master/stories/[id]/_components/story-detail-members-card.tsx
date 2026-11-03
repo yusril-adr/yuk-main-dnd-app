@@ -22,7 +22,6 @@ export default function StoryDetailMembersCard({
   storyId,
   canAddMembers,
   canRemoveMembers,
-  canCreateGuestUser,
 }: TStoryDetailMembersCardProps) {
   const { t } = useT(MASTER_STORY_DETAIL_MESSAGES);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -134,7 +133,6 @@ export default function StoryDetailMembersCard({
         storyId={storyId}
         open={isAddDialogOpen}
         onOpenChange={onAddDialogOpenChange}
-        canCreateGuestUser={canCreateGuestUser}
       />
       <StoryDetailDeleteMemberDialog
         storyId={storyId}

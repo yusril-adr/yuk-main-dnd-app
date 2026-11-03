@@ -4,5 +4,4 @@ import type { TMainApiPaginationPayload } from "@/api/main/types/pagination-payl
 export type TUserPaginationPayload = TMainApiPaginationPayload & {
   sort_by?: TUserSortBy;
   role_ids?: string[];
-  is_guest?: boolean;
 };

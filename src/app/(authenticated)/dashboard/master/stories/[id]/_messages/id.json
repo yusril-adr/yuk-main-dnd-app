@@ -135,27 +135,5 @@
   },
   "external": {
     "opensInNewTab": "(membuka tab baru)"
-  },
-  "guest": {
-    "badge": "Tamu"
-  },
-  "createGuest": {
-    "entry": "Buat tamu",
-    "title": "Buat tamu",
-    "description": "Buat petualang tamu dan tambahkan ke party ini",
-    "username": "Username",
-    "usernamePlaceholder": "Masukkan username",
-    "displayName": "Nama Tampilan",
-    "displayNamePlaceholder": "Masukkan nama tampilan",
-    "cancel": "Kembali",
-    "submit": "Buat & tambah",
-    "validation": {
-      "usernameRequired": "Username wajib diisi",
-      "usernameNoSpaces": "Username tidak boleh mengandung spasi",
-      "usernameMax": "Username maksimal {{max}} karakter",
-      "displayNameRequired": "Nama tampilan wajib diisi",
-      "displayNameMax": "Nama tampilan maksimal {{max}} karakter"
-    },
-    "errorFallback": "Nggak bisa membuat tamu."
   }
 }

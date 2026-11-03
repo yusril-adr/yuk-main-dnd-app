@@ -2,23 +2,20 @@
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, Link2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
-import { Button } from "@/app/_components/ui/button";
 import CONFIG from "@/common/constants/config";
 import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import { useT } from "@/app/_hooks/use-t";
 import UserEditForm from "./_components/user-edit-form";
-import LinkGuestUserDialog from "./_components/link-guest-user-dialog";
 import { useGetUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-user-by-id";
 import { useUpdateUserById } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-update-user-by-id";
 import { useAvatarUploadFile } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-avatar-upload-file";
 import { useGetRoleOptions } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-get-role-options";
-import { useLinkGuestUser } from "@/app/(authenticated)/dashboard/master/iam/users/_hooks/use-link-guest-user";
 import { MASTER_USERS_EDIT_MESSAGES } from "@/app/(authenticated)/dashboard/master/iam/users/[id]/edit/_messages";
 
 export default function UserEditPageClient() {
@@ -30,14 +27,10 @@ export default function UserEditPageClient() {
 
   const [roleSearch, setRoleSearch] = useState("");
   const [avatarFileId, setAvatarFileId] = useState<string | null>(null);
-  const [isLinkDialogOpen, setIsLinkDialogOpen] = useState(false);
 
   const getDataQuery = useGetUserById(userId);
   const user = getDataQuery.data?.data?.data;
   const isEditForbidden = !!user && !user.action_list.is_can_update;
-  const isGuest = user?.is_guest === true;
-  const canLinkGuest =
-    isGuest && !!user?.action_list.is_can_update;
 
   const rolesQuery = useGetRoleOptions(roleSearch || undefined);
 
@@ -60,23 +53,6 @@ export default function UserEditPageClient() {
     },
   });
 
-  const {
-    mutate: linkGuestMutate,
-    isPending: linkGuestIsPending,
-  } = useLinkGuestUser({
-    onSuccess: (_response, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.IAM.USER.ALL()],
-      });
-      setIsLinkDialogOpen(false);
-      router.push(`/dashboard/master/iam/users/${variables.payload.user_id}`);
-    },
-    onError: (error) => {
-      toast.dismiss();
-      toast.error(error.message);
-    },
-  });
-
   const avatarUploadMutation = useAvatarUploadFile({
     onSuccess: (response) => {
       setAvatarFileId(response.data.data.id);
@@ -88,16 +64,6 @@ export default function UserEditPageClient() {
       avatarUploadMutation.mutate({ file });
     },
     [avatarUploadMutation],
-  );
-
-  const onLinkConfirm = useCallback(
-    (targetUserId: string) => {
-      linkGuestMutate({
-        id: userId,
-        payload: { user_id: targetUserId },
-      });
-    },
-    [linkGuestMutate, userId],
   );
 
   const roleItems = (rolesQuery.data?.data?.data?.items ?? []).map((role) => ({
@@ -149,18 +115,6 @@ export default function UserEditPageClient() {
             <ArrowLeft />
           </Link>
           <h1 className="font-heading text-2xl">{t("title")}</h1>
-          {canLinkGuest && (
-            <Button
-              type="button"
-              variant="outline"
-              className="ms-auto"
-              data-testid="link-guest-button"
-              onClick={() => setIsLinkDialogOpen(true)}
-            >
-              <Link2 data-icon="inline-start" />
-              {t("actions.linkToUser")}
-            </Button>
-          )}
         </div>
 
         <UserEditForm
@@ -168,13 +122,12 @@ export default function UserEditPageClient() {
           isRolesLoading={rolesQuery.isLoading}
           roleSearch={roleSearch}
           onRoleSearchChange={setRoleSearch}
-          email={user?.email ?? undefined}
+          email={user?.email}
           username={user?.username}
           displayName={user?.display_name}
           bio={user?.bio}
           avatarUrl={user?.avatar_url}
           roleIds={user?.roles?.map((r) => r.id)}
-          isGuest={isGuest}
           isLoading={getDataQuery.isLoading || isEditForbidden}
           onSubmitPayload={(payload) =>
             updateUserMutate({ id: userId, payload })
@@ -186,16 +139,6 @@ export default function UserEditPageClient() {
           isUploadingAvatar={avatarUploadMutation.isPending}
           avatarFileId={avatarFileId}
         />
-
-        {isGuest && (
-          <LinkGuestUserDialog
-            guestId={userId}
-            open={isLinkDialogOpen}
-            onOpenChange={setIsLinkDialogOpen}
-            onConfirm={onLinkConfirm}
-            isPending={linkGuestIsPending}
-          />
-        )}
       </main>
     </div>
   );

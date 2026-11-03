@@ -72,8 +72,6 @@ export default function StoryDetailPageClient() {
   const canDelete = !!story && story.action_list.is_can_delete;
   const canAddMembers = !!story && story.action_list.is_can_add_members;
   const canRemoveMembers = !!story && story.action_list.is_can_remove_members;
-  const canCreateGuestUser =
-    !!story && story.action_list.is_can_create_guest_user;
   const hasStoryActions =
     canEdit ||
     canPublish ||
@@ -252,7 +250,6 @@ export default function StoryDetailPageClient() {
                         storyId={storyId}
                         canAddMembers={canAddMembers}
                         canRemoveMembers={canRemoveMembers}
-                        canCreateGuestUser={canCreateGuestUser}
                       />
                     </div>
                     <StoryDetailQuestCard

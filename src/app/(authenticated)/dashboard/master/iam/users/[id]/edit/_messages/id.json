@@ -25,8 +25,7 @@
   },
   "actions": {
     "cancel": "Batal",
-    "save": "Simpan",
-    "linkToUser": "Hubungkan ke user"
+    "save": "Simpan"
   },
   "toast": {
     "editForbidden": "Kamu tidak punya izin untuk mengedit user ini"
@@ -39,15 +38,5 @@
     "displayNameRequired": "Nama tampilan wajib diisi",
     "bioMax": "Bio maksimal {{max}} karakter",
     "rolesRequired": "Minimal satu role wajib dipilih"
-  },
-  "guestHint": "Tamu nggak bisa punya email, password, atau roles. Hubungkan ke user asli aja.",
-  "link": {
-    "title": "Hubungkan tamu ke user?",
-    "description": "Keanggotaan story, riwayat EXP dan points, komentar, serta reaksi milik tamu ini akan dipindah ke user yang kamu pilih. Akun tamunya lalu dihapus.",
-    "userLabel": "Hubungkan ke",
-    "userPlaceholder": "Cari user asli",
-    "noUsersFound": "Tidak ada user.",
-    "cancel": "Batal",
-    "confirm": "Hubungkan tamu"
   }
 }

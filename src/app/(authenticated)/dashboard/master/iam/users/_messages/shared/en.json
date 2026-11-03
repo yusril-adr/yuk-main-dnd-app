@@ -7,8 +7,6 @@
     "deleting": "Deleting user...",
     "deleted": "User deleted",
     "uploadingAvatar": "Uploading avatar...",
-    "avatarUploaded": "Avatar uploaded",
-    "linking": "Linking guest...",
-    "linked": "Guest linked to user"
+    "avatarUploaded": "Avatar uploaded"
   }
 }
