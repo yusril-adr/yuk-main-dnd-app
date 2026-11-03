@@ -18,6 +18,7 @@ import {
 } from "@/app/_components/ui/sheet";
 import { LanguageSwitcher } from "@/app/_components/language-switcher";
 import { ThemeToggler } from "@/app/_components/theme-toggler";
+import CONFIG from "@/common/constants/config";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 
 import { AvatarDropdown } from "./avatar-dropdown";
@@ -45,7 +46,7 @@ export function AppTopBar() {
 
         <div className="hidden items-center gap-2 lg:flex">
           <LanguageSwitcher />
-          <ThemeToggler />
+          {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler />}
           {showLoading && <Skeleton className="h-9 w-24 rounded-md" />}
           {!showLoading &&
             (auth ? (
@@ -58,10 +59,10 @@ export function AppTopBar() {
             ))}
         </div>
 
-        {/* Mobile: language + theme sit left of the hamburger */}
+        {/* Mobile: language (+ theme when enabled) sit left of the hamburger */}
         <div className="flex items-center gap-1 lg:hidden">
           <LanguageSwitcher size="icon-sm" />
-          <ThemeToggler size="icon-sm" />
+          {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler size="icon-sm" />}
           <Sheet>
             <SheetTrigger
               render={
