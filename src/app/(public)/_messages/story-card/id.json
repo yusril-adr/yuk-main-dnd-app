@@ -1,0 +1,27 @@
+{
+  "taleYetWritten": "Kisahnya belum ditulis…",
+  "dateTba": "Tanggal menyusul",
+  "joined": "{{count}} bergabung",
+  "rewardSlots_one": "Hanya {{count}} hero yang bisa main, lainnya ikut sebagai penonton",
+  "rewardSlots_other": "Hanya {{count}} heroes yang bisa main, lainnya ikut sebagai penonton",
+  "noPlayerLimit": "Tidak ada batas player",
+  "dungeonMaster": "Dungeon Master",
+  "enums": {
+    "status": {
+      "recruiting": "Rekrutmen",
+      "draft": "Draf",
+      "published": "Published",
+      "archived": "Diarsipkan",
+      "cancelled": "Dibatalkan",
+      "completed": "Selesai"
+    },
+    "type": {
+      "oneshot": "Oneshot",
+      "campaign": "Campaign"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    }
+  }
+}

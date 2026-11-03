@@ -35,14 +35,13 @@ import { StoryTypeEnum } from "@/api/main/modules/master/stories/enums/story-typ
 import { StoryLocationTypeEnum } from "@/api/main/modules/master/stories/enums/story-location-type";
 import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
-
-import PublicStoryBanner from "./public-story-banner";
-import PublicStoryStatusBadge from "./public-story-status-badge";
-import PublicStoryTypeBadge from "./public-story-type-badge";
-import PublicStoryLocationBadge from "./public-story-location-badge";
-import { PUBLIC_STORY_CARD_DATE_FORMAT } from "@/app/(public)/stories/_constants/public-story-date-format";
-import { STORIES_MESSAGES } from "@/app/(public)/stories/_messages";
-import type { TPublicStoryCardProps } from "@/app/(public)/stories/_types/public-story-components-props";
+import PublicStoryBanner from "@/app/(public)/_components/public-story-banner";
+import PublicStoryStatusBadge from "@/app/(public)/_components/public-story-status-badge";
+import PublicStoryTypeBadge from "@/app/(public)/_components/public-story-type-badge";
+import PublicStoryLocationBadge from "@/app/(public)/_components/public-story-location-badge";
+import { PUBLIC_STORY_CARD_DATE_FORMAT } from "@/app/(public)/_constants/public-story-card";
+import { PUBLIC_STORY_CARD_MESSAGES } from "@/app/(public)/_messages/story-card";
+import type { TPublicStoryCardProps } from "@/app/(public)/_types/public-story-card-props";
 
 const STATUS_BADGE_KEY = {
   [StoryStatusEnum.DRAFT]: "enums.status.draft",
@@ -66,7 +65,7 @@ export default function PublicStoryCard({
   story,
   priority = false,
 }: TPublicStoryCardProps) {
-  const { t } = useT(STORIES_MESSAGES);
+  const { t } = useT(PUBLIC_STORY_CARD_MESSAGES);
   const { locale } = useLocale();
   // Plain text from rich text HTML; "" when empty or only images
   const descriptionText = getRichTextPlainText(story.description);
@@ -137,7 +136,7 @@ export default function PublicStoryCard({
           <If condition={!!descriptionText}>
             <Then>{descriptionText}</Then>
             <Else>
-              <span className="italic">{t("card.taleYetWritten")}</span>
+              <span className="italic">{t("taleYetWritten")}</span>
             </Else>
           </If>
         </CardDescription>
@@ -151,11 +150,11 @@ export default function PublicStoryCard({
               ? dayjs(story.start_at)
                   .locale(locale)
                   .format(PUBLIC_STORY_CARD_DATE_FORMAT)
-              : t("card.dateTba")}
+              : t("dateTba")}
           </span>
           <span className="flex items-center gap-1.5 font-medium text-foreground [&>svg]:size-3.5">
             <Users />
-            {t("card.joined", { count: story.joined_members })}
+            {t("joined", { count: story.joined_members })}
           </span>
         </div>
 
@@ -164,13 +163,8 @@ export default function PublicStoryCard({
         <span className="pointer-events-none flex items-center gap-1.5 text-xs text-foreground/80 [&>svg]:size-3.5 [&>svg]:text-primary">
           <Trophy />
           {rewardSlots
-            ? t(
-                rewardSlots === 1
-                  ? "card.rewardSlots_one"
-                  : "card.rewardSlots_other",
-                { count: rewardSlots },
-              )
-            : t("card.noPlayerLimit")}
+            ? t("rewardSlots", { count: rewardSlots })
+            : t("noPlayerLimit")}
         </span>
 
         <If condition={!!creator}>
@@ -201,7 +195,7 @@ export default function PublicStoryCard({
               <ItemContent className="min-w-0 gap-0">
                 <ItemDescription className="flex items-center gap-1 text-xs font-medium tracking-widest text-primary uppercase [&>svg]:size-3">
                   <Crown />
-                  {t("card.dungeonMaster")}
+                  {t("dungeonMaster")}
                 </ItemDescription>
                 <ItemTitle className="block w-full truncate font-heading text-sm text-foreground underline-offset-4 group-hover/item:text-primary group-hover/item:underline">
                   {creator?.display_name}
