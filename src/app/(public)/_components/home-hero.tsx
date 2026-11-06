@@ -43,7 +43,11 @@ export default function HomeHero() {
       )}
       {/* Flat overlay (no gradient) keeps the text legible on the photo */}
       <div aria-hidden className="absolute inset-0 -z-10 bg-black/65" />
-      <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-6 px-4 py-16 sm:px-6 sm:py-24 lg:px-10">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-3 border border-secondary/80 shadow-[inset_0_0_0_5px_oklch(0_0_0/0.35)] sm:inset-5"
+      />
+      <div className="mx-auto flex w-full min-w-0 max-w-7xl flex-col items-start gap-6 px-6 py-16 sm:px-10 sm:py-24 lg:px-14">
         <Badge
           variant="outline"
           className="border-white/40 bg-black/30 tracking-[0.2em] text-white uppercase"
@@ -52,7 +56,7 @@ export default function HomeHero() {
         </Badge>
         <h1
           id="home-hero-title"
-          className="max-w-3xl font-heading text-4xl leading-tight text-white sm:text-6xl lg:text-7xl"
+          className="max-w-3xl font-heading text-[1.85rem] leading-[1.08] tracking-normal text-balance text-white sm:text-5xl sm:tracking-[0.02em] lg:text-7xl"
         >
           {t("hero.title")}
         </h1>

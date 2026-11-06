@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Alegreya_Sans, DM_Mono, Eczar } from "next/font/google";
+import { Cinzel, Crimson_Pro, DM_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { cn } from "cn";
@@ -12,15 +12,17 @@ import CONFIG from "@/common/constants/config";
 import { parseLocale } from "@/libs/i18n/locale-cookie";
 import { Providers } from "./providers";
 
-const eczarHeading = Eczar({
+const cinzelHeading = Cinzel({
   subsets: ["latin"],
   variable: "--font-heading",
+  display: "swap",
 });
 
-const alegreyaSans = Alegreya_Sans({
-  weight: "400",
+const crimsonBody = Crimson_Pro({
   subsets: ["latin"],
+  style: ["normal", "italic"],
   variable: "--font-sans",
+  display: "swap",
 });
 
 const dmMono = DM_Mono({
@@ -74,8 +76,8 @@ export default async function RootLayout({
         "h-full",
         "antialiased",
         dmMono.variable,
-        alegreyaSans.variable,
-        eczarHeading.variable,
+        crimsonBody.variable,
+        cinzelHeading.variable,
       )}
       suppressHydrationWarning
     >

@@ -83,7 +83,7 @@ export function AvatarSidebar() {
                     <span className="truncate font-heading font-medium">
                       {auth?.display_name || "-"}
                     </span>
-                    <span className="truncate text-xs text-muted-foreground">
+                    <span className="truncate text-xs text-sidebar-foreground/75">
                       {auth?.email || "-"}
                     </span>
                   </>
