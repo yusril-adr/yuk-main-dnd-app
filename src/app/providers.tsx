@@ -3,6 +3,7 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
+import CONFIG from "@/common/constants/config";
 import { ThemeEnum } from "@/common/enums/theme";
 import { ThemeProvider } from "@/app/_components/theme-provider";
 import { SidebarProvider } from "@/app/_components/ui/sidebar";
@@ -27,7 +28,10 @@ export function Providers({
             <ThemeProvider
               attribute="class"
               defaultTheme={ThemeEnum.LIGHT}
-              enableSystem
+              enableSystem={CONFIG.IS_USING_THEME_TOGGLER}
+              forcedTheme={
+                CONFIG.IS_USING_THEME_TOGGLER ? undefined : ThemeEnum.LIGHT
+              }
               disableTransitionOnChange
             >
               <SidebarProvider>
