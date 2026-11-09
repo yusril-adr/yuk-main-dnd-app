@@ -60,7 +60,7 @@ export default function HomeGuildSlide({
                 <EmptyTitle className="text-sm sm:text-base">
                   {t("guild.comingSoon")}
                 </EmptyTitle>
-                <EmptyDescription className="italic">{caption}</EmptyDescription>
+                <EmptyDescription className="text-base italic">{caption}</EmptyDescription>
               </EmptyHeader>
             </Empty>
           )}

@@ -40,7 +40,7 @@ export default function PublicGuildmateErrorState({
           <TriangleAlert />
         </EmptyMedia>
         <EmptyTitle className="font-heading text-lg">{title}</EmptyTitle>
-        <EmptyDescription>{description}</EmptyDescription>
+        <EmptyDescription className="text-base">{description}</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <Button variant="outline" onClick={onRetry}>

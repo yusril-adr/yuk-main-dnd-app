@@ -182,7 +182,7 @@ export default function PublicStoryCommentItem({
               <Then>
                 <p
                   className={cn(
-                    "mt-1 text-sm text-muted-foreground italic",
+                    "mt-1 text-base text-muted-foreground italic",
                     isReply ? "ps-8 sm:ps-10.5" : "ps-10 sm:ps-12.5",
                   )}
                 >
@@ -198,7 +198,7 @@ export default function PublicStoryCommentItem({
                   value={comment.content ?? ""}
                   highlightLeadingMention={isReply}
                   className={cn(
-                    "mt-1 text-sm text-foreground [&_p]:my-1.5",
+                    "mt-1 text-base text-foreground [&_p]:my-1.5",
                     isReply ? "ps-8 sm:ps-10.5" : "ps-10 sm:ps-12.5",
                   )}
                 />

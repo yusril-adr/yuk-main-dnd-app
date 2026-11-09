@@ -34,7 +34,7 @@ export default function PublicGuildmateEmptyState({
         <EmptyTitle className="font-heading text-lg sm:text-xl">
           {t("empty.title")}
         </EmptyTitle>
-        <EmptyDescription>
+        <EmptyDescription className="text-base">
           {isFiltered ? t("empty.filtered") : t("empty.default")}
         </EmptyDescription>
       </EmptyHeader>

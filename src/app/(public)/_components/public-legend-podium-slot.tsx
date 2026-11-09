@@ -42,7 +42,7 @@ export default function PublicLegendPodiumSlot({
           </Avatar>
           <Badge
             className={cn(
-              "absolute -bottom-2 left-1/2 size-5 -translate-x-1/2 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-[11px] leading-none font-bold lining-nums proportional-nums opacity-70",
+              "absolute -bottom-2 left-1/2 size-5 -translate-x-1/2 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-xs leading-none font-bold lining-nums proportional-nums opacity-70",
               style.badge,
               rank === 1 && "pl-px",
             )}
@@ -92,7 +92,7 @@ export default function PublicLegendPodiumSlot({
             />
             <Badge
               className={cn(
-                "absolute -bottom-2 left-1/2 size-5 -translate-x-1/2 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-[11px] leading-none font-bold lining-nums proportional-nums",
+                "absolute -bottom-2 left-1/2 size-5 -translate-x-1/2 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-xs leading-none font-bold lining-nums proportional-nums",
                 style.badge,
                 rank === 1 && "pl-px",
               )}

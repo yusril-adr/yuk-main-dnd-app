@@ -10,13 +10,13 @@ export default function PublicFooter() {
   const year = new Date().getFullYear();
 
   return (
-    // On the home page the footer turns red and drops its Separator so it blends into the final CTA band.
+    // On the home page the footer turns red (a dark ember tint in dark mode) and drops its Separator so it blends into the final CTA band.
     // Pure CSS, no pathname: `group-has-[#final-cta]/public:*` compiles to `.group\/public:has(#final-cta) ...`,
     // matching only when the page inside the `group/public` wrapper (public layout) contains #final-cta.
     // That id lives in home-final-cta.tsx; renaming it silently brings back the parchment footer on home.
-    <footer className="mt-auto w-full group-has-[#final-cta]/public:bg-primary group-has-[#final-cta]/public:text-primary-foreground">
+    <footer className="mt-auto w-full group-has-[#final-cta]/public:bg-primary group-has-[#final-cta]/public:text-primary-foreground dark:group-has-[#final-cta]/public:bg-primary/20 dark:group-has-[#final-cta]/public:text-foreground">
       <Separator className="group-has-[#final-cta]/public:hidden" />
-      <p className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-center gap-x-1 px-4 py-3 text-center text-xs leading-none text-muted-foreground group-has-[#final-cta]/public:text-primary-foreground/70 sm:px-10">
+      <p className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-center gap-x-1 px-4 py-3 text-center text-xs leading-none text-muted-foreground group-has-[#final-cta]/public:text-primary-foreground/70 sm:px-10 dark:group-has-[#final-cta]/public:text-foreground/70">
         <span>© {year} YukMainDnD</span>
         <span aria-hidden>·</span>
         <span>
@@ -24,7 +24,7 @@ export default function PublicFooter() {
           <Button
             variant="link"
             nativeButton={false}
-            className="h-auto gap-0.5 p-0 text-xs leading-none group-has-[#final-cta]/public:text-primary-foreground"
+            className="h-auto gap-0.5 p-0 text-xs leading-none group-has-[#final-cta]/public:text-primary-foreground dark:group-has-[#final-cta]/public:text-foreground"
             render={
               <a href={CREDIT_URL} target="_blank" rel="noopener noreferrer" />
             }

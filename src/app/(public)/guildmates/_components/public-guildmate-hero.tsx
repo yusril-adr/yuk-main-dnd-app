@@ -29,7 +29,7 @@ export default function PublicGuildmateHero({
           {t("hero.title")}
         </h1>
         <Separator className="w-40! bg-primary/40 sm:w-56!" />
-        <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
+        <p className="max-w-xl text-base text-muted-foreground">
           {t("hero.description")}
         </p>
         <If condition={totalGuildmates !== null}>

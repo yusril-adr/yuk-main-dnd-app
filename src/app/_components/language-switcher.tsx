@@ -3,6 +3,7 @@
 import { Languages } from "lucide-react";
 
 import { buttonVariants } from "@/app/_components/ui/button";
+import { cn } from "cn";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,7 +23,10 @@ const LOCALE_LABEL: Record<TLocale, string> = {
   id: "Indonesia",
 };
 
-export function LanguageSwitcher({ size = "icon" }: TLanguageSwitcherProps) {
+export function LanguageSwitcher({
+  size = "icon",
+  className,
+}: TLanguageSwitcherProps) {
   const { locale, setLocale, locales } = useLocale();
   const { t } = useT(COMMON_MESSAGES);
 
@@ -30,7 +34,7 @@ export function LanguageSwitcher({ size = "icon" }: TLanguageSwitcherProps) {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <div
-          className={buttonVariants({ variant: "ghost", size })}
+          className={cn(buttonVariants({ variant: "ghost", size }), className)}
           aria-label={t("language.switcherLabel")}
         >
           <Languages className="size-[1.2rem]" />

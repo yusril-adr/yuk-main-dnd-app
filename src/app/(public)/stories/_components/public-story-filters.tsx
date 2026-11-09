@@ -180,7 +180,7 @@ export default function PublicStoryFilters({
             <Funnel />
             {t("filters.filters")}
             {activeFilterCount > 0 && (
-              <span className="flex size-5 items-center justify-center rounded-full bg-primary text-[11px] text-primary-foreground">
+              <span className="flex size-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
                 {activeFilterCount}
               </span>
             )}

@@ -27,7 +27,7 @@ export default function HomeErrorState({
         <EmptyMedia variant="icon" className="text-destructive">
           <TriangleAlert />
         </EmptyMedia>
-        <EmptyDescription>{text}</EmptyDescription>
+        <EmptyDescription className="text-base">{text}</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <Button variant="outline" size="sm" onClick={onRetry}>

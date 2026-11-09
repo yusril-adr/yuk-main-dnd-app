@@ -21,7 +21,7 @@ export default function PublicStoryEmptyState({
       </div>
       <div className="flex max-w-sm flex-col gap-1">
         <h3 className="font-heading text-lg sm:text-xl">{t("empty.title")}</h3>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-base text-muted-foreground">
           {isFiltered ? t("empty.filtered") : t("empty.default")}
         </p>
       </div>
