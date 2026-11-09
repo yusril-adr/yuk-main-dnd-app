@@ -25,7 +25,7 @@ export default function PublicStoryListHero({
         <p className="text-xs tracking-[0.25em] text-primary uppercase">
           {t("hero.badge")}
         </p>
-        <h1 className="min-w-0 font-heading text-3xl leading-tight text-balance sm:text-4xl lg:text-5xl">
+        <h1 className="font-heading text-3xl leading-tight sm:text-4xl lg:text-5xl">
           {t("hero.title")}
         </h1>
         <Separator className="w-40! bg-primary/40 sm:w-56!" />

@@ -54,11 +54,7 @@ export default function LoginPageClient() {
           {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler />}
         </div>
 
-        <div className="relative hidden lg:flex lg:w-1/2 h-full min-h-screen justify-center items-center bg-primary">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-8 border border-secondary/70 shadow-[inset_0_0_0_6px_oklch(0.3_0.08_30/0.35)]"
-          />
+        <div className="hidden lg:flex lg:w-1/2 h-full min-h-screen justify-center items-center bg-primary">
           <YmdndLogo
             className="w-[405px] max-w-[80%] h-auto text-primary-foreground"
             role="img"

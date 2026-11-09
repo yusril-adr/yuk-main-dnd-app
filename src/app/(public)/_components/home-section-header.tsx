@@ -21,16 +21,9 @@ export default function HomeSectionHeader({
   return (
     <Item className="flex-col items-start gap-4 p-0 sm:flex-row sm:items-end sm:justify-between">
       <ItemContent className="max-w-2xl gap-2">
-        <h2
-          id={id}
-          className="font-heading text-3xl tracking-normal text-balance sm:text-4xl sm:tracking-[0.04em]"
-        >
+        <h2 id={id} className="font-heading text-3xl sm:text-4xl">
           {title}
         </h2>
-        <span
-          aria-hidden
-          className="block h-0.5 w-16 bg-secondary shadow-[0_2px_0_0_var(--primary)]"
-        />
         <ItemDescription className="line-clamp-none text-base sm:text-lg">
           {description}
         </ItemDescription>

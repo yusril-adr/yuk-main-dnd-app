@@ -56,13 +56,8 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <div className="flex justify-between items-center gap-1 pl-1.5">
               <Link href="/" className="flex min-w-0 items-center gap-1.5">
-                <YmdndLogo
-                  aria-hidden
-                  className="size-7 shrink-0 text-sidebar-primary"
-                />
-                <span className="truncate font-heading text-sm tracking-[0.12em] uppercase">
-                  YukMainDnD
-                </span>
+                <YmdndLogo aria-hidden className="size-7 shrink-0 text-primary" />
+                <span className="truncate font-heading text-xl">YukMainDnD</span>
               </Link>
 
               <div className="flex shrink-0 items-center">
