@@ -17,6 +17,7 @@ import {
   setStoryCommentReaction,
 } from "@/api/main/modules/stories/[id]/comments";
 import { PUBLIC_STORY_COMMENT_REACTIONS } from "@/app/(public)/stories/[slug]/_constants/public-story-comment-reaction";
+import { getPublicStoryCommentReactionKey } from "@/app/(public)/stories/[slug]/_hooks/use-get-public-story-comment-reaction-pagination";
 
 type TCommentItem =
   TStoryCommentPaginationResponse | TStoryCommentReplyPaginationResponse;
@@ -80,12 +81,14 @@ export function useReactPublicStoryComment(
 
   // Only the list that holds this comment: a reply lives in its parent's
   // replies query, a top-level comment in the comment list (every viewer
-  // variant and page size)
+  // variant and page size). Reactor lists also sit under [commentKey,
+  // storyId] and are refetched on their own below
   const threadFilters: QueryFilters = parentId
     ? { queryKey: [commentKey, storyId, "replies", parentId] }
     : {
         queryKey: [commentKey, storyId],
-        predicate: (query) => query.queryKey[2] !== "replies",
+        predicate: (query) =>
+          query.queryKey[2] !== "replies" && query.queryKey[2] !== "reactions",
       };
 
   return useMutation<AxiosResponse, Error, TReactVariables, TReactContext>({
@@ -135,7 +138,13 @@ export function useReactPublicStoryComment(
     onSettled: () => {
       // A refetch while another tap is queued would flash the older state
       if (queryClient.isMutating({ mutationKey }) === 1) {
-        return queryClient.invalidateQueries(threadFilters);
+        return Promise.all([
+          queryClient.invalidateQueries(threadFilters),
+          // Who-reacted lists of this comment (every tab)
+          queryClient.invalidateQueries({
+            queryKey: getPublicStoryCommentReactionKey(storyId, commentId),
+          }),
+        ]);
       }
     },
   });
