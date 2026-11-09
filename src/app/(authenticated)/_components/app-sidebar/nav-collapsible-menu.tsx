@@ -65,7 +65,7 @@ function NavSubItem({ item }: { item: TNavSidebar }) {
             render={
               <Link
                 href={item.path!}
-                className="[&>svg]:text-sidebar-foreground! hover:[&>svg]:text-sidebar-accent-foreground!"
+                className="[&>svg]:text-sidebar-foreground! hover:[&>svg]:text-sidebar-accent-foreground! data-active:[&>svg]:text-sidebar-accent-foreground!"
               />
             }
           >

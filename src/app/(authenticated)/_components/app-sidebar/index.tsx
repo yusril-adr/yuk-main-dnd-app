@@ -17,6 +17,9 @@ import { AvatarSidebar } from "./avatar-sidebar";
 import Link from "next/link";
 import YmdndLogo from "@/assets/logo/YMDND1.svg";
 
+const SIDEBAR_ICON_BUTTON_CLASS =
+  "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground aria-expanded:bg-sidebar-accent aria-expanded:text-sidebar-accent-foreground";
+
 export function AppSidebar() {
   const { auth } = useAuthContext();
 
@@ -56,13 +59,24 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <div className="flex justify-between items-center gap-1 pl-1.5">
               <Link href="/" className="flex min-w-0 items-center gap-1.5">
-                <YmdndLogo aria-hidden className="size-7 shrink-0 text-primary" />
+                <YmdndLogo
+                  aria-hidden
+                  className="size-7 shrink-0 text-sidebar-primary"
+                />
                 <span className="truncate font-heading text-xl">YukMainDnD</span>
               </Link>
 
               <div className="flex shrink-0 items-center">
-                <LanguageSwitcher size="icon-sm" />
-                {CONFIG.IS_USING_THEME_TOGGLER && <ThemeToggler size="icon-sm" />}
+                <LanguageSwitcher
+                  size="icon-sm"
+                  className={SIDEBAR_ICON_BUTTON_CLASS}
+                />
+                {CONFIG.IS_USING_THEME_TOGGLER && (
+                  <ThemeToggler
+                    size="icon-sm"
+                    className={SIDEBAR_ICON_BUTTON_CLASS}
+                  />
+                )}
               </div>
             </div>
           </SidebarMenuItem>

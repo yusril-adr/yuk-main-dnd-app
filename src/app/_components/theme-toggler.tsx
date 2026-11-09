@@ -3,6 +3,7 @@
 import { Moon, Sun, MonitorSmartphone } from "lucide-react";
 
 import { buttonVariants } from "@/app/_components/ui/button";
+import { cn } from "cn";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +14,7 @@ import { useTheme } from "next-themes";
 import { ThemeEnum } from "@/common/enums/theme";
 import type { TThemeTogglerProps } from "@/app/_types/theme-toggler-props";
 
-export function ThemeToggler({ size = "icon" }: TThemeTogglerProps) {
+export function ThemeToggler({ size = "icon", className }: TThemeTogglerProps) {
   const { theme, setTheme } = useTheme();
 
   const isUsingSystemTheme = theme === ThemeEnum.SYSTEM;
@@ -22,7 +23,7 @@ export function ThemeToggler({ size = "icon" }: TThemeTogglerProps) {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <div
-          className={buttonVariants({ variant: "ghost", size })}
+          className={cn(buttonVariants({ variant: "ghost", size }), className)}
           suppressHydrationWarning
         >
           <Sun
