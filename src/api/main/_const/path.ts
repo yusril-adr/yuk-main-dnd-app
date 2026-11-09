@@ -29,6 +29,9 @@ const MAIN_API_PATH = {
       `/api/v1/stories/${id}/comments/${commentId}/reaction`,
     COMMENT_REPLIES: (identifier: string, commentId: string) =>
       `/api/v1/stories/${identifier}/comments/${commentId}/replies`,
+    // Public list of who reacted (comments and replies), newest first
+    COMMENT_REACTIONS: (identifier: string, commentId: string) =>
+      `/api/v1/stories/${identifier}/comments/${commentId}/reactions`,
   },
   USER: {
     // Public guildmates list; search matches username or display name

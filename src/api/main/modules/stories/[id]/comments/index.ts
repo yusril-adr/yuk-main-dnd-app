@@ -13,6 +13,8 @@ import type { TStoryCommentCreatePayload } from "./types/story-comment-create-pa
 import type { TStoryCommentCreateResponse } from "./types/story-comment-create-response";
 import type { TStoryCommentUpdatePayload } from "./types/story-comment-update-payload";
 import type { TStoryCommentReactionSetPayload } from "./types/story-comment-reaction-set-payload";
+import type { TStoryCommentReactionPaginationPayload } from "./types/story-comment-reaction-pagination-payload";
+import type { TStoryCommentReactionPaginationResponse } from "./types/story-comment-reaction-pagination-response";
 
 // Public, optional auth (the token fills action_list). Identifier is the id
 // or slug. 404 unless the story is published or completed
@@ -126,6 +128,28 @@ export const unpinStoryComment = async ({
 }) => {
   const response = await mainAxios.patch(
     MAIN_API_PATH.STORY.COMMENT_UNPIN(storyId, commentId),
+  );
+  return response;
+};
+
+// Public. Who reacted to a comment or reply, newest first, optionally one
+// type only. 404 unless the story is public and the comment is not deleted
+export const getStoryCommentReactionPagination = async ({
+  identifier,
+  commentId,
+  payload,
+}: {
+  identifier: string;
+  commentId: string;
+  payload: TStoryCommentReactionPaginationPayload;
+}): Promise<
+  AxiosResponse<
+    TMainApiPaginationResponse<TStoryCommentReactionPaginationResponse>
+  >
+> => {
+  const response = await mainAxios.get(
+    MAIN_API_PATH.STORY.COMMENT_REACTIONS(identifier, commentId),
+    { params: payload },
   );
   return response;
 };
