@@ -42,26 +42,27 @@ export default function StoryDetailChronicleCard({
         label={t("chronicle.writtenBy")}
         value={
           creator?.display_name && (
-            <span className="flex items-center gap-2">
+            // Avatar and name are one link to the guildmate page
+            <Link
+              href={getGuildmateHref(creator)}
+              className="group/user flex min-w-0 items-center gap-2 rounded-md outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+            >
               <Avatar className="size-7">
                 <AvatarImage
                   src={
-                    creator?.avatar_url ??
-                    makeDefaultAvatarUrl(creator?.display_name)
+                    creator.avatar_url ??
+                    makeDefaultAvatarUrl(creator.display_name)
                   }
-                  alt={creator?.display_name || "-"}
+                  alt={creator.display_name}
                 />
                 <AvatarFallback className="bg-primary/10 font-heading text-xs text-primary">
-                  {getInitials(creator?.display_name)}
+                  {getInitials(creator.display_name)}
                 </AvatarFallback>
               </Avatar>
-              <Link
-                href={getGuildmateHref(creator)}
-                className="min-w-0 truncate text-primary underline-offset-4 hover:underline"
-              >
-                {creator?.display_name}
-              </Link>
-            </span>
+              <span className="min-w-0 truncate text-primary underline-offset-4 group-hover/user:underline">
+                {creator.display_name}
+              </span>
+            </Link>
           )
         }
         emptyText={t("chronicle.unknown")}
