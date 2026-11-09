@@ -16,6 +16,7 @@ import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { useT } from "@/app/_hooks/use-t";
 import { COMMON_MESSAGES } from "@/messages/common";
 
+import PublicStoryCommentReactorPinnedRow from "./public-story-comment-reactor-pinned-row";
 import PublicStoryCommentReactorRow from "./public-story-comment-reactor-row";
 import { PUBLIC_STORY_COMMENT_REACTOR_PER_PAGE } from "@/app/(public)/stories/[slug]/_constants/public-story-comment-reaction";
 import { useGetPublicStoryCommentReactionPagination } from "@/app/(public)/stories/[slug]/_hooks/use-get-public-story-comment-reaction-pagination";
@@ -28,6 +29,7 @@ export default function PublicStoryCommentReactorList({
   storyId,
   commentId,
   type,
+  myReaction,
   isCanReact,
   onRemove,
   isRemoving,
@@ -41,8 +43,15 @@ export default function PublicStoryCommentReactorList({
     PUBLIC_STORY_COMMENT_REACTOR_PER_PAGE,
     { type },
   );
-  const items =
-    query.data?.pages.flatMap((page) => page.data?.data?.items ?? []) ?? [];
+  // Your own reaction is the pinned row, so the list skips it
+  const items = (
+    query.data?.pages.flatMap((page) => page.data?.data?.items ?? []) ?? []
+  ).filter((reaction) => reaction.user.id !== auth?.id);
+  // Pinned on top, straight from the auth user, without waiting for the list
+  const isPinnedShown =
+    !!auth &&
+    myReaction !== null &&
+    (type === undefined || type === myReaction);
   const [scrollNode, setScrollNode] = useState<HTMLDivElement | null>(null);
   const [sentinelNode, setSentinelNode] = useState<HTMLDivElement | null>(null);
 
@@ -72,6 +81,13 @@ export default function PublicStoryCommentReactorList({
 
   return (
     <div ref={setScrollNode} className="max-h-80 min-h-0 overflow-y-auto pe-1">
+      <PublicStoryCommentReactorPinnedRow
+        isShown={isPinnedShown}
+        myReaction={myReaction}
+        isCanReact={isCanReact}
+        onRemove={onRemove}
+        isRemoving={isRemoving}
+      />
       <If condition={query.isPending}>
         <Then>
           <div
@@ -109,7 +125,7 @@ export default function PublicStoryCommentReactorList({
               </div>
             </Then>
             <Else>
-              <If condition={items.length === 0}>
+              <If condition={items.length === 0 && !isPinnedShown}>
                 <Then>
                   <Empty className="p-4">
                     <EmptyHeader>
@@ -124,11 +140,8 @@ export default function PublicStoryCommentReactorList({
                     {items.map((reaction) => (
                       <PublicStoryCommentReactorRow
                         key={reaction.id}
-                        reaction={reaction}
-                        isMine={!!auth && auth.id === reaction.user.id}
-                        isCanRemove={isCanReact}
-                        onRemove={onRemove}
-                        isRemoving={isRemoving}
+                        type={reaction.type}
+                        user={reaction.user}
                       />
                     ))}
                   </ul>

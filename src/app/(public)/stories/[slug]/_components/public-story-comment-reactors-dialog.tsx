@@ -106,6 +106,7 @@ export default function PublicStoryCommentReactorsDialog({
             <PublicStoryCommentReactorList
               storyId={storyId}
               commentId={comment.id}
+              myReaction={comment.my_reaction}
               isCanReact={isCanReact}
               onRemove={onRemove}
               isRemoving={isRemoving}
@@ -117,6 +118,7 @@ export default function PublicStoryCommentReactorsDialog({
                 storyId={storyId}
                 commentId={comment.id}
                 type={option.type}
+                myReaction={comment.my_reaction}
                 isCanReact={isCanReact}
                 onRemove={onRemove}
                 isRemoving={isRemoving}

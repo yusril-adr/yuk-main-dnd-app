@@ -23,16 +23,16 @@ import { getPublicStoryCommentReactionOption } from "@/app/(public)/stories/[slu
 import type { TPublicStoryCommentReactorRowProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-reactor-row-props";
 
 export default function PublicStoryCommentReactorRow({
-  reaction,
-  isMine,
-  isCanRemove,
+  type,
+  user,
+  isMine = false,
+  isCanRemove = false,
   onRemove,
-  isRemoving,
+  isRemoving = false,
 }: TPublicStoryCommentReactorRowProps) {
   const { t } = useT(STORY_DETAIL_MESSAGES);
-  const { user } = reaction;
   const username = user.username?.trim();
-  const option = getPublicStoryCommentReactionOption(reaction.type);
+  const option = getPublicStoryCommentReactionOption(type);
 
   return (
     <li className="flex min-w-0 items-center gap-2 py-1.5">
@@ -94,9 +94,7 @@ export default function PublicStoryCommentReactorRow({
           <Then>
             <span
               role="img"
-              aria-label={t(
-                PUBLIC_STORY_COMMENT_REACTION_LABEL_KEY[reaction.type],
-              )}
+              aria-label={t(PUBLIC_STORY_COMMENT_REACTION_LABEL_KEY[type])}
               className="w-6 text-center text-lg leading-none"
             >
               {option?.emoji}
