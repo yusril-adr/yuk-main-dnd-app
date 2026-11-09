@@ -14,6 +14,7 @@ import { Else, If, Then } from "react-if";
 
 import {
   Card,
+  CardAction,
   CardContent,
   CardFooter,
   CardHeader,
@@ -132,125 +133,123 @@ export default function StoryCard({
 
   return (
     <>
-      {/* pt-0: the banner sits flush with the top edge of the card.
+      {/* The title link is stretched over the whole card (after:inset-0), so
+          the card is one click target; only the ⋮ menu sits above it.
+          pt-0: the banner sits flush with the top edge of the card.
           gap-2 keeps the title close to the description. Cards in a grid row
           stretch to the tallest one, so the footer is pinned to the bottom with
           mt-auto; pb-2 on the content keeps a minimum gap above it. */}
-      <Card className="gap-2 pt-0">
-        <div className="relative">
-          {/* Fixed 16:10 crop like the public story cards, so every card is
-              the same size (the form preview keeps the natural ratio) */}
-          <StoryCardBanner
-            bannerUrl={story.banner_url}
-            title={story.title}
-            imageClassName="aspect-[16/10] max-h-none object-cover"
-            placeholderClassName="aspect-[16/10]"
-          />
-
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <Button
-                  size="icon-sm"
-                  variant="ghost"
-                  aria-label={t("card.actionsAria")}
-                  // Plain ghost like the other ⋯ buttons; the drop shadow keeps the
-                  // icon visible on light or busy banner images
-                  className="absolute top-2 right-2 [&_svg]:drop-shadow-sm"
-                >
-                  <EllipsisVertical />
-                </Button>
-              }
-            />
-            <DropdownMenuContent align="end">
-              <DropdownMenuGroup>
-                <DropdownMenuItem
-                  render={
-                    <Link href={`/dashboard/master/stories/${story.id}`} />
-                  }
-                >
-                  <Eye />
-                  {t("card.view")}
-                </DropdownMenuItem>
-                {canEditStory && (
-                  <DropdownMenuItem
-                    render={
-                      <Link
-                        href={`/dashboard/master/stories/${story.id}/edit`}
-                      />
-                    }
-                  >
-                    <Pencil />
-                    {t("card.edit")}
-                  </DropdownMenuItem>
-                )}
-                <If condition={canPublishStory}>
-                  <Then>
-                    <DropdownMenuItem
-                      onClick={() => setConfirmPublishId(story.id)}
-                    >
-                      <Send />
-                      {t("card.publish")}
-                    </DropdownMenuItem>
-                  </Then>
-                </If>
-                <If condition={canArchiveStory}>
-                  <Then>
-                    <DropdownMenuItem
-                      onClick={() => setConfirmArchiveId(story.id)}
-                    >
-                      <Archive />
-                      {t("card.archive")}
-                    </DropdownMenuItem>
-                  </Then>
-                </If>
-                <If condition={canUnarchiveStory}>
-                  <Then>
-                    <DropdownMenuItem
-                      onClick={() => setConfirmUnarchiveId(story.id)}
-                    >
-                      <ArchiveRestore />
-                      {t("card.unarchive")}
-                    </DropdownMenuItem>
-                  </Then>
-                </If>
-                <If condition={canCancelStory}>
-                  <Then>
-                    <DropdownMenuItem
-                      variant="destructive"
-                      onClick={() => setConfirmCancelId(story.id)}
-                    >
-                      <Ban />
-                      {t("card.cancel")}
-                    </DropdownMenuItem>
-                  </Then>
-                </If>
-                {canDeleteStoryAction && (
-                  <DropdownMenuItem
-                    variant="destructive"
-                    onClick={() => setConfirmDeleteId(story.id)}
-                  >
-                    <Trash />
-                    {t("card.delete")}
-                  </DropdownMenuItem>
-                )}
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+      <Card className="group relative gap-2 pt-0 transition-colors hover:ring-primary/50 has-focus-visible:ring-2 has-focus-visible:ring-ring">
+        {/* Fixed 16:10 crop like the public story cards, so every card is
+            the same size (the form preview keeps the natural ratio) */}
+        <StoryCardBanner
+          bannerUrl={story.banner_url}
+          title={story.title}
+          imageClassName="aspect-[16/10] max-h-none object-cover"
+          placeholderClassName="aspect-[16/10]"
+        />
 
         <CardHeader className="pt-2">
-          <CardTitle className="min-w-0">
-            <Button
-              variant="link"
-              className="p-0 h-auto justify-start text-left text-base whitespace-normal"
-              render={<Link href={`/dashboard/master/stories/${story.id}`} />}
-              nativeButton={false}
+          <CardTitle className="min-w-0 text-base">
+            <Link
+              href={`/dashboard/master/stories/${story.id}`}
               title={story.title}
+              className="line-clamp-2 break-words text-primary outline-none after:absolute after:inset-0 group-hover:underline underline-offset-4"
             >
-              <span className="line-clamp-2 break-words">{story.title}</span>
-            </Button>
+              {story.title}
+            </Link>
           </CardTitle>
+          <CardAction>
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    size="icon-sm"
+                    variant="ghost"
+                    aria-label={t("card.actionsAria")}
+                    // relative z-10 lifts it above the stretched title link
+                    className="relative z-10 -mt-1 -mr-2"
+                  >
+                    <EllipsisVertical />
+                  </Button>
+                }
+              />
+              <DropdownMenuContent align="end">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    render={
+                      <Link href={`/dashboard/master/stories/${story.id}`} />
+                    }
+                  >
+                    <Eye />
+                    {t("card.view")}
+                  </DropdownMenuItem>
+                  {canEditStory && (
+                    <DropdownMenuItem
+                      render={
+                        <Link
+                          href={`/dashboard/master/stories/${story.id}/edit`}
+                        />
+                      }
+                    >
+                      <Pencil />
+                      {t("card.edit")}
+                    </DropdownMenuItem>
+                  )}
+                  <If condition={canPublishStory}>
+                    <Then>
+                      <DropdownMenuItem
+                        onClick={() => setConfirmPublishId(story.id)}
+                      >
+                        <Send />
+                        {t("card.publish")}
+                      </DropdownMenuItem>
+                    </Then>
+                  </If>
+                  <If condition={canArchiveStory}>
+                    <Then>
+                      <DropdownMenuItem
+                        onClick={() => setConfirmArchiveId(story.id)}
+                      >
+                        <Archive />
+                        {t("card.archive")}
+                      </DropdownMenuItem>
+                    </Then>
+                  </If>
+                  <If condition={canUnarchiveStory}>
+                    <Then>
+                      <DropdownMenuItem
+                        onClick={() => setConfirmUnarchiveId(story.id)}
+                      >
+                        <ArchiveRestore />
+                        {t("card.unarchive")}
+                      </DropdownMenuItem>
+                    </Then>
+                  </If>
+                  <If condition={canCancelStory}>
+                    <Then>
+                      <DropdownMenuItem
+                        variant="destructive"
+                        onClick={() => setConfirmCancelId(story.id)}
+                      >
+                        <Ban />
+                        {t("card.cancel")}
+                      </DropdownMenuItem>
+                    </Then>
+                  </If>
+                  {canDeleteStoryAction && (
+                    <DropdownMenuItem
+                      variant="destructive"
+                      onClick={() => setConfirmDeleteId(story.id)}
+                    >
+                      <Trash />
+                      {t("card.delete")}
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </CardAction>
         </CardHeader>
 
         <CardContent className="pb-2">
@@ -271,9 +270,7 @@ export default function StoryCard({
                 status={story.status}
                 label={t(STATUS_MESSAGE_KEY[story.status])}
               />
-              <Badge variant="outline">
-                {t(TYPE_MESSAGE_KEY[story.type])}
-              </Badge>
+              <Badge variant="outline">{t(TYPE_MESSAGE_KEY[story.type])}</Badge>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <If condition={!!expReward}>
