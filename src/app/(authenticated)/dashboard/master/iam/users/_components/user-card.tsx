@@ -65,7 +65,9 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
 
   return (
     <>
-      <Card>
+      {/* The name link is stretched over the whole card (after:inset-0), so
+          the card is one click target; only the ⋮ menu sits above it */}
+      <Card className="group relative transition-colors hover:ring-primary/50 has-focus-visible:ring-2 has-focus-visible:ring-ring">
         <CardHeader>
           <div className="flex justify-between">
             <div className="flex items-center gap-3">
@@ -83,16 +85,12 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 min-w-0">
                   <CardTitle className="truncate">
-                    <Button
-                      variant="link"
-                      className="p-0 h-auto text-base"
-                      render={
-                        <Link href={`/dashboard/master/iam/users/${user.id}`} />
-                      }
-                      nativeButton={false}
+                    <Link
+                      href={`/dashboard/master/iam/users/${user.id}`}
+                      className="text-primary outline-none underline-offset-4 after:absolute after:inset-0 group-hover:underline"
                     >
                       {user.display_name}
-                    </Button>
+                    </Link>
                   </CardTitle>
                   {user.is_guest && (
                     <Badge>{t("card.guest")}</Badge>
@@ -115,7 +113,13 @@ export default function UserCard({ user, onDelete }: TUserCardProps) {
             <DropdownMenu>
               <DropdownMenuTrigger
                 render={
-                  <Button size="icon-sm" variant="ghost">
+                  <Button
+                    size="icon-sm"
+                    variant="ghost"
+                    aria-label={t("card.actionsAria")}
+                    // relative z-10 lifts it above the stretched name link
+                    className="relative z-10"
+                  >
                     <EllipsisVertical />
                   </Button>
                 }
