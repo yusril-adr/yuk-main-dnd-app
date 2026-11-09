@@ -55,12 +55,15 @@ export default function StoryDetailMemberRow({
 
   return (
     <span className="flex min-w-0 items-center gap-2">
-      {avatar}
+      {/* Avatar and name are one link to the guildmate page */}
       <Link
         href={getGuildmateHref(member.user)}
-        className="min-w-0 truncate text-primary underline-offset-4 hover:underline"
+        className="group/user flex min-w-0 items-center gap-2 rounded-md outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
       >
-        {member.user.display_name}
+        {avatar}
+        <span className="min-w-0 truncate text-primary underline-offset-4 group-hover/user:underline">
+          {member.user.display_name}
+        </span>
       </Link>
       <If condition={member.user.is_guest}>
         <Then>
