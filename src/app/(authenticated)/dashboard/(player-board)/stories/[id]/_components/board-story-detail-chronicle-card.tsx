@@ -42,7 +42,12 @@ export default function BoardStoryDetailChronicleCard({
         label={t("chronicle.writtenBy")}
         value={
           creator?.display_name && (
-            <span className="flex items-center gap-2">
+            // The board creator has no username; guildmate pages accept the id.
+            // Avatar and name are one link to the guildmate page.
+            <Link
+              href={getGuildmateHref(creator)}
+              className="group/user flex min-w-0 items-center gap-2 rounded-md outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+            >
               <Avatar className="size-7">
                 <AvatarImage
                   src={
@@ -55,14 +60,10 @@ export default function BoardStoryDetailChronicleCard({
                   {getInitials(creator.display_name)}
                 </AvatarFallback>
               </Avatar>
-              {/* The board creator has no username; guildmate pages accept the id */}
-              <Link
-                href={getGuildmateHref(creator)}
-                className="min-w-0 truncate text-primary underline-offset-4 hover:underline"
-              >
+              <span className="min-w-0 truncate text-primary underline-offset-4 group-hover/user:underline">
                 {creator.display_name}
-              </Link>
-            </span>
+              </span>
+            </Link>
           )
         }
         emptyText={t("chronicle.unknown")}

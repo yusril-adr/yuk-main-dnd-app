@@ -59,17 +59,20 @@ export default function BoardStoryDetailMemberRow({
 
   return (
     <Item role="listitem" size="xs" className="flex-nowrap gap-2 p-0">
-      <ItemMedia>{avatar}</ItemMedia>
-      <ItemContent className="min-w-0">
-        <ItemTitle className="w-full font-normal">
-          <Link
-            href={getGuildmateHref(member.user)}
-            className="min-w-0 truncate text-primary underline-offset-4 hover:underline"
-          >
-            {member.user.display_name}
-          </Link>
-        </ItemTitle>
-      </ItemContent>
+      {/* Avatar and name are one link to the guildmate page */}
+      <Link
+        href={getGuildmateHref(member.user)}
+        className="group/user flex min-w-0 flex-1 items-center gap-2 rounded-md outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+      >
+        <ItemMedia>{avatar}</ItemMedia>
+        <ItemContent className="min-w-0">
+          <ItemTitle className="w-full font-normal">
+            <span className="min-w-0 truncate text-primary underline-offset-4 group-hover/user:underline">
+              {member.user.display_name}
+            </span>
+          </ItemTitle>
+        </ItemContent>
+      </Link>
       {statusLabel && (
         <ItemActions>
           <Badge variant="outline" className="shrink-0">
