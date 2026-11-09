@@ -19,9 +19,8 @@
   },
   "enums": {
     "status": {
-      "recruiting": "Rekrutmen",
       "draft": "Draf",
-      "published": "Published",
+      "published": "Rekrutmen",
       "archived": "Diarsipkan",
       "cancelled": "Dibatalkan",
       "completed": "Selesai"
