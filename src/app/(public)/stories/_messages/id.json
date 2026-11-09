@@ -19,7 +19,6 @@
   },
   "enums": {
     "status": {
-      "recruiting": "Rekrutmen",
       "draft": "Draf",
       "published": "Rekrutmen",
       "archived": "Diarsipkan",

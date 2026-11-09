@@ -45,7 +45,7 @@ import type { TPublicStoryCardProps } from "@/app/(public)/_types/public-story-c
 
 const STATUS_BADGE_KEY = {
   [StoryStatusEnum.DRAFT]: "enums.status.draft",
-  [StoryStatusEnum.PUBLISHED]: "enums.status.recruiting",
+  [StoryStatusEnum.PUBLISHED]: "enums.status.published",
   [StoryStatusEnum.ARCHIVED]: "enums.status.archived",
   [StoryStatusEnum.CANCELLED]: "enums.status.cancelled",
   [StoryStatusEnum.COMPLETED]: "enums.status.completed",

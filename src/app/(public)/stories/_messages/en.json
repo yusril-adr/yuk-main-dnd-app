@@ -19,7 +19,6 @@
   },
   "enums": {
     "status": {
-      "recruiting": "Recruiting",
       "draft": "Draft",
       "published": "Recruiting",
       "archived": "Archived",
