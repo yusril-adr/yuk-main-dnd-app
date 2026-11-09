@@ -240,14 +240,15 @@ export default function StoryCard({
         </div>
 
         <CardHeader className="pt-2">
-          <CardTitle className="min-w-0 truncate">
+          <CardTitle className="min-w-0">
             <Button
               variant="link"
-              className="p-0 h-auto text-base"
+              className="p-0 h-auto justify-start text-left text-base whitespace-normal"
               render={<Link href={`/dashboard/master/stories/${story.id}`} />}
               nativeButton={false}
+              title={story.title}
             >
-              {story.title}
+              <span className="line-clamp-2 break-words">{story.title}</span>
             </Button>
           </CardTitle>
         </CardHeader>
