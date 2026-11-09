@@ -33,13 +33,11 @@ export function AppTopBar() {
   const showLoading = isLoading;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-primary bg-card/95 text-card-foreground shadow-[0_3px_0_0_var(--secondary)] backdrop-blur supports-[backdrop-filter]:bg-card/85">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-10">
-        <Link href="/" className="flex min-w-0 items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <YmdndLogo aria-hidden className="size-8 shrink-0 text-primary" />
-          <span className="truncate font-heading text-sm tracking-[0.12em] uppercase sm:text-lg sm:tracking-[0.16em]">
-            YukMainDnD
-          </span>
+          <span className="font-heading text-xl">YukMainDnD</span>
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex">

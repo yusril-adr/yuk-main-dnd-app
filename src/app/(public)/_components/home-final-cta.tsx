@@ -22,13 +22,9 @@ export default function HomeFinalCta() {
   return (
     <section
       aria-labelledby="final-cta"
-      className="relative w-full bg-primary text-primary-foreground"
+      className="w-full bg-primary text-primary-foreground"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-3 border border-secondary/60 sm:inset-4"
-      />
-      <div className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-10">
+      <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-10">
         <Item className="flex-col items-start gap-6 p-0 sm:flex-row sm:items-center sm:justify-between">
           <ItemContent className="gap-2">
             {/* `final-cta` is also the hook PublicFooter uses to turn red on home; keep the id in sync */}
