@@ -69,7 +69,7 @@ export default function PublicLegendBoard({
                       <EmptyTitle className="font-heading text-lg">
                         {copy.errorTitle}
                       </EmptyTitle>
-                      <EmptyDescription>
+                      <EmptyDescription className="text-base">
                         {copy.errorDescription}
                       </EmptyDescription>
                     </EmptyHeader>
@@ -88,7 +88,7 @@ export default function PublicLegendBoard({
                           <EmptyMedia className="mb-0 text-muted-foreground">
                             <Feather aria-hidden className="size-6" />
                           </EmptyMedia>
-                          <EmptyDescription className="italic">
+                          <EmptyDescription className="text-base italic">
                             {copy.empty}
                           </EmptyDescription>
                         </EmptyHeader>

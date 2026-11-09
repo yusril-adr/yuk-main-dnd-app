@@ -57,7 +57,7 @@ export default function PublicStoryCommentComposer({
           <ItemTitle className="font-heading text-base">
             {t("comments.joinTitle")}
           </ItemTitle>
-          <ItemDescription>
+          <ItemDescription className="text-base">
             {t("comments.joinDescription")}
           </ItemDescription>
         </ItemContent>
@@ -85,7 +85,7 @@ export default function PublicStoryCommentComposer({
         </ItemMedia>
         <ItemContent>
           <ItemTitle>{t("comments.closedTitle")}</ItemTitle>
-          <ItemDescription>
+          <ItemDescription className="text-base">
             {t("comments.closedDescription")}
           </ItemDescription>
         </ItemContent>

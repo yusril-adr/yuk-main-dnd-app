@@ -56,7 +56,7 @@ export function AvatarDropdown() {
               />
               <AvatarFallback>{getInitials(auth.display_name)}</AvatarFallback>
             </Avatar>
-            <span className="text-sm font-medium sm:inline">
+            <span className="text-base font-medium sm:inline">
               {auth.display_name}
             </span>
             <ChevronUp className="lg:hidden" data-icon="inline-end" />

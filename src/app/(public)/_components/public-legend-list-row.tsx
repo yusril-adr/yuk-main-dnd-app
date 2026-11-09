@@ -54,7 +54,7 @@ export default function PublicLegendListRow({
             </Avatar>
             <Badge
               className={cn(
-                "absolute -right-2 -bottom-1 size-5 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-[11px] leading-none font-bold lining-nums proportional-nums opacity-70",
+                "absolute -right-2 -bottom-1 size-5 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-xs leading-none font-bold lining-nums proportional-nums opacity-70",
                 style.badge,
                 rank === 1 && "pl-px",
               )}
@@ -96,7 +96,7 @@ export default function PublicLegendListRow({
             />
             <Badge
               className={cn(
-                "absolute -right-2 -bottom-1 size-5 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-[11px] leading-none font-bold lining-nums proportional-nums",
+                "absolute -right-2 -bottom-1 size-5 shrink-0 justify-center rounded-full border-0 p-0 pb-[1.5px] text-xs leading-none font-bold lining-nums proportional-nums",
                 style.badge,
                 rank === 1 && "pl-px",
               )}

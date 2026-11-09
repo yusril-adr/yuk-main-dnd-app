@@ -135,7 +135,7 @@ export default function PublicStoryComments({
                       <EmptyTitle className="font-heading text-lg">
                         {t("comments.emptyTitle")}
                       </EmptyTitle>
-                      <EmptyDescription>
+                      <EmptyDescription className="text-base">
                         {t("comments.emptyDescription")}
                       </EmptyDescription>
                     </EmptyHeader>

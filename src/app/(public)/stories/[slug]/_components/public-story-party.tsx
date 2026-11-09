@@ -73,7 +73,7 @@ export default function PublicStoryParty({
           <If condition={membersQuery.isError}>
             <Then>
               <div className="flex flex-col items-center gap-3 rounded-md border border-destructive/40 bg-destructive/5 px-4 py-6 text-center">
-                <p className="text-sm text-foreground">
+                <p className="text-base text-foreground">
                   {t("party.error")}
                 </p>
                 <Button
@@ -93,7 +93,7 @@ export default function PublicStoryParty({
                     <p className="font-heading text-lg">
                       {t("party.emptyTitle")}
                     </p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-base text-muted-foreground">
                       {t("party.emptyDescription")}
                     </p>
                   </div>

@@ -131,8 +131,8 @@ export default function PublicStoryCard({
           />
         </div>
 
-        {/* min-h-15 = 3 lines of text-sm keeps cards in a row the same height */}
-        <CardDescription className="line-clamp-3 min-h-15">
+        {/* min-h-18 = 3 lines of text-base keeps cards in a row the same height */}
+        <CardDescription className="line-clamp-3 min-h-18 text-base">
           <If condition={!!descriptionText}>
             <Then>{descriptionText}</Then>
             <Else>

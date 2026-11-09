@@ -22,7 +22,7 @@ export function TopBarNav({ className }: { className?: string }) {
             key={item.href}
             variant={isActive ? "outline" : "ghost"}
             render={<Link href={item.href} />}
-            className={cn("justify-start", className)}
+            className={cn("justify-start text-base", className)}
           >
             <item.icon className="size-4" />
             {item.title}
