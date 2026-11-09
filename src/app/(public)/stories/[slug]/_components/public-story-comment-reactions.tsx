@@ -1,42 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import { SmilePlus } from "lucide-react";
-import { Else, If, Then } from "react-if";
+import { If, Then } from "react-if";
 
-import { Button } from "@/app/_components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/app/_components/ui/popover";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/app/_components/ui/tooltip";
 import { cn } from "cn";
 import { useT } from "@/app/_hooks/use-t";
-import { StoryCommentReactionTypeEnum } from "@/api/main/modules/stories/[id]/comments/enums/story-comment-reaction-type";
 
+import PublicStoryCommentReactButton from "./public-story-comment-react-button";
+import PublicStoryCommentReactionChip from "./public-story-comment-reaction-chip";
+import PublicStoryCommentReactorsDialog from "./public-story-comment-reactors-dialog";
 import { useReactPublicStoryComment } from "@/app/(public)/stories/[slug]/_hooks/use-react-public-story-comment";
 import { useRefreshPublicStoryComments } from "@/app/(public)/stories/[slug]/_hooks/use-refresh-public-story-comments";
-import { PUBLIC_STORY_COMMENT_REACTIONS } from "@/app/(public)/stories/[slug]/_constants/public-story-comment-reaction";
+import {
+  PUBLIC_STORY_COMMENT_REACTIONS,
+  PUBLIC_STORY_COMMENT_REACTORS_ALL_TAB,
+} from "@/app/(public)/stories/[slug]/_constants/public-story-comment-reaction";
 import { STORY_DETAIL_MESSAGES } from "@/app/(public)/stories/[slug]/_messages";
 import { hasPublicStoryCommentReactions } from "@/app/(public)/stories/[slug]/_utils/public-story-comment-reaction-helper";
 import type { TPublicStoryCommentReactionsProps } from "@/app/(public)/stories/[slug]/_types/public-story-comment-reactions-props";
+import type { TPublicStoryCommentReactorsTab } from "@/app/(public)/stories/[slug]/_types/public-story-comment-reactors-tab";
 
-const REACTION_LABEL_KEY = {
-  [StoryCommentReactionTypeEnum.LIKE]: "comments.reactionLike",
-  [StoryCommentReactionTypeEnum.LOVE]: "comments.reactionLove",
-  [StoryCommentReactionTypeEnum.LAUGH]: "comments.reactionLaugh",
-  [StoryCommentReactionTypeEnum.WOW]: "comments.reactionWow",
-} as const;
-
-// Chips with counts (non-zero only) and an add button, at the start of the
-// comment's action row (before Reply). Tapping your own
-// reaction removes it, tapping another switches to it. Without is_can_react
-// (logged out, closed story) the chips are read-only and there is no add
+// Chips with counts (non-zero only) and the react button, at the start of
+// the comment's action row (before Reply). Chips open who reacted, for
+// everyone. The react button shows only while you can react and haven't
+// (not logged out, closed story or already reacted); undo is Remove on your
+// row in the who-reacted dialog
 export default function PublicStoryCommentReactions({
   storyId,
   comment,
@@ -44,43 +32,23 @@ export default function PublicStoryCommentReactions({
   className,
 }: TPublicStoryCommentReactionsProps) {
   const { t } = useT(STORY_DETAIL_MESSAGES);
-  const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [dialogTab, setDialogTab] = useState<TPublicStoryCommentReactorsTab>(
+    PUBLIC_STORY_COMMENT_REACTORS_ALL_TAB,
+  );
   const { onCommentError } = useRefreshPublicStoryComments();
   const reactMutation = useReactPublicStoryComment(
     { storyId, commentId: comment.id, parentId: comment.parent_id },
     { onError: onCommentError },
   );
 
-  const isCanReact = comment.action_list.is_can_react;
-  const myReaction = comment.my_reaction;
   const chips = PUBLIC_STORY_COMMENT_REACTIONS.filter(
     (option) => comment.reaction_counts[option.countKey] > 0,
   );
   const noun = t(isReply ? "comments.nounReply" : "comments.nounComment");
-  const countLabel = (count: number) =>
-    t(
-      count === 1 ? "comments.reaction_one" : "comments.reaction_other",
-      { count },
-    );
-  const reactionLabel = (type: StoryCommentReactionTypeEnum) =>
-    t(REACTION_LABEL_KEY[type]);
 
   // Placeholders keep no reactions; nothing to show or do
   if (!hasPublicStoryCommentReactions(comment)) return null;
-
-  const toggle = (type: StoryCommentReactionTypeEnum) =>
-    reactMutation.mutate({ type: myReaction === type ? null : type });
-
-  // Replies: a step smaller, still a comfortable tap target. Light: a faint
-  // darkening of whatever card sits behind them
-  const chipClassName = cn(
-    "gap-1 rounded-full border border-border/60 bg-foreground/5 px-2.5 tabular-nums shadow-none dark:border-foreground/10 dark:bg-popover",
-    isReply ? "h-7 px-2 text-xs" : "h-8",
-  );
-  // Yours: a lighter fill (a primary tint mutes warm emoji skin) with the
-  // primary border and bold count as the signal
-  const mineChipClassName =
-    "border-primary/70 bg-white/70 dark:border-primary dark:bg-primary/30";
 
   return (
     <div
@@ -88,148 +56,45 @@ export default function PublicStoryCommentReactions({
       aria-label={t("comments.reactionsAria", { noun })}
       className={cn("flex flex-wrap items-center gap-1.5", className)}
     >
-      {chips.map((option) => {
-        const count = comment.reaction_counts[option.countKey];
-        const isMine = myReaction === option.type;
-        const optionLabel = reactionLabel(option.type);
-        const label = `${optionLabel}, ${countLabel(count)}${
-          isMine ? t("comments.includingYours") : ""
-        }`;
-        const content = (
-          <>
-            <span
-              aria-hidden
-              className={cn("leading-none", isReply ? "text-sm" : "text-base")}
-            >
-              {option.emoji}
-            </span>
-            <span
-              aria-hidden
-              className={cn(
-                isMine && "font-bold text-primary dark:text-foreground",
-              )}
-            >
-              {count}
-            </span>
-          </>
-        );
-        return (
-          <Tooltip key={option.type}>
-            <If condition={isCanReact}>
-              <Then>
-                <TooltipTrigger
-                  render={
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      aria-pressed={isMine}
-                      aria-label={label}
-                      onClick={() => toggle(option.type)}
-                      className={cn(
-                        chipClassName,
-                        "hover:bg-foreground/10 dark:hover:bg-muted/50",
-                        isMine &&
-                          cn(
-                            mineChipClassName,
-                            "hover:bg-white/90 dark:hover:bg-primary/40",
-                          ),
-                      )}
-                    />
-                  }
-                >
-                  {content}
-                </TooltipTrigger>
-              </Then>
-              <Else>
-                <TooltipTrigger
-                  render={
-                    <span
-                      role="img"
-                      aria-label={label}
-                      className={cn(
-                        chipClassName,
-                        "inline-flex items-center text-sm font-medium",
-                        isReply && "text-xs",
-                        isMine && mineChipClassName,
-                      )}
-                    />
-                  }
-                >
-                  {content}
-                </TooltipTrigger>
-              </Else>
-            </If>
-            <TooltipContent>
-              {isMine && isCanReact
-                ? t("comments.tapToRemove", { label: optionLabel })
-                : optionLabel}
-            </TooltipContent>
-          </Tooltip>
-        );
-      })}
+      {chips.map((option) => (
+        <PublicStoryCommentReactionChip
+          key={option.type}
+          option={option}
+          count={comment.reaction_counts[option.countKey]}
+          isMine={comment.my_reaction === option.type}
+          isReply={isReply}
+          onOpen={() => {
+            setDialogTab(option.type);
+            setIsDialogOpen(true);
+          }}
+        />
+      ))}
 
-      <If condition={isCanReact}>
+      <If
+        condition={
+          comment.action_list.is_can_react && comment.my_reaction === null
+        }
+      >
         <Then>
-          <Popover open={isPickerOpen} onOpenChange={setIsPickerOpen}>
-            <PopoverTrigger
-              render={
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label={t("comments.reactAria", { noun })}
-                  title={t("comments.addReaction")}
-                  className={cn(
-                    "rounded-full text-muted-foreground hover:text-foreground",
-                    isReply && "size-7",
-                  )}
-                />
-              }
-            >
-              <SmilePlus />
-            </PopoverTrigger>
-            <PopoverContent
-              align="start"
-              side="top"
-              // Light: yellow emoji vanish on the parchment popover, so this
-              // picker is a solid neutral white panel. Dark keeps the default
-              className="w-auto flex-row gap-1 rounded-full bg-white p-1 shadow-md ring-1 ring-neutral-200 dark:bg-popover dark:ring-foreground/10"
-            >
-              {PUBLIC_STORY_COMMENT_REACTIONS.map((option) => {
-                const isMine = myReaction === option.type;
-                const optionLabel = reactionLabel(option.type);
-                return (
-                  <Button
-                    key={option.type}
-                    type="button"
-                    variant="ghost"
-                    size="icon-lg"
-                    aria-pressed={isMine}
-                    aria-label={
-                      isMine
-                        ? t("comments.removeReaction", { label: optionLabel })
-                        : optionLabel
-                    }
-                    title={optionLabel}
-                    onClick={() => {
-                      toggle(option.type);
-                      setIsPickerOpen(false);
-                    }}
-                    className={cn(
-                      "rounded-full text-xl leading-none transition-transform hover:scale-110 hover:bg-neutral-100 dark:hover:bg-muted/50",
-                      isMine &&
-                        "bg-neutral-100 ring-2 ring-primary/60 hover:bg-neutral-200/70 dark:bg-primary/15 dark:ring-primary/60 dark:hover:bg-primary/25",
-                    )}
-                  >
-                    <span aria-hidden>{option.emoji}</span>
-                  </Button>
-                );
-              })}
-            </PopoverContent>
-          </Popover>
+          <PublicStoryCommentReactButton
+            noun={noun}
+            isReply={isReply}
+            onReact={(type) => reactMutation.mutate({ type })}
+          />
         </Then>
       </If>
+
+      <PublicStoryCommentReactorsDialog
+        storyId={storyId}
+        comment={comment}
+        noun={noun}
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        tab={dialogTab}
+        onTabChange={setDialogTab}
+        onRemove={() => reactMutation.mutate({ type: null })}
+        isRemoving={reactMutation.isPending}
+      />
     </div>
   );
 }
