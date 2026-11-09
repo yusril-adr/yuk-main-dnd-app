@@ -4,9 +4,8 @@
   },
   "enums": {
     "status": {
-      "recruiting": "Recruiting",
       "draft": "Draft",
-      "published": "Published",
+      "published": "Recruiting",
       "archived": "Archived",
       "cancelled": "Cancelled",
       "completed": "Completed"
