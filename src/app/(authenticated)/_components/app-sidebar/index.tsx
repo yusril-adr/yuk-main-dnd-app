@@ -18,7 +18,7 @@ import Link from "next/link";
 import YmdndLogo from "@/assets/logo/YMDND1.svg";
 
 const SIDEBAR_ICON_BUTTON_CLASS =
-  "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground aria-expanded:bg-sidebar-accent aria-expanded:text-sidebar-accent-foreground";
+  "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground aria-expanded:bg-sidebar-accent aria-expanded:text-sidebar-accent-foreground dark:hover:bg-sidebar-accent";
 
 export function AppSidebar() {
   const { auth } = useAuthContext();
