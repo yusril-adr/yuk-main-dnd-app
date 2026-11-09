@@ -22,8 +22,9 @@ import type { TPublicStoryCommentReactorsTab } from "@/app/(public)/stories/[slu
 
 // Chips with counts (non-zero only) and the react button, at the start of
 // the comment's action row (before Reply). Chips open who reacted, for
-// everyone. Reacting and undoing happen on the react button only, which is
-// hidden without is_can_react (logged out, closed story)
+// everyone. The react button shows only while you can react and haven't
+// (not logged out, closed story or already reacted); undo is Remove on your
+// row in the who-reacted dialog
 export default function PublicStoryCommentReactions({
   storyId,
   comment,
@@ -69,10 +70,13 @@ export default function PublicStoryCommentReactions({
         />
       ))}
 
-      <If condition={comment.action_list.is_can_react}>
+      <If
+        condition={
+          comment.action_list.is_can_react && comment.my_reaction === null
+        }
+      >
         <Then>
           <PublicStoryCommentReactButton
-            myReaction={comment.my_reaction}
             noun={noun}
             isReply={isReply}
             onReact={(type) => reactMutation.mutate({ type })}

@@ -51,7 +51,7 @@ export const PUBLIC_STORY_COMMENT_REACTION_CHIP_CLASS_NAME =
 export const PUBLIC_STORY_COMMENT_REACTION_CHIP_REPLY_CLASS_NAME =
   "h-7 px-2 text-xs";
 
-// Yours (chip and react button): a lighter fill (a primary tint mutes warm
+// Your reaction's chip: a lighter fill (a primary tint mutes warm
 // emoji skin) with the primary border as the signal
 export const PUBLIC_STORY_COMMENT_REACTION_MINE_CLASS_NAME =
   "border-primary/70 bg-white/70 hover:bg-white/90 dark:border-primary dark:bg-primary/30 dark:hover:bg-primary/40";
