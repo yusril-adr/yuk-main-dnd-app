@@ -21,7 +21,6 @@
     "status": {
       "recruiting": "Recruiting",
       "draft": "Draft",
-      "published": "Published",
       "archived": "Archived",
       "cancelled": "Cancelled",
       "completed": "Completed"
