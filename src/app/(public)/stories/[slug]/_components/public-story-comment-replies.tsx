@@ -176,7 +176,7 @@ export default function PublicStoryCommentReplies({
               <Else>
                 <If condition={repliesQuery.isError}>
                   <Then>
-                    <div className="flex flex-wrap items-center gap-2 py-2 text-sm text-destructive">
+                    <div className="flex flex-wrap items-center gap-2 py-2 text-base text-destructive">
                       {t("comments.repliesError")}
                       <Button
                         variant="outline"

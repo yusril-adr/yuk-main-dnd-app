@@ -82,7 +82,7 @@ export function AppTopBar() {
               </SheetHeader>
 
               <nav className="flex flex-col gap-1 px-4">
-                <TopBarNav className="w-full" />
+                <TopBarNav className="h-10 w-full" />
               </nav>
 
               <SheetFooter>

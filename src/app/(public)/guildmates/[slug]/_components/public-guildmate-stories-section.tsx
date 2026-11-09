@@ -82,7 +82,7 @@ export default function PublicGuildmateStoriesSection({
             <Then>
               <Empty className="rounded-md border border-primary/30 px-4 py-10">
                 <EmptyHeader>
-                  <EmptyDescription className="italic">
+                  <EmptyDescription className="text-base italic">
                     {tab === "led"
                       ? t("questLog.emptyLed")
                       : t("questLog.emptyJoined")}

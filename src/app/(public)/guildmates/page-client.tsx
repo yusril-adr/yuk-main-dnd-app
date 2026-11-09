@@ -138,7 +138,7 @@ export default function GuildMatesPageClient() {
             >
               {t("roll.title")}
             </h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-base text-muted-foreground">
               {t("roll.description")}
             </p>
           </div>

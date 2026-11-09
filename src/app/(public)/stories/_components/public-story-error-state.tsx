@@ -22,7 +22,7 @@ export default function PublicStoryErrorState({
       </div>
       <div className="flex max-w-sm flex-col gap-1">
         <h3 className="font-heading text-lg sm:text-xl">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <p className="text-base text-muted-foreground">{description}</p>
       </div>
       <Button variant="outline" onClick={onRetry}>
         <RotateCw /> {tCommon("actions.tryAgain")}

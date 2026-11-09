@@ -23,7 +23,7 @@ export default function PublicStoryDetailInfoRow({
         <ItemTitle className="text-xs tracking-wide text-muted-foreground uppercase">
           {label}
         </ItemTitle>
-        <ItemDescription className="line-clamp-none text-sm font-medium break-words text-foreground">
+        <ItemDescription className="line-clamp-none text-base font-medium break-words text-foreground">
           {value}
         </ItemDescription>
       </ItemContent>

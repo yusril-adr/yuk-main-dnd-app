@@ -16,7 +16,7 @@ export default function HomeEmptyState({ text }: THomeEmptyStateProps) {
         <EmptyMedia variant="icon">
           <ScrollText />
         </EmptyMedia>
-        <EmptyDescription className="italic">{text}</EmptyDescription>
+        <EmptyDescription className="text-base italic">{text}</EmptyDescription>
       </EmptyHeader>
     </Empty>
   );
