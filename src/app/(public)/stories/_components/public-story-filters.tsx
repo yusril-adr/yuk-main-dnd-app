@@ -40,7 +40,7 @@ let debounceSearchTimeoutId: NodeJS.Timeout | number | null = null;
 const ALL = "all";
 
 const STATUS_I18N_KEY = {
-  [StoryStatusEnum.PUBLISHED]: "enums.status.recruiting",
+  [StoryStatusEnum.PUBLISHED]: "enums.status.published",
   [StoryStatusEnum.COMPLETED]: "enums.status.completed",
 } as const;
 

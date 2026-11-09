@@ -21,6 +21,7 @@
     "status": {
       "recruiting": "Rekrutmen",
       "draft": "Draf",
+      "published": "Rekrutmen",
       "archived": "Diarsipkan",
       "cancelled": "Dibatalkan",
       "completed": "Selesai"
