@@ -33,6 +33,15 @@ const MAIN_API_PATH = {
     COMMENT_REACTIONS: (identifier: string, commentId: string) =>
       `/api/v1/stories/${identifier}/comments/${commentId}/reactions`,
   },
+  EVENT: {
+    DEFAULT: "/api/v1/events",
+    // Detail and members accept the event id (UUID) or its slug
+    DETAIL: (identifier: string) => `/api/v1/events/${identifier}`,
+    MEMBERS: (identifier: string) => `/api/v1/events/${identifier}/members`,
+    // Join and cancel-join take the id only
+    JOIN: (id: string) => `/api/v1/events/${id}/join`,
+    CANCEL_JOIN: (id: string) => `/api/v1/events/${id}/cancel-join`,
+  },
   USER: {
     // Public guildmates list; search matches username or display name
     DEFAULT: "/api/v1/users",
@@ -45,6 +54,8 @@ const MAIN_API_PATH = {
       `/api/v1/users/${encodeURIComponent(identifier)}/created-stories`,
     JOINED_STORIES: (identifier: string) =>
       `/api/v1/users/${encodeURIComponent(identifier)}/joined-stories`,
+    JOINED_EVENTS: (identifier: string) =>
+      `/api/v1/users/${encodeURIComponent(identifier)}/joined-events`,
   },
   BOARD: {
     STORY: {
@@ -53,6 +64,13 @@ const MAIN_API_PATH = {
       // Detail and members 404 unless the caller is a member
       DETAIL: (id: string) => `/api/v1/board/stories/${id}`,
       MEMBERS: (id: string) => `/api/v1/board/stories/${id}/members`,
+    },
+    EVENT: {
+      // Player board: events the logged-in user is a member of
+      DEFAULT: "/api/v1/board/events",
+      // Detail and members 404 unless the caller is a member
+      DETAIL: (id: string) => `/api/v1/board/events/${id}`,
+      MEMBERS: (id: string) => `/api/v1/board/events/${id}/members`,
     },
   },
   FILE: {
@@ -92,6 +110,19 @@ const MAIN_API_PATH = {
       MEMBERS: (id: string) => `/api/v1/master/stories/${id}/members`,
       AVAILABLE_USERS: (id: string) =>
         `/api/v1/master/stories/${id}/available-users`,
+    },
+    // Event ids must be UUIDs here (no slugs)
+    EVENT: {
+      DEFAULT: "/api/v1/master/events",
+      DETAIL: (id: string) => `/api/v1/master/events/${id}`,
+      ARCHIVE: (id: string) => `/api/v1/master/events/${id}/archive`,
+      PUBLISH: (id: string) => `/api/v1/master/events/${id}/publish`,
+      UNARCHIVE: (id: string) => `/api/v1/master/events/${id}/unarchive`,
+      CANCEL: (id: string) => `/api/v1/master/events/${id}/cancel`,
+      COMPLETE: (id: string) => `/api/v1/master/events/${id}/complete`,
+      MEMBERS: (id: string) => `/api/v1/master/events/${id}/members`,
+      AVAILABLE_USERS: (id: string) =>
+        `/api/v1/master/events/${id}/available-users`,
     },
   },
 };
