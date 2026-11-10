@@ -1,5 +1,17 @@
 import type { TEventCreatePayload } from "@/api/main/modules/master/events/types/event-create-payload";
 
-// Every field optional; status is changed through the action endpoints.
-// title, point_awarded, location_type and location_detail must not be null
-export type TEventUpdatePayload = Partial<Omit<TEventCreatePayload, "status">>;
+// Optional columns the API clears when they are sent as null.
+// exp_awarded / point_awarded are NOT NULL in the DB: never send null
+type TEventClearableField =
+  | "description"
+  | "max_members"
+  | "start_at"
+  | "banner_file_id"
+  | "location_link"
+  | "feedback_form_link";
+
+export type TEventUpdatePayload = Partial<
+  Omit<TEventCreatePayload, TEventClearableField | "status">
+> & {
+  [K in TEventClearableField]?: TEventCreatePayload[K] | null;
+};

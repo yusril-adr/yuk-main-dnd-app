@@ -1,9 +1,9 @@
 import type { TMainApiPaginationPayload } from "@/api/main/types/pagination-payload";
-import type { TAvailableStoryUserSortBy } from "@/api/main/modules/master/stories/[id]/available-users/consts/available-story-user-sort-by";
+import type { TAvailableEventUserSortBy } from "../consts/available-event-user-sort-by";
 
-// Same user columns as for stories. API defaults: sort_by updated_at, order
-// asc. search matches username, display_name and email. Active members are
-// already excluded.
+// Omitting order uses the API default asc. Omitting sort_by uses updated_at.
+// search matches username, display_name, and email.
+// The API already excludes active members.
 export type TAvailableEventUserPaginationPayload = TMainApiPaginationPayload & {
-  sort_by?: TAvailableStoryUserSortBy;
+  sort_by?: TAvailableEventUserSortBy;
 };

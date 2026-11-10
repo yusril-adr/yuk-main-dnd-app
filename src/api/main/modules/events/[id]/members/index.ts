@@ -5,22 +5,21 @@ import type { TMainApiPaginationResponse } from "@/api/main/types/response";
 import type { TPublicEventMemberPaginationPayload } from "./types/public-event-member-pagination-payload";
 import type { TPublicEventMemberPaginationResponse } from "./types/public-event-member-pagination-response";
 
-// Public endpoint; identifier is the id or slug. 404 unless the event is
+// Public endpoint; id is the event id or slug. 404 unless the event is
 // published or completed
 export const getPublicEventMemberPagination = async ({
-  identifier,
+  id,
   payload,
 }: {
-  identifier: string;
+  id: string;
   payload: TPublicEventMemberPaginationPayload;
 }): Promise<
   AxiosResponse<
     TMainApiPaginationResponse<TPublicEventMemberPaginationResponse>
   >
 > => {
-  const response = await mainAxios.get(
-    MAIN_API_PATH.EVENT.MEMBERS(identifier),
-    { params: payload },
-  );
+  const response = await mainAxios.get(MAIN_API_PATH.EVENT.MEMBERS(id), {
+    params: payload,
+  });
   return response;
 };

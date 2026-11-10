@@ -1,3 +1,14 @@
+import type { TUserEntity } from "@/api/main/types/entities/iam/user-entity";
 import type { TEventMemberEntity } from "@/api/main/types/entities/event/event-member-entity";
 
-export type TPublicEventMemberPaginationResponse = TEventMemberEntity;
+// Soft-deleted users keep their row; display_name gets " (Deleted User)".
+// username and avatar_url are always sent (null when unset)
+export type TPublicEventMemberPaginationResponse = Omit<
+  TEventMemberEntity,
+  "updated_at" | "user"
+> & {
+  user: Pick<TUserEntity, "id" | "display_name" | "is_guest"> & {
+    username: string | null;
+    avatar_url: string | null;
+  };
+};

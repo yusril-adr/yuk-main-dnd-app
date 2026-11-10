@@ -1,10 +1,8 @@
 import type { EventMemberStatusEnum } from "@/api/main/modules/master/events/enums/event-member-status";
-import type { TEventMemberUser } from "./event-member-user";
+import type { TBaseEntity } from "../base-entity";
+import type { TUserEntity } from "../iam/user-entity";
 
-// Member list item (public, board and master): no updated_at
-export type TEventMemberEntity = {
-  id: string;
+export type TEventMemberEntity = TBaseEntity & {
+  user: TUserEntity;
   status: EventMemberStatusEnum;
-  user: TEventMemberUser;
-  created_at: string;
 };

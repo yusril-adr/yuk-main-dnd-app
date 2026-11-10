@@ -1,4 +1,4 @@
-// At least one id
+// The API rejects an empty list (400)
 export type TEventMembersUserIdsPayload = {
-  user_ids: [string, ...string[]];
+  user_ids: string[];
 };
