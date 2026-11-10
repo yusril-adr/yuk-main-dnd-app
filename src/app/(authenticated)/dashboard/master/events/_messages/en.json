@@ -1,0 +1,58 @@
+{
+  "breadcrumb": "Events",
+  "title": "Events",
+  "filters": {
+    "filter": "Filter",
+    "sortBy": "Sort By",
+    "sortOrder": "Sort Order",
+    "selectField": "Select field",
+    "selectOrder": "Select order",
+    "status": "Status",
+    "selectStatus": "Select status",
+    "location": "Location",
+    "selectLocation": "Select location",
+    "createdBy": "Created By",
+    "searchUser": "Search user",
+    "noItemsFound": "No items found.",
+    "noUsersFound": "No users found.",
+    "clear": "Clear",
+    "apply": "Apply",
+    "searchPlaceholder": "Type minimum 3 characters to search ..."
+  },
+  "sort": {
+    "title": "Title",
+    "status": "Status",
+    "maxMembers": "Max Members",
+    "expAwarded": "EXP Awarded",
+    "goldAwarded": "Gold Awarded",
+    "startAt": "Start At",
+    "location": "Location",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "asc": "Ascending",
+    "desc": "Descending"
+  },
+  "pagination": {
+    "range": "{{start}} - {{end}} of {{total}} items",
+    "perPage": "{{count}} / page"
+  },
+  "empty": {
+    "title": "No events found."
+  },
+  "enums": {
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    }
+  },
+  "card": {
+    "noDescription": "No description."
+  }
+}

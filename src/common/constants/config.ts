@@ -94,6 +94,9 @@ const CONFIG = {
         STORY: {
           ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "story"],
         },
+        EVENT: {
+          ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "event"],
+        },
       },
     },
   },

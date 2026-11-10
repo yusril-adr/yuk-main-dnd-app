@@ -1,0 +1,58 @@
+{
+  "breadcrumb": "Events",
+  "title": "Events",
+  "filters": {
+    "filter": "Filter",
+    "sortBy": "Urutkan Berdasarkan",
+    "sortOrder": "Urutan",
+    "selectField": "Pilih field",
+    "selectOrder": "Pilih urutan",
+    "status": "Status",
+    "selectStatus": "Pilih status",
+    "location": "Lokasi",
+    "selectLocation": "Pilih lokasi",
+    "createdBy": "Dibuat Oleh",
+    "searchUser": "Cari user",
+    "noItemsFound": "Tidak ada item.",
+    "noUsersFound": "Tidak ada user.",
+    "clear": "Hapus",
+    "apply": "Terapkan",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ..."
+  },
+  "sort": {
+    "title": "Judul",
+    "status": "Status",
+    "maxMembers": "Maks. Anggota",
+    "expAwarded": "EXP Diberikan",
+    "goldAwarded": "Gold Diberikan",
+    "startAt": "Waktu Mulai",
+    "location": "Lokasi",
+    "createdAt": "Dibuat Pada",
+    "updatedAt": "Diperbarui Pada",
+    "asc": "Naik",
+    "desc": "Turun"
+  },
+  "pagination": {
+    "range": "{{start}} - {{end}} dari {{total}} item",
+    "perPage": "{{count}} / halaman"
+  },
+  "empty": {
+    "title": "Tidak ada event."
+  },
+  "enums": {
+    "status": {
+      "draft": "Draf",
+      "published": "Published",
+      "archived": "Diarsipkan",
+      "cancelled": "Dibatalkan",
+      "completed": "Selesai"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    }
+  },
+  "card": {
+    "noDescription": "Tidak ada deskripsi."
+  }
+}
