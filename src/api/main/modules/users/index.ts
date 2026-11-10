@@ -18,6 +18,8 @@ import type {
   TPublicUserCreatedStoryPaginationResponse,
   TPublicUserJoinedStoryPaginationResponse,
 } from "./types/public-user-story-pagination-response";
+import type { TPublicUserJoinedEventPaginationPayload } from "./types/public-user-joined-event-pagination-payload";
+import type { TPublicUserJoinedEventPaginationResponse } from "./types/public-user-joined-event-pagination-response";
 
 // Public endpoints, no auth needed
 export const getPublicUserPagination = async (
@@ -88,6 +90,23 @@ export const getPublicUserJoinedStoryPagination = async (
 > => {
   const response = await mainAxios.get(
     MAIN_API_PATH.USER.JOINED_STORIES(identifier),
+    { params: payload },
+  );
+
+  return response;
+};
+
+// Published and completed events the guildmate is a member of
+export const getPublicUserJoinedEventPagination = async (
+  identifier: string,
+  payload: TPublicUserJoinedEventPaginationPayload,
+): Promise<
+  AxiosResponse<
+    TMainApiPaginationResponse<TPublicUserJoinedEventPaginationResponse>
+  >
+> => {
+  const response = await mainAxios.get(
+    MAIN_API_PATH.USER.JOINED_EVENTS(identifier),
     { params: payload },
   );
 
