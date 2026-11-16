@@ -21,7 +21,9 @@
     "uploadingBanner": "Mengunggah banner...",
     "bannerUploaded": "Banner diunggah",
     "creating": "Membuat event...",
-    "created": "Event dibuat"
+    "created": "Event dibuat",
+    "updating": "Memperbarui event...",
+    "updated": "Event diperbarui"
   },
   "enums": {
     "memberStatus": {
