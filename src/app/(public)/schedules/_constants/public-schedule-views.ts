@@ -1,4 +1,4 @@
-export const PUBLIC_SCHEDULE_VIEWS = ["dayGridMonth", "listWeek"] as const;
+export const PUBLIC_SCHEDULE_VIEWS = ["dayGridMonth", "listMonth"] as const;
 
 export const PUBLIC_SCHEDULE_INITIAL_VIEW = "dayGridMonth";
 export const PUBLIC_SCHEDULE_MOBILE_MEDIA = "(max-width: 639px)";
