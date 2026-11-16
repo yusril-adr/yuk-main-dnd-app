@@ -43,7 +43,7 @@
     }
   },
   "rewards": {
-    "expLockedNote": "Reward EXP sudah distandarkan: setiap pemain yang hadir mendapat 1 EXP per event, jadi tidak bisa diisi di sini. DM otomatis mendapat 1 DM EXP, kecuali mereka juga ikut bermain.",
+    "expLockedNote": "Reward EXP sudah distandarkan: setiap pemain yang hadir mendapat 1 EXP per event, jadi tidak bisa diisi di sini.",
     "goldLockedNote": "Reward Gold sudah distandarkan untuk sekarang, jadi tidak bisa diisi di sini."
   },
   "xpGuide": {
