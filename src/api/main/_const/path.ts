@@ -41,6 +41,16 @@ const MAIN_API_PATH = {
     // Join and cancel-join take the id only
     JOIN: (id: string) => `/api/v1/events/${id}/join`,
     CANCEL_JOIN: (id: string) => `/api/v1/events/${id}/cancel-join`,
+    // Comment list accepts the id or slug; writes take the event id only
+    COMMENTS: (identifier: string) => `/api/v1/events/${identifier}/comments`,
+    COMMENT: (id: string, commentId: string) =>
+      `/api/v1/events/${id}/comments/${commentId}`,
+    COMMENT_PIN: (id: string, commentId: string) =>
+      `/api/v1/events/${id}/comments/${commentId}/pin`,
+    COMMENT_UNPIN: (id: string, commentId: string) =>
+      `/api/v1/events/${id}/comments/${commentId}/unpin`,
+    COMMENT_REPLIES: (identifier: string, commentId: string) =>
+      `/api/v1/events/${identifier}/comments/${commentId}/replies`,
   },
   USER: {
     // Public guildmates list; search matches username or display name

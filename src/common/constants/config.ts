@@ -61,6 +61,12 @@ const CONFIG = {
             "public-event-member",
           ],
         },
+        COMMENT: {
+          ALL: () => [
+            ...CONFIG.QUERY_KEY.MAIN_API.EVENT.ALL(),
+            "public-event-comment",
+          ],
+        },
       },
       STORY: {
         ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "public-story"],

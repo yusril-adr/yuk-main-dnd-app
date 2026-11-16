@@ -18,6 +18,7 @@ import PublicEventDetailSection from "@/app/(public)/events/[slug]/_components/p
 import PublicEventDetailSummary from "@/app/(public)/events/[slug]/_components/public-event-detail-summary";
 import PublicEventDetailSkeleton from "@/app/(public)/events/[slug]/_components/public-event-detail-skeleton";
 import PublicEventParty from "@/app/(public)/events/[slug]/_components/public-event-party";
+import PublicEventComments from "@/app/(public)/events/[slug]/_components/public-event-comments";
 import PublicEventErrorState from "@/app/(public)/events/_components/public-event-error-state";
 import { EVENT_DETAIL_MESSAGES } from "@/app/(public)/events/[slug]/_messages";
 import { PUBLIC_EVENT_DETAIL_DATE_FORMAT } from "@/app/(public)/events/[slug]/_constants/public-event-detail-date-format";
@@ -82,6 +83,8 @@ export default function PublicEventDetailPageClient() {
                         eventId={event.id}
                         maxMembers={event.max_members}
                       />
+
+                      <PublicEventComments event={event} />
 
                       <PublicEventDetailSection
                         icon={History}
