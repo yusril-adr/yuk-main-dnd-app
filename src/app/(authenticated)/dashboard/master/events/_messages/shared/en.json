@@ -17,7 +17,11 @@
     "removingMembers": "Removing event members...",
     "membersRemoved": "Event members removed",
     "creatingGuest": "Creating guest...",
-    "guestCreated": "Guest created"
+    "guestCreated": "Guest created",
+    "uploadingBanner": "Uploading banner...",
+    "bannerUploaded": "Banner uploaded",
+    "creating": "Creating event...",
+    "created": "Event created"
   },
   "enums": {
     "memberStatus": {
@@ -37,5 +41,18 @@
     "cancel": "Cancel",
     "confirm": "Complete event",
     "errorFallback": "Couldn't complete event."
+  },
+  "banner": {
+    "label": "Banner",
+    "chooseFile": "Choose file",
+    "remove": "Remove",
+    "previewAlt": "Event banner preview",
+    "description": "JPG, PNG, or WebP image, max {{maxSize}}. Recommended 16:10 (e.g. 1600 × 1000 px) with the main subject centered, since the public pages crop the edges.",
+    "errorType": "Banner must be a JPG, PNG, or WebP image",
+    "errorSize": "Banner must be {{maxSize}} or smaller"
+  },
+  "rewardLocked": {
+    "title": "Standardized reward",
+    "aboutAria": "About {{label}}"
   }
 }

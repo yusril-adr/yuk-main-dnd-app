@@ -1,0 +1,88 @@
+{
+  "breadcrumb": {
+    "events": "Events",
+    "create": "Buat",
+    "edit": "Edit"
+  },
+  "title": {
+    "create": "Buat Event",
+    "edit": "Edit Event"
+  },
+  "fields": {
+    "title": "Judul",
+    "titlePlaceholder": "Masukkan judul event",
+    "description": "Deskripsi",
+    "descriptionPlaceholder": "Jelaskan event: hook-nya, setting-nya, dan apa yang bisa diharapkan pemain...",
+    "noItemsFound": "Tidak ada item.",
+    "maxMembers": "Maks. Anggota",
+    "maxMembersPlaceholder": "Masukkan maks. anggota",
+    "expAwarded": "EXP Diberikan",
+    "goldAwarded": "Gold Diberikan (GP)",
+    "goldAwardedShort": "Gold Diberikan",
+    "startAt": "Waktu Mulai",
+    "pickDate": "Pilih tanggal",
+    "locationType": "Tipe Lokasi",
+    "selectLocationType": "Pilih tipe lokasi",
+    "locationDetail": "Detail Lokasi",
+    "locationDetailPlaceholder": "mis. Nama dan alamat venue",
+    "locationDetailOnlinePlaceholder": "mis. voice channel Discord atau Google Meet",
+    "locationLink": "Link Lokasi",
+    "feedbackFormLink": "Link Form Feedback"
+  },
+  "enums": {
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "status": {
+      "draft": "Draf",
+      "published": "Published",
+      "archived": "Diarsipkan",
+      "cancelled": "Dibatalkan",
+      "completed": "Selesai"
+    }
+  },
+  "rewards": {
+    "expLockedNote": "Reward EXP sudah distandarkan: setiap pemain yang hadir mendapat 1 EXP per event, jadi tidak bisa diisi di sini. DM otomatis mendapat 1 DM EXP, kecuali mereka juga ikut bermain.",
+    "goldLockedNote": "Reward Gold sudah distandarkan untuk sekarang, jadi tidak bisa diisi di sini."
+  },
+  "xpGuide": {
+    "aria": "Panduan EXP",
+    "title": "Panduan EXP menurut kesulitan",
+    "note": "Hanya panduan. DM boleh memasukkan nilai apa pun.",
+    "easy": "Mudah",
+    "medium": "Sedang",
+    "hard": "Sulit",
+    "xpValue": "{{count}} EXP"
+  },
+  "actions": {
+    "cancel": "Batal",
+    "saveAsDraft": "Simpan sebagai Draf",
+    "publish": "Publish",
+    "save": "Simpan",
+    "currentStatus": "Status saat ini:"
+  },
+  "toast": {
+    "updating": "Memperbarui event...",
+    "updated": "Event diperbarui",
+    "completedBlocked": "Event yang sudah Selesai tidak bisa diedit",
+    "editForbidden": "Kamu tidak punya izin untuk mengedit event ini"
+  },
+  "validation": {
+    "titleRequired": "Judul wajib diisi",
+    "titleMax": "Judul maksimal {{max}} karakter",
+    "titleNotEmpty": "Judul tidak boleh kosong",
+    "descriptionMax": "Deskripsi maksimal {{max}} karakter",
+    "maxMembersWhole": "Maks. anggota harus bilangan bulat minimal 1",
+    "rewardWhole": "{{label}} harus bilangan bulat 0 atau lebih",
+    "rewardMax": "{{label}} maksimal {{max}}",
+    "locationTypeRequired": "Tipe lokasi wajib diisi",
+    "locationDetailRequired": "Detail lokasi wajib diisi",
+    "locationLinkMax": "Link lokasi maksimal {{max}} karakter",
+    "locationLinkHttps": "Link lokasi harus berupa link https",
+    "feedbackLinkMax": "Link form feedback maksimal {{max}} karakter",
+    "feedbackLinkHttps": "Link form feedback harus berupa link https",
+    "rewardLabelExp": "EXP diberikan",
+    "rewardLabelGold": "Gold diberikan"
+  }
+}

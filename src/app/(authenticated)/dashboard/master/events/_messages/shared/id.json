@@ -17,7 +17,11 @@
     "removingMembers": "Menghapus anggota event...",
     "membersRemoved": "Anggota event dihapus",
     "creatingGuest": "Membuat tamu...",
-    "guestCreated": "Tamu dibuat"
+    "guestCreated": "Tamu dibuat",
+    "uploadingBanner": "Mengunggah banner...",
+    "bannerUploaded": "Banner diunggah",
+    "creating": "Membuat event...",
+    "created": "Event dibuat"
   },
   "enums": {
     "memberStatus": {
@@ -37,5 +41,18 @@
     "cancel": "Batal",
     "confirm": "Selesaikan event",
     "errorFallback": "Nggak bisa menyelesaikan event."
+  },
+  "banner": {
+    "label": "Banner",
+    "chooseFile": "Pilih file",
+    "remove": "Hapus",
+    "previewAlt": "Pratinjau banner event",
+    "description": "Gambar JPG, PNG, atau WebP, maks. {{maxSize}}. Disarankan 16:10 (mis. 1600 × 1000 px) dengan subjek utama di tengah, karena halaman publik memotong pinggirnya.",
+    "errorType": "Banner harus gambar JPG, PNG, atau WebP",
+    "errorSize": "Banner harus {{maxSize}} atau lebih kecil"
+  },
+  "rewardLocked": {
+    "title": "Reward standar",
+    "aboutAria": "Tentang {{label}}"
   }
 }
