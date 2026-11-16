@@ -1,0 +1,22 @@
+{
+  "taleYetWritten": "Kisahnya belum ditulis…",
+  "dateTba": "Tanggal menyusul",
+  "joined": "{{count}} bergabung",
+  "partySize_one": "Hingga {{count}} petualang",
+  "partySize_other": "Hingga {{count}} petualang",
+  "noPlayerLimit": "Tidak ada batas peserta",
+  "host": "Penyelenggara",
+  "enums": {
+    "status": {
+      "draft": "Draf",
+      "published": "Rekrutmen",
+      "archived": "Diarsipkan",
+      "cancelled": "Dibatalkan",
+      "completed": "Selesai"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    }
+  }
+}

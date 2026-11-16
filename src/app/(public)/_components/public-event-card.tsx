@@ -1,0 +1,191 @@
+"use client";
+
+import Link from "next/link";
+import { CalendarDays, Crown, Trophy, Users } from "lucide-react";
+import { Else, If, Then } from "react-if";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardTitle,
+} from "@/app/_components/ui/card";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/app/_components/ui/avatar";
+import dayjs from "@/libs/dayjs";
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@/app/_components/ui/item";
+import {
+  getGuildmateHref,
+  getInitials,
+  makeDefaultAvatarUrl,
+} from "@/utils/user-helper";
+import { getRichTextPlainText } from "@/utils/rich-text";
+import { EventStatusEnum } from "@/api/main/modules/master/events/enums/event-status";
+import { EventLocationTypeEnum } from "@/api/main/modules/master/events/enums/event-location-type";
+import { useLocale } from "@/app/_hooks/use-locale";
+import { useT } from "@/app/_hooks/use-t";
+import PublicEventBanner from "@/app/(public)/_components/public-event-banner";
+import PublicEventStatusBadge from "@/app/(public)/_components/public-event-status-badge";
+import PublicEventLocationBadge from "@/app/(public)/_components/public-event-location-badge";
+import { PUBLIC_EVENT_CARD_DATE_FORMAT } from "@/app/(public)/_constants/public-event-card";
+import { PUBLIC_EVENT_CARD_MESSAGES } from "@/app/(public)/_messages/event-card";
+import type { TPublicEventCardProps } from "@/app/(public)/_types/public-event-card-props";
+
+const STATUS_BADGE_KEY = {
+  [EventStatusEnum.DRAFT]: "enums.status.draft",
+  [EventStatusEnum.PUBLISHED]: "enums.status.published",
+  [EventStatusEnum.ARCHIVED]: "enums.status.archived",
+  [EventStatusEnum.CANCELLED]: "enums.status.cancelled",
+  [EventStatusEnum.COMPLETED]: "enums.status.completed",
+} as const;
+
+const LOCATION_KEY = {
+  [EventLocationTypeEnum.ONLINE]: "enums.location.online",
+  [EventLocationTypeEnum.OFFLINE]: "enums.location.offline",
+} as const;
+
+export default function PublicEventCard({
+  event,
+  priority = false,
+}: TPublicEventCardProps) {
+  const { t } = useT(PUBLIC_EVENT_CARD_MESSAGES);
+  const { locale } = useLocale();
+  // Plain text from rich text HTML; "" when empty or only images
+  const descriptionText = getRichTextPlainText(event.description);
+  // Party size limit (null = no limit)
+  const partySize = event.max_members;
+  const creator = event.created_by;
+
+  // Slug URL, falling back to the id (the API accepts both)
+  const eventHref = `/events/${event.slug || event.id}`;
+
+  return (
+    // YouTube-style card: whole card hits event detail; only the host block
+    // hits the guildmate. h-full + flex column + mt-auto footer keeps a grid
+    // row equal height.
+    <Card className="group relative h-full gap-3 pt-0 transition-[background-color,box-shadow] hover:bg-muted/40 hover:shadow-md has-focus-visible:ring-2 has-focus-visible:ring-ring">
+      <Link
+        href={eventHref}
+        aria-label={event.title}
+        className="absolute inset-0 z-0 rounded-[inherit] focus-visible:outline-none"
+      />
+
+      {/* Cover image; title sits on a translucent solid panel
+          (no gradient overlay) so they stay legible over any banner.
+          pointer-events-none lets clicks reach the stretched event link. */}
+      <div className="pointer-events-none relative aspect-[16/10] overflow-hidden bg-muted">
+        <PublicEventBanner
+          bannerUrl={event.banner_url}
+          title={event.title}
+          priority={priority}
+        />
+
+        <div className="absolute inset-x-2 top-2 flex items-start gap-2 sm:inset-x-3 sm:top-3">
+          <PublicEventStatusBadge
+            status={event.status}
+            label={t(STATUS_BADGE_KEY[event.status])}
+          />
+        </div>
+
+        <div className="absolute inset-x-2 bottom-2 flex flex-col gap-0.5 rounded-lg border bg-background/90 px-3 py-2 sm:inset-x-3 sm:bottom-3">
+          <CardTitle className="line-clamp-2 text-lg leading-tight group-hover:text-primary sm:text-xl">
+            {event.title}
+          </CardTitle>
+        </div>
+      </div>
+
+      <CardContent className="pointer-events-none flex flex-col gap-3 sm:gap-4">
+        <div className="flex flex-wrap items-center gap-1.5">
+          <PublicEventLocationBadge
+            locationType={event.location_type}
+            label={t(LOCATION_KEY[event.location_type])}
+          />
+        </div>
+
+        {/* min-h-18 = 3 lines of text-base keeps cards in a row the same height */}
+        <CardDescription className="line-clamp-3 min-h-18 text-base">
+          <If condition={!!descriptionText}>
+            <Then>{descriptionText}</Then>
+            <Else>
+              <span className="italic">{t("taleYetWritten")}</span>
+            </Else>
+          </If>
+        </CardDescription>
+      </CardContent>
+
+      <CardFooter className="mt-auto flex-col items-stretch gap-3 border-t">
+        <div className="pointer-events-none flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1.5 [&>svg]:size-3.5">
+            <CalendarDays />
+            {event.start_at
+              ? dayjs(event.start_at)
+                  .locale(locale)
+                  .format(PUBLIC_EVENT_CARD_DATE_FORMAT)
+              : t("dateTba")}
+          </span>
+          <span className="flex items-center gap-1.5 font-medium text-foreground [&>svg]:size-3.5">
+            <Users />
+            {t("joined", { count: event.joined_members })}
+          </span>
+        </div>
+
+        {/* Always rendered (with a fallback) so every card has the same
+              footer height and descriptions line up across the grid */}
+        <span className="pointer-events-none flex items-center gap-1.5 text-xs text-foreground/80 [&>svg]:size-3.5 [&>svg]:text-primary">
+          <Trophy />
+          {partySize
+            ? t("partySize", { count: partySize })
+            : t("noPlayerLimit")}
+        </span>
+
+        {creator ? (
+          <>
+            {/* z-10 above the stretched event link — YouTube channel chip */}
+            <Item
+              variant="muted"
+              size="sm"
+              render={<Link href={getGuildmateHref(creator)} />}
+              className="relative z-10 flex-nowrap rounded-sm border-primary/20 px-2.5 py-2 focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <ItemMedia>
+                <Avatar className="size-9 border-2 border-primary/40">
+                  <AvatarImage
+                    src={
+                      creator?.avatar_url ??
+                      makeDefaultAvatarUrl(creator?.display_name)
+                    }
+                    alt={creator?.display_name}
+                    loading="lazy"
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="font-heading text-sm">
+                    {getInitials(creator?.display_name ?? "")}
+                  </AvatarFallback>
+                </Avatar>
+              </ItemMedia>
+              <ItemContent className="min-w-0 gap-0">
+                <ItemDescription className="flex items-center gap-1 text-xs font-medium tracking-widest text-primary uppercase [&>svg]:size-3">
+                  <Crown />
+                  {t("host")}
+                </ItemDescription>
+                <ItemTitle className="block w-full truncate font-heading text-sm text-foreground underline-offset-4 group-hover/item:text-primary group-hover/item:underline">
+                  {creator?.display_name}
+                </ItemTitle>
+              </ItemContent>
+            </Item>
+          </>
+        ) : null}
+      </CardFooter>
+    </Card>
+  );
+}
