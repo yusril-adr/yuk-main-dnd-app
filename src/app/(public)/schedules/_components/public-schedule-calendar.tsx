@@ -20,7 +20,6 @@ import {
   PUBLIC_SCHEDULE_MOBILE_MEDIA,
   PUBLIC_SCHEDULE_MOBILE_MONTH_MAX_EVENTS,
   PUBLIC_SCHEDULE_MOBILE_POPOVER_CLASS,
-  PUBLIC_SCHEDULE_MOBILE_TITLE_FORMAT,
   PUBLIC_SCHEDULE_TIME_FORMAT,
   PUBLIC_SCHEDULE_VIEWS,
 } from "@/app/(public)/schedules/_constants/public-schedule-views";
@@ -139,9 +138,6 @@ export default function PublicScheduleCalendar({
             locales={locales}
             height="auto"
             eventTimeFormat={PUBLIC_SCHEDULE_TIME_FORMAT}
-            titleFormat={
-              isMobile ? PUBLIC_SCHEDULE_MOBILE_TITLE_FORMAT : undefined
-            }
             {...(isMobile
               ? {
                   views,
