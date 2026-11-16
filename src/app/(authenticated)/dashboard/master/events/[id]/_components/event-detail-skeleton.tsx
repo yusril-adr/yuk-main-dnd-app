@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader } from "@/app/_components/ui/card";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 
+import EventDetailMembersCardSkeleton from "./event-detail-members-card-skeleton";
+
 function SectionCardSkeleton({ rows }: { rows: number }) {
   return (
     <Card className="border-2 border-primary/15">
@@ -67,6 +69,7 @@ export default function EventDetailSkeleton() {
         <div className="flex flex-col gap-6">
           <SectionCardSkeleton rows={5} />
           <SectionCardSkeleton rows={3} />
+          <EventDetailMembersCardSkeleton />
         </div>
         <DescriptionCardSkeleton className="border-2 border-primary/15 lg:hidden" />
       </div>

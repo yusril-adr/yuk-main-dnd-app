@@ -5,6 +5,7 @@ import {
   Archive,
   ArchiveRestore,
   Ban,
+  CircleCheck,
   EllipsisVertical,
   Pencil,
   Send,
@@ -29,6 +30,7 @@ export default function EventDetailActions({
   eventId,
   canEdit,
   canPublish,
+  canComplete,
   canArchive,
   canUnarchive,
   canCancel,
@@ -38,6 +40,7 @@ export default function EventDetailActions({
   isUnarchivePending,
   isCancelPending,
   onPublishClick,
+  onCompleteClick,
   onArchiveClick,
   onUnarchiveClick,
   onCancelClick,
@@ -65,6 +68,13 @@ export default function EventDetailActions({
               onClick={onPublishClick}
             >
               <Send /> {t("actions.publish")}
+            </Button>
+          </Then>
+        </If>
+        <If condition={canComplete}>
+          <Then>
+            <Button variant="default" onClick={onCompleteClick}>
+              <CircleCheck /> {t("actions.complete")}
             </Button>
           </Then>
         </If>
@@ -143,6 +153,14 @@ export default function EventDetailActions({
                   >
                     <Send />
                     {t("actions.publish")}
+                  </DropdownMenuItem>
+                </Then>
+              </If>
+              <If condition={canComplete}>
+                <Then>
+                  <DropdownMenuItem onClick={onCompleteClick}>
+                    <CircleCheck />
+                    {t("actions.complete")}
                   </DropdownMenuItem>
                 </Then>
               </If>

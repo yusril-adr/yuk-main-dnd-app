@@ -1,0 +1,2 @@
+export const EVENT_MEMBER_PREVIEW_COUNT = 7;
+export const EVENT_MEMBER_DIALOG_PER_PAGE = 10;
