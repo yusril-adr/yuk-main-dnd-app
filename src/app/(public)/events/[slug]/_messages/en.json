@@ -126,6 +126,27 @@
     "replyToLabel": "Reply to {{name}}",
     "replyPlaceholder": "Write a reply...",
     "postReply": "Post reply",
-    "repliesError": "The replies could not be read."
+    "repliesError": "The replies could not be read.",
+    "reaction_one": "{{count}} reaction",
+    "reaction_other": "{{count}} reactions",
+    "reactionsAria": "Reactions to this {{noun}}",
+    "reactAria": "React to this {{noun}}",
+    "addReaction": "Add reaction",
+    "reactionLike": "Like",
+    "reactionLove": "Love",
+    "reactionLaugh": "Laugh",
+    "reactionWow": "Wow",
+    "includingYours": ", including yours",
+    "seeWhoReacted": "see who reacted",
+    "reactorsTitle": "Reactions",
+    "reactorsDescription": "Who reacted to this {{noun}}",
+    "reactorsAll": "All",
+    "reactorsListAria": "People who reacted",
+    "reactorsLoadingAria": "Loading reactions",
+    "reactorsError": "The reactions could not be read.",
+    "reactorsEmpty": "No reactions yet.",
+    "reactorYou": "You",
+    "reactorRemove": "Remove",
+    "reactorGuest": "Guest"
   }
 }
