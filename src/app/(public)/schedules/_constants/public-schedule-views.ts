@@ -3,12 +3,6 @@ export const PUBLIC_SCHEDULE_VIEWS = ["dayGridMonth", "listMonth"] as const;
 export const PUBLIC_SCHEDULE_INITIAL_VIEW = "dayGridMonth";
 export const PUBLIC_SCHEDULE_MOBILE_MEDIA = "(max-width: 639px)";
 
-export const PUBLIC_SCHEDULE_MOBILE_TITLE_FORMAT = {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-} as const;
-
 export const PUBLIC_SCHEDULE_TIME_FORMAT = {
   hour: "2-digit",
   minute: "2-digit",
