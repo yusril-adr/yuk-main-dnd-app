@@ -53,6 +53,33 @@
     }
   },
   "card": {
+    "actionsAria": "Event actions",
+    "view": "View",
+    "edit": "Edit",
+    "publish": "Publish",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "cancel": "Cancel",
+    "delete": "Delete",
     "noDescription": "No description."
+  },
+  "addEvent": "Add Event",
+  "dialogs": {
+    "cancel": "Cancel",
+    "publishTitle": "Publish event?",
+    "publishDescription": "The event will be marked as published.",
+    "publishConfirm": "Publish",
+    "archiveTitle": "Archive event?",
+    "archiveDescription": "The event will be marked as archived. You can unarchive it later to restore its previous status.",
+    "archiveConfirm": "Archive",
+    "unarchiveTitle": "Unarchive event?",
+    "unarchiveDescription": "The event will go back to the status it had before it was archived (Draft or Published).",
+    "unarchiveConfirm": "Unarchive",
+    "cancelTitle": "Cancel event?",
+    "cancelDescription": "The event will be marked as cancelled. This cannot be undone. The event cannot be edited, and members cannot be added or removed.",
+    "cancelConfirm": "Cancel event",
+    "deleteTitle": "Delete event?",
+    "deleteDescription": "This action cannot be undone. The event will be removed from the system.",
+    "deleteConfirm": "Delete"
   }
 }

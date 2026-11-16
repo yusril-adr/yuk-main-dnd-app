@@ -1,18 +1,27 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { Plus } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   createParser,
   parseAsInteger,
   parseAsString,
   parseAsStringEnum,
 } from "nuqs";
+import { useQueryClient } from "@tanstack/react-query";
+import { If, Then } from "react-if";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
+import { Button } from "@/app/_components/ui/button";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
 import { createSortByParser } from "@/libs/nuqs/parse-sort-by";
 import { OrderKeyEnum } from "@/common/enums/order-key";
+import { PermissionEnum } from "@/common/enums/permission";
+import CONFIG from "@/common/constants/config";
+import MainAPINotFoundError from "@/api/main/errors/not-found-error";
 import type { TEventPaginationPayload } from "@/api/main/modules/master/events/types/event-pagination-payload";
 import { EventStatusEnum } from "@/api/main/modules/master/events/enums/event-status";
 import { EventLocationTypeEnum } from "@/api/main/modules/master/events/enums/event-location-type";
@@ -21,6 +30,11 @@ import EventCardList from "@/app/(authenticated)/dashboard/master/events/_compon
 import type { TEventCardListFilters } from "@/app/(authenticated)/dashboard/master/events/_types/event-card-list-filters";
 import type { TEventCardListUserItem } from "@/app/(authenticated)/dashboard/master/events/_types/event-card-list-user-item";
 import { useGetEventPagination } from "@/app/(authenticated)/dashboard/master/events/_hooks/use-get-event-pagination";
+import { useDeleteEventById } from "@/app/(authenticated)/dashboard/master/events/_hooks/use-delete-event-by-id";
+import { useArchiveEventById } from "@/app/(authenticated)/dashboard/master/events/_hooks/use-archive-event-by-id";
+import { useUnarchiveEventById } from "@/app/(authenticated)/dashboard/master/events/_hooks/use-unarchive-event-by-id";
+import { useCancelEventById } from "@/app/(authenticated)/dashboard/master/events/_hooks/use-cancel-event-by-id";
+import { usePublishEventById } from "@/app/(authenticated)/dashboard/master/events/_hooks/use-publish-event-by-id";
 import { useGetUserOptions } from "@/app/(authenticated)/dashboard/master/events/_hooks/use-get-user-options";
 import { EVENT_CREATED_BY_ALL } from "@/app/(authenticated)/dashboard/master/events/_constants/event-created-by-filter";
 import { useT } from "@/app/_hooks/use-t";
@@ -41,11 +55,11 @@ function parseAsNumericEnum<T extends Record<string, number | string>>(
   });
 }
 
-// List only for now: no "Add Event" button, card link or card actions until
-// the create, detail and edit pages exist
 export default function EventsPageClient() {
   const { t } = useT(MASTER_EVENTS_MESSAGES);
   const { auth } = useAuthContext();
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
     pageSize: parseAsInteger.withDefault(12),
@@ -98,6 +112,57 @@ export default function EventsPageClient() {
   const { data: responseData, isLoading } = useGetEventPagination(
     queryStatesIntoPayload,
   );
+  const { mutate: deleteEventMutate } = useDeleteEventById({
+    onError: (mutationError) => {
+      if (mutationError instanceof MainAPINotFoundError) {
+        router.push("/dashboard/master/events");
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.EVENT.ALL()],
+      });
+    },
+  });
+  const { mutate: archiveEventMutate } = useArchiveEventById({
+    // Refresh on success and on error (e.g. 404 when the event was deleted
+    // elsewhere), so the card shows its real status or disappears
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.EVENT.ALL()],
+      });
+    },
+  });
+
+  const { mutate: unarchiveEventMutate } = useUnarchiveEventById({
+    // Same as archive: refresh on success and on error (404 / 400), so the
+    // card shows its real status or disappears (e.g. under an Archived filter)
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.EVENT.ALL()],
+      });
+    },
+  });
+
+  const { mutate: publishEventMutate } = usePublishEventById({
+    // Refresh on success and on error (e.g. 404 when the event was deleted
+    // elsewhere), so the card shows its real status or disappears
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.EVENT.ALL()],
+      });
+    },
+  });
+
+  const { mutate: cancelEventMutate } = useCancelEventById({
+    // Same as archive: refresh on success and on error (404 / 400), so the
+    // card shows its real status or disappears (e.g. under a Published filter)
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [CONFIG.QUERY_KEY.MAIN_API.MASTER.EVENT.ALL()],
+      });
+    },
+  });
 
   const events = useMemo(
     () => responseData?.data?.data?.items ?? [],
@@ -163,6 +228,10 @@ export default function EventsPageClient() {
     [setQueryStates],
   );
 
+  const canCreateEvents = auth?.permissions.includes(
+    PermissionEnum.EVENTS_CREATE,
+  );
+
   return (
     <div className="w-full flex justify-center min-w-0">
       <main className="w-full max-w-7xl flex flex-col px-10 pb-10">
@@ -170,6 +239,16 @@ export default function EventsPageClient() {
 
         <div className="flex justify-between items-center mt-4 mb-6">
           <h1 className="font-heading text-2xl">{t("title")}</h1>
+          <If condition={!!canCreateEvents}>
+            <Then>
+              <Button
+                render={<Link href="/dashboard/master/events/create" />}
+                nativeButton={false}
+              >
+                <Plus /> {t("addEvent")}
+              </Button>
+            </Then>
+          </If>
         </div>
 
         <EventCardList
@@ -186,6 +265,11 @@ export default function EventsPageClient() {
             onPageSizeChange: handlePageSizeChange,
             onSearchChange,
             onFilterApply,
+            onArchiveEvent: archiveEventMutate,
+            onPublishEvent: publishEventMutate,
+            onUnarchiveEvent: unarchiveEventMutate,
+            onCancelEvent: cancelEventMutate,
+            onDeleteEvent: deleteEventMutate,
           }}
         />
       </main>

@@ -434,7 +434,15 @@ export default function EventCardList({
           </Then>
           <Else>
             {data.map((event) => (
-              <EventCard key={event.id} event={event} />
+              <EventCard
+                key={event.id}
+                event={event}
+                onArchive={onActionHandler.onArchiveEvent}
+                onPublish={onActionHandler.onPublishEvent}
+                onUnarchive={onActionHandler.onUnarchiveEvent}
+                onCancel={onActionHandler.onCancelEvent}
+                onDelete={onActionHandler.onDeleteEvent}
+              />
             ))}
           </Else>
         </If>

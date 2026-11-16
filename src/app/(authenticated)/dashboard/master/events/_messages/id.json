@@ -53,6 +53,33 @@
     }
   },
   "card": {
+    "actionsAria": "Aksi event",
+    "view": "Lihat",
+    "edit": "Edit",
+    "publish": "Publish",
+    "archive": "Arsipkan",
+    "unarchive": "Batalkan arsip",
+    "cancel": "Batalkan",
+    "delete": "Hapus",
     "noDescription": "Tidak ada deskripsi."
+  },
+  "addEvent": "Tambah Event",
+  "dialogs": {
+    "cancel": "Batal",
+    "publishTitle": "Publish event?",
+    "publishDescription": "Event akan ditandai sebagai Published.",
+    "publishConfirm": "Publish",
+    "archiveTitle": "Arsipkan event?",
+    "archiveDescription": "Event akan ditandai sebagai diarsipkan. Kamu bisa membatalkan arsip nanti untuk mengembalikan status sebelumnya.",
+    "archiveConfirm": "Arsipkan",
+    "unarchiveTitle": "Batalkan arsip event?",
+    "unarchiveDescription": "Event akan kembali ke status sebelum diarsipkan (Draf atau Published).",
+    "unarchiveConfirm": "Batalkan arsip",
+    "cancelTitle": "Batalkan event?",
+    "cancelDescription": "Event akan ditandai sebagai dibatalkan. Ini tidak bisa diurungkan. Event tidak bisa diedit, dan anggota tidak bisa ditambah atau dihapus.",
+    "cancelConfirm": "Batalkan event",
+    "deleteTitle": "Hapus event?",
+    "deleteDescription": "Aksi ini tidak bisa diurungkan. Event akan dihapus dari sistem.",
+    "deleteConfirm": "Hapus"
   }
 }
