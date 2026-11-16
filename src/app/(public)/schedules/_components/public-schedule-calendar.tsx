@@ -14,14 +14,18 @@ import { useLocale } from "@/app/_hooks/use-locale";
 import { useT } from "@/app/_hooks/use-t";
 import { SCHEDULES_MESSAGES } from "@/app/(public)/schedules/_messages";
 import {
-  PUBLIC_SCHEDULE_DESKTOP_VIEW,
+  formatPublicScheduleMoreLink,
+  PUBLIC_SCHEDULE_INITIAL_VIEW,
+  PUBLIC_SCHEDULE_MOBILE_LIST_VIEW_OPTIONS,
   PUBLIC_SCHEDULE_MOBILE_MEDIA,
+  PUBLIC_SCHEDULE_MOBILE_MONTH_MAX_EVENTS,
+  PUBLIC_SCHEDULE_MOBILE_POPOVER_CLASS,
   PUBLIC_SCHEDULE_MOBILE_TITLE_FORMAT,
-  PUBLIC_SCHEDULE_MOBILE_VIEW,
   PUBLIC_SCHEDULE_TIME_FORMAT,
   PUBLIC_SCHEDULE_VIEWS,
 } from "@/app/(public)/schedules/_constants/public-schedule-views";
 import PublicScheduleErrorState from "@/app/(public)/schedules/_components/public-schedule-error-state";
+import { handlePublicScheduleMoreLinkClick } from "@/app/(public)/schedules/_utils/keep-public-schedule-popover-in-viewport";
 import type { TPublicScheduleCalendarProps } from "@/app/(public)/schedules/_types/public-schedule-calendar-props";
 
 function subscribeToMobileViewport(onChange: () => void) {
@@ -66,9 +70,6 @@ export default function PublicScheduleCalendar({
     getMobileViewportSnapshot,
     getServerMountSnapshot,
   );
-  const initialView = isMobile
-    ? PUBLIC_SCHEDULE_MOBILE_VIEW
-    : PUBLIC_SCHEDULE_DESKTOP_VIEW;
 
   const handleDatesSet = useCallback(
     (info: DatesSetInfo) => {
@@ -99,6 +100,20 @@ export default function PublicScheduleCalendar({
   );
 
   const locales = useMemo(() => [idLocale], []);
+  const views = useMemo(
+    () =>
+      isMobile
+        ? {
+            dayGridMonth: {
+              dayMaxEvents: PUBLIC_SCHEDULE_MOBILE_MONTH_MAX_EVENTS,
+              moreLinkClick: handlePublicScheduleMoreLinkClick,
+              moreLinkText: formatPublicScheduleMoreLink,
+            },
+            list: PUBLIC_SCHEDULE_MOBILE_LIST_VIEW_OPTIONS,
+          }
+        : undefined,
+    [isMobile],
+  );
 
   return (
     <div className="relative min-w-0 [--chart-1:var(--accent)] overflow-hidden rounded-md border bg-background">
@@ -114,7 +129,7 @@ export default function PublicScheduleCalendar({
           <EventCalendar
             key={locale}
             availableViews={PUBLIC_SCHEDULE_VIEWS}
-            initialView={initialView}
+            initialView={PUBLIC_SCHEDULE_INITIAL_VIEW}
             events={events}
             datesSet={handleDatesSet}
             eventClick={handleEventClick}
@@ -127,6 +142,13 @@ export default function PublicScheduleCalendar({
             titleFormat={
               isMobile ? PUBLIC_SCHEDULE_MOBILE_TITLE_FORMAT : undefined
             }
+            {...(isMobile
+              ? {
+                  views,
+                  popoverClass: PUBLIC_SCHEDULE_MOBILE_POPOVER_CLASS,
+                  ...PUBLIC_SCHEDULE_MOBILE_LIST_VIEW_OPTIONS,
+                }
+              : {})}
             noEventsContent={t("calendar.empty")}
           />
         </Else>
