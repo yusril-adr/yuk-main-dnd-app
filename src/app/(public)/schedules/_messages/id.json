@@ -17,6 +17,7 @@
     "event": "Event"
   },
   "calendar": {
+    "today": "Hari ini",
     "loading": "Memuat kalender…",
     "empty": "Tidak ada jadwal di periode ini."
   },
