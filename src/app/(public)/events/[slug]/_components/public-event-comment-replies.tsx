@@ -19,9 +19,11 @@ import { COMMON_MESSAGES } from "@/messages/common";
 
 import PublicEventCommentForm from "./public-event-comment-form";
 import PublicEventCommentItem from "./public-event-comment-item";
+import PublicEventCommentReactions from "./public-event-comment-reactions";
 import { useCreatePublicEventComment } from "@/app/(public)/events/[slug]/_hooks/use-create-public-event-comment";
 import { useGetPublicEventCommentReplyPagination } from "@/app/(public)/events/[slug]/_hooks/use-get-public-event-comment-reply-pagination";
 import { useRefreshPublicEventComments } from "@/app/(public)/events/[slug]/_hooks/use-refresh-public-event-comments";
+import { hasPublicEventCommentReactions } from "@/app/(public)/events/[slug]/_utils/public-event-comment-reaction-helper";
 import { PUBLIC_EVENT_COMMENT_REPLY_PER_PAGE } from "@/app/(public)/events/[slug]/_constants/public-event-comment";
 import { EVENT_DETAIL_MESSAGES } from "@/app/(public)/events/[slug]/_messages";
 import type { TPublicEventCommentRepliesProps } from "@/app/(public)/events/[slug]/_types/public-event-comment-replies-props";
@@ -96,13 +98,19 @@ export default function PublicEventCommentReplies({
     }));
   };
 
-  if (!canReply && !hasReplies) return null;
+  if (!canReply && !hasReplies && !hasPublicEventCommentReactions(comment))
+    return null;
 
   return (
     <div className="mt-1 flex flex-col gap-2">
-      {/* Reply and the thread toggle; wraps on phones.
-          -ms-2 lines up the ghost buttons' text */}
+      {/* Reactions, then Reply and the thread toggle; wraps on phones.
+          -ms-2 lines up the ghost buttons' text, the outlined chips undo it */}
       <div className="-ms-2 flex flex-wrap items-center gap-x-1 gap-y-1.5">
+        <PublicEventCommentReactions
+          eventId={eventId}
+          comment={comment}
+          className="ms-2 me-1"
+        />
         <If condition={canReply}>
           <Then>
             <Button
@@ -191,28 +199,47 @@ export default function PublicEventCommentReplies({
                           comment={reply}
                           isReply
                         >
-                          <If condition={canReply && !!reply.author?.username}>
+                          <If
+                            condition={
+                              hasPublicEventCommentReactions(reply) ||
+                              (canReply && !!reply.author?.username)
+                            }
+                          >
                             <Then>
                               <div className="-ms-2 flex flex-wrap items-center gap-x-1 gap-y-1.5">
-                                <Button
-                                  variant="ghost"
-                                  size="xs"
-                                  aria-label={t("comments.replyToAria", {
-                                    username: reply.author?.username ?? "",
-                                  })}
-                                  aria-controls={
-                                    isReplying
-                                      ? `${formId}-panel`
-                                      : undefined
-                                  }
-                                  onClick={() =>
-                                    replyToReply(
-                                      reply.author?.username ?? "",
-                                    )
+                                <PublicEventCommentReactions
+                                  eventId={eventId}
+                                  comment={reply}
+                                  isReply
+                                  className="ms-2 me-1"
+                                />
+                                <If
+                                  condition={
+                                    canReply && !!reply.author?.username
                                   }
                                 >
-                                  <MessageSquareReply /> {t("comments.reply")}
-                                </Button>
+                                  <Then>
+                                    <Button
+                                      variant="ghost"
+                                      size="xs"
+                                      aria-label={t("comments.replyToAria", {
+                                        username: reply.author?.username ?? "",
+                                      })}
+                                      aria-controls={
+                                        isReplying
+                                          ? `${formId}-panel`
+                                          : undefined
+                                      }
+                                      onClick={() =>
+                                        replyToReply(
+                                          reply.author?.username ?? "",
+                                        )
+                                      }
+                                    >
+                                      <MessageSquareReply /> {t("comments.reply")}
+                                    </Button>
+                                  </Then>
+                                </If>
                               </div>
                             </Then>
                           </If>

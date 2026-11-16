@@ -12,6 +12,9 @@ import type { TEventCommentReplyPaginationResponse } from "./types/event-comment
 import type { TEventCommentCreatePayload } from "./types/event-comment-create-payload";
 import type { TEventCommentCreateResponse } from "./types/event-comment-create-response";
 import type { TEventCommentUpdatePayload } from "./types/event-comment-update-payload";
+import type { TEventCommentReactionPaginationPayload } from "./types/event-comment-reaction-pagination-payload";
+import type { TEventCommentReactionPaginationResponse } from "./types/event-comment-reaction-pagination-response";
+import type { TEventCommentReactionSetPayload } from "./types/event-comment-reaction-set-payload";
 
 // Public, optional auth (the token fills action_list). Identifier is the id
 // or slug. 404 unless the event is published or completed
@@ -129,3 +132,57 @@ export const unpinEventComment = async ({
   return response;
 };
 
+// Public. Who reacted to a comment or reply, newest first, optionally one
+// type only. 404 unless the event is public and the comment is not deleted
+export const getEventCommentReactionPagination = async ({
+  identifier,
+  commentId,
+  payload,
+}: {
+  identifier: string;
+  commentId: string;
+  payload: TEventCommentReactionPaginationPayload;
+}): Promise<
+  AxiosResponse<
+    TMainApiPaginationResponse<TEventCommentReactionPaginationResponse>
+  >
+> => {
+  const response = await mainAxios.get(
+    MAIN_API_PATH.EVENT.COMMENT_REACTIONS(identifier, commentId),
+    { params: payload },
+  );
+  return response;
+};
+
+// Any logged-in user. One reaction per user per comment: a different type
+// replaces it, the same type is a no-op. 200 with data null (no counts). 400
+// unless the event is published or completed; 404 for a deleted comment
+export const setEventCommentReaction = async ({
+  eventId,
+  commentId,
+  payload,
+}: {
+  eventId: string;
+  commentId: string;
+  payload: TEventCommentReactionSetPayload;
+}): Promise<AxiosResponse<TMainApiResponse<null>>> => {
+  const response = await mainAxios.put(
+    MAIN_API_PATH.EVENT.COMMENT_REACTION(eventId, commentId),
+    payload,
+  );
+  return response;
+};
+
+// Removes the caller's reaction. Idempotent 204, no event status check
+export const removeEventCommentReaction = async ({
+  eventId,
+  commentId,
+}: {
+  eventId: string;
+  commentId: string;
+}) => {
+  const response = await mainAxios.delete(
+    MAIN_API_PATH.EVENT.COMMENT_REACTION(eventId, commentId),
+  );
+  return response;
+};
