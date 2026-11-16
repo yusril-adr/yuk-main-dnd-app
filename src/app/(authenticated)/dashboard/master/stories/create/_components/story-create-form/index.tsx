@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { enUS, id as idLocale } from "date-fns/locale";
 import { CalendarDays as CalendarIcon, XIcon } from "lucide-react";
@@ -111,6 +111,10 @@ export default function StoryCreateForm({
       },
     });
 
+  // Online stories have no location link: the field is disabled and emptied
+  const locationType = useWatch({ control, name: "locationType" });
+  const isOnline = locationType === StoryLocationTypeEnum.ONLINE;
+
   const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(null);
 
   // Revoke the previous local preview when it changes, and on unmount
@@ -213,7 +217,10 @@ export default function StoryCreateForm({
       location_type: data.locationType,
       location_detail: data.locationDetail,
       banner_file_id: data.bannerFileId || undefined,
-      location_link: data.locationLink || undefined,
+      location_link:
+        data.locationType === StoryLocationTypeEnum.ONLINE
+          ? undefined
+          : data.locationLink || undefined,
       discord_channel_link: data.discordChannelLink || undefined,
       feedback_form_link: data.feedbackFormLink || undefined,
     });
@@ -548,7 +555,13 @@ export default function StoryCreateForm({
                     items={Object.values(StoryLocationTypeEnum).filter(
                       (v): v is StoryLocationTypeEnum => typeof v === "number",
                     )}
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      if (value === StoryLocationTypeEnum.ONLINE) {
+                        setValue("locationLink", "");
+                        clearErrors("locationLink");
+                      }
+                    }}
                     disabled={isFormDisabled}
                     {...field}
                     value={field.value ?? null}
@@ -606,8 +619,9 @@ export default function StoryCreateForm({
                     type="url"
                     inputMode="url"
                     placeholder="https://maps.app.goo.gl/..."
-                    disabled={isFormDisabled}
                     {...field}
+                    // Online stories have no location link
+                    disabled={isFormDisabled || isOnline}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
