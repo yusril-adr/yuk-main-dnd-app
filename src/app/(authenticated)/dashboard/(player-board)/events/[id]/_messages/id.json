@@ -1,0 +1,76 @@
+{
+  "breadcrumb": "Events Saya",
+  "breadcrumbDetail": "Detail",
+  "backAria": "Kembali ke Events Saya",
+  "title": "Detail Event",
+  "enums": {
+    "status": {
+      "draft": "Draf",
+      "published": "Published",
+      "archived": "Diarsipkan",
+      "cancelled": "Dibatalkan",
+      "completed": "Selesai"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "memberStatus": {
+      "registered": "Terdaftar",
+      "absent": "Absen",
+      "attended": "Hadir"
+    }
+  },
+  "quest": {
+    "title": "Detail Event",
+    "empty": "Belum ada deskripsi untuk event ini.",
+    "copyAria": "Salin deskripsi untuk Discord",
+    "copyTitle": "Salin untuk Discord",
+    "copySuccess": "Deskripsi disalin",
+    "copyError": "Nggak bisa menyalin deskripsi"
+  },
+  "adventure": {
+    "title": "Info Event",
+    "partySize": "Ukuran Party",
+    "partySizeValue_one": "Maksimal {{count}} petualang",
+    "partySizeValue_other": "Maksimal {{count}} petualang",
+    "noLimit": "Tidak ada batas",
+    "rewards": "Rewards",
+    "noRewards": "Tidak ada reward",
+    "exp": "{{count}} EXP",
+    "gp": "{{count}} GP",
+    "starts": "Mulai",
+    "notScheduled": "Belum dijadwalkan",
+    "location": "Lokasi · {{type}}",
+    "openMap": "Buka peta lokasi",
+    "feedback": "Form Feedback",
+    "openFeedback": "Buka form feedback"
+  },
+  "chronicle": {
+    "title": "Chronicle",
+    "writtenBy": "Ditulis Oleh",
+    "unknown": "Tidak diketahui",
+    "recorded": "Dicatat",
+    "lastUpdated": "Terakhir Diperbarui"
+  },
+  "party": {
+    "title": "Party",
+    "dialogDescription": "Daftar lengkap anggota event",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Anggota party nggak bisa dimuat.",
+    "empty": "Belum ada petualang yang bergabung di party ini.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "showMore": "Tampilkan lebih banyak"
+  },
+  "slug": {
+    "viewPublic": "Lihat halaman publik",
+    "viewPublicSr": "Lihat halaman publik (membuka tab baru)"
+  },
+  "external": {
+    "opensInNewTab": "(membuka tab baru)"
+  },
+  "error": {
+    "title": "Event ini nggak bisa dimuat",
+    "description": "Ada yang salah di perjalanan. Coba lagi ya."
+  }
+}
