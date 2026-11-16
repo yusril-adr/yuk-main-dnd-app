@@ -36,7 +36,7 @@ export function EventCalendarToolbar({
         className,
       )}
     >
-      <div className="flex min-w-0 items-center shrink-0 gap-2 sm:gap-3">
+      <div className="order-1 flex shrink-0 items-center gap-2 sm:gap-3">
         {addButton && (
           <Button
             onClick={(event) => addButton.click?.(event.nativeEvent)}
@@ -72,12 +72,13 @@ export function EventCalendarToolbar({
             <EventCalendarNextIcon />
           </Button>
         </div>
-        <div className="min-w-0 truncate text-lg sm:text-xl">
-          {controller.view?.title}
-        </div>
+      </div>
+      <div className="order-3 basis-full text-lg sm:order-2 sm:min-w-0 sm:flex-1 sm:basis-auto sm:truncate sm:text-xl">
+        {controller.view?.title}
       </div>
       {controller.view?.type ? (
         <Tabs
+          className="order-2 sm:order-3"
           value={controller.view.type}
           onValueChange={(value) => {
             if (value && value !== controller.view?.type) {
