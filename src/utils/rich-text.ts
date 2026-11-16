@@ -107,6 +107,15 @@ function getMarkdownTextParts(tokens: Token[], parts: string[]): string[] {
       token.type === "escape"
     ) {
       parts.push(decodeEntities((token as Tokens.Text).text));
+    } else if (token.type === "html") {
+      // Block HTML (e.g. <p>…</p>) arrives as one html token with no
+      // children. Inline tags like <em> are empty on their own; the
+      // wrapped text is already a neighboring text token.
+      const raw = "text" in token && typeof token.text === "string" ? token.text : token.raw;
+      const htmlText = getHtmlPlainText(raw);
+      if (htmlText) {
+        parts.push(htmlText);
+      }
     }
 
     // Blocks end a line in readable previews
@@ -132,6 +141,19 @@ function decodeEntities(value: string): string {
   return value.replace(
     /&(amp|lt|gt|quot|#39);/g,
     (entity) => HTML_ENTITIES[entity],
+  );
+}
+
+// SSR-safe (no DOM). Images and empty tags contribute nothing. Block ends
+// use the same \u0000 marker as Markdown paragraphs so character counts
+// stay consistent with getRichTextPlainText / countRichTextCharacters.
+function getHtmlPlainText(value: string): string {
+  return decodeEntities(
+    value
+      .replace(/<(script|style)[\s\S]*?<\/\1>/gi, "")
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/(p|div|h[1-6]|li|blockquote|tr|pre)>/gi, "\u0000")
+      .replace(/<[^>]+>/g, ""),
   );
 }
 

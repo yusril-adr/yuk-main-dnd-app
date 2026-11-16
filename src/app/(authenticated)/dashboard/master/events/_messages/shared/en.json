@@ -1,0 +1,14 @@
+{
+  "toast": {
+    "publishing": "Publishing event...",
+    "published": "Event published",
+    "archiving": "Archiving event...",
+    "archived": "Event archived",
+    "unarchiving": "Unarchiving event...",
+    "unarchived": "Event unarchived",
+    "cancelling": "Cancelling event...",
+    "cancelled": "Event cancelled",
+    "deleting": "Deleting event...",
+    "deleted": "Event deleted"
+  }
+}
