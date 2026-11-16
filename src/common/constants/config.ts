@@ -53,6 +53,21 @@ const CONFIG = {
           "joined-stories",
         ],
       },
+      EVENT: {
+        ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "public-event"],
+        MEMBER: {
+          ALL: () => [
+            ...CONFIG.QUERY_KEY.MAIN_API.EVENT.ALL(),
+            "public-event-member",
+          ],
+        },
+        COMMENT: {
+          ALL: () => [
+            ...CONFIG.QUERY_KEY.MAIN_API.EVENT.ALL(),
+            "public-event-comment",
+          ],
+        },
+      },
       STORY: {
         ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "public-story"],
         MEMBER: {
@@ -78,6 +93,15 @@ const CONFIG = {
             ],
           },
         },
+        EVENT: {
+          ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "board-event"],
+          MEMBER: {
+            ALL: () => [
+              ...CONFIG.QUERY_KEY.MAIN_API.BOARD.EVENT.ALL(),
+              "board-event-member",
+            ],
+          },
+        },
       },
       MASTER: {
         IAM: {
@@ -93,6 +117,9 @@ const CONFIG = {
         },
         STORY: {
           ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "story"],
+        },
+        EVENT: {
+          ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "event"],
         },
       },
     },

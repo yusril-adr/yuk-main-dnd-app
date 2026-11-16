@@ -1,0 +1,9 @@
+// Mirrors the API's FILE_EVENT_BANNER_MAX_FILE_SIZE_BYTES (5 MB)
+export const EVENT_BANNER_MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
+
+// The API does not validate file types, so the browser restricts them
+export const EVENT_BANNER_ACCEPTED_TYPES: string[] = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+];

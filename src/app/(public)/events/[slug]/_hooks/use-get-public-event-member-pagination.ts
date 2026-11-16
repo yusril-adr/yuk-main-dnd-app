@@ -1,0 +1,32 @@
+import { useInfiniteQuery } from "@tanstack/react-query";
+
+import { getPublicEventMemberPagination } from "@/api/main/modules/events/[id]/members";
+import CONFIG from "@/common/constants/config";
+import { getMainApiNextPage } from "@/api/main/utils/pagination";
+import { OrderKeyEnum } from "@/common/enums/order-key";
+
+// Infinite list like the dashboard members card: each "Show more" fetches the
+// next page of perPage. created_at asc is join order (the API default
+// updated_at reshuffles when a status changes). The key starts with
+// EVENT.ALL(), so join/leave invalidation refetches every loaded page.
+export function useGetPublicEventMemberPagination(
+  eventId: string,
+  perPage: number,
+) {
+  return useInfiniteQuery({
+    queryKey: [CONFIG.QUERY_KEY.MAIN_API.EVENT.MEMBER.ALL(), eventId, perPage],
+    queryFn: ({ pageParam }) =>
+      getPublicEventMemberPagination({
+        id: eventId,
+        payload: {
+          page: pageParam,
+          per_page: perPage,
+          sort_by: "created_at",
+          order: OrderKeyEnum.ASC,
+        },
+      }),
+    initialPageParam: 1,
+    getNextPageParam: getMainApiNextPage,
+    enabled: !!eventId,
+  });
+}

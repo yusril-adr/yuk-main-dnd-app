@@ -1,0 +1,147 @@
+{
+  "breadcrumb": "Events",
+  "breadcrumbDetail": "Detail",
+  "title": "Detail Event",
+  "enums": {
+    "status": {
+      "draft": "Draf",
+      "published": "Published",
+      "archived": "Diarsipkan",
+      "cancelled": "Dibatalkan",
+      "completed": "Selesai"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "memberStatus": {
+      "registered": "Terdaftar",
+      "absent": "Tidak hadir",
+      "attended": "Hadir"
+    }
+  },
+  "actions": {
+    "edit": "Edit",
+    "publish": "Publish",
+    "complete": "Selesaikan",
+    "archive": "Arsipkan",
+    "unarchive": "Batalkan arsip",
+    "cancel": "Batalkan",
+    "delete": "Hapus",
+    "actionsAria": "Aksi event"
+  },
+  "dialogs": {
+    "cancel": "Batal",
+    "publishTitle": "Publish event?",
+    "publishDescription": "Event akan ditandai sebagai Published.",
+    "publishConfirm": "Publish",
+    "archiveTitle": "Arsipkan event?",
+    "archiveDescription": "Event akan ditandai sebagai diarsipkan. Kamu bisa membatalkan arsip nanti untuk mengembalikan status sebelumnya.",
+    "archiveConfirm": "Arsipkan",
+    "unarchiveTitle": "Batalkan arsip event?",
+    "unarchiveDescription": "Event akan kembali ke status sebelum diarsipkan (Draf atau Published).",
+    "unarchiveConfirm": "Batalkan arsip",
+    "cancelTitle": "Batalkan event?",
+    "cancelDescription": "Event akan ditandai sebagai dibatalkan. Ini tidak bisa diurungkan. Event tidak bisa diedit, dan anggota tidak bisa ditambah atau dihapus.",
+    "cancelConfirm": "Batalkan event",
+    "deleteTitle": "Hapus event?",
+    "deleteDescription": "Aksi ini tidak bisa diurungkan. Event akan dihapus dari sistem.",
+    "deleteConfirm": "Hapus"
+  },
+  "description": {
+    "title": "Detail Event",
+    "empty": "Belum ada deskripsi untuk event ini.",
+    "copyAria": "Salin deskripsi untuk Discord",
+    "copyTitle": "Salin untuk Discord",
+    "copySuccess": "Deskripsi disalin",
+    "copyError": "Nggak bisa menyalin deskripsi"
+  },
+  "info": {
+    "title": "Info Event",
+    "partySize": "Ukuran Party",
+    "partySizeValue_one": "Maksimal {{count}} petualang",
+    "partySizeValue_other": "Maksimal {{count}} petualang",
+    "noLimit": "Tidak ada batas",
+    "rewards": "Rewards",
+    "noRewards": "Tidak ada reward",
+    "starts": "Mulai",
+    "notScheduled": "Belum dijadwalkan",
+    "location": "Lokasi · {{type}}",
+    "openMap": "Buka peta lokasi",
+    "feedback": "Form Feedback",
+    "openFeedback": "Buka form feedback"
+  },
+  "about": {
+    "title": "Tentang",
+    "createdBy": "Dibuat Oleh",
+    "unknown": "Tidak diketahui",
+    "created": "Dibuat",
+    "lastUpdated": "Terakhir Diperbarui"
+  },
+  "party": {
+    "title": "Party",
+    "dialogDescription": "Daftar lengkap anggota event",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Anggota party nggak bisa dimuat.",
+    "empty": "Belum ada petualang yang bergabung di party ini.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "showMore": "Tampilkan lebih banyak",
+    "addMember": "Tambah anggota",
+    "remove": "Hapus",
+    "add": "Tambah",
+    "tryAgain": "Coba lagi"
+  },
+  "addMember": {
+    "title": "Tambah anggota",
+    "description": "Tambah petualang ke party ini",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Petualang yang tersedia nggak bisa dimuat.",
+    "empty": "Tidak ada petualang yang tersedia untuk bergabung.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "tryAgain": "Coba lagi",
+    "cancel": "Batal",
+    "submit_zero": "Tambah",
+    "submit_one": "Tambah {{count}} anggota",
+    "submit_other": "Tambah {{count}} anggota",
+    "errorFallback": "Nggak bisa menambah anggota event."
+  },
+  "removeMember": {
+    "title": "Hapus anggota",
+    "description": "Hapus petualang dari party ini",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Anggota party nggak bisa dimuat.",
+    "empty": "Belum ada petualang yang bergabung di party ini.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "tryAgain": "Coba lagi",
+    "cancel": "Batal",
+    "submit_zero": "Hapus",
+    "submit_one": "Hapus {{count}} anggota",
+    "submit_other": "Hapus {{count}} anggota",
+    "errorFallback": "Nggak bisa menghapus anggota event."
+  },
+  "createGuest": {
+    "entry": "Buat tamu",
+    "title": "Buat tamu",
+    "description": "Buat petualang tamu dan tambahkan ke party ini",
+    "username": "Username",
+    "usernamePlaceholder": "Masukkan username",
+    "displayName": "Nama Tampilan",
+    "displayNamePlaceholder": "Masukkan nama tampilan",
+    "cancel": "Kembali",
+    "submit": "Buat & tambah",
+    "validation": {
+      "usernameRequired": "Username wajib diisi",
+      "usernameNoSpaces": "Username tidak boleh mengandung spasi",
+      "usernameMax": "Username maksimal {{max}} karakter",
+      "displayNameRequired": "Nama tampilan wajib diisi",
+      "displayNameMax": "Nama tampilan maksimal {{max}} karakter"
+    },
+    "errorFallback": "Nggak bisa membuat tamu."
+  },
+  "guest": {
+    "badge": "Tamu"
+  },
+  "external": {
+    "opensInNewTab": "(membuka tab baru)"
+  }
+}

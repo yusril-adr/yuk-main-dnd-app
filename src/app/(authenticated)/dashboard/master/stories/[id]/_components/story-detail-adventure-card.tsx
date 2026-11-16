@@ -91,9 +91,15 @@ export default function StoryDetailAdventureCard({
         value={
           <span className="flex w-full flex-col items-start gap-1">
             {story.location_detail}
-            <If condition={!!story.location_link}>
+            {/* Only offline stories have a map link; online stories have none */}
+            <If
+              condition={
+                !!story.location_link &&
+                story.location_type === StoryLocationTypeEnum.OFFLINE
+              }
+            >
               <Then>
-                <StoryDetailExternalLink href={story.location_link!}>
+                <StoryDetailExternalLink href={story.location_link ?? ""}>
                   {t("adventure.openMap")}
                 </StoryDetailExternalLink>
               </Then>

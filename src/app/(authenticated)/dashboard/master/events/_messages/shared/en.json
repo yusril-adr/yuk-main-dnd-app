@@ -1,0 +1,60 @@
+{
+  "toast": {
+    "publishing": "Publishing event...",
+    "published": "Event published",
+    "archiving": "Archiving event...",
+    "archived": "Event archived",
+    "unarchiving": "Unarchiving event...",
+    "unarchived": "Event unarchived",
+    "cancelling": "Cancelling event...",
+    "cancelled": "Event cancelled",
+    "deleting": "Deleting event...",
+    "deleted": "Event deleted",
+    "completing": "Completing event...",
+    "completed": "Event completed",
+    "addingMembers": "Adding event members...",
+    "membersAdded": "Event members added",
+    "removingMembers": "Removing event members...",
+    "membersRemoved": "Event members removed",
+    "creatingGuest": "Creating guest...",
+    "guestCreated": "Guest created",
+    "uploadingBanner": "Uploading banner...",
+    "bannerUploaded": "Banner uploaded",
+    "creating": "Creating event...",
+    "created": "Event created",
+    "updating": "Updating event...",
+    "updated": "Event updated"
+  },
+  "enums": {
+    "memberStatus": {
+      "registered": "Registered",
+      "absent": "Absent",
+      "attended": "Attended"
+    }
+  },
+  "complete": {
+    "title": "Complete event?",
+    "description": "Choose who attended. Checked members are marked attended and receive rewards. Unchecked members are marked absent and receive no rewards. At least one attended member is required. The event and its members cannot be edited after this.",
+    "searchPlaceholder": "Type minimum 3 characters to search ...",
+    "loadError": "Couldn't load party members.",
+    "empty": "No adventurers have joined this party yet.",
+    "emptySearch": "No adventurers match this search.",
+    "tryAgain": "Try again",
+    "cancel": "Cancel",
+    "confirm": "Complete event",
+    "errorFallback": "Couldn't complete event."
+  },
+  "banner": {
+    "label": "Banner",
+    "chooseFile": "Choose file",
+    "remove": "Remove",
+    "previewAlt": "Event banner preview",
+    "description": "JPG, PNG, or WebP image, max {{maxSize}}. Recommended 16:10 (e.g. 1600 × 1000 px) with the main subject centered, since the public pages crop the edges.",
+    "errorType": "Banner must be a JPG, PNG, or WebP image",
+    "errorSize": "Banner must be {{maxSize}} or smaller"
+  },
+  "rewardLocked": {
+    "title": "Standardized reward",
+    "aboutAria": "About {{label}}"
+  }
+}

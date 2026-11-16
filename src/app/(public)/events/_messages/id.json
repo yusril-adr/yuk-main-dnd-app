@@ -1,0 +1,47 @@
+{
+  "hero": {
+    "badge": "Aula Guild",
+    "title": "Berkumpul bersama guild",
+    "description": "Kumpul guild, game night, dan meetup tabletop. Pilih event, ikut gabung, dan kenalan dengan sesama petualang.",
+    "count_one": "event di papan",
+    "count_other": "event di papan"
+  },
+  "filters": {
+    "searchPlaceholder": "Cari event berdasarkan judul (min. 3 karakter)…",
+    "filters": "Filter",
+    "status": "Status",
+    "location": "Lokasi",
+    "allStatuses": "Semua status",
+    "anywhere": "Di mana saja",
+    "clear": "Hapus",
+    "apply": "Terapkan"
+  },
+  "enums": {
+    "status": {
+      "draft": "Draf",
+      "published": "Rekrutmen",
+      "archived": "Diarsipkan",
+      "cancelled": "Dibatalkan",
+      "completed": "Selesai"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    }
+  },
+  "pagination": {
+    "showing": "Menampilkan {{start}}–{{end}} dari {{total}} event",
+    "previous": "Halaman sebelumnya",
+    "next": "Halaman berikutnya"
+  },
+  "empty": {
+    "title": "Event tidak ditemukan",
+    "filtered": "Tidak ada event yang cocok. Coba kata kunci lain atau hapus filter.",
+    "default": "Belum ada event di papan. Kembali lagi nanti, adventurer.",
+    "clearFilters": "Hapus pencarian & filter"
+  },
+  "error": {
+    "title": "Gulungan nggak bisa diambil",
+    "description": "Ada yang salah saat memuat event. Coba lagi ya."
+  }
+}

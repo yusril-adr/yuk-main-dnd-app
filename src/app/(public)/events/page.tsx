@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { makePageMetadata } from "@/utils/seo-helper";
@@ -7,10 +8,14 @@ import EventsPageClient from "./page-client";
 export const metadata: Metadata = makePageMetadata({
   title: "Events",
   description:
-    "Guild gatherings, one-shots and tabletop RPG events from YukMainDnD. Coming soon.",
+    "Browse upcoming and past YukMainDnD guild events, see who hosts them and join the gathering.",
   path: "/events",
 });
 
 export default function EventsPage() {
-  return <EventsPageClient />;
+  return (
+    <Suspense>
+      <EventsPageClient />
+    </Suspense>
+  );
 }

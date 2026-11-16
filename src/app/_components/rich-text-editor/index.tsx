@@ -194,10 +194,16 @@ export default function RichTextEditor({
     editor?.setEditable(!disabled, false);
   }, [editor, disabled]);
 
+  // Read from the editor in scope, not the snapshot's: useEditorState keeps
+  // its first snapshot (editor null, count 0) until the next transaction, so
+  // content passed to useEditor at creation (e.g. opening edit from the
+  // detail page, when the event or story is already cached) would show 0
+  // until the first keystroke. This component re-renders when useEditor
+  // creates the editor, which re-runs this selector.
+  // setContent(..., { emitUpdate: false }) also does not notify useEditorState.
   const characterCount = useEditorState({
     editor,
-    selector: ({ editor: currentEditor }) =>
-      currentEditor?.storage.characterCount.characters() ?? 0,
+    selector: () => editor?.storage.characterCount.characters() ?? 0,
   });
 
   return (

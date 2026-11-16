@@ -1,0 +1,85 @@
+{
+  "breadcrumb": "Events",
+  "title": "Events",
+  "filters": {
+    "filter": "Filter",
+    "sortBy": "Urutkan Berdasarkan",
+    "sortOrder": "Urutan",
+    "selectField": "Pilih field",
+    "selectOrder": "Pilih urutan",
+    "status": "Status",
+    "selectStatus": "Pilih status",
+    "location": "Lokasi",
+    "selectLocation": "Pilih lokasi",
+    "createdBy": "Dibuat Oleh",
+    "searchUser": "Cari user",
+    "noItemsFound": "Tidak ada item.",
+    "noUsersFound": "Tidak ada user.",
+    "clear": "Hapus",
+    "apply": "Terapkan",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ..."
+  },
+  "sort": {
+    "title": "Judul",
+    "status": "Status",
+    "maxMembers": "Maks. Anggota",
+    "expAwarded": "EXP Diberikan",
+    "goldAwarded": "Gold Diberikan",
+    "startAt": "Waktu Mulai",
+    "location": "Lokasi",
+    "createdAt": "Dibuat Pada",
+    "updatedAt": "Diperbarui Pada",
+    "asc": "Naik",
+    "desc": "Turun"
+  },
+  "pagination": {
+    "range": "{{start}} - {{end}} dari {{total}} item",
+    "perPage": "{{count}} / halaman"
+  },
+  "empty": {
+    "title": "Tidak ada event."
+  },
+  "enums": {
+    "status": {
+      "draft": "Draf",
+      "published": "Published",
+      "archived": "Diarsipkan",
+      "cancelled": "Dibatalkan",
+      "completed": "Selesai"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    }
+  },
+  "card": {
+    "actionsAria": "Aksi event",
+    "view": "Lihat",
+    "edit": "Edit",
+    "publish": "Publish",
+    "archive": "Arsipkan",
+    "unarchive": "Batalkan arsip",
+    "cancel": "Batalkan",
+    "delete": "Hapus",
+    "noDescription": "Tidak ada deskripsi."
+  },
+  "addEvent": "Tambah Event",
+  "dialogs": {
+    "cancel": "Batal",
+    "publishTitle": "Publish event?",
+    "publishDescription": "Event akan ditandai sebagai Published.",
+    "publishConfirm": "Publish",
+    "archiveTitle": "Arsipkan event?",
+    "archiveDescription": "Event akan ditandai sebagai diarsipkan. Kamu bisa membatalkan arsip nanti untuk mengembalikan status sebelumnya.",
+    "archiveConfirm": "Arsipkan",
+    "unarchiveTitle": "Batalkan arsip event?",
+    "unarchiveDescription": "Event akan kembali ke status sebelum diarsipkan (Draf atau Published).",
+    "unarchiveConfirm": "Batalkan arsip",
+    "cancelTitle": "Batalkan event?",
+    "cancelDescription": "Event akan ditandai sebagai dibatalkan. Ini tidak bisa diurungkan. Event tidak bisa diedit, dan anggota tidak bisa ditambah atau dihapus.",
+    "cancelConfirm": "Batalkan event",
+    "deleteTitle": "Hapus event?",
+    "deleteDescription": "Aksi ini tidak bisa diurungkan. Event akan dihapus dari sistem.",
+    "deleteConfirm": "Hapus"
+  }
+}

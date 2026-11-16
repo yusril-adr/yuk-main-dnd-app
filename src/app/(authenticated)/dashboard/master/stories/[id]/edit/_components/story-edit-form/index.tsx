@@ -120,7 +120,10 @@ export default function StoryEditForm({
         : "",
       locationType: story?.location_type as StoryLocationTypeEnum,
       locationDetail: story?.location_detail ?? "",
-      locationLink: story?.location_link ?? "",
+      locationLink:
+        story?.location_type === StoryLocationTypeEnum.ONLINE
+          ? ""
+          : (story?.location_link ?? ""),
       discordChannelLink: story?.discord_channel_link ?? "",
       feedbackFormLink: story?.feedback_form_link ?? "",
     }),
@@ -132,6 +135,10 @@ export default function StoryEditForm({
       resolver: zodResolver(schema),
       values,
     });
+
+  // Online stories have no location link: the field is disabled and emptied
+  const locationType = useWatch({ control, name: "locationType" });
+  const isOnline = locationType === StoryLocationTypeEnum.ONLINE;
 
   const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string | null>(null);
   const isBannerRemoved = useWatch({ control, name: "isBannerRemoved" });
@@ -249,7 +256,11 @@ export default function StoryEditForm({
       location_type: data.locationType,
       location_detail: data.locationDetail,
       banner_file_id: bannerFileId,
-      location_link: data.locationLink || null,
+      // Online stories have no location link: clear any stored one
+      location_link:
+        data.locationType === StoryLocationTypeEnum.ONLINE
+          ? null
+          : data.locationLink || null,
       discord_channel_link: data.discordChannelLink || null,
       feedback_form_link: data.feedbackFormLink || null,
     });
@@ -581,7 +592,13 @@ export default function StoryEditForm({
                     items={Object.values(StoryLocationTypeEnum).filter(
                       (v): v is StoryLocationTypeEnum => typeof v === "number",
                     )}
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      if (value === StoryLocationTypeEnum.ONLINE) {
+                        setValue("locationLink", "");
+                        clearErrors("locationLink");
+                      }
+                    }}
                     disabled={isFormDisabled}
                     {...field}
                     // Always controlled: field.value is undefined until the story loads
@@ -642,8 +659,9 @@ export default function StoryEditForm({
                     type="url"
                     inputMode="url"
                     placeholder="https://maps.app.goo.gl/..."
-                    disabled={isFormDisabled}
                     {...field}
+                    // Online stories have no location link
+                    disabled={isFormDisabled || isOnline}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

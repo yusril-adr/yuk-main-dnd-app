@@ -1,0 +1,60 @@
+{
+  "toast": {
+    "publishing": "Mem-publish event...",
+    "published": "Event dipublish",
+    "archiving": "Mengarsipkan event...",
+    "archived": "Event diarsipkan",
+    "unarchiving": "Membatalkan arsip event...",
+    "unarchived": "Arsip event dibatalkan",
+    "cancelling": "Membatalkan event...",
+    "cancelled": "Event dibatalkan",
+    "deleting": "Menghapus event...",
+    "deleted": "Event dihapus",
+    "completing": "Menyelesaikan event...",
+    "completed": "Event diselesaikan",
+    "addingMembers": "Menambah anggota event...",
+    "membersAdded": "Anggota event ditambahkan",
+    "removingMembers": "Menghapus anggota event...",
+    "membersRemoved": "Anggota event dihapus",
+    "creatingGuest": "Membuat tamu...",
+    "guestCreated": "Tamu dibuat",
+    "uploadingBanner": "Mengunggah banner...",
+    "bannerUploaded": "Banner diunggah",
+    "creating": "Membuat event...",
+    "created": "Event dibuat",
+    "updating": "Memperbarui event...",
+    "updated": "Event diperbarui"
+  },
+  "enums": {
+    "memberStatus": {
+      "registered": "Terdaftar",
+      "absent": "Tidak hadir",
+      "attended": "Hadir"
+    }
+  },
+  "complete": {
+    "title": "Selesaikan event?",
+    "description": "Pilih siapa yang hadir. Anggota yang dicentang ditandai attended dan menerima reward. Anggota yang tidak dicentang ditandai tidak hadir dan tidak menerima reward. Minimal satu anggota attended wajib dipilih. Event dan anggotanya tidak bisa diedit setelah ini.",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Anggota party nggak bisa dimuat.",
+    "empty": "Belum ada petualang yang bergabung di party ini.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "tryAgain": "Coba lagi",
+    "cancel": "Batal",
+    "confirm": "Selesaikan event",
+    "errorFallback": "Nggak bisa menyelesaikan event."
+  },
+  "banner": {
+    "label": "Banner",
+    "chooseFile": "Pilih file",
+    "remove": "Hapus",
+    "previewAlt": "Pratinjau banner event",
+    "description": "Gambar JPG, PNG, atau WebP, maks. {{maxSize}}. Disarankan 16:10 (mis. 1600 × 1000 px) dengan subjek utama di tengah, karena halaman publik memotong pinggirnya.",
+    "errorType": "Banner harus gambar JPG, PNG, atau WebP",
+    "errorSize": "Banner harus {{maxSize}} atau lebih kecil"
+  },
+  "rewardLocked": {
+    "title": "Reward standar",
+    "aboutAria": "Tentang {{label}}"
+  }
+}
