@@ -1,5 +1,7 @@
 "use client";
 
+import { Swords, Tent } from "lucide-react";
+
 import { ScheduleItemTypeEnum } from "@/api/main/modules/schedules/enums/schedule-item-type";
 import { Tabs, TabsList, TabsTrigger } from "@/app/_components/ui/tabs";
 import { useT } from "@/app/_hooks/use-t";
@@ -8,6 +10,8 @@ import { PUBLIC_SCHEDULE_ITEM_COLORS } from "@/app/(public)/schedules/_constants
 import type { TPublicScheduleFiltersProps } from "@/app/(public)/schedules/_types/public-schedule-filters-props";
 
 const ALL = "all";
+const TRIGGER_CLASS =
+  "rounded-sm px-3 text-muted-foreground data-active:bg-primary data-active:text-primary-foreground data-active:shadow-none data-active:hover:text-primary-foreground sm:px-4";
 
 export default function PublicScheduleFilters({
   type,
@@ -31,12 +35,25 @@ export default function PublicScheduleFilters({
           onTypeChange(null);
         }}
       >
-        <TabsList aria-label={t("filters.type")}>
-          <TabsTrigger value={ALL}>{t("filters.all")}</TabsTrigger>
-          <TabsTrigger value={ScheduleItemTypeEnum.STORY}>
+        <TabsList
+          aria-label={t("filters.type")}
+          className="h-10! w-full rounded-md border bg-card p-1 sm:w-fit"
+        >
+          <TabsTrigger value={ALL} className={TRIGGER_CLASS}>
+            {t("filters.all")}
+          </TabsTrigger>
+          <TabsTrigger
+            value={ScheduleItemTypeEnum.STORY}
+            className={TRIGGER_CLASS}
+          >
+            <Swords />
             {t("filters.story")}
           </TabsTrigger>
-          <TabsTrigger value={ScheduleItemTypeEnum.EVENT}>
+          <TabsTrigger
+            value={ScheduleItemTypeEnum.EVENT}
+            className={TRIGGER_CLASS}
+          >
+            <Tent />
             {t("filters.event")}
           </TabsTrigger>
         </TabsList>
