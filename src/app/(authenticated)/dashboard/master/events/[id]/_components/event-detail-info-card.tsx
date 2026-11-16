@@ -79,7 +79,13 @@ export default function EventDetailInfoCard({
         value={
           <span className="flex w-full flex-col items-start gap-1">
             {event.location_detail}
-            <If condition={!!locationLink}>
+            {/* Only offline events have a map link; online events have none */}
+            <If
+              condition={
+                !!locationLink &&
+                event.location_type === EventLocationTypeEnum.OFFLINE
+              }
+            >
               <Then>
                 <EventDetailExternalLink href={locationLink ?? ""}>
                   {t("info.openMap")}
