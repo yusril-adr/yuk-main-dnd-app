@@ -16,7 +16,9 @@ import { SCHEDULES_MESSAGES } from "@/app/(public)/schedules/_messages";
 import {
   PUBLIC_SCHEDULE_DESKTOP_VIEW,
   PUBLIC_SCHEDULE_MOBILE_MEDIA,
+  PUBLIC_SCHEDULE_MOBILE_TITLE_FORMAT,
   PUBLIC_SCHEDULE_MOBILE_VIEW,
+  PUBLIC_SCHEDULE_TIME_FORMAT,
   PUBLIC_SCHEDULE_VIEWS,
 } from "@/app/(public)/schedules/_constants/public-schedule-views";
 import PublicScheduleErrorState from "@/app/(public)/schedules/_components/public-schedule-error-state";
@@ -121,6 +123,10 @@ export default function PublicScheduleCalendar({
             locale={locale}
             locales={locales}
             height="auto"
+            eventTimeFormat={PUBLIC_SCHEDULE_TIME_FORMAT}
+            titleFormat={
+              isMobile ? PUBLIC_SCHEDULE_MOBILE_TITLE_FORMAT : undefined
+            }
             noEventsContent={t("calendar.empty")}
           />
         </Else>
