@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { cn } from "cn";
-import { Button } from "@/app/_components/ui/button";
+import { buttonVariants } from "@/app/_components/ui/button";
 import NAV_ROUTES from "@/app/_constants/navigation-routes";
 
 export function TopBarNav({ className }: { className?: string }) {
@@ -18,15 +18,18 @@ export function TopBarNav({ className }: { className?: string }) {
           pathname === item.href || pathname.startsWith(`${item.href}/`);
 
         return (
-          <Button
+          <Link
             key={item.href}
-            variant={isActive ? "outline" : "ghost"}
-            render={<Link href={item.href} />}
-            className={cn("justify-start text-base", className)}
+            href={item.href}
+            className={cn(
+              buttonVariants({ variant: isActive ? "outline" : "ghost" }),
+              "justify-start text-base",
+              className,
+            )}
           >
             <item.icon className="size-4" />
             {item.title}
-          </Button>
+          </Link>
         );
       })}
     </>

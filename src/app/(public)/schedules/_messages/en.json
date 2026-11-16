@@ -1,0 +1,27 @@
+{
+  "hero": {
+    "badge": "The Guild Calendar",
+    "title": "See what's coming up",
+    "description": "Stories and events on one calendar. Pick a day, open the page, and join the gathering.",
+    "count_one": "happening in this view",
+    "count_other": "happenings in this view"
+  },
+  "filters": {
+    "type": "Type",
+    "all": "All",
+    "story": "Stories",
+    "event": "Events"
+  },
+  "legend": {
+    "story": "Story",
+    "event": "Event"
+  },
+  "calendar": {
+    "loading": "Loading the calendar…",
+    "empty": "Nothing is scheduled in this period."
+  },
+  "error": {
+    "title": "The calendar could not be fetched",
+    "description": "Something went wrong while loading the schedule. Please try again."
+  }
+}

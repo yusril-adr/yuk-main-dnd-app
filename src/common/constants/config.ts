@@ -68,6 +68,9 @@ const CONFIG = {
           ],
         },
       },
+      SCHEDULE: {
+        ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "public-schedule"],
+      },
       STORY: {
         ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "public-story"],
         MEMBER: {

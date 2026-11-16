@@ -1,0 +1,27 @@
+{
+  "hero": {
+    "badge": "Kalender Guild",
+    "title": "Lihat jadwal yang akan datang",
+    "description": "Story dan event dalam satu kalender. Pilih hari, buka halamannya, lalu ikut kumpul.",
+    "count_one": "jadwal di tampilan ini",
+    "count_other": "jadwal di tampilan ini"
+  },
+  "filters": {
+    "type": "Jenis",
+    "all": "Semua",
+    "story": "Story",
+    "event": "Event"
+  },
+  "legend": {
+    "story": "Story",
+    "event": "Event"
+  },
+  "calendar": {
+    "loading": "Memuat kalender…",
+    "empty": "Tidak ada jadwal di periode ini."
+  },
+  "error": {
+    "title": "Kalender nggak bisa diambil",
+    "description": "Ada yang salah saat memuat jadwal. Coba lagi ya."
+  }
+}
