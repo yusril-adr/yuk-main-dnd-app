@@ -21,6 +21,7 @@ const PUBLIC_ROUTES: {
   { path: "/stories", changeFrequency: "daily", priority: 0.9 },
   { path: "/guildmates", changeFrequency: "weekly", priority: 0.8 },
   { path: "/events", changeFrequency: "daily", priority: 0.9 },
+  { path: "/schedules", changeFrequency: "daily", priority: 0.9 },
   { path: "/goods", changeFrequency: "monthly", priority: 0.5 },
 ];
 
