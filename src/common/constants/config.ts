@@ -53,6 +53,9 @@ const CONFIG = {
           "joined-stories",
         ],
       },
+      EVENT: {
+        ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "public-event"],
+      },
       STORY: {
         ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "public-story"],
         MEMBER: {

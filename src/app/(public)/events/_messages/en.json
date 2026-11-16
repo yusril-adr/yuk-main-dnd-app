@@ -1,0 +1,47 @@
+{
+  "hero": {
+    "badge": "The Guild Hall",
+    "title": "Gather with the guild",
+    "description": "Guild gatherings, game nights and tabletop meetups. Pick an event, join in, and meet your fellow adventurers.",
+    "count_one": "event on the board",
+    "count_other": "events on the board"
+  },
+  "filters": {
+    "searchPlaceholder": "Search events by title (min. 3 characters)…",
+    "filters": "Filters",
+    "status": "Status",
+    "location": "Location",
+    "allStatuses": "All statuses",
+    "anywhere": "Anywhere",
+    "clear": "Clear",
+    "apply": "Apply"
+  },
+  "enums": {
+    "status": {
+      "draft": "Draft",
+      "published": "Recruiting",
+      "archived": "Archived",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    }
+  },
+  "pagination": {
+    "showing": "Showing {{start}}–{{end}} of {{total}} events",
+    "previous": "Previous page",
+    "next": "Next page"
+  },
+  "empty": {
+    "title": "No events found",
+    "filtered": "No event matches your search. Try different keywords or clear the filters.",
+    "default": "No events on the board yet. Return soon, adventurer.",
+    "clearFilters": "Clear search & filters"
+  },
+  "error": {
+    "title": "The scrolls could not be fetched",
+    "description": "Something went wrong while loading events. Please try again."
+  }
+}

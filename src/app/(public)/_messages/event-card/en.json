@@ -1,0 +1,22 @@
+{
+  "taleYetWritten": "The tale is yet to be written…",
+  "dateTba": "Date to be proclaimed",
+  "joined": "{{count}} joined",
+  "partySize_one": "Up to {{count}} adventurer",
+  "partySize_other": "Up to {{count}} adventurers",
+  "noPlayerLimit": "No party size limit",
+  "host": "Host",
+  "enums": {
+    "status": {
+      "draft": "Draft",
+      "published": "Recruiting",
+      "archived": "Archived",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "location": {
+      "online": "Online",
+      "offline": "Offline"
+    }
+  }
+}
