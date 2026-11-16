@@ -20,7 +20,7 @@ export const PUBLIC_SCHEDULE_MOBILE_POPOVER_CLASS =
   "border rounded-md overflow-x-hidden overflow-y-auto shadow-lg m-1 bg-popover text-popover-foreground [--fc-popover-z:50] pointer-events-auto min-w-0 w-[min(20rem,calc(100vw-1.25rem))] max-h-[calc(100dvh-1.25rem)]";
 
 export const PUBLIC_SCHEDULE_MOBILE_LIST_DAY_HEADER_CLASS =
-  "p-2 shrink-0 w-auto min-h-9 flex flex-row items-center gap-2";
+  "p-2 shrink-0 w-30 min-h-9 flex flex-row items-center gap-2";
 export const PUBLIC_SCHEDULE_MOBILE_LIST_ITEM_CLASS =
   "group flex-wrap items-center gap-x-2 gap-y-0.5 p-2 rounded-md";
 export const PUBLIC_SCHEDULE_MOBILE_LIST_ITEM_BEFORE_CLASS =
