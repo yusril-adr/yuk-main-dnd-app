@@ -1,11 +1,11 @@
 import type { TNavSidebar } from "@/app/(authenticated)/_types/nav-sidebar";
 import {
-  CalendarDays,
   Gauge,
   Scale,
   ShieldKeyhole,
   ShieldUser,
   Swords,
+  Tent,
   Users,
   UserShield,
 } from "lucide-react";
@@ -30,7 +30,7 @@ const NAV_ROUTES: TNavSidebar[] = [
       },
       {
         title: "Events",
-        icon: CalendarDays,
+        icon: Tent,
         path: "/dashboard/events",
       },
       {
@@ -76,7 +76,7 @@ const NAV_ROUTES: TNavSidebar[] = [
       },
       {
         title: "Events",
-        icon: CalendarDays,
+        icon: Tent,
         path: "/dashboard/master/events",
         authorizedPermissions: [PermissionEnum.EVENTS_VIEW],
       },
