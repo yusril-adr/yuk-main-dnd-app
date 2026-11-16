@@ -86,12 +86,13 @@ export function EventCalendarToolbar({
             }
           }}
         >
-          <TabsList>
+          <TabsList className="h-10! rounded-md border bg-card p-1">
             {availableViews.map((availableView) => (
               <TabsTrigger
                 key={availableView}
                 value={availableView}
                 aria-label={buttons[availableView]?.hint}
+                className="rounded-sm px-3 text-muted-foreground data-active:bg-primary data-active:text-primary-foreground data-active:shadow-none data-active:hover:text-primary-foreground sm:px-4"
               >
                 {buttons[availableView]?.text}
               </TabsTrigger>
