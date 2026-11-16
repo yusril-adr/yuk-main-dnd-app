@@ -21,7 +21,9 @@
     "uploadingBanner": "Uploading banner...",
     "bannerUploaded": "Banner uploaded",
     "creating": "Creating event...",
-    "created": "Event created"
+    "created": "Event created",
+    "updating": "Updating event...",
+    "updated": "Event updated"
   },
   "enums": {
     "memberStatus": {
