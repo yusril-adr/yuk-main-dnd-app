@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { getPublicEventPaginationOnServer } from "@/api/main/modules/events/server";
 import { getPublicStoryPaginationOnServer } from "@/api/main/modules/stories/server";
 import { getPublicUserPaginationOnServer } from "@/api/main/modules/users/server";
 import { getGuildmateHref } from "@/utils/user-helper";
@@ -42,7 +43,10 @@ async function collectAll<T>(
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
 
-  const [stories, users] = await Promise.all([
+  const [events, stories, users] = await Promise.all([
+    collectAll((page) =>
+      getPublicEventPaginationOnServer({ page, per_page: SITEMAP_PER_PAGE }),
+    ),
     collectAll((page) =>
       getPublicStoryPaginationOnServer({ page, per_page: SITEMAP_PER_PAGE }),
     ),
@@ -57,6 +61,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified,
       changeFrequency,
       priority,
+    })),
+    ...events.map((event) => ({
+      url: `${SITE_URL}/events/${encodeURIComponent(event.slug || event.id)}`,
+      lastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
     })),
     ...stories.map((story) => ({
       url: `${SITE_URL}/stories/${encodeURIComponent(story.slug || story.id)}`,
