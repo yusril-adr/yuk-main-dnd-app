@@ -22,9 +22,9 @@ export const PUBLIC_SCHEDULE_MOBILE_POPOVER_CLASS =
 export const PUBLIC_SCHEDULE_MOBILE_LIST_DAY_HEADER_CLASS =
   "p-2 shrink-0 w-auto min-h-9 flex flex-row items-center gap-2";
 export const PUBLIC_SCHEDULE_MOBILE_LIST_ITEM_CLASS =
-  "group flex-wrap items-start gap-x-2 gap-y-0.5 p-2 rounded-md";
+  "group flex-wrap items-center gap-x-2 gap-y-0.5 p-2 rounded-md";
 export const PUBLIC_SCHEDULE_MOBILE_LIST_ITEM_BEFORE_CLASS =
-  "rounded-full border-(--fc-event-color) border-5";
+  "self-center rounded-full border-(--fc-event-color) border-5";
 export const PUBLIC_SCHEDULE_MOBILE_LIST_ITEM_INNER_CLASS = "contents";
 export const PUBLIC_SCHEDULE_MOBILE_LIST_ITEM_TIME_CLASS =
   "shrink-0 whitespace-nowrap text-sm";
@@ -37,7 +37,7 @@ export function getPublicScheduleMobileListItemTitleClass(info: {
   event: { url?: string };
 }) {
   const underline = info.event.url ? " group-hover:underline" : "";
-  return `basis-full w-full min-w-0 whitespace-normal break-words text-base font-medium${underline}`;
+  return `basis-full w-full min-w-0 !whitespace-normal !break-words !overflow-visible text-base font-medium${underline}`;
 }
 
 export const PUBLIC_SCHEDULE_MOBILE_LIST_VIEW_OPTIONS = {
