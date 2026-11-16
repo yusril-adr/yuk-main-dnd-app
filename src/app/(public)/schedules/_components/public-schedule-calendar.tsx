@@ -16,6 +16,7 @@ import { SCHEDULES_MESSAGES } from "@/app/(public)/schedules/_messages";
 import {
   formatPublicScheduleMoreLink,
   PUBLIC_SCHEDULE_INITIAL_VIEW,
+  PUBLIC_SCHEDULE_MOBILE_LIST_VIEW_OPTIONS,
   PUBLIC_SCHEDULE_MOBILE_MEDIA,
   PUBLIC_SCHEDULE_MOBILE_MONTH_MAX_EVENTS,
   PUBLIC_SCHEDULE_MOBILE_POPOVER_CLASS,
@@ -108,6 +109,7 @@ export default function PublicScheduleCalendar({
               moreLinkClick: handlePublicScheduleMoreLinkClick,
               moreLinkText: formatPublicScheduleMoreLink,
             },
+            list: PUBLIC_SCHEDULE_MOBILE_LIST_VIEW_OPTIONS,
           }
         : undefined,
     [isMobile],
@@ -144,6 +146,7 @@ export default function PublicScheduleCalendar({
               ? {
                   views,
                   popoverClass: PUBLIC_SCHEDULE_MOBILE_POPOVER_CLASS,
+                  ...PUBLIC_SCHEDULE_MOBILE_LIST_VIEW_OPTIONS,
                 }
               : {})}
             noEventsContent={t("calendar.empty")}
