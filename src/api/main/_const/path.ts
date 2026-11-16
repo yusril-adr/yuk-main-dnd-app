@@ -58,6 +58,9 @@ const MAIN_API_PATH = {
     COMMENT_REACTIONS: (identifier: string, commentId: string) =>
       `/api/v1/events/${identifier}/comments/${commentId}/reactions`,
   },
+  SCHEDULE: {
+    DEFAULT: "/api/v1/schedules",
+  },
   USER: {
     // Public guildmates list; search matches username or display name
     DEFAULT: "/api/v1/users",
