@@ -138,6 +138,7 @@ export default function PublicScheduleCalendar({
             locales={locales}
             height="auto"
             eventTimeFormat={PUBLIC_SCHEDULE_TIME_FORMAT}
+            todayText={t("calendar.today")}
             {...(isMobile
               ? {
                   views,

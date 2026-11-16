@@ -17,6 +17,7 @@
     "event": "Event"
   },
   "calendar": {
+    "today": "Today",
     "loading": "Loading the calendar…",
     "empty": "Nothing is scheduled in this period."
   },
