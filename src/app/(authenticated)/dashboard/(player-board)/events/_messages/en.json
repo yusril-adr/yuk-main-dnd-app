@@ -1,0 +1,52 @@
+{
+  "breadcrumb": "My Events",
+  "title": "My Events",
+  "description": "Events you have joined.",
+  "filters": {
+    "searchAria": "Search my events",
+    "searchPlaceholder": "Search by title (min. 3 characters)…",
+    "statusAria": "Event status",
+    "memberStatusAria": "My member status",
+    "allStatuses": "All statuses",
+    "anySeat": "Any seat"
+  },
+  "enums": {
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "memberStatus": {
+      "registered": "Registered",
+      "absent": "Absent",
+      "attended": "Attended"
+    }
+  },
+  "card": {
+    "dungeonMaster": "Dungeon Master",
+    "unknownDm": "Unknown DM",
+    "starts": "Starts",
+    "dateTba": "Date to be announced",
+    "members": "Members"
+  },
+  "pagination": {
+    "showing": "Showing {{start}}–{{end}} of {{total}}",
+    "pagesAria": "Events pages",
+    "previous": "Previous page",
+    "next": "Next page"
+  },
+  "empty": {
+    "filteredTitle": "No events match",
+    "title": "No events yet",
+    "filteredDescription": "Try another title or loosen the filters.",
+    "description": "Join an event from the events board and it will show up here.",
+    "clearFilters": "Clear filters",
+    "browse": "Browse events"
+  },
+  "error": {
+    "title": "Could not load your events",
+    "description": "Something went wrong on the way. Please try again."
+  }
+}

@@ -93,6 +93,9 @@ const CONFIG = {
             ],
           },
         },
+        EVENT: {
+          ALL: () => [...CONFIG.QUERY_KEY.MAIN_API.ALL(), "board-event"],
+        },
       },
       MASTER: {
         IAM: {
