@@ -5,7 +5,10 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useParams, useRouter, notFound } from "next/navigation";
 import { If, Then, Else } from "react-if";
-import { useQueryClient } from "@tanstack/react-query";
+import {
+  usePrefetchInfiniteQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import AppBreadcrumb from "@/app/_components/app-breadcrumb";
 import {
@@ -25,6 +28,8 @@ import { useT } from "@/app/_hooks/use-t";
 
 import { useDeleteEventById } from "@/app/(authenticated)/dashboard/master/events/_hooks/use-delete-event-by-id";
 import { useGetEventById } from "@/app/(authenticated)/dashboard/master/events/_hooks/use-get-event-by-id";
+import { getEventMemberPaginationOptions } from "@/app/(authenticated)/dashboard/master/events/_hooks/use-get-event-member-pagination";
+import { EVENT_MEMBER_PREVIEW_COUNT } from "@/app/(authenticated)/dashboard/master/events/_constants/event-member-preview";
 import { useArchiveEventById } from "@/app/(authenticated)/dashboard/master/events/_hooks/use-archive-event-by-id";
 import { useUnarchiveEventById } from "@/app/(authenticated)/dashboard/master/events/_hooks/use-unarchive-event-by-id";
 import { usePublishEventById } from "@/app/(authenticated)/dashboard/master/events/_hooks/use-publish-event-by-id";
@@ -33,8 +38,10 @@ import EventDetailHero from "@/app/(authenticated)/dashboard/master/events/[id]/
 import EventDetailDescriptionCard from "@/app/(authenticated)/dashboard/master/events/[id]/_components/event-detail-description-card";
 import EventDetailInfoCard from "@/app/(authenticated)/dashboard/master/events/[id]/_components/event-detail-info-card";
 import EventDetailAboutCard from "@/app/(authenticated)/dashboard/master/events/[id]/_components/event-detail-about-card";
+import EventDetailMembersCard from "@/app/(authenticated)/dashboard/master/events/[id]/_components/event-detail-members-card";
 import EventDetailSkeleton from "@/app/(authenticated)/dashboard/master/events/[id]/_components/event-detail-skeleton";
 import EventDetailActions from "@/app/(authenticated)/dashboard/master/events/[id]/_components/event-detail-actions";
+import EventCompleteDialog from "@/app/(authenticated)/dashboard/master/events/_components/event-complete-dialog";
 import { MASTER_EVENT_DETAIL_MESSAGES } from "@/app/(authenticated)/dashboard/master/events/[id]/_messages";
 
 export default function EventDetailPageClient() {
@@ -48,17 +55,29 @@ export default function EventDetailPageClient() {
   const [isUnarchiveDialogOpen, setIsUnarchiveDialogOpen] = useState(false);
   const [isPublishDialogOpen, setIsPublishDialogOpen] = useState(false);
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [isCompleteDialogOpen, setIsCompleteDialogOpen] = useState(false);
   const eventQuery = useGetEventById(eventId);
+  // Start the members card's query alongside the event instead of after it,
+  // without subscribing this page to it
+  usePrefetchInfiniteQuery(
+    getEventMemberPaginationOptions(eventId, EVENT_MEMBER_PREVIEW_COUNT),
+  );
   const event = eventQuery.data?.data?.data;
   const canEdit = !!event && event.action_list.is_can_update;
   const canPublish = !!event && event.action_list.is_can_publish;
+  const canComplete = !!event && event.action_list.is_can_complete;
   const canArchive = !!event && event.action_list.is_can_archive;
   const canUnarchive = !!event && event.action_list.is_can_unarchive;
   const canCancel = !!event && event.action_list.is_can_cancel;
   const canDelete = !!event && event.action_list.is_can_delete;
+  const canAddMembers = !!event && event.action_list.is_can_add_members;
+  const canRemoveMembers = !!event && event.action_list.is_can_remove_members;
+  const canCreateGuestUser =
+    !!event && event.action_list.is_can_create_guest_user;
   const hasEventActions =
     canEdit ||
     canPublish ||
+    canComplete ||
     canArchive ||
     canUnarchive ||
     canCancel ||
@@ -188,6 +207,7 @@ export default function EventDetailPageClient() {
                 eventId={eventId}
                 canEdit={canEdit}
                 canPublish={canPublish}
+                canComplete={canComplete}
                 canArchive={canArchive}
                 canUnarchive={canUnarchive}
                 canCancel={canCancel}
@@ -197,6 +217,7 @@ export default function EventDetailPageClient() {
                 isUnarchivePending={unarchiveEventMutation.isPending}
                 isCancelPending={cancelEventMutation.isPending}
                 onPublishClick={() => setIsPublishDialogOpen(true)}
+                onCompleteClick={() => setIsCompleteDialogOpen(true)}
                 onArchiveClick={() => setIsArchiveDialogOpen(true)}
                 onUnarchiveClick={() => setIsUnarchiveDialogOpen(true)}
                 onCancelClick={() => setIsCancelDialogOpen(true)}
@@ -211,7 +232,15 @@ export default function EventDetailPageClient() {
             <EventDetailSkeleton />
           </Then>
           <Else>
-            {event ? <EventDetailBody event={event} /> : null}
+            {event ? (
+              <EventDetailBody
+                event={event}
+                eventId={eventId}
+                canAddMembers={canAddMembers}
+                canRemoveMembers={canRemoveMembers}
+                canCreateGuestUser={canCreateGuestUser}
+              />
+            ) : null}
           </Else>
         </If>
 
@@ -331,12 +360,29 @@ export default function EventDetailPageClient() {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+        <EventCompleteDialog
+          eventId={eventId}
+          open={isCompleteDialogOpen}
+          onOpenChange={setIsCompleteDialogOpen}
+        />
       </main>
     </div>
   );
 }
 
-function EventDetailBody({ event }: { event: TEventDetailResponse }) {
+function EventDetailBody({
+  event,
+  eventId,
+  canAddMembers,
+  canRemoveMembers,
+  canCreateGuestUser,
+}: {
+  event: TEventDetailResponse;
+  eventId: string;
+  canAddMembers: boolean;
+  canRemoveMembers: boolean;
+  canCreateGuestUser: boolean;
+}) {
   return (
     <div className="flex flex-col gap-6">
       <EventDetailHero event={event} />
@@ -348,6 +394,12 @@ function EventDetailBody({ event }: { event: TEventDetailResponse }) {
         <div className="flex flex-col gap-6">
           <EventDetailInfoCard event={event} />
           <EventDetailAboutCard event={event} />
+          <EventDetailMembersCard
+            eventId={eventId}
+            canAddMembers={canAddMembers}
+            canRemoveMembers={canRemoveMembers}
+            canCreateGuestUser={canCreateGuestUser}
+          />
         </div>
         <EventDetailDescriptionCard event={event} className="lg:hidden" />
       </div>

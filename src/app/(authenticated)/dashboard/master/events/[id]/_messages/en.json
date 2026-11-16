@@ -13,11 +13,17 @@
     "location": {
       "online": "Online",
       "offline": "Offline"
+    },
+    "memberStatus": {
+      "registered": "Registered",
+      "absent": "Absent",
+      "attended": "Attended"
     }
   },
   "actions": {
     "edit": "Edit",
     "publish": "Publish",
+    "complete": "Complete",
     "archive": "Archive",
     "unarchive": "Unarchive",
     "cancel": "Cancel",
@@ -71,6 +77,69 @@
     "unknown": "Unknown",
     "created": "Created",
     "lastUpdated": "Last Updated"
+  },
+  "party": {
+    "title": "Party",
+    "dialogDescription": "Full list of event members",
+    "searchPlaceholder": "Type minimum 3 characters to search ...",
+    "loadError": "Couldn't load party members.",
+    "empty": "No adventurers have joined this party yet.",
+    "emptySearch": "No adventurers match this search.",
+    "showMore": "Show more",
+    "addMember": "Add member",
+    "remove": "Remove",
+    "add": "Add",
+    "tryAgain": "Try again"
+  },
+  "addMember": {
+    "title": "Add member",
+    "description": "Add adventurers to this party",
+    "searchPlaceholder": "Type minimum 3 characters to search ...",
+    "loadError": "Couldn't load available adventurers.",
+    "empty": "No adventurers are available to join.",
+    "emptySearch": "No adventurers match this search.",
+    "tryAgain": "Try again",
+    "cancel": "Cancel",
+    "submit_zero": "Add",
+    "submit_one": "Add {{count}} member",
+    "submit_other": "Add {{count}} members",
+    "errorFallback": "Couldn't add event members."
+  },
+  "removeMember": {
+    "title": "Remove members",
+    "description": "Remove adventurers from this party",
+    "searchPlaceholder": "Type minimum 3 characters to search ...",
+    "loadError": "Couldn't load party members.",
+    "empty": "No adventurers have joined this party yet.",
+    "emptySearch": "No adventurers match this search.",
+    "tryAgain": "Try again",
+    "cancel": "Cancel",
+    "submit_zero": "Remove",
+    "submit_one": "Remove {{count}} member",
+    "submit_other": "Remove {{count}} members",
+    "errorFallback": "Couldn't remove event members."
+  },
+  "createGuest": {
+    "entry": "Create guest",
+    "title": "Create guest",
+    "description": "Create a guest adventurer and add them to this party",
+    "username": "Username",
+    "usernamePlaceholder": "Input username",
+    "displayName": "Display Name",
+    "displayNamePlaceholder": "Input display name",
+    "cancel": "Back",
+    "submit": "Create & add",
+    "validation": {
+      "usernameRequired": "Username is required",
+      "usernameNoSpaces": "Username must not contain spaces",
+      "usernameMax": "Username must be at most {{max}} characters",
+      "displayNameRequired": "Display name is required",
+      "displayNameMax": "Display name must be at most {{max}} characters"
+    },
+    "errorFallback": "Couldn't create guest."
+  },
+  "guest": {
+    "badge": "Guest"
   },
   "external": {
     "opensInNewTab": "(opens in a new tab)"

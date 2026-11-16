@@ -9,6 +9,33 @@
     "cancelling": "Membatalkan event...",
     "cancelled": "Event dibatalkan",
     "deleting": "Menghapus event...",
-    "deleted": "Event dihapus"
+    "deleted": "Event dihapus",
+    "completing": "Menyelesaikan event...",
+    "completed": "Event diselesaikan",
+    "addingMembers": "Menambah anggota event...",
+    "membersAdded": "Anggota event ditambahkan",
+    "removingMembers": "Menghapus anggota event...",
+    "membersRemoved": "Anggota event dihapus",
+    "creatingGuest": "Membuat tamu...",
+    "guestCreated": "Tamu dibuat"
+  },
+  "enums": {
+    "memberStatus": {
+      "registered": "Terdaftar",
+      "absent": "Tidak hadir",
+      "attended": "Hadir"
+    }
+  },
+  "complete": {
+    "title": "Selesaikan event?",
+    "description": "Pilih siapa yang hadir. Anggota yang dicentang ditandai attended dan menerima reward. Anggota yang tidak dicentang ditandai tidak hadir dan tidak menerima reward. Minimal satu anggota attended wajib dipilih. Event dan anggotanya tidak bisa diedit setelah ini.",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Anggota party nggak bisa dimuat.",
+    "empty": "Belum ada petualang yang bergabung di party ini.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "tryAgain": "Coba lagi",
+    "cancel": "Batal",
+    "confirm": "Selesaikan event",
+    "errorFallback": "Nggak bisa menyelesaikan event."
   }
 }

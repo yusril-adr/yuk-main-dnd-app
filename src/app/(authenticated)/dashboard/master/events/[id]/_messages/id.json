@@ -13,11 +13,17 @@
     "location": {
       "online": "Online",
       "offline": "Offline"
+    },
+    "memberStatus": {
+      "registered": "Terdaftar",
+      "absent": "Tidak hadir",
+      "attended": "Hadir"
     }
   },
   "actions": {
     "edit": "Edit",
     "publish": "Publish",
+    "complete": "Selesaikan",
     "archive": "Arsipkan",
     "unarchive": "Batalkan arsip",
     "cancel": "Batalkan",
@@ -71,6 +77,69 @@
     "unknown": "Tidak diketahui",
     "created": "Dibuat",
     "lastUpdated": "Terakhir Diperbarui"
+  },
+  "party": {
+    "title": "Party",
+    "dialogDescription": "Daftar lengkap anggota event",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Anggota party nggak bisa dimuat.",
+    "empty": "Belum ada petualang yang bergabung di party ini.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "showMore": "Tampilkan lebih banyak",
+    "addMember": "Tambah anggota",
+    "remove": "Hapus",
+    "add": "Tambah",
+    "tryAgain": "Coba lagi"
+  },
+  "addMember": {
+    "title": "Tambah anggota",
+    "description": "Tambah petualang ke party ini",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Petualang yang tersedia nggak bisa dimuat.",
+    "empty": "Tidak ada petualang yang tersedia untuk bergabung.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "tryAgain": "Coba lagi",
+    "cancel": "Batal",
+    "submit_zero": "Tambah",
+    "submit_one": "Tambah {{count}} anggota",
+    "submit_other": "Tambah {{count}} anggota",
+    "errorFallback": "Nggak bisa menambah anggota event."
+  },
+  "removeMember": {
+    "title": "Hapus anggota",
+    "description": "Hapus petualang dari party ini",
+    "searchPlaceholder": "Ketik minimal 3 karakter untuk mencari ...",
+    "loadError": "Anggota party nggak bisa dimuat.",
+    "empty": "Belum ada petualang yang bergabung di party ini.",
+    "emptySearch": "Tidak ada petualang yang cocok dengan pencarian ini.",
+    "tryAgain": "Coba lagi",
+    "cancel": "Batal",
+    "submit_zero": "Hapus",
+    "submit_one": "Hapus {{count}} anggota",
+    "submit_other": "Hapus {{count}} anggota",
+    "errorFallback": "Nggak bisa menghapus anggota event."
+  },
+  "createGuest": {
+    "entry": "Buat tamu",
+    "title": "Buat tamu",
+    "description": "Buat petualang tamu dan tambahkan ke party ini",
+    "username": "Username",
+    "usernamePlaceholder": "Masukkan username",
+    "displayName": "Nama Tampilan",
+    "displayNamePlaceholder": "Masukkan nama tampilan",
+    "cancel": "Kembali",
+    "submit": "Buat & tambah",
+    "validation": {
+      "usernameRequired": "Username wajib diisi",
+      "usernameNoSpaces": "Username tidak boleh mengandung spasi",
+      "usernameMax": "Username maksimal {{max}} karakter",
+      "displayNameRequired": "Nama tampilan wajib diisi",
+      "displayNameMax": "Nama tampilan maksimal {{max}} karakter"
+    },
+    "errorFallback": "Nggak bisa membuat tamu."
+  },
+  "guest": {
+    "badge": "Tamu"
   },
   "external": {
     "opensInNewTab": "(membuka tab baru)"
