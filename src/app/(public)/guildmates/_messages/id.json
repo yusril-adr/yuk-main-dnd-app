@@ -26,6 +26,9 @@
     "playerExp": "{{count}} Player EXP",
     "gainedExp": "+{{count}} EXP",
     "soFar": "sejauh ini",
+    "earned": "diperoleh",
+    "previousMonth": "Bulan sebelumnya",
+    "nextMonth": "Bulan berikutnya",
     "place": "Peringkat {{rank}}"
   },
   "roll": {

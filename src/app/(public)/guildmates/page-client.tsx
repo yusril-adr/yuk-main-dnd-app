@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { parseAsInteger, parseAsString } from "nuqs";
 
 import { useCamelCaseQueryStates } from "@/libs/nuqs/use-camel-case-query-states";
@@ -13,9 +13,10 @@ import PublicGuildmateCardList from "@/app/(public)/guildmates/_components/publi
 import { useGetPublicGuildmatePagination } from "@/app/(public)/guildmates/_hooks/use-get-public-guildmate-pagination";
 import { useGetTopDmExperience } from "@/app/(public)/guildmates/_hooks/use-get-top-dm-experience";
 import { useGetTopPlayerExperience } from "@/app/(public)/guildmates/_hooks/use-get-top-player-experience";
-import { useCurrentMonthRange } from "@/app/(public)/guildmates/_hooks/use-current-month-range";
+import { useGuildmateMonthRange } from "@/app/(public)/guildmates/_hooks/use-guildmate-month-range";
 import { PUBLIC_GUILDMATE_PAGE_SIZE } from "@/app/(public)/guildmates/_constants/public-guildmate-page-size";
 import type { TPublicLegendEntry } from "@/app/(public)/_types/public-legend-entry";
+import { shiftUtcMonthKey } from "@/app/(public)/_utils/month-range-helper";
 import { useT } from "@/app/_hooks/use-t";
 import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 
@@ -25,10 +26,28 @@ export default function GuildMatesPageClient() {
   const [queryStates, setQueryStates] = useCamelCaseQueryStates({
     page: parseAsInteger.withDefault(1),
     search: parseAsString.withDefault(""),
+    month: parseAsString,
   });
 
   // null on the server/first paint; boards show their skeleton until then
-  const monthRange = useCurrentMonthRange();
+  const monthRange = useGuildmateMonthRange(queryStates.month);
+
+  // Invalid or future ?month= values (and the current month) are omitted
+  useEffect(() => {
+    if (!monthRange) return;
+
+    if (monthRange.isCurrent) {
+      if (queryStates.month !== null) {
+        setQueryStates({ month: null });
+      }
+      return;
+    }
+
+    if (queryStates.month !== monthRange.monthKey) {
+      setQueryStates({ month: monthRange.monthKey });
+    }
+  }, [monthRange, queryStates.month, setQueryStates]);
+
   const topDmQuery = useGetTopDmExperience(monthRange?.payload ?? null);
   const topPlayerQuery = useGetTopPlayerExperience(
     monthRange?.payload ?? null,
@@ -59,7 +78,7 @@ export default function GuildMatesPageClient() {
       per_page: PUBLIC_GUILDMATE_PAGE_SIZE,
       search: queryStates.search,
     }),
-    [queryStates],
+    [queryStates.page, queryStates.search],
   );
 
   const {
@@ -98,6 +117,19 @@ export default function GuildMatesPageClient() {
     [setQueryStates],
   );
 
+  const onPrevMonth = useCallback(() => {
+    if (!monthRange) return;
+    setQueryStates({ month: shiftUtcMonthKey(monthRange.monthKey, -1) });
+  }, [monthRange, setQueryStates]);
+
+  const onNextMonth = useCallback(() => {
+    if (!monthRange || monthRange.isCurrent) return;
+    const nextKey = shiftUtcMonthKey(monthRange.monthKey, 1);
+    setQueryStates({
+      month: nextKey === monthRange.currentMonthKey ? null : nextKey,
+    });
+  }, [monthRange, setQueryStates]);
+
   const totalGuildmates = responseData?.data?.data?.meta?.total_all_data;
 
   return (
@@ -110,8 +142,11 @@ export default function GuildMatesPageClient() {
         />
 
         <PublicGuildmateLegendsSection
-          monthName={monthRange?.monthName ?? null}
+          headingMonth={monthRange?.headingMonth ?? null}
           monthLabel={monthRange?.monthLabel ?? null}
+          isCurrentMonth={monthRange?.isCurrent ?? false}
+          onPrevMonth={onPrevMonth}
+          onNextMonth={onNextMonth}
           dmBoard={{
             entries: dmEntries,
             isLoading: topDmQuery.isPending,

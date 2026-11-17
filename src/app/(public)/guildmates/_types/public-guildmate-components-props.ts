@@ -2,8 +2,11 @@ import type { TPublicUserPaginationResponse } from "@/api/main/modules/users/typ
 import type { TPublicLegendBoardData } from "@/app/(public)/_types/public-legend-board-data";
 
 export type TPublicGuildmateLegendsSectionProps = {
-  monthName: string | null;
+  headingMonth: string | null;
   monthLabel: string | null;
+  isCurrentMonth: boolean;
+  onPrevMonth: () => void;
+  onNextMonth: () => void;
   dmBoard: TPublicLegendBoardData;
   playerBoard: TPublicLegendBoardData;
 };
