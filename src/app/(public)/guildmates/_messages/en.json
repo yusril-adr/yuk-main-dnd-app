@@ -26,6 +26,9 @@
     "playerExp": "{{count}} Player EXP",
     "gainedExp": "+{{count}} EXP",
     "soFar": "so far",
+    "earned": "earned",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
     "place": "Place {{rank}}"
   },
   "roll": {

@@ -1,37 +1,48 @@
 "use client";
 
+import { If, Then } from "react-if";
+
+import {
+  EventCalendarNextIcon,
+  EventCalendarPrevIcon,
+} from "@/app/_components/event-calendar-icons";
+import { Button } from "@/app/_components/ui/button";
 import { useT } from "@/app/_hooks/use-t";
 import { GUILDMATES_MESSAGES } from "@/app/(public)/guildmates/_messages";
 import PublicLegendBoards from "@/app/(public)/_components/public-legend-boards";
 import type { TPublicGuildmateLegendsSectionProps } from "@/app/(public)/guildmates/_types/public-guildmate-components-props";
 
 export default function PublicGuildmateLegendsSection({
-  monthName,
+  headingMonth,
   monthLabel,
+  isCurrentMonth,
+  onPrevMonth,
+  onNextMonth,
   dmBoard,
   playerBoard,
 }: TPublicGuildmateLegendsSectionProps) {
   const { t } = useT(GUILDMATES_MESSAGES);
-  // Generic wording until the client knows the month (prerendered page)
-  const periodTitle = monthName
-    ? t("legends.titleWithMonth", { month: monthName })
+  // Generic wording until the client knows the month (prerendered page).
+  // headingMonth includes the year when the selected month is in another year.
+  const periodTitle = headingMonth
+    ? t("legends.titleWithMonth", { month: headingMonth })
     : t("legends.titleFallback");
-  const dmTitle = monthName
-    ? t("legends.dungeonMastersOf", { month: monthName })
+  const dmTitle = headingMonth
+    ? t("legends.dungeonMastersOf", { month: headingMonth })
     : t("legends.dungeonMasters");
-  const heroesTitle = monthName
-    ? t("legends.heroesOf", { month: monthName })
+  const heroesTitle = headingMonth
+    ? t("legends.heroesOf", { month: headingMonth })
     : t("legends.heroes");
 
   const copy = {
     unclaimed: t("legends.unclaimed"),
     awaitingMaster: t("legends.awaitingMaster"),
     awaitingHero: t("legends.awaitingHero"),
-    expCaption: t("legends.soFar"),
+    expCaption: isCurrentMonth ? t("legends.soFar") : t("legends.earned"),
     errorTitle: t("legends.errorTitle"),
     errorDescription: t("legends.errorDescription"),
-    empty: monthName
-      ? t("legends.emptyWithMonth", { month: monthName })
+    empty: headingMonth
+      ? t("legends.emptyWithMonth", { month: headingMonth })
       : t("legends.emptyFallback"),
     dmExpTotal: (count: string) => t("legends.dmExpTotal", { count }),
     playerExpTotal: (count: string) => t("legends.playerExpTotal", { count }),
@@ -47,9 +58,41 @@ export default function PublicGuildmateLegendsSection({
         <h2 id="legends-heading" className="font-heading text-2xl sm:text-3xl">
           {periodTitle}
         </h2>
-        <p className="min-h-4 text-xs tracking-[0.2em] text-primary uppercase">
-          {monthLabel}
-        </p>
+        <div className="flex min-h-9 w-full items-center justify-center">
+          <If condition={monthLabel !== null}>
+            <Then>
+              <div className="flex max-w-full items-center justify-center">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="shrink-0"
+                  onClick={onPrevMonth}
+                  aria-label={t("legends.previousMonth")}
+                >
+                  <EventCalendarPrevIcon />
+                </Button>
+                <p
+                  aria-live="polite"
+                  className="min-h-4 min-w-0 px-1 text-xs tracking-[0.2em] text-primary uppercase"
+                >
+                  {monthLabel}
+                </p>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="shrink-0"
+                  onClick={onNextMonth}
+                  disabled={isCurrentMonth}
+                  aria-label={t("legends.nextMonth")}
+                >
+                  <EventCalendarNextIcon />
+                </Button>
+              </div>
+            </Then>
+          </If>
+        </div>
       </div>
 
       <PublicLegendBoards
