@@ -15,7 +15,7 @@ import NAV_ROUTES from "@/app/(authenticated)/_constants/navigation-routes";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { AvatarSidebar } from "./avatar-sidebar";
 import Link from "next/link";
-import YmdndLogo from "@/assets/logo/YMDND1.svg";
+import YmdndLogo from "@/assets/logo/YMDND3.svg";
 
 const SIDEBAR_ICON_BUTTON_CLASS =
   "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground aria-expanded:bg-sidebar-accent aria-expanded:text-sidebar-accent-foreground dark:hover:bg-sidebar-accent";
@@ -63,7 +63,9 @@ export function AppSidebar() {
                   aria-hidden
                   className="size-7 shrink-0 text-sidebar-primary"
                 />
-                <span className="truncate font-heading text-xl">YukMainDnD</span>
+                <span className="truncate font-heading text-xl">
+                  YukMainDnD
+                </span>
               </Link>
 
               <div className="flex shrink-0 items-center">
