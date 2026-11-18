@@ -36,7 +36,6 @@ export const metadata: Metadata = {
   applicationName: SITE_NAME,
   authors: [{ name: "Yonaka", url: "https://yusril-adr.github.io" }],
   creator: "Yonaka",
-  icons: { icon: "/favicon.ico" },
   openGraph: {
     type: "website",
     siteName: SITE_NAME,
