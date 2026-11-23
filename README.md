@@ -83,7 +83,8 @@ src/
 │   │   └── <shared-component>/           # App shell pieces (layout, data table, rich text)
 │   ├── _hooks/ _types/ _constants/       # App-wide hooks, types, constants
 │   ├── layout.tsx  providers.tsx  globals.css
-│   ├── opengraph-image.tsx  twitter-image.tsx
+│   ├── opengraph-image.jpg  opengraph-image.alt.txt
+│   ├── twitter-image.jpg  twitter-image.alt.txt
 │   └── sitemap.ts  robots.ts
 ├── api/main/                             # API client
 │   ├── _libs/                            # Axios instance, server fetch
@@ -110,6 +111,14 @@ Conventions:
 - Each page keeps its own components, hooks, types, constants and utils in its `_` folders. Don't import components from another page or section.
 - Only `app/_components/ui/` primitives, `src/utils/`, `src/libs/` and API modules are shared across pages.
 - The `@/` alias resolves to `src/` (see `tsconfig.json`).
+
+## Share card
+
+The default Open Graph and Twitter image is a static JPEG (`src/app/opengraph-image.jpg`, with a copy at `twitter-image.jpg`) so clients like WhatsApp on mobile can load it. It is built from `src/assets/logo/YMDND.svg`, `src/assets/og/guild-photo-og.jpg`, and the fonts in `src/assets/og/`. After changing those, regenerate the card with:
+
+```bash
+npm run generate-og-image
+```
 
 ## Docker
 
