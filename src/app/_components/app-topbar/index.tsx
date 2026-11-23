@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Menu } from "lucide-react";
 
-import YmdndLogo from "@/assets/logo/YMDND3.svg";
+import YmdndLogo from "@/assets/logo/YMDND.svg";
 
 import { Button } from "@/app/_components/ui/button";
 import { Skeleton } from "@/app/_components/ui/skeleton";

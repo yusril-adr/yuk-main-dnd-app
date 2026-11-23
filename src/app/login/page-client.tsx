@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { parseAsString, useQueryState } from "nuqs";
 
 import CONFIG from "@/common/constants/config";
-import YmdndLogo from "@/assets/logo/YMDND3.svg";
+import YmdndLogo from "@/assets/logo/YMDND.svg";
 import { authMe } from "@/api/main/modules/auth/me";
 import { LanguageSwitcher } from "@/app/_components/language-switcher";
 import { ThemeToggler } from "@/app/_components/theme-toggler";

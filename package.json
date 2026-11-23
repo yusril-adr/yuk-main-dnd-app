@@ -6,7 +6,8 @@
     "dev": "node scripts/generate-protected-routes.mjs && next dev",
     "build": "node scripts/generate-protected-routes.mjs && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate-og-image": "node scripts/generate-og-image.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

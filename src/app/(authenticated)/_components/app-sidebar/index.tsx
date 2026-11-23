@@ -15,7 +15,7 @@ import NAV_ROUTES from "@/app/(authenticated)/_constants/navigation-routes";
 import { useAuthContext } from "@/app/_hooks/use-auth-context";
 import { AvatarSidebar } from "./avatar-sidebar";
 import Link from "next/link";
-import YmdndLogo from "@/assets/logo/YMDND3.svg";
+import YmdndLogo from "@/assets/logo/YMDND.svg";
 
 const SIDEBAR_ICON_BUTTON_CLASS =
   "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground aria-expanded:bg-sidebar-accent aria-expanded:text-sidebar-accent-foreground dark:hover:bg-sidebar-accent";
